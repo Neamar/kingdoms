@@ -2,6 +2,7 @@
 from django.contrib import admin
 
 from kingdom.models import Kingdom, Folk, Quality, Message, ModalMessage, Claim
+from config.lib.admin import DescribedModelAdmin
 
 
 class KingdomAdmin(admin.ModelAdmin):
@@ -14,11 +15,7 @@ class FolkAdmin(admin.ModelAdmin):
 admin.site.register(Folk, FolkAdmin)
 
 
-class QualityAdmin(admin.ModelAdmin):
-	list_display = ('name', 'description')
-admin.site.register(Quality, QualityAdmin)
-
-
+admin.site.register(Quality, DescribedModelAdmin)
 admin.site.register(Message)
 admin.site.register(ModalMessage)
 admin.site.register(Claim)
