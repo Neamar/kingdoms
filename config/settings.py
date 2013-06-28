@@ -114,8 +114,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    # Lib
+    'python_field',
+
     # Kingdom apps
     'kingdom',
+    'title',
 )
 
 # A sample logging configuration. The only tangible logging

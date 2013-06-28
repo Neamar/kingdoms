@@ -7,7 +7,7 @@
 #Django specific
 collected-static/*
 media/*
-db.sqlite
+*.sqlite
 *.sqlite-journal
 local_settings.py
 
