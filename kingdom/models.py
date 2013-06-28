@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from config.models import NamedModel, DescribedModel
+from config.lib.models import NamedModel, DescribedModel
 
 
 class Kingdom(models.Model):
