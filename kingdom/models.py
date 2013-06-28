@@ -31,9 +31,9 @@ class Folk(NamedModel):
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
-	mother = models.ForeignKey('self')
-	father = models.ForeignKey('self')
-	spouse = models.ForeignKey('self')
+	mother = models.ForeignKey('self', related_name='+')
+	father = models.ForeignKey('self', related_name='+')
+	spouse = models.ForeignKey('self', related_name='+')
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
@@ -45,7 +45,7 @@ class Folk(NamedModel):
 
 	loyalty = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
 
-	quality_set = models.ManyToMany('Quality')
+	quality_set = models.ManyToManyField('Quality')
 
 
 class Quality(DescribedModel):
@@ -94,6 +94,9 @@ class Claim(models.Model):
 	"""
 	A claim of war between two kingdoms.
 	"""
+	class Meta:
+		unique_together = ('offender', 'offended')
+
 	offender = models.ForeignKey(Kingdom, related_name='offender_set')
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
