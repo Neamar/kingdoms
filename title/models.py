@@ -18,6 +18,9 @@ class AvailableTitle(models.Model):
 	"""
 	Titles availables for a given player.
 	"""
+	class Meta:
+		unique_together = ('title', 'kingdom')
+
 	title = models.ForeignKey(Title)
 	kingdom = models.ForeignKey(Kingdom)
-	folk = models.ForeignKey(Folk, null=True, default=None)
+	folk = models.ForeignKey(Folk, null=True, default=None, unique=True)

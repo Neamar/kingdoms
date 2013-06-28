@@ -26,7 +26,7 @@ class PythonCodeWidget(forms.Textarea):
 			"python_field/js/python_field.js",
 		)
 		css = {
-			'all':(
+			'all': (
 				"python_field/css/line-numbers.css",
 			)
 		}
