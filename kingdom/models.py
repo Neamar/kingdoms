@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 from config.models import NamedModel, DescribedModel
 
@@ -25,7 +24,7 @@ class Folk(NamedModel):
 
 	SEX_CHOICES = (
 		(MALE, '♂'),
-		(MALE, '♀')
+		(FEMALE, '♀')
 	)
 	kingdom = models.ForeignKey(Kingdom)
 

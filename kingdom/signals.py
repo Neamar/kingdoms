@@ -22,3 +22,12 @@ def folk_validate_attributes_constraints(sender, instance, **kwargs):
 def folk_validate_death_after_birth(sender, instance, **kwargs):
 	if instance.death and instance.death < instance.birth:
 		raise ValidationError("Can't die before being born.")
+
+
+@receiver(pre_save, sender=Folk)
+def folk_validate_parent_sex(sender, instance, **kwargs):
+	if instance.mother and instance.mother.sex != Folk.FEMALE:
+		raise ValidationError("Mother must be a woman.")
+
+	if instance.father and instance.father.sex != Folk.MALE:
+		raise ValidationError("Father must be a male.")

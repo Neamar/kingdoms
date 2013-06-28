@@ -23,6 +23,51 @@ class UnitTest(TestCase):
 
 		self.assertRaises(ValidationError, self.f.save)
 
+	def test_mother_sex(self):
+		"""
+		Mother should be a woman
+		"""
+
+		self.f.sex = Folk.FEMALE
+		self.f.save()
+		# Sanity check
+		Folk(
+			kingdom=self.k,
+			mother=self.f
+		).save()
+
+		# Insanity check
+		self.f.sex = Folk.MALE
+		self.f.save()
+		weirdos = Folk(
+			kingdom=self.k,
+			mother=self.f
+		)
+
+		self.assertRaises(ValidationError, weirdos.save)
+
+	def test_father_sex(self):
+		"""
+		Father should be a male
+		"""
+		self.f.sex = Folk.MALE
+		self.f.save()
+		# Sanity check
+		Folk(
+			kingdom=self.k,
+			father=self.f
+		).save()
+
+		# Insanity check
+		self.f.sex = Folk.FEMALE
+		self.f.save()
+		weirdos = Folk(
+			kingdom=self.k,
+			father=self.f
+		)
+
+		self.assertRaises(ValidationError, weirdos.save)
+
 	def test_fight_threshold(self):
 		"""
 		Fight should be restricted within [0, 20]
