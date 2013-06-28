@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+# Source : https://github.com/chrisspen/django-python-code-field
 
 
 class PythonCodeWidget(forms.Textarea):

@@ -64,3 +64,37 @@ class UnitTest(TestCase):
 		)
 		
 		self.assertRaises(IntegrityError, at2.save)
+
+	def test_folk_kingdom_change(self):
+		"""
+		When you change kingdom, you're disaffected from your title.
+		"""
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		at.save()
+
+		k2 = Kingdom()
+		k2.save()
+
+		self.f.kingdom = k2
+		self.f.save()
+
+		# Reload the title, folk should now be empty
+		at = AvailableTitle.objects.get(pk=at.pk)
+		self.assertIsNone(at.folk)
+
+	def test_title_condition(self):
+		self.t.condition = 'affected=None'
+		self.t.save()
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		at.save()
+
+		self.assertIsNone(at.folk)
