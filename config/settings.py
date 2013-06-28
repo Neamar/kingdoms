@@ -1,7 +1,10 @@
+import os
 # Django settings for kingdoms project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+BASE_DIR = os.path.normpath(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -54,7 +57,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = BASE_DIR + '/collected-static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -115,7 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # Lib
-    'python_field',
+    'vendors.python_field',
 
     # Kingdom apps
     'kingdom',

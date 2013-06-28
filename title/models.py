@@ -1,5 +1,5 @@
 from django.db import models
-from python_field.fields import PythonCodeField
+from vendors.python_field.fields import PythonCodeField
 
 from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
