@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from config.models import NamedModel, DescribedModel
 
@@ -10,7 +10,7 @@ class Kingdom(models.Model):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.
 	"""
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User, null=True)
 
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
@@ -31,19 +31,19 @@ class Folk(NamedModel):
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
-	mother = models.ForeignKey('self', related_name='+')
-	father = models.ForeignKey('self', related_name='+')
-	spouse = models.ForeignKey('self', related_name='+')
+	mother = models.ForeignKey('self', related_name='+', null=True)
+	father = models.ForeignKey('self', related_name='+', null=True)
+	spouse = models.ForeignKey('self', related_name='+', null=True)
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
 
-	fight = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
-	diplomacy = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
-	plot = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
-	scholarship = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
+	fight = models.PositiveSmallIntegerField(default=0)
+	diplomacy = models.PositiveSmallIntegerField(default=0)
+	plot = models.PositiveSmallIntegerField(default=0)
+	scholarship = models.PositiveSmallIntegerField(default=0)
 
-	loyalty = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)])
+	loyalty = models.PositiveSmallIntegerField(default=0)
 
 	quality_set = models.ManyToManyField('Quality')
 
@@ -101,3 +101,6 @@ class Claim(models.Model):
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
 	creation = models.DateTimeField(auto_now_add=True)
+
+
+from kingdom.signals import *
