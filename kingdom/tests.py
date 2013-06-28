@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 
 from datetime import datetime
-from kingdom.models import Kingdom, Folk
+from kingdom.models import Kingdom, Folk, Claim
 
 
 class UnitTest(TestCase):
@@ -117,3 +118,21 @@ class UnitTest(TestCase):
 
 		self.f.loyalty = -1
 		self.assertRaises(ValidationError, self.f.save)
+
+	def test_claim_unicity(self):
+		"""
+		You can't have two claims on the same kingdom.
+		"""
+		k2 = Kingdom()
+		k2.save()
+
+		Claim(
+			offender=self.k,
+			offended=k2
+		).save()
+
+		c = Claim(
+			offender=self.k,
+			offended=k2
+		)
+		self.assertRaises(IntegrityError, c.save)
