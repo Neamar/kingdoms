@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -35,28 +37,60 @@ class UnitTest(TestCase):
 		)
 		self.mg.save()
 
+		self.pm = PendingMission(
+			mission=self.m,
+			kingdom=self.k
+		)
+		self.pm.save()
+
+		self.pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		self.pma.save()
+
 	def test_cant_affect_twice(self):
 		"""
 		A folk can't be affected twice to a mission.
 		"""
-		# Start first mission
-		pm = PendingMission(
-			mission=self.m,
-			kingdom=self.k
-		)
-		pm.save()
-
-		pma = PendingMissionAffectation(
-			pending_mission=pm,
-			mission_grid=self.mg,
-			folk=self.f
-		)
-		pma.save()
 
 		pma2 = PendingMissionAffectation(
-			pending_mission=pm,
+			pending_mission=self.pm,
 			mission_grid=self.mg,
 			folk=self.f
 		)
 
 		self.assertRaises(IntegrityError, pma2.save)
+
+	def test_cant_remove_after_mission_start(self):
+		"""
+		A folk can't be affected twice to a mission.
+		"""
+
+		# Start the pendingmission
+		self.pm.started = datetime.now()
+
+		# Can't remove affectation
+		self.assertRaises(IntegrityError, self.pma.delete)
+
+	def test_grid_condition(self):
+		"""
+		A folk can't be affected twice to a mission.
+		"""
+
+		self.pma.delete()
+		self.mg.condition = """
+param = None
+status="NotAllowed"
+"""
+		self.mg.save()
+
+		self.pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		# Can't affect folk
+		self.assertRaises(ValidationError, self.pma.save)

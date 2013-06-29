@@ -17,8 +17,8 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission. Return `status='invalid'` to abort the mission right now.", default="")
-	on_start = PythonCodeField(help_text="Called when the user launches the mission.", default="")
+	on_init = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission. Return `status='invalid'` to abort the mission right now.", blank=True)
+	on_start = PythonCodeField(help_text="Called when the user launches the mission.", blank=True)
 	on_resolution = PythonCodeField(help_text="Called when the duration timeout has expired.")
 
 	target_list = PythonCodeField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
@@ -38,7 +38,7 @@ class MissionGrid(models.Model):
 	description = models.TextField()
 
 	length = models.PositiveIntegerField(default=20)
-	condition = PythonCodeField(help_text="Called before folk affectation. `param` is the folk affected.", default="")
+	condition = PythonCodeField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
 
 class PendingMission(models.Model):
@@ -47,7 +47,8 @@ class PendingMission(models.Model):
 	"""
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
-	started = models.DateTimeField(auto_now_add=True)
+	created = models.DateTimeField(auto_now_add=True)
+	started = models.DateTimeField(null=True, blank=True)
 
 
 class PendingMissionAffectation(models.Model):
@@ -65,3 +66,6 @@ class AvailableMission(models.Model):
 	"""
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
+
+
+from mission.signals import *
