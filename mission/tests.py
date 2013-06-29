@@ -65,7 +65,7 @@ class UnitTest(TestCase):
 
 	def test_cant_remove_after_mission_start(self):
 		"""
-		A folk can't be affected twice to a mission.
+		A folk can't be removed from a mission after it started.
 		"""
 
 		# Start the pendingmission
@@ -76,7 +76,7 @@ class UnitTest(TestCase):
 
 	def test_grid_condition(self):
 		"""
-		A folk can't be affected twice to a mission.
+		Check condition is triggered.
 		"""
 
 		self.pma.delete()
@@ -94,3 +94,31 @@ status="NotAllowed"
 
 		# Can't affect folk
 		self.assertRaises(ValidationError, self.pma.save)
+
+	def test_grid_length(self):
+		"""
+		Check grid length constraint.
+		"""
+
+		self.mg.length = 1
+		self.mg.save()
+
+		f2 = Folk(
+			kingdom=self.k,
+			name="Another folk"
+		)
+		f2.save()
+
+		pma2 = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=f2
+		)
+
+		# Too many people
+		self.assertRaises(ValidationError, pma2.save)
+
+		# Update length, now can be saved
+		self.mg.length = 2
+		self.mg.save()
+		pma2.save()
