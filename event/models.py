@@ -33,5 +33,6 @@ class PendingEvent(models.Model):
 
 class PendingEventAction(models.Model):
 	pending_event = models.ForeignKey(PendingEvent)
+	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(max_length=255)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
