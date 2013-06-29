@@ -27,7 +27,7 @@ class Mission(DescribedModel):
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
 	title = models.ForeignKey(Title)
-	category = models.CharField(max_length=255, default="", help_text="Category within the title for organisation in AvailableMission.")
+	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
 
 
 class MissionGrid(models.Model):
@@ -40,6 +40,9 @@ class MissionGrid(models.Model):
 	length = models.PositiveIntegerField(default=20)
 	condition = PythonCodeField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
+	def __unicode__(self):
+		return '%s [%s]' % (self.mission.name, self.length)
+
 
 class PendingMission(models.Model):
 	"""
@@ -49,6 +52,9 @@ class PendingMission(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
+
+	def __unicode__(self):
+		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
 
 class PendingMissionAffectation(models.Model):
@@ -67,5 +73,7 @@ class AvailableMission(models.Model):
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 
+	def __unicode__(self):
+		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
 from mission.signals import *
