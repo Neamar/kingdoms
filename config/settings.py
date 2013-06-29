@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     # Kingdom apps
     'kingdom',
     'title',
+    'internal'
 )
 
 # A sample logging configuration. The only tangible logging
