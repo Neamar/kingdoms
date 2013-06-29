@@ -14,7 +14,7 @@ class PythonCodeWidget(forms.Textarea):
 			value = ""
 		if attrs is None:
 			attrs = {}
-		if attrs.has_key('class'):
+		if 'class' in attrs:
 			attrs['class'] += " python-code"
 		else:
 			attrs['class'] = "python-code"
