@@ -7,6 +7,10 @@ from kingdom.models import Kingdom, Folk, Claim
 
 
 class UnitTest(TestCase):
+	"""
+	Unit tests for kingdom.
+	"""
+	
 	def setUp(self):
 		self.k = Kingdom()
 		self.k.save()

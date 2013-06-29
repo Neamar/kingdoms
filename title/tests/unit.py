@@ -1,13 +1,15 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from datetime import datetime
-from kingdom.models import Kingdom, Folk, Claim
+from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
 
 
 class UnitTest(TestCase):
+	"""
+	Unit tests for title app
+	"""
+
 	def setUp(self):
 		self.k = Kingdom()
 		self.k.save()
@@ -87,8 +89,11 @@ class UnitTest(TestCase):
 		self.assertIsNone(at.folk)
 
 	def test_title_condition(self):
-		self.t.condition = 'affected=None'
+		self.t.condition = 'param=None'
 		self.t.save()
+
+		from config.lib.execute import execute
+		execute(self.t.condition)
 
 		at = AvailableTitle(
 			title=self.t,

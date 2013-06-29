@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from django.core.exceptions import ValidationError
+from config.lib.execute import execute
 
 from kingdom.models import Folk
 from title.models import AvailableTitle
@@ -18,6 +18,7 @@ def unaffect_title_on_kingdom_changed(sender, instance, **kwargs):
 @receiver(pre_save, sender=AvailableTitle)
 def check_title_condition(sender, instance, **kwargs):
 		# Run condition code, checking if the specified folk can be affected on this title.
-		affected = instance.folk
-		exec(instance.title.condition)
-		instance.folk = affected
+		if instance.folk is not None:
+			affected = instance.folk
+			status, affected = execute(instance.title.condition, affected)
+			instance.folk = affected

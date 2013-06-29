@@ -67,7 +67,7 @@ class PythonCodeField(models.TextField):
 	
 	def formfield(self, **kwargs):
 		return super(PythonCodeField, self).formfield(form_class=PythonCodeFormField, **kwargs)
-	
+
 try:
 	from south.modelsinspector import add_introspection_rules
 	add_introspection_rules([], ['^vendors.python_field\.fields\.PythonCodeField'])
