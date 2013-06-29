@@ -128,7 +128,7 @@ INSTALLED_APPS = (
     # Kingdom apps
     'kingdom',
     'title',
-    'internal'
+    'internal',
     'mission',
 )
 

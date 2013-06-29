@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
+from config.lib.execute import execute
 from config.lib.models import DescribedModel
 from vendors.python_field.fields import PythonCodeField
 from title.models import Title
@@ -18,8 +20,8 @@ class Mission(DescribedModel):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission. Set it to `None` to abort the mission.", blank=True)
-	on_start = PythonCodeField(help_text="Called when the user launches the mission.", blank=True)
-	on_resolution = PythonCodeField(help_text="Called when the duration timeout has expired.")
+	on_start = PythonCodeField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
+	on_resolution = PythonCodeField(help_text="Called when the duration timeout has expired. `param` is the pending mission.")
 
 	target_list = PythonCodeField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
 	target_description = models.CharField(max_length=255, default="Cible")
@@ -52,9 +54,17 @@ class PendingMission(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
+	is_started = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+
+	def resolve(self):
+		if not self.is_started:
+			raise ValidationError("Unable to resolve unstarted mission.")
+
+		status, params = execute(self.mission.on_resolution, self)
+		return status
 
 
 class PendingMissionAffectation(models.Model):

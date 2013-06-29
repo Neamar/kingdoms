@@ -170,3 +170,54 @@ status="NotAllowed"
 		)
 
 		self.assertRaises(ValidationError, pm2.save)
+
+	def test_mission_on_start(self):
+		"""
+		Check the on_start code.
+		"""
+		m2 = Mission(
+			name="Stub mission2",
+			description="My description.",
+			on_resolution="",
+			on_start="""
+Kingdom().save()
+""",
+			title=self.t,
+		)
+		m2.save()
+
+		# Sanity check
+		self.assertEqual(Kingdom.objects.count(), 1)
+
+		pm2 = PendingMission(
+			mission=m2,
+			kingdom=self.k,
+			started=datetime.now()
+		)
+		pm2.save()
+
+		self.assertEqual(Kingdom.objects.count(), 2)
+
+	def test_mission_resolution(self):
+		"""
+		Check the on_resolution code.
+		"""
+		m2 = Mission(
+			name="Stub mission2",
+			description="My description.",
+			on_resolution="""
+status='mission_solved'
+""",
+			title=self.t,
+		)
+		m2.save()
+
+		pm2 = PendingMission(
+			mission=m2,
+			kingdom=self.k,
+			started=datetime.now()
+		)
+		pm2.save()
+
+		status = pm2.resolve()
+		self.assertEqual(status, 'mission_solved')

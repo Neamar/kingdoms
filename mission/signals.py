@@ -45,3 +45,10 @@ def check_pending_mission_on_init(sender, instance, **kwargs):
 		status, param = execute(instance.mission.on_init, instance)
 		if param is None:
 			raise ValidationError(status)
+
+
+@receiver(pre_save, sender=PendingMission)
+def start_pending_mission(sender, instance, **kwargs):
+	if instance.started is not None and not instance.is_started:
+		status, param = execute(instance.mission.on_start, instance)
+		instance.is_started = True
