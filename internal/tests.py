@@ -53,3 +53,32 @@ Folk(
 		self.k.population = 15
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 2)
+
+	def test_trigger_only_once(self):
+		self.t.trigger = """
+Folk(
+	kingdom=param,
+	name="New user from trigger"
+).save()
+"""
+		self.t.save()
+	
+		# Sanity check
+		self.assertEquals(Folk.objects.count(), 1)
+
+		# Fire!
+		self.k.prestige = 15
+		self.k.population = 15
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 2)
+
+		# No Fire again!
+		self.t.trigger = """
+from django.core.exceptions import ValidationError
+raise ValidationError("Can't call twice.")
+"""
+		self.t.save()
+
+		self.k.prestige = 20
+		self.k.population = 20
+		self.k.save()

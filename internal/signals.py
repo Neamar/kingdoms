@@ -13,3 +13,4 @@ def fire_trigger(sender, instance, **kwargs):
 
 	for trigger in triggers:
 		status, param = execute(trigger.trigger, instance)
+		trigger.fired.add(instance)
