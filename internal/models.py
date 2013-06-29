@@ -1,22 +1,22 @@
 from django.db import models
-from vendors.python_field.fields import PythonCodeField
+from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom
 
 
-class Trigger (DescribedModel):
+class Trigger(DescribedModel):
 	prestige_threshold = models.PositiveIntegerField()
 	population_threshold = models.PositiveIntegerField()
-	condition = PythonCodeField(blank=True, null=True)
-	action = PythonCodeField(blank=True, null=True)
+	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
+	trigger = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 	fired = models.ManyToManyField(Kingdom)
 	
 
-class Constant (DescribedModel):
+class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
-class Value (NamedModel):
+class Value(NamedModel):
 	kingdom = models.ForeignKey(Kingdom, unique=True)
 	value = models.IntegerField()
 	expiration = models.DateTimeField()
@@ -32,8 +32,8 @@ class Recurring(DescribedModel):
 		(MINUTELY, 'Toutes les minutes'),
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
-	condition = PythonCodeField(blank=True, null=True)
-	on_fire = PythonCodeField(blank=True, null=True)
+	condition = ScriptField(blank=True, null=True)
+	on_fire = ScriptField(blank=True, null=True)
 
 
 class FirstName (NamedModel):
@@ -42,3 +42,5 @@ class FirstName (NamedModel):
 
 class LastName (NamedModel):
 	pass
+
+from internal.signals import *

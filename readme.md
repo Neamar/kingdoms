@@ -13,3 +13,11 @@ Setup
 Running
 -------
 * `./manage.py runserver`
+
+Maintenance
+-----------
+### Testing
+`./manage.py test kingdom mission title internal event`
+
+### Generating model
+`./manage.py graph_models kingdom internal title mission event -o models.png`

@@ -125,9 +125,10 @@ INSTALLED_APPS = (
 
     # Pip Lib
     'south',
+    'django_extensions',
 
     # Vendor lib
-    'vendors.python_field',
+    'vendors.code_field',
 
     # Kingdom apps
     'kingdom',

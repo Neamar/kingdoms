@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
 from config.lib.models import DescribedModel
-from vendors.python_field.fields import PythonCodeField
+from vendors.code_field.fields import ScriptField
 from title.models import Title
 from kingdom.models import Kingdom, Folk
 
@@ -19,11 +19,11 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission. Set it to `None` to abort the mission.", blank=True)
-	on_start = PythonCodeField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
-	on_resolution = PythonCodeField(help_text="Called when the duration timeout has expired. `param` is the pending mission.")
+	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Set it to `None` to abort the mission.", blank=True)
+	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
+	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission.")
 
-	target_list = PythonCodeField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
+	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
 	target_description = models.CharField(max_length=255, default="Cible")
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
@@ -40,7 +40,7 @@ class MissionGrid(models.Model):
 	description = models.TextField()
 
 	length = models.PositiveIntegerField(default=20)
-	condition = PythonCodeField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
+	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.length)
