@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from kingdom.models import Kingdom, Folk, Quality, Message, ModalMessage, Claim
+from kingdom.models import *
 from config.lib.admin import DescribedModelAdmin
 
 

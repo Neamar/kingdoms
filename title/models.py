@@ -13,9 +13,9 @@ class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game
 	"""
-	condition = PythonCodeField(blank=True, help_text="Code déterminant si l'object Folk `affected` peut être affecté au titre.<br />Pour empêcher l'affectation, utiliser `affected=None`.")
-	onAffect = PythonCodeField(blank=True)
-	onDefect = PythonCodeField(blank=True)
+	condition = PythonCodeField(blank=True, help_text="Called before folk nomination. `param` is the folk affected.")
+	on_affect = PythonCodeField(blank=True)
+	on_defect = PythonCodeField(blank=True)
 
 
 class AvailableTitle(models.Model):
@@ -28,5 +28,8 @@ class AvailableTitle(models.Model):
 	title = models.ForeignKey(Title)
 	kingdom = models.ForeignKey(Kingdom)
 	folk = models.ForeignKey(Folk, null=True, default=None, unique=True)
+
+	def __unicode__(self):
+		return '%s [%s]' % (self.title.name, self.kingdom.user.username)
 
 from title.signals import *

@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'kingdom',
     'title',
     'internal'
+    'mission',
 )
 
 # A sample logging configuration. The only tangible logging

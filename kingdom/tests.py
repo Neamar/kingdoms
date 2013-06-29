@@ -22,7 +22,7 @@ class UnitTest(TestCase):
 
 	def test_death_after_birth(self):
 		"""
-		Should raise an IntegrityError if death < birth
+		Should raise an ValidationError if death < birth
 		"""
 		self.f.death = datetime(year=2000, month=1, day=1)
 
