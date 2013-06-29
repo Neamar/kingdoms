@@ -4,19 +4,19 @@ from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom
 
 
-class Trigger (DescribedModel):
+class Trigger(DescribedModel):
 	prestige_threshold = models.PositiveIntegerField()
 	population_threshold = models.PositiveIntegerField()
-	condition = PythonCodeField(blank=True, null=True)
-	action = PythonCodeField(blank=True, null=True)
+	condition = PythonCodeField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
+	trigger = PythonCodeField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 	fired = models.ManyToManyField(Kingdom)
 	
 
-class Constant (DescribedModel):
+class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
-class Value (NamedModel):
+class Value(NamedModel):
 	kingdom = models.ForeignKey(Kingdom, unique=True)
 	value = models.IntegerField()
 	expiration = models.DateTimeField()
@@ -42,3 +42,5 @@ class FirstName (NamedModel):
 
 class LastName (NamedModel):
 	pass
+
+from internal.signals import *
