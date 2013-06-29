@@ -7,6 +7,8 @@ from kingdom.models import Kingdom
 class Trigger(DescribedModel):
 	prestige_threshold = models.PositiveIntegerField()
 	population_threshold = models.PositiveIntegerField()
+	money_threshold = models.PositiveIntegerField()
+
 	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
 	trigger = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 	fired = models.ManyToManyField(Kingdom)
