@@ -33,9 +33,9 @@ class Folk(NamedModel):
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
-	mother = models.ForeignKey('self', related_name='+', null=True)
-	father = models.ForeignKey('self', related_name='+', null=True)
-	spouse = models.ForeignKey('self', related_name='+', null=True)
+	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)
+	father = models.ForeignKey('self', related_name='+', null=True, blank=True)
+	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True)
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
@@ -47,7 +47,7 @@ class Folk(NamedModel):
 
 	loyalty = models.PositiveSmallIntegerField(default=0)
 
-	quality_set = models.ManyToManyField('Quality')
+	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
 
 class Quality(DescribedModel):

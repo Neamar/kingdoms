@@ -8,7 +8,7 @@ from kingdom.models import Folk
 @receiver(pre_save, sender=Folk)
 def folk_validate_attributes_constraints(sender, instance, **kwargs):
 	def validate_constraint(value, name, min=0, max=20):
-		if value < min or value > min:
+		if value < min or value > max:
 			raise ValidationError("`%s` must be between %s and %s" % (name, min, max))
 
 	validate_constraint(instance.fight, 'fight')

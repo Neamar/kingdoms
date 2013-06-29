@@ -16,15 +16,19 @@ admin.site.register(MissionGrid, MissionGridAdmin)
 
 class PendingMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom', 'started')
+	actions = ['resolve']
 
-	def resolve(modeladmin, request, queryset):
+	def resolve(self, request, queryset):
 		for pendingmission in queryset:
 			pendingmission.resolve()
+	resolve.short_description = "Resolve missions"
 
-admin.site.register(PendingMission)
+admin.site.register(PendingMission, PendingMissionAdmin)
 
 
-admin.site.register(PendingMissionAffectation)
+class PendingMissionAffectationAdmin(admin.ModelAdmin):
+	list_display = ('pending_mission', 'mission_grid', 'folk')
+admin.site.register(PendingMissionAffectation, PendingMissionAffectationAdmin)
 
 
 class AvailableMissionAdmin(admin.ModelAdmin):
