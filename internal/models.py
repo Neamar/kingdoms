@@ -5,9 +5,9 @@ from kingdom.models import Kingdom
 
 
 class Trigger(DescribedModel):
-	prestige_threshold = models.PositiveIntegerField()
-	population_threshold = models.PositiveIntegerField()
-	money_threshold = models.PositiveIntegerField()
+	prestige_threshold = models.PositiveIntegerField(default=0)
+	population_threshold = models.PositiveIntegerField(default=0)
+	money_threshold = models.PositiveIntegerField(default=0)
 
 	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
 	trigger = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
