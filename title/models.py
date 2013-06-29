@@ -14,8 +14,8 @@ class Title(DescribedModel):
 	Dictionary of all titles in the game
 	"""
 	condition = PythonCodeField(blank=True, help_text="Called before folk nomination. `param` is the folk affected.")
-	onAffect = PythonCodeField(blank=True)
-	onDefect = PythonCodeField(blank=True)
+	on_affect = PythonCodeField(blank=True)
+	on_defect = PythonCodeField(blank=True)
 
 
 class AvailableTitle(models.Model):

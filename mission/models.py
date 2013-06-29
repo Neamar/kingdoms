@@ -6,6 +6,9 @@ from title.models import Title
 from kingdom.models import Kingdom, Folk
 
 
+__all__ = ['Mission', 'MissionGrid', 'PendingMission', 'PendingMissionAffectation', 'AvailableMission']
+
+
 class Mission(DescribedModel):
 	"""
 	Dictionary of all available missions.
@@ -13,12 +16,12 @@ class Mission(DescribedModel):
 
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration")
-	onInit = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission.")
-	onStart = PythonCodeField(help_text="Called when the user launches the mission.")
-	onResolution = PythonCodeField(help_text="Called when the duration timeout has expired.")
+	on_init = PythonCodeField(help_text="Called after this mission is created. `param` is the pending mission. Return `status='invalid'` to abort the mission right now.")
+	on_start = PythonCodeField(help_text="Called when the user launches the mission.")
+	on_resolution = PythonCodeField(help_text="Called when the duration timeout has expired.")
 
-	targetList = PythonCodeField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
-	targetDescription = models.CharField(max_length=255, default="Cible")
+	target_list = PythonCodeField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
+	target_description = models.CharField(max_length=255, default="Cible")
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
@@ -43,15 +46,15 @@ class PendingMission(models.Model):
 	"""
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
-	started = models.DateTimeField(auto_add_now=True)
+	started = models.DateTimeField(auto_now_add=True)
 
 
 class PendingMissionAffectation(models.Model):
 	"""
 	Folk affectation on a mission currently running.
 	"""
-	pendingMission = models.ForeignKey(PendingMission)
-	missionGrid = models.ForeignKey(MissionGrid)
+	pending_mission = models.ForeignKey(PendingMission)
+	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.ForeignKey(Folk)
 
 
