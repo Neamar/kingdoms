@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from kingdom.models import Kingdom, Folk, ModalMessage, Message
 from kingdom.utils import *
 
+
 def index(request):
 	resp = {}
 
@@ -38,6 +39,13 @@ def index(request):
 			'level': message.level,
 			'read': message.read,
 			'creation': toTimestamp(message.creation)
+		})
+
+	modal_messages = ModalMessage.objects.filter(kingdom=kingdom)
+	resp['modal_messages'] = []
+	for modal_message in modal_messages:
+		resp['modal_messages'].append({
+			'creation': toTimestamp(modal_message.creation),
 		})
 
 	return HttpResponse(simplejson.dumps(resp))
