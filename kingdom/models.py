@@ -17,6 +17,9 @@ class Kingdom(models.Model):
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
 
+	def __unicode__(self):
+		return '%s kingdom' % self.user
+
 
 class Folk(NamedModel):
 	"""
