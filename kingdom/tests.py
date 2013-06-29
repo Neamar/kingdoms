@@ -34,7 +34,8 @@ class UnitTest(TestCase):
 		# Sanity check
 		Folk(
 			kingdom=self.k,
-			mother=self.f
+			mother=self.f,
+			name="My mother is a female"
 		).save()
 
 		# Insanity check
@@ -42,7 +43,8 @@ class UnitTest(TestCase):
 		self.f.save()
 		weirdos = Folk(
 			kingdom=self.k,
-			mother=self.f
+			mother=self.f,
+			name="My mother is a male"
 		)
 
 		self.assertRaises(ValidationError, weirdos.save)
@@ -56,7 +58,8 @@ class UnitTest(TestCase):
 		# Sanity check
 		Folk(
 			kingdom=self.k,
-			father=self.f
+			father=self.f,
+			name="My father is a male"
 		).save()
 
 		# Insanity check
@@ -64,7 +67,8 @@ class UnitTest(TestCase):
 		self.f.save()
 		weirdos = Folk(
 			kingdom=self.k,
-			father=self.f
+			father=self.f,
+			name="My father is a female"
 		)
 
 		self.assertRaises(ValidationError, weirdos.save)
