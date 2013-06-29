@@ -13,7 +13,7 @@ class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game
 	"""
-	condition = PythonCodeField(blank=True, help_text="Code déterminant si l'object Folk `affected` peut être affecté au titre.<br />Pour empêcher l'affectation, utiliser `affected=None`.")
+	condition = PythonCodeField(blank=True, help_text="Called before folk nomination. `param` is the folk affected.")
 	onAffect = PythonCodeField(blank=True)
 	onDefect = PythonCodeField(blank=True)
 
