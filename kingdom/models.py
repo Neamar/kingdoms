@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.validators import MaxValueValidator
 from config.lib.models import NamedModel, DescribedModel
 
 
@@ -43,12 +43,12 @@ class Folk(NamedModel):
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
 
-	fight = models.PositiveSmallIntegerField(default=0)
-	diplomacy = models.PositiveSmallIntegerField(default=0)
-	plot = models.PositiveSmallIntegerField(default=0)
-	scholarship = models.PositiveSmallIntegerField(default=0)
+	fight = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)], default=0)
+	diplomacy = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)], default=0)
+	plot = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)], default=0)
+	scholarship = models.PositiveSmallIntegerField(validators=[MaxValueValidator(20)], default=0)
 
-	loyalty = models.PositiveSmallIntegerField(default=0)
+	loyalty = models.PositiveSmallIntegerField(validators=[MaxValueValidator(100)], default=0)
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
