@@ -56,7 +56,7 @@ class PythonCodeFormField(forms.CharField):
 			return value
 
 
-class PythonCodeField(models.TextField):
+class ScriptField(models.TextField):
 	"""
 	A field that will ensure that data that is entered into it is syntactically
 	valid python code.
@@ -66,10 +66,10 @@ class PythonCodeField(models.TextField):
 	description = "Python Source Code"
 	
 	def formfield(self, **kwargs):
-		return super(PythonCodeField, self).formfield(form_class=PythonCodeFormField, **kwargs)
+		return super(ScriptField, self).formfield(form_class=PythonCodeFormField, **kwargs)
 
 try:
 	from south.modelsinspector import add_introspection_rules
-	add_introspection_rules([], ['^vendors.python_field\.fields\.PythonCodeField'])
+	add_introspection_rules([], ['^vendors.code_field\.fields\.ScriptField'])
 except ImportError:
 	pass

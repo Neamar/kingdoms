@@ -43,12 +43,12 @@ class Folk(NamedModel):
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
 
-	fight = models.PositiveSmallIntegerField(default=0)
-	diplomacy = models.PositiveSmallIntegerField(default=0)
-	plot = models.PositiveSmallIntegerField(default=0)
-	scholarship = models.PositiveSmallIntegerField(default=0)
+	fight = models.PositiveIntegerField(default=0)
+	diplomacy = models.PositiveIntegerField(default=0)
+	plot = models.PositiveIntegerField(default=0)
+	scholarship = models.PositiveIntegerField(default=0)
 
-	loyalty = models.PositiveSmallIntegerField(default=0)
+	loyalty = models.PositiveIntegerField(default=0)
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 

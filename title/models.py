@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from vendors.python_field.fields import PythonCodeField
+from vendors.python_field.fields import ScriptField
 
 from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
@@ -13,9 +13,9 @@ class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game
 	"""
-	condition = PythonCodeField(blank=True, help_text="Called before folk nomination. `param` is the folk affected.")
-	on_affect = PythonCodeField(blank=True)
-	on_defect = PythonCodeField(blank=True)
+	condition = ScriptField(blank=True, help_text="Called before folk nomination. `param` is the folk affected.")
+	on_affect = ScriptField(blank=True)
+	on_defect = ScriptField(blank=True)
 
 
 class AvailableTitle(models.Model):
