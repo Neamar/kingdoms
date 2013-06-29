@@ -7,8 +7,8 @@ from kingdom.models import Kingdom
 class Trigger(DescribedModel):
 	prestige_threshold = models.PositiveIntegerField()
 	population_threshold = models.PositiveIntegerField()
-	condition = PythonCodeField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
-	trigger = PythonCodeField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
+	condition = PythonCodeField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.", default = "")
+	on_fire = PythonCodeField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 	fired = models.ManyToManyField(Kingdom)
 	
 
@@ -32,7 +32,7 @@ class Recurring(DescribedModel):
 		(MINUTELY, 'Toutes les minutes'),
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
-	condition = PythonCodeField(blank=True, null=True)
+	condition = PythonCodeField(blank=True, null=True, help_text="Condition is not boolean, but some code that returns 'ok' in status if it was executed successfully, and None in param otherwise")
 	on_fire = PythonCodeField(blank=True, null=True)
 
 
