@@ -17,7 +17,10 @@ class Constant(DescribedModel):
 
 
 class Value(NamedModel):
-	kingdom = models.ForeignKey(Kingdom, unique=True)
+	class Meta:
+		unique_together = ('name', 'kingdom')
+
+	kingdom = models.ForeignKey(Kingdom)
 	value = models.IntegerField()
 	expiration = models.DateTimeField()
 
