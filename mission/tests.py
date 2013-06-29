@@ -10,8 +10,6 @@ from mission.models import Mission, MissionGrid, PendingMission, PendingMissionA
 
 
 class UnitTest(TestCase):
-	fixtures = ['']
-
 	def setUp(self):
 		self.k = Kingdom()
 		self.k.save()
