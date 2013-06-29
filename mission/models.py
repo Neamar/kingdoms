@@ -55,7 +55,7 @@ class PendingMission(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
 	is_started = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
-	#is_finished = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
+	is_finished = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)

@@ -10,6 +10,8 @@ from mission.models import Mission, MissionGrid, PendingMission, PendingMissionA
 
 
 class UnitTest(TestCase):
+	fixtures = ['']
+
 	def setUp(self):
 		self.k = Kingdom()
 		self.k.save()
@@ -223,4 +225,4 @@ status='mission_solved'
 		self.assertEqual(status, 'mission_solved')
 
 		# Pendingmission must be deleted
-		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=pm2.pk)))
+		self.assertFalse(PendingMission.objects.get(pk=pm2.pk).is_finished)
