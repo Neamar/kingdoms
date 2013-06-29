@@ -117,7 +117,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
-    # Lib
+    # Pip Lib
+    'south',
+
+    # Vendor lib
     'vendors.python_field',
 
     # Kingdom apps
