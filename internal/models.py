@@ -9,8 +9,9 @@ class Trigger(DescribedModel):
 	population_threshold = models.PositiveIntegerField(default=0)
 	money_threshold = models.PositiveIntegerField(default=0)
 
-	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.")
-	trigger = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
+	condition = PythonCodeField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.", default="")
+	on_fire = PythonCodeField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
+
 	fired = models.ManyToManyField(Kingdom)
 	
 
@@ -37,8 +38,13 @@ class Recurring(DescribedModel):
 		(MINUTELY, 'Toutes les minutes'),
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
+<<<<<<< HEAD
 	condition = ScriptField(blank=True, null=True)
 	on_fire = ScriptField(blank=True, null=True)
+=======
+	condition = PythonCodeField(blank=True, null=True, help_text="Condition is not boolean, but some code that returns 'ok' in status if it was executed successfully, and None in param otherwise")
+	on_fire = PythonCodeField(blank=True, null=True)
+>>>>>>> 15d75669ee81c218e6d106050b3ddd955f6856a7
 
 
 class FirstName (NamedModel):
