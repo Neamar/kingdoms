@@ -16,6 +16,11 @@ admin.site.register(MissionGrid, MissionGridAdmin)
 
 class PendingMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom', 'started')
+
+	def resolve(modeladmin, request, queryset):
+		for pendingmission in queryset:
+			pendingmission.resolve()
+
 admin.site.register(PendingMission)
 
 

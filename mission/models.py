@@ -64,6 +64,9 @@ class PendingMission(models.Model):
 			raise ValidationError("Unable to resolve unstarted mission.")
 
 		status, params = execute(self.mission.on_resolution, self)
+
+		self.delete()
+
 		return status
 
 
