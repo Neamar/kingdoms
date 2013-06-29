@@ -2,8 +2,17 @@ from django.contrib import admin
 from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventAction
 
 
+class EventActionAdminInline(admin.StackedInline):
+	model = EventAction
+	extra = 2
+
+
 class EventAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'weight', 'category',)
+	inlines = [
+		EventActionAdminInline,
+	]
+
 admin.site.register(Event, EventAdmin)
 
 

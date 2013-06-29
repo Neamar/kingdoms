@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Execute some code in a sandboxed environnment
 """
@@ -9,6 +10,8 @@ def execute(code, param=None):
 	"""
 	from kingdom.models import *
 	from title.models import *
+	from mission.models import *
+	from event.models import *
 
 	_param_specified = param is not None
 
