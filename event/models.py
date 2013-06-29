@@ -19,14 +19,14 @@ class Event(DescribedModel):
 class EventAction(NamedModel):
 	event = models.ForeignKey(Event)
 	on_launch = ScriptField(blank=True, null=True)
-	datas = models.TextField(blank=True, null=True)
 
 
 class PendingEvent(models.Model):
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
 	creation = models.DateTimeField(auto_now_add=True)
-
+	datas = models.TextField(blank=True, null=True)
+	
 	def __unicode__(self):
 		return "%s [%s]" % (self.event, self.kingdom)
 
