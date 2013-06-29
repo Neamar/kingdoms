@@ -150,3 +150,23 @@ status="NotAllowed"
 		)
 
 		self.assertRaises(IntegrityError, pma2.save)
+
+	def test_mission_on_init(self):
+		"""
+		Check the on_init code can cancel the mission before it is launched.
+		"""
+		m2 = Mission(
+			name="Stub mission2",
+			description="My description.",
+			on_resolution="",
+			on_init="param=None",
+			title=self.t,
+		)
+		m2.save()
+
+		pm2 = PendingMission(
+			mission=m2,
+			kingdom=self.k
+		)
+
+		self.assertRaises(ValidationError, pm2.save)

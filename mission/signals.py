@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from config.lib.execute import execute
 
-from mission.models import PendingMissionAffectation
+from mission.models import PendingMission, PendingMissionAffectation
 
 
 @receiver(pre_delete, sender=PendingMissionAffectation)
@@ -37,3 +37,11 @@ def check_pending_mission_affectation_length(sender, instance, **kwargs):
 def check_pending_mission_sanity(sender, instance, **kwargs):
 	if instance.pending_mission.mission_id != instance.mission_grid.mission_id:
 		raise IntegrityError("This grid does not belong to this mission.")
+
+
+@receiver(pre_save, sender=PendingMission)
+def check_pending_mission_on_init(sender, instance, **kwargs):
+	if not instance.pk:
+		status, param = execute(instance.mission.on_init, instance)
+		if param is None:
+			raise ValidationError(status)
