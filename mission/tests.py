@@ -122,3 +122,31 @@ status="NotAllowed"
 		self.mg.length = 2
 		self.mg.save()
 		pma2.save()
+
+	def test_grid_is_from_mission(self):
+		"""
+		Check the grid is part of the current mission.
+		"""
+		m2 = Mission(
+			name="Stub mission2",
+			description="My description.",
+			on_resolution="",
+			title=self.t,
+		)
+		m2.save()
+
+		pm2 = PendingMission(
+			mission=m2,
+			kingdom=self.k
+		)
+		pm2.save()
+
+		# pending_mission refers to mission2,
+		# mission_grid refers to mission
+		pma2 = PendingMissionAffectation(
+			pending_mission=pm2,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		self.assertRaises(IntegrityError, pma2.save)

@@ -31,3 +31,9 @@ def check_pending_mission_affectation_length(sender, instance, **kwargs):
 
 	if count + 1 > instance.mission_grid.length:
 		raise ValidationError("Cette grille est remplie.")
+
+
+@receiver(pre_save, sender=PendingMissionAffectation)
+def check_pending_mission_sanity(sender, instance, **kwargs):
+	if instance.pending_mission.mission_id != instance.mission_grid.mission_id:
+		raise IntegrityError("This grid does not belong to this mission.")
