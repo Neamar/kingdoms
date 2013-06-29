@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
 from config.lib.models import DescribedModel
-from vendors.python_field.fields import ScriptField
+from vendors.code_field.fields import ScriptField
 from title.models import Title
 from kingdom.models import Kingdom, Folk
 

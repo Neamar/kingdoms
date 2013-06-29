@@ -23,12 +23,12 @@ class PythonCodeWidget(forms.Textarea):
 	class Media:
 		js = (
 			"admin/js/jquery.min.js",
-			"python_field/js/codemirror.js",
-			"python_field/js/python_field.js",
+			"code_field/js/codemirror.js",
+			"code_field/js/python_field.js",
 		)
 		css = {
 			'all': (
-				"python_field/css/line-numbers.css",
+				"code_field/css/line-numbers.css",
 			)
 		}
 

@@ -1,5 +1,5 @@
 from django.db import models
-from vendors.python_field.fields import ScriptField
+from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom
 

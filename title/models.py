@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from vendors.python_field.fields import ScriptField
+from vendors.code_field.fields import ScriptField
 
 from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
