@@ -1,5 +1,5 @@
 from django.db import models
-from vendors.python_field.fields import PythonCodeField
+from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom, Folk
 
@@ -12,13 +12,13 @@ class EventCategory(DescribedModel):
 class Event(DescribedModel):
 	weight = models.PositiveIntegerField()
 	category = models.ForeignKey(EventCategory)
-	condition = PythonCodeField(blank=True, null=True)
-	on_init = PythonCodeField(blank=True, null=True)
+	condition = ScriptField(blank=True, null=True)
+	on_init = ScriptField(blank=True, null=True)
 
 
 class EventAction(NamedModel):
 	event = models.ForeignKey(Event)
-	on_launch = PythonCodeField(blank=True, null=True)
+	on_launch = ScriptField(blank=True, null=True)
 	datas = models.TextField(blank=True, null=True)
 
 
