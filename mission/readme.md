@@ -64,7 +64,7 @@ Supposons qu'il faut un homme pour affronter le Chelavier Noir
 `lenght` : mettons 1, le Chevalier Noir exige un duel
 `condition`:
 ```python
-if param.sex == Folk.FEMALE:
+if param.sex == "f":
 	status="must be a male"
 # Si la personne est une femme, on définie un statut (un message d'erreur). Un statut non modifié signifie que la condition est remplie.
 ```
