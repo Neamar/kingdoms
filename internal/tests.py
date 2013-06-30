@@ -26,6 +26,9 @@ class UnitTest(TestCase):
 		self.t.save()
 
 	def test_threshold(self):
+		"""
+		Check that thresholds are properly handled
+		"""
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
@@ -103,6 +106,9 @@ Folk(
 		self.assertEquals(Folk.objects.count(), 2)
 
 	def test_trigger_only_once(self):
+		"""
+		Check that a trigger cannot be activated more than once
+		"""
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
@@ -135,6 +141,10 @@ raise ValidationError("Can't call twice.")
 
 
 	def test_trigger_condition_success(self):
+		"""
+		Check that a successful condition activates the corresponding trigger
+		"""		
+
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
@@ -159,6 +169,9 @@ status = "ok"
 
 
 	def test_trigger_condition_failure(self):
+		"""
+		Check that an unsusccessful condition does not activate the corresponding trigger
+		"""
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
@@ -183,6 +196,9 @@ status = "NotPossible"
 		self.assertEquals(Folk.objects.count(), 1)
 
 	def test_trigger_condition_param_precedence(self):
+		"""
+		Check precedence of param over status in evaluation of success of a condition
+		"""
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
@@ -192,7 +208,7 @@ Folk(
 		# return None in param(minimal failure condition) and 'ok' in status should not lead to execution
 		self.t.condition = """
 param = None
-status = "NotPossible"
+status = "ok"
 """
 		self.t.save()
 
@@ -206,3 +222,4 @@ status = "NotPossible"
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
+		

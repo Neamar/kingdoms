@@ -2,7 +2,6 @@ from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
-from config.lib.execute import execute
 
 from mission.models import PendingMission, PendingMissionAffectation
 
@@ -16,9 +15,9 @@ def no_delete_after_mission_start(sender, instance, **kwargs):
 @receiver(pre_save, sender=PendingMissionAffectation)
 def check_pending_mission_affectation_condition(sender, instance, **kwargs):
 	affected = instance.folk
-	status, affected = execute(instance.mission_grid.condition, affected)
+	status = instance.affect()
 
-	if affected is None:
+	if status != "ok":
 		raise ValidationError(status)
 
 
@@ -42,13 +41,13 @@ def check_pending_mission_sanity(sender, instance, **kwargs):
 @receiver(pre_save, sender=PendingMission)
 def check_pending_mission_on_init(sender, instance, **kwargs):
 	if not instance.pk:
-		status, param = execute(instance.mission.on_init, instance)
-		if param is None:
+		status = instance.init()
+		if status != "ok":
 			raise ValidationError(status)
 
 
 @receiver(pre_save, sender=PendingMission)
 def start_pending_mission(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started:
-		status, param = execute(instance.mission.on_start, instance)
+		status = instance.start() 
 		instance.is_started = True

@@ -2,7 +2,6 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
-from config.lib.execute import execute
 from kingdom.models import Kingdom
 from event.models import PendingEvent, PendingEventAction
 
