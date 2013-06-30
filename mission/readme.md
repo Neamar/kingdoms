@@ -28,14 +28,12 @@ Exemples
 `on_resolution` :
 ```python
 # Récupération des personnes affectées à la mission
-affected = param.folk_set.all()
-
-if len(affected) == 0:
+if len(folks) == 0:
 	# Si personne n'est affecté à la mission (la taille de la liste = 0),l'argent du kingdom est divisé par 2
 	kingdom.money = kingdom.money / 2
 else:
 	# Sinon, si la personne affectée a plus de 5 de combat, le kingdom gagne 500, si la personne est trop faible, le kingdom perd 50.
-	if affected[0].folk.fight > 5: #affected[0] : on prend la première personne de la liste des affectés
+	if folks[0].folk.fight > 5: #folks[0] : on prend la première personne de la liste des affectés
 		kingdom.money += 500
 	else:
 		kingdom.money -= 50
@@ -50,5 +48,34 @@ Pour la grille, supposons qu'il faut un unique homme pour affronter le Chevalier
 ```python
 if param.sex != Folk.MALE:
 	# Si la personne est une femme, on définit status avec un message d'erreur.
-	status="must be a male"
+	status="Seul un homme peut affronter le chevalier noir !"
+```
+
+### Le mariage
+
+`on_resolution` :
+```python
+if len(folks) == 2:
+	husband = folks[0].folk
+	wife = folks[1].folk
+
+	husband.spouse = wife
+	husband.save()
+
+	wife.spouse = husband
+	wife.save()
+```
+
+Il faut deux grilles : le mari et la femme.
+
+`condition` :
+```python
+if param.sex != Folk.MALE:
+  status="Seul un homme peut être le marié."
+```
+
+`condition` :
+```python
+if param.sex != Folk.FEMALE:
+  status="Seul une femme peut être la mariée."
 ```
