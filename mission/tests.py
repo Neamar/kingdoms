@@ -297,6 +297,21 @@ Kingdom().save()
 
 		self.assertEqual(Kingdom.objects.count(), 2)
 
+	def test_mission_start_again(self):
+		"""
+		Can't start twice the same mission.
+		"""
+		self.pm.started = datetime.now()
+		self.pm.save()
+
+		self.assertRaises(ValidationError, self.pm.start)
+
+	def test_mission_resolution_before_start(self):
+		"""
+		Can't resolve unstarted mission
+		"""
+		self.assertRaises(ValidationError, self.pm.resolve)
+
 	def test_mission_resolution(self):
 		"""
 		Check the on_resolution code.
