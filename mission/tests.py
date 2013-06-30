@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 
 from django.test import TestCase
@@ -70,6 +71,21 @@ class UnitTest(TestCase):
 		self.pma.delete()
 		self.f.disabled = True
 		self.f.save()
+
+		pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		self.assertRaises(ValidationError, pma.save)
+
+	def test_cant_affect_dead(self):
+		"""
+		A folk can't be affected when he is dead.
+		"""
+		self.pma.delete()
+		self.f.die()
 
 		pma = PendingMissionAffectation(
 			pending_mission=self.pm,
