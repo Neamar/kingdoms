@@ -50,6 +50,7 @@ class PendingMission(models.Model):
 	"""
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
+	target = models.ForeignKey(Kingdom, related_name="+", null=True, blank=True)
 
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
@@ -59,6 +60,17 @@ class PendingMission(models.Model):
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+
+	def targets(self):
+		"""
+		Execute target_list script.
+		"""
+
+		context = {
+			'target': self.target,
+		}
+		status = execute(self.mission.target_list, context=context)
+		return status
 
 	def init(self):
 		"""
