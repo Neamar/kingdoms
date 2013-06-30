@@ -40,7 +40,7 @@ class MissionGrid(NamedModel):
 	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.mission.name, self.length)
+		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
 
 
 class PendingMission(models.Model):
@@ -98,6 +98,7 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
+			'folks': self.folk_set.all()
 		}
 		status, param = execute(self.mission.on_resolution, self, context=context)
 

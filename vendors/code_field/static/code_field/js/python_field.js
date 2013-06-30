@@ -5,16 +5,25 @@ CodeMirrorConfig.height = "dynamic";
 CodeMirrorConfig.indentUnit = 2;
 
 var convert_to_CodeMirror = function(obj){
-    // alert(obj);
-    var id = $(obj).attr('id');
-    if (!id.match(/__prefix__/)) {
-        // alert(id);
-        var editor = CodeMirror.fromTextArea(id);
-    }
+	// alert(obj);
+	var id = $(obj).attr('id');
+	if (!id.match(/__prefix__/)) {
+	// alert(id);
+	var editor = CodeMirror.fromTextArea(id);
+	}
 };
 
 $(document).ready(function(){
-    $('.python-code').each(function(i,obj){
-        convert_to_CodeMirror($(obj));
-    });
+	function convert()
+	{
+		$('.python-code:visible').each(function(i,obj){
+			convert_to_CodeMirror($(obj));
+		});
+	}
+
+	$('.add-row').click(function(){
+		setTimeout(convert, 200);
+	})
+
+	convert()
 });

@@ -6,16 +6,14 @@ from kingdom.models import Folk, Quality
 
 
 @receiver(pre_save, sender=Folk)
-def folk_validate_attributes_constraints(sender, instance, **kwargs):
-	def validate_constraint(value, name, min=0, max=20):
-		if value < min or value > max:
-			raise ValidationError("`%s` must be between %s and %s" % (name, min, max))
+def folk_attributes_constraints(sender, instance, **kwargs):
 
-	validate_constraint(instance.fight, 'fight')
-	validate_constraint(instance.diplomacy, 'diplomacy')
-	validate_constraint(instance.plot, 'plot')
-	validate_constraint(instance.scholarship, 'scholarship')
-	validate_constraint(instance.loyalty, 'loyalty', 0, 100)
+	instance.fight = min(20, max(0, instance.fight))
+	instance.diplomacy = min(20, max(0, instance.diplomacy))
+	instance.plot = min(20, max(0, instance.plot))
+	instance.scholarship = min(20, max(0, instance.scholarship))
+
+	instance.loyalty = min(100, max(0, instance.loyalty))
 
 
 @receiver(pre_save, sender=Folk)
