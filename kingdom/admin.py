@@ -6,8 +6,13 @@ from config.lib.admin import DescribedModelAdmin
 
 
 class KingdomAdmin(admin.ModelAdmin):
-	list_display = ('user', 'prestige', 'population')
+	list_display = ('user', 'prestige', 'population', 'money')
 admin.site.register(Kingdom, KingdomAdmin)
+
+
+class EventActionAdminInline(admin.StackedInline):
+	model = Quality
+	extra = 2
 
 
 class FolkAdmin(admin.ModelAdmin):
@@ -16,6 +21,18 @@ admin.site.register(Folk, FolkAdmin)
 
 
 admin.site.register(Quality, DescribedModelAdmin)
-admin.site.register(Message)
+
+
+class MessageAdmin(admin.ModelAdmin):
+	list_display = ('kingdom', 'content', 'level', 'read')
+admin.site.register(Message, MessageAdmin)
+
+
+class ModalMessageAdmin(admin.ModelAdmin):
+	list_display = ('kingdom', 'name', 'description')
 admin.site.register(ModalMessage)
+
+
+class ClaimAdmin(admin.ModelAdmin):
+	list_display = ('offender', 'offended', 'creation')
 admin.site.register(Claim)

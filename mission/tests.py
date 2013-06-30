@@ -223,4 +223,4 @@ status='mission_solved'
 		self.assertEqual(status, 'mission_solved')
 
 		# Pendingmission must be deleted
-		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=pm2.pk)))
+		self.assertTrue(pm2.is_finished)

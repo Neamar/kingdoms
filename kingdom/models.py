@@ -13,6 +13,7 @@ class Kingdom(models.Model):
 
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
+	money = models.PositiveIntegerField(default=0)
 
 	def __unicode__(self):
 		return '%s kingdom' % self.user
@@ -106,5 +107,5 @@ class Claim(models.Model):
 
 	creation = models.DateTimeField(auto_now_add=True)
 
-
+from kingdom.scripts import *
 from kingdom.signals import *

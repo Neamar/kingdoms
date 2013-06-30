@@ -24,7 +24,7 @@ class AvailableTitle(models.Model):
 
 	title = models.ForeignKey(Title)
 	kingdom = models.ForeignKey(Kingdom)
-	folk = models.ForeignKey(Folk, null=True, default=None, unique=True)
+	folk = models.OneToOneField(Folk, null=True, default=None, related_name="title")
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.title.name, self.kingdom.user.username)
