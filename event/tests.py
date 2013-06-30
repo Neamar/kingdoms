@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from kingdom.models import Kingdom
-from event.models import Event, EventAction, EventCategory
+from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
 
 
 class UnitTest(TestCase):
@@ -20,26 +20,38 @@ class UnitTest(TestCase):
 		)
 		self.c.save()
 
-		self.e = Event(
+		self.e1 = Event(
+			name = "Event 1",
 			category=self.c,
-			text="",
+			text="Event 1",
 		)
-		self.e.save()
+		self.e1.save()
+
+		self.e2 = Event(
+			name = "Event 2",
+			category=self.c,
+			text="Event 2",
+		)
+		self.e2.save()
 
 		self.a = EventAction(
-			event=self.e,
+			event=self.e1,
 			text="some text",
 		)
 		self.a.save()
 		
 	def test_references_coherence(self):
-		
-		pe = (self.e).create(self.k)
-		# For testing purposes, let's take the first action
-		pea = pe.pendingeventaction_set.all()[0]
+		self.pe = PendingEvent(
+				event = self.e2,
+				kingdom = self.k,
+				text = "PendingEvent",
+			)
+		self.pe.save()
 
-		e1 = pea.event_action.event
-		e2 = pea.pending_event.event
+		self.pea = PendingEventAction(
+				pending_event = self.pe,
+				event_action = self.a,
+				text = "PendingEventAction",
+			)
 
-		if(e1 != e2):
-			self.assertRaises(ValidationError, pea.save)
+		self.assertRaises(ValidationError, self.pea.save)

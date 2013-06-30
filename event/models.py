@@ -17,14 +17,15 @@ class Event(DescribedModel):
 	on_fire = ScriptField(blank=True, null=True, help_text = "Event code, `param` is the PendingEvent object", default = "")
 	text = models.TextField()
 
-	def create(self, kdom):
+	def create(self, kingdom):
 		
 		pe = PendingEvent(
 			event = self,
-			kingdom  = param,
+			kingdom  = kingdom,
 			text = self.text,
 		)
 		pe.save()
+		return pe
 		
 
 class EventAction(NamedModel):
