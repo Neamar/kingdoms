@@ -39,7 +39,7 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition is not boolean, but some code that returns 'ok' in status if it was executed successfully, and None in param otherwise")
+	condition = ScriptField(blank=True, null=True, help_text="Condition must returns with `param=None` to abort.")
 	on_fire = ScriptField(blank=True, null=True)
 
 

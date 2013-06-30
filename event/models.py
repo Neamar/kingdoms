@@ -7,26 +7,39 @@ from kingdom.models import Kingdom, Folk
 class EventCategory(DescribedModel):
 	frequency = models.PositiveIntegerField()
 	timeout = models.PositiveIntegerField()
+	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
 class Event(DescribedModel):
-	weight = models.PositiveIntegerField()
+	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
-	condition = ScriptField(blank=True, null=True)
-	on_init = ScriptField(blank=True, null=True)
+	condition = ScriptField(blank=True, null=True, help_text = "Event condition. `param` is the current Kingdom object", default = "")
+	on_fire = ScriptField(blank=True, null=True, help_text = "Event code, `param` is the PendingEvent object", default = "")
+	text = models.TextField()
 
+	def create(self, kingdom):
+		
+		pe = PendingEvent(
+			event = self,
+			kingdom  = kingdom,
+			text = self.text,
+		)
+		pe.save()
+		return pe
+		
 
 class EventAction(NamedModel):
 	event = models.ForeignKey(Event)
-	on_launch = ScriptField(blank=True, null=True)
-
+	on_fire = ScriptField(blank=True, null=True)
+	text = models.CharField(max_length=255)
 
 class PendingEvent(models.Model):
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
 	creation = models.DateTimeField(auto_now_add=True)
 	datas = models.TextField(blank=True, null=True)
-	
+	text = models.TextField()
+
 	def __unicode__(self):
 		return "%s [%s]" % (self.event, self.kingdom)
 
@@ -36,3 +49,5 @@ class PendingEventAction(models.Model):
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(max_length=255)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
+
+from event.signals import *
