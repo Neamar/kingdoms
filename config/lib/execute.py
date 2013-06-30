@@ -17,7 +17,7 @@ def execute(code, param=None, context=None):
 	from internal.models import Constant, Value
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation
-	from Title.models import Title, AvailableTitle
+	from title.models import Title, AvailableTitle
 
 	_param_specified = param is not None
 
