@@ -4,7 +4,7 @@ Documentation for this lies in readme.md
 
 from datetime import datetime
 
-from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality
+from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
 
 
 def kingdom_message(self, content, level=Message.INFORMATION):
@@ -22,6 +22,15 @@ def kingdom_modal_message(self, name, description):
 		description=description
 	).save()
 Kingdom.modal_message = kingdom_modal_message
+
+
+def kingdom_add_claim(self, kingdom):
+	Claim(
+		offender=self,
+		offended=kingdom,
+		creation=datetime.now()
+	).save()
+Kingdom.add_claim = kingdom_add_claim
 
 
 def folk_die(self):
