@@ -89,9 +89,26 @@ class UnitTest(TestCase):
 		at = AvailableTitle.objects.get(pk=at.pk)
 		self.assertIsNone(at.folk)
 
+	def test_folk_death(self):
+		"""
+		When you change kingdom, you're disaffected from your title.
+		"""
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		at.save()
+
+		self.f.die()
+		
+		# Reload the title, folk should now be empty
+		at = AvailableTitle.objects.get(pk=at.pk)
+		self.assertIsNone(at.folk)
+
 	def test_title_condition(self):
 		"""
-		The condition can abortan affection
+		The condition can abort an affection
 		"""
 		self.t.condition = 'status="not_possible"'
 		self.t.save()
@@ -105,6 +122,10 @@ class UnitTest(TestCase):
 		self.assertRaises(ValidationError, at.save)
 
 	def test_title_affect_direct(self):
+		"""
+		You can create and affect in the same time.
+		"""
+
 		self.t.on_affect = """
 param.loyalty = 50
 param.save()
@@ -124,6 +145,10 @@ param.save()
 		self.assertEquals(self.f.loyalty, 50)
 
 	def test_title_affect(self):
+		"""
+		Test affect code is run
+		"""
+
 		self.t.on_affect = """
 param.loyalty = 50
 param.save()
@@ -148,6 +173,10 @@ param.save()
 		self.assertEquals(self.f.loyalty, 50)
 
 	def test_title_defect(self):
+		"""
+		Test defect code is run
+		"""
+
 		self.t.on_defect = """
 param.loyalty = 50
 param.save()
@@ -173,6 +202,10 @@ param.save()
 		self.assertEquals(self.f.loyalty, 50)
 
 	def test_title_affect_defect(self):
+		"""
+		Test affect AND defect code are run
+		"""
+
 		self.t.on_affect = """
 param.loyalty = 80
 param.save()

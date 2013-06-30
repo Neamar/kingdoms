@@ -16,6 +16,17 @@ def unaffect_title_on_kingdom_changed(sender, instance, **kwargs):
 			at[0].save()
 
 
+@receiver(post_save, sender=Folk)
+def unaffect_title_on_death(sender, instance, **kwargs):
+	if instance.death:
+		try:
+			at = AvailableTitle.objects.get(folk=instance)
+			at.folk = None
+			at.save()
+		except AvailableTitle.DoesNotExist:
+			return
+
+
 @receiver(pre_save, sender=AvailableTitle)
 def check_title_condition(sender, instance, **kwargs):
 	# Run condition code, checking if the specified folk can be affected on this title.
