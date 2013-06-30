@@ -1,6 +1,17 @@
 Documentation pour le scripting par Kingdom
 =======================
 
+Vocabulaire des kingdoms
+-----------------------
+Un `royaume` représente la dynastie d'un joueur : sa richesse, son prestige, sa population... il s'agit de l'objet central du jeu.
+
+Les `folk` correspondent aux personnes de la cour d'un `kingdom`. Ils ont des attributs (strength, loyalty) qui les caractérisent, ainsi que des relations avec d'autres personnes : père, mère et époux.
+Ils disposent aussi d'une liste de traits. Ces `quality` déterminent la personnalité du bonhomme.
+
+Ce module définit aussi les `message`, qui correspondent à des logs d'importance variée, et les `modal_message` qui permettent d'afficher une boite de dialogue à l'utilisateur.
+
+Enfin, les `claims` permettent de définir des relations entre les royaumes pour les guerres.
+
 Où scripter ?
 -------------
 Aucun script par ici.
