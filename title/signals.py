@@ -40,7 +40,7 @@ def check_title_condition(sender, instance, **kwargs):
 def on_availabletitle_affection_defection(sender, instance, **kwargs):
 	if instance.last_folk_id != instance.folk_id:
 		# Was there a prior defection?
-		if instance.last_folk is not None:
+		if instance.last_folk is not None and not instance.last_folk.death:
 			instance.defect(instance.last_folk)
 
 		# A new Folk was added!
