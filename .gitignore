@@ -17,6 +17,7 @@ local_settings.py
 *.pydevproject
 *.kate-swp
 *.sublime-*
+*.swp
 
 #Virtual env
 .v_env/*

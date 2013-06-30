@@ -13,7 +13,14 @@ class Trigger(DescribedModel):
 	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 
 	fired = models.ManyToManyField(Kingdom)
-	
+
+	def check_condition(self, Kingdom):
+		status, param = execute(self.condition, Kingdom)
+		return (status, param)
+
+	def fire(self, Kingdom):
+		status, param = execute(self.on_fire, Kingdom)
+		return (status, param)
 
 class Constant(DescribedModel):
 	value = models.IntegerField()
@@ -39,7 +46,7 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition is not boolean, but some code that returns 'ok' in status if it was executed successfully, and None in param otherwise")
+	condition = ScriptField(blank=True, null=True, help_text="Condition must returns with `param=None` to abort.")
 	on_fire = ScriptField(blank=True, null=True)
 
 

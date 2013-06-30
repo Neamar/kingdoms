@@ -16,7 +16,7 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Set it to `None` to abort the mission.", blank=True)
+	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set status to something other than 'ok' to abort the mission.", blank=True)
 	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission.")
 
@@ -58,6 +58,23 @@ class PendingMission(models.Model):
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
+	def init(self):
+		
+		# Execute the script in on_init
+		status = execute(self.mission.on_init, None)
+		return status
+
+	def start(self):
+		if self.is_started:
+			raise ValidationError("Mission already started.")
+
+		status, param = execute(self.mission.on_start, self)
+
+		self.is_started = True
+		self.save()
+
+		return status
+
 	def resolve(self):
 		"""
 		Resolve this mission.
@@ -65,7 +82,7 @@ class PendingMission(models.Model):
 		if not self.is_started:
 			raise ValidationError("Unable to resolve unstarted mission.")
 
-		status, params = execute(self.mission.on_resolution, self)
+		status, param = execute(self.mission.on_resolution, self)
 
 		self.is_finished = True
 		self.save()
@@ -81,6 +98,14 @@ class PendingMissionAffectation(models.Model):
 	pending_mission = models.ForeignKey(PendingMission, related_name="folk_set")
 	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.OneToOneField(Folk, related_name="mission")
+
+	def affect(self):
+		"""
+		Affect someone to the pending mission.
+		signals will check the validity.
+		"""
+		status, param = execute(self.mission_grid.condition, self.folk)
+		return status
 
 
 class AvailableMission(models.Model):

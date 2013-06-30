@@ -200,7 +200,7 @@ status="NotAllowed"
 			name="Stub mission2",
 			description="My description.",
 			on_resolution="",
-			on_init="param=None",
+			on_init="status='Abort Mission'",
 			title=self.t,
 		)
 		m2.save()
