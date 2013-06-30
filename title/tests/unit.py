@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
@@ -89,6 +90,9 @@ class UnitTest(TestCase):
 		self.assertIsNone(at.folk)
 
 	def test_title_condition(self):
+		"""
+		The condition can abortan affection
+		"""
 		self.t.condition = 'status="not_possible"'
 		self.t.save()
 
@@ -97,6 +101,24 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			folk=self.f
 		)
+
+		self.assertRaises(ValidationError, at.save)
+
+	def test_title_affect_direct(self):
+		self.t.on_affect = """
+param.loyalty = 50
+param.save()
+"""
+		self.t.save()
+
+		# Sanity check
+		self.assertNotEquals(self.f.loyalty, 50)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
 		at.save()
 
-		self.assertIsNone(at.folk)
+		self.assertEquals(self.f.loyalty, 50)

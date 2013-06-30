@@ -50,18 +50,18 @@ class AvailableTitle(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status, param = execute(self.title.on_affect, self.folk, context)
-
+		status, param = execute(self.title.on_affect, folk, context)
+		
 		return status
 
-	def defect(self):
+	def defect(self, folk):
 		"""
 		Defect folk from the title
 		"""
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status, param = execute(self.title.on_defect, self.folk, context)
+		status, param = execute(self.title.on_defect, folk, context)
 
 		return status
 
