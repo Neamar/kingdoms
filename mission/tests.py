@@ -86,9 +86,34 @@ class UnitTest(TestCase):
 
 		# Start the pendingmission
 		self.pm.started = datetime.now()
+		self.pm.save()
 
 		# Can't remove affectation
 		self.assertRaises(IntegrityError, self.pma.delete)
+
+	def test_cant_affect_after_mission_start(self):
+		"""
+		A folk can't be affected to a mission after it started.
+		"""
+
+		# Start the pendingmission
+		self.pm.started = datetime.now()
+		self.pm.save()
+
+		f2 = Folk(
+			name="Another one",
+			kingdom=self.k
+		)
+		f2.save()
+
+		pma2 = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=f2
+		)
+
+		# Can't affect after start
+		self.assertRaises(IntegrityError, pma2.save)
 
 	def test_grid_condition(self):
 		"""
@@ -175,7 +200,7 @@ status="NotAllowed"
 			name="Stub mission2",
 			description="My description.",
 			on_resolution="",
-			on_init="param=None",
+			on_init="status='Abort Mission'",
 			title=self.t,
 		)
 		m2.save()

@@ -27,8 +27,8 @@ Kingdom.modal_message = kingdom_modal_message
 
 def kingdom_add_claim(self, kingdom):
 	Claim(
-		offender=self,
-		offended=kingdom,
+		offender=kingdom,
+		offended=self,
 		creation=datetime.now()
 	).save()
 Kingdom.add_claim = kingdom_add_claim
@@ -41,13 +41,10 @@ Folk.die = folk_die
 
 
 def folk_add_quality(self, name):
-	qual = Quality.objects.get(name=name)
+	quality = Quality.objects.get(name=name)
 	try:
-		self.quality_set.add(qual)
+		self.quality_set.add(quality)
 	except ValidationError:
-		raise ValidationError("Incompatible quality.")
-	else:
 		return None
-	finally:
-		return qual
+	return quality
 Folk.add_quality = folk_add_quality

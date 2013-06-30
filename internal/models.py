@@ -1,7 +1,9 @@
 from django.db import models
+
 from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom
+from config.lib.execute import execute
 
 
 class Trigger(DescribedModel):
@@ -13,7 +15,15 @@ class Trigger(DescribedModel):
 	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 
 	fired = models.ManyToManyField(Kingdom)
-	
+
+	def check_condition(self, kingdom):
+		status, param = execute(self.condition, kingdom)
+		return status
+
+	def fire(self, kingdom):
+		status, param = execute(self.on_fire, kingdom)
+		return status
+
 
 class Constant(DescribedModel):
 	value = models.IntegerField()
@@ -39,7 +49,7 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition is not boolean, but some code that returns 'ok' in status if it was executed successfully, and None in param otherwise")
+	condition = ScriptField(blank=True, null=True, help_text="Condition must returns with `param=None` to abort.")
 	on_fire = ScriptField(blank=True, null=True)
 
 

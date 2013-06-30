@@ -1,6 +1,8 @@
 Kingdoms
 ========
 
+![Models](https://github.com/Neamar/kingdoms/blob/master/models.png?raw=true)
+
 Setup
 -----
 * `git clone git@github.com:Neamar/kingdoms.git` : retrieve the repo
