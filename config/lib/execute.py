@@ -18,6 +18,7 @@ def execute(code, param=None, context=None):
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation
 	from title.models import Title, AvailableTitle
+	from config.scripts.random import random_between, random_value
 
 	_param_specified = param is not None
 

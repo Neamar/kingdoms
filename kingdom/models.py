@@ -54,11 +54,6 @@ class Folk(NamedModel):
 
 	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
 
-	def age(self):
-		final_date = datetime.now() if self.death is None else self.death
-		delta = final_date - self.birth
-		return delta.days
-
 
 class QualityCategory(DescribedModel):
 	"""

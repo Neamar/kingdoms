@@ -73,3 +73,9 @@ def start_pending_mission(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started:
 		instance.start()
 		instance.is_started = True
+
+
+@receiver(pre_delete, sender=PendingMission)
+def no_delete_if_not_cancellable_or_not_finished(sender, instance, **kwargs):
+	if not instance.is_finished and not instance.mission.cancellable:
+		raise IntegrityError("Impossible d'annuler cette mission.'")

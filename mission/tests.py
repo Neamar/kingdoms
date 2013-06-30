@@ -281,3 +281,27 @@ status='mission_solved'
 
 		# Pendingmission must be deleted
 		self.assertTrue(pm2.is_finished)
+
+	def test_mission_not_cancellable(self):
+		"""
+		Check the cancellable flag.
+		"""
+
+		self.assertRaises(IntegrityError, self.pm.delete)
+
+	def test_mission_finished_not_cancellable(self):
+		"""
+		Check the cancellable flag and the is_finished.
+		"""
+		# Fake resolution
+		self.pm.is_finished = True
+		self.pm.save()
+		
+		self.pm.delete()
+
+	def test_mission_cancellable(self):
+		"""
+		Check the cancellable flag.
+		"""
+		self.m.cancellable = True
+		self.pm.delete()
