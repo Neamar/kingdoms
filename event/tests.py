@@ -74,7 +74,8 @@ class UnitTest(TestCase):
 		Check condition is triggered.
 		"""
 		self.pe.delete()
-		self.e1.condition = """
+		self.e1.condition = """()
+
 status="notAllowed"
 """
 		self.pe = PendingEvent(

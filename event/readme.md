@@ -35,6 +35,11 @@ kingdom.population /= 1.5
 # La population diminue dès le début
 kingdom.save()
 # On n'oublie pas de sauvegarder
+PendingMission(
+ mission=Mission.objects.get(name="Partir en quête d'un medecin"),
+ kingdom=kingdom,
+).save()
+#On crée une nouvelle PendingMission que l'on sauvegarde
 ```
 
 #### Les solutions
