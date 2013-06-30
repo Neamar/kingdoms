@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -9,19 +10,25 @@ from mission.models import PendingMission, PendingMissionAffectation
 @receiver(pre_delete, sender=PendingMissionAffectation)
 def no_defect_after_mission_start(sender, instance, **kwargs):
 	if instance.pending_mission.is_started and not instance.pending_mission.is_finished:
-		raise IntegrityError("No folk defection after mission start.")
+		raise IntegrityError("Impossible de quitter la mission avant la fin")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
 def no_affect_after_mission_start(sender, instance, **kwargs):
 	if not instance.pk and instance.pending_mission.is_started:
-		raise IntegrityError("No folk affection after mission start.")
+		raise IntegrityError("Impossible de rejoindre la mission après son démarrage !")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
 def check_folk_is_able(sender, instance, **kwargs):
 	if instance.folk.disabled:
-		raise ValidationError("Is disabled, can't be part of mission")
+		raise ValidationError("Les personnes handicapées ne participent pas aux missions !")
+
+
+@receiver(pre_save, sender=PendingMissionAffectation)
+def check_folk_is_alive(sender, instance, **kwargs):
+	if instance.folk.death:
+		raise ValidationError("Les morts ne participent pas aux missions !")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)

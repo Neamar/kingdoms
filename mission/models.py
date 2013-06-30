@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -18,7 +19,7 @@ class Mission(DescribedModel):
 
 	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set status to something other than 'ok' to abort the mission.", blank=True)
 	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
-	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission.")
+	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks.")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")

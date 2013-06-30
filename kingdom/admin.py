@@ -6,13 +6,13 @@ from config.lib.admin import DescribedModelAdmin
 
 
 class AliveFilter(admin.SimpleListFilter):
-	title = _('alive')
-	parameter_name = 'alive'
+	title = _('vivant')
+	parameter_name = 'vivant'
 
 	def lookups(self, request, model_admin):
 		return (
-			('yes', _('Yes')),
-			('no', _('No'))
+			('yes', _('Oui')),
+			('no', _('Non'))
 		)
 
 	def queryset(self, request, queryset):
@@ -33,7 +33,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class FolkAdmin(admin.ModelAdmin):
-	list_display = ('name', 'sex')
+	list_display = ('name', 'sex', 'age')
 	list_filter = ('sex', AliveFilter)
 admin.site.register(Folk, FolkAdmin)
 
