@@ -83,50 +83,60 @@ class UnitTest(TestCase):
 		Fight should be restricted within [0, 20]
 		"""
 		self.f.fight = 21
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.fight, 20)
 
 		self.f.fight = -1
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.fight, 0)
 
 	def test_diplomacy_threshold(self):
 		"""
 		Diplomacy should be restricted within [0, 20]
 		"""
 		self.f.diplomacy = 21
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.diplomacy, 20)
 
 		self.f.diplomacy = -1
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.diplomacy, 0)
 
 	def test_plot_threshold(self):
 		"""
 		Plot should be restricted within [0, 20]
 		"""
 		self.f.plot = 21
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.plot, 20)
 
 		self.f.plot = -1
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.plot, 0)
 
 	def test_scholarship_threshold(self):
 		"""
 		Scholarship should be restricted within [0, 20]
 		"""
 		self.f.scholarship = 21
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.scholarship, 20)
 
 		self.f.scholarship = -1
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.scholarship, 0)
 
 	def test_loyalty_threshold(self):
 		"""
 		Loyalty should be restricted within [0, 20]
 		"""
 		self.f.loyalty = 101
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.loyalty, 100)
 
 		self.f.loyalty = -1
-		self.assertRaises(ValidationError, self.f.save)
+		self.f.save()
+		self.assertEquals(self.f.loyalty, 0)
 
 	def test_claim_unicity(self):
 		"""
