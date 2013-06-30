@@ -19,7 +19,8 @@ def execute(code, param=None, context=None):
 	from mission.models import Mission, PendingMission, PendingMissionAffectation
 	from title.models import Title, AvailableTitle
 	from config.scripts.random import random_between, random_value
-
+	from config.scripts.utils import sum_folks
+	
 	_param_specified = param is not None
 
 	status = 'ok'
