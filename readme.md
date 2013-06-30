@@ -22,4 +22,4 @@ Maintenance
 `./manage.py test kingdom mission title internal event`
 
 ### Generating models
-`./manage.py graph_models kingdom internal title mission event -o models.png`
+Enable `django_extensions` in `config/settings.py`, then `./graph.sh`.

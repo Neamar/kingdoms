@@ -17,7 +17,7 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set status to something other than 'ok' to abort the mission.", blank=True)
+	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
 	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks.")
 

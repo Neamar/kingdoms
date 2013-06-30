@@ -89,11 +89,8 @@ class UnitTest(TestCase):
 		self.assertIsNone(at.folk)
 
 	def test_title_condition(self):
-		self.t.condition = 'param=None'
+		self.t.condition = 'status="not_possible"'
 		self.t.save()
-
-		from config.lib.execute import execute
-		execute(self.t.condition)
 
 		at = AvailableTitle(
 			title=self.t,
