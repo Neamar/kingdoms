@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
-from config.lib.models import DescribedModel
+from config.lib.models import NamedModel, DescribedModel
 from vendors.code_field.fields import ScriptField
 from title.models import Title
 from kingdom.models import Kingdom, Folk
@@ -30,18 +30,17 @@ class Mission(DescribedModel):
 	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
 
 
-class MissionGrid(models.Model):
+class MissionGrid(NamedModel):
 	"""
 	A grid to store folk affectation on a mission.
 	"""
 	mission = models.ForeignKey(Mission)
-	description = models.TextField()
 
 	length = models.PositiveIntegerField(default=20)
 	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
 	def __unicode__(self):
-		return '%s [%s] - %s' % (self.mission.name, self.length, self.mission.description)
+		return '%s [%s(%s)]' % (self.mission.name, self.length)
 
 
 class PendingMission(models.Model):

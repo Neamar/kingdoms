@@ -10,7 +10,7 @@ admin.site.register(Mission, MissionAdmin)
 
 
 class MissionGridAdmin(admin.ModelAdmin):
-	list_display = ('mission', 'description', 'length')
+	list_display = ('name', 'mission', 'length')
 admin.site.register(MissionGrid, MissionGridAdmin)
 
 

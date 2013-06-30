@@ -71,7 +71,7 @@
     "length": 20, 
     "mission": 1, 
     "condition": "\n", 
-    "description": "bdf"
+    "name": "Mon héros"
   }
 },
 {
@@ -104,7 +104,7 @@
     "weight": 5, 
     "description": "Le chevalier noir se pr\u00e9sente \u00e0 vos portes.", 
     "condition": "\n", 
-    "on_init": "\n"
+    "on_fire": "\n"
   }
 },
 {
