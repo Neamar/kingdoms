@@ -41,7 +41,7 @@ class MissionGrid(models.Model):
 	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.mission.name, self.length)
+		return '%s [%s] - %s' % (self.mission.name, self.length, self.mission.description)
 
 
 class PendingMission(models.Model):
