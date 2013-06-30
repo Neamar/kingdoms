@@ -208,6 +208,26 @@ status="NotAllowed"
 
 		self.assertRaises(IntegrityError, pma2.save)
 
+	def test_mission_target(self):
+		"""
+		Check the target code.
+		"""
+
+		self.m.has_target = True
+		self.m.target_list = "param = Kingdom.objects.filter(money__gte=10000)"
+		self.m.save()
+
+		# Check : no kingdom matches.
+		self.assertEqual(len(self.pm.targets()), 0)
+
+		k2 = Kingdom(
+			money=50000
+		)
+		k2.save()
+		# Check : k2 matches
+		self.assertEqual(len(self.pm.targets()), 1)
+		self.assertEqual(self.pm.targets()[0], k2)
+
 	def test_mission_on_init(self):
 		"""
 		Check the on_init code can cancel the mission before it is launched.

@@ -69,6 +69,7 @@ def folk_add_quality(self, name):
 	return quality
 Folk.add_quality = folk_add_quality
 
+
 def folk_age(self):
 	"""
 	Returns the age of the folk
