@@ -50,8 +50,10 @@ class PendingMission(models.Model):
 	"""
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
+
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
+	
 	is_started = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 	is_finished = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 
@@ -115,12 +117,15 @@ class PendingMissionAffectation(models.Model):
 	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.OneToOneField(Folk, related_name="mission")
 
-	def affect(self):
+	def check_condition(self):
 		"""
 		Affect someone to the pending mission.
 		signals will check the validity.
 		"""
-		status, param = execute(self.mission_grid.condition, self.folk)
+		context = {
+			'kingdom': self.pending_mission.kingdom,
+		}
+		status, param = execute(self.mission_grid.condition, self.folk, context)
 		return status
 
 

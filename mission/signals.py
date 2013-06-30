@@ -26,7 +26,7 @@ def check_folk_is_able(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=PendingMissionAffectation)
 def check_pending_mission_affectation_condition(sender, instance, **kwargs):
-	status = instance.affect()
+	status = instance.check_condition()
 
 	if status != "ok":
 		raise ValidationError(status)
