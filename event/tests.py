@@ -7,7 +7,6 @@ from event.models import Event, EventAction, EventCategory, PendingEvent, Pendin
 
 class UnitTest(TestCase):
 	def setUp(self):
-
 		self.k = Kingdom()
 		self.k.save()
 
@@ -38,6 +37,9 @@ class UnitTest(TestCase):
 		self.a.save()
 		
 	def test_references_coherence(self):
+		"""
+		Check the pending_event and the event_action always refers to the same event.
+		"""
 		self.pe = PendingEvent(
 			event=self.e2,
 			kingdom=self.k,

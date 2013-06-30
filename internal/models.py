@@ -33,7 +33,7 @@ class Trigger(DescribedModel):
 		status, param = execute(self.on_fire, kingdom)
 
 		# Register it has been fired.
-		trigger.fired.add(instance)
+		self.fired.add(kingdom)
 		
 		return status
 

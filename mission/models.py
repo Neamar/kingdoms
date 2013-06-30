@@ -22,7 +22,7 @@ class Mission(DescribedModel):
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks.")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
-	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `params`.", default="param=Kingdom.objects.all()")
+	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", default="param=Kingdom.objects.all()")
 	target_description = models.CharField(max_length=255, default="Cible")
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")

@@ -1,4 +1,6 @@
 from django.db import models
+
+from config.lib.execute import execute
 from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom, Folk
@@ -66,7 +68,7 @@ class PendingEvent(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status, param = execute(self.event.fire, self, context)
+		status, param = execute(self.event.on_fire, self, context)
 
 		return status
 
