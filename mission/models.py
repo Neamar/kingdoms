@@ -98,6 +98,7 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
+			'folks': self.folk_set.all()
 		}
 		status, param = execute(self.mission.on_resolution, self, context=context)
 
