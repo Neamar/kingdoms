@@ -19,18 +19,17 @@ def no_affect_after_mission_start(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
+def check_folk_is_able(sender, instance, **kwargs):
+	if instance.folk.disabled:
+		raise ValidationError("Is disabled, can't be part of mission")
+
+
+@receiver(pre_save, sender=PendingMissionAffectation)
 def check_pending_mission_affectation_condition(sender, instance, **kwargs):
-	affected = instance.folk
 	status = instance.affect()
 
 	if status != "ok":
 		raise ValidationError(status)
-
-
-@receiver(pre_save, sender=PendingMissionAffectation)
-def check_folk_is_able(sender, instance, **kwargs):
-	if instance.folk.disabled:
-		raise ValidationError("Is disabled, can't be part of mission")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
