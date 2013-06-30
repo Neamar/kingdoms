@@ -5,8 +5,19 @@ from django.core.exceptions import ValidationError
 from event.models import PendingEvent, PendingEventAction
 
 
+@receiver(pre_save, sender=PendingEvent)
+def check_event_condition(sender, instance, **kwargs):
+	"""
+	Check the pending event can be created.
+	"""
+	status = instance.check_condition()
+
+	if status != 'ok':
+		raise ValidationError("Impossible de créer cet évènement : %s" % status)
+
+
 @receiver(post_save, sender=PendingEvent)
-def set_event_actions(sender, instance, **kwargs):
+def set_event_actions_and_fire(sender, instance, **kwargs):
 	"""
 	Create all pending event actions from event actions.
 	"""
@@ -17,6 +28,8 @@ def set_event_actions(sender, instance, **kwargs):
 			text=event_action.text,
 		)
 		pea.save()
+
+	instance.fire()
 
 
 @receiver(pre_save, sender=PendingEventAction)

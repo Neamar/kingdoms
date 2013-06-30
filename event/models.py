@@ -11,30 +11,32 @@ class EventCategory(DescribedModel):
 
 
 class Event(DescribedModel):
+	"""
+	Dictionary of all available events.
+	"""
+
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current Kingdom object", default="")
 	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the PendingEvent object", default="")
 	text = models.TextField()
 
-	def create(self, kingdom):
-		
-		pe = PendingEvent(
-			event=self,
-			kingdom=kingdom,
-			text=self.text,
-		)
-		pe.save()
-		return pe
-		
 
 class EventAction(NamedModel):
+	"""
+	Actions registered with an event.
+	"""
+
 	event = models.ForeignKey(Event)
 	on_fire = ScriptField(blank=True, null=True)
 	text = models.CharField(max_length=255)
 
 
 class PendingEvent(models.Model):
+	"""
+	An event, started for a given kingdom.
+	"""
+
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
 	creation = models.DateTimeField(auto_now_add=True)
@@ -44,8 +46,36 @@ class PendingEvent(models.Model):
 	def __unicode__(self):
 		return "%s [%s]" % (self.event, self.kingdom)
 
+	def check_condition(self):
+		"""
+		Check if this pending event associated event allows to be created.
+		Signals will check the validity.
+		"""
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.event.condition, self.kingdom, context)
+
+		return status
+
+	def fire(self):
+		"""
+		Check if this pending event associated event allows to be created.
+		Signals will check the validity.
+		"""
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.event.fire, self, context)
+
+		return status
+
 
 class PendingEventAction(models.Model):
+	"""
+	Actions available for the current PendingEvent.
+	"""
+
 	pending_event = models.ForeignKey(PendingEvent)
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(max_length=255)
