@@ -5,9 +5,6 @@ from django.core.validators import MaxValueValidator
 from config.lib.models import NamedModel, DescribedModel
 
 
-__all__ = ['Kingdom', 'Folk', 'Quality', 'Message', 'ModalMessage', 'Claim']
-
-
 class Kingdom(models.Model):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.

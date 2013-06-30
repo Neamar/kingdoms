@@ -7,9 +7,12 @@ def execute(code, param=None):
 	"""
 	Runs the specified code, with access to all models.
 	"""
-	from kingdom.models import *
-	from title.models import *
-
+	from kingdom.models import Kingdom, Folk, Message, Claim
+	from title.models import Constant, Value
+	from event.models import Event, EventCategogry, PendingEvent, EventAction
+	from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation
+	from mission.models import Title, AvailableTitle
+	
 	_param_specified = param is not None
 
 	status = 'ok'
