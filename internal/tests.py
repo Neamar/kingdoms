@@ -194,32 +194,3 @@ status = "NotPossible"
 		self.k.money  = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
-
-	def test_trigger_condition_param_precedence(self):
-		"""
-		Check precedence of param over status in evaluation of success of a condition
-		"""
-		self.t.on_fire = """
-Folk(
-	kingdom=param,
-	name="New user from trigger"
-).save()
-"""
-		# return None in param(minimal failure condition) and 'ok' in status should not lead to execution
-		self.t.condition = """
-param = None
-status = "ok"
-"""
-		self.t.save()
-
-		# Sanity check
-		self.assertEquals(Folk.objects.count(), 1)
-		
-		# No Fire
-		self.k.prestige = 20
-		self.k.population = 20
-		self.k.money = 20
-		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
-
-		
