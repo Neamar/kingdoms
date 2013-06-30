@@ -11,7 +11,9 @@ class MissionGridInline(admin.StackedInline):
 
 class MissionAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'title', 'category')
+	list_filter = ('title__name',)
 	inlines = [MissionGridInline]
+
 admin.site.register(Mission, MissionAdmin)
 
 

@@ -41,10 +41,10 @@ admin.site.register(Folk, FolkAdmin)
 admin.site.register(QualityCategory, DescribedModelAdmin)
 
 
-class FolkAdmin(admin.ModelAdmin):
-	list_display = ('name', 'sex')
-
-admin.site.register(Quality, DescribedModelAdmin)
+class QualityAdmin(DescribedModelAdmin):
+	list_display = ('name', 'category', 'description')
+	list_filter = ('category__name',)
+admin.site.register(Quality, QualityAdmin)
 
 
 class MessageAdmin(admin.ModelAdmin):

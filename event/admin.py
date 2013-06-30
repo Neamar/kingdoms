@@ -9,6 +9,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 class EventAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'weight', 'category',)
+	list_filter = ('category__name',)
 	inlines = [
 		EventActionAdminInline,
 	]
