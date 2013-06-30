@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.core.exceptions import ValidationError
 
 from kingdom.models import Folk
 from title.models import AvailableTitle
@@ -18,5 +19,19 @@ def unaffect_title_on_kingdom_changed(sender, instance, **kwargs):
 @receiver(pre_save, sender=AvailableTitle)
 def check_title_condition(sender, instance, **kwargs):
 	# Run condition code, checking if the specified folk can be affected on this title.
-	if instance.folk is not None and instance.check_condition() != 'ok':
-		instance.folk = None
+	if instance.last_folk_id != instance.folk_id:
+		status = instance.check_condition()
+		if status != 'ok':
+			raise ValidationError("Impossible d'affecter cette personne : %s" % status)
+
+
+@receiver(pre_save, sender=AvailableTitle)
+def on_availabletitle_affection(sender, instance, **kwargs):
+	if instance.last_folk_id != instance.folk_id:
+		# Was there a prior defection?
+		if instance.last_folk != -1:
+			instance.defect(instance.last_folk)
+
+		# A new Folk was added!
+		instance.affect(instance.folk)
+		instance.last_folk = instance.folk_id

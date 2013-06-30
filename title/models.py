@@ -26,6 +26,7 @@ class AvailableTitle(models.Model):
 	title = models.ForeignKey(Title)
 	kingdom = models.ForeignKey(Kingdom)
 	folk = models.OneToOneField(Folk, null=True, default=None, related_name="title")
+	last_folk = models.ForeignKey(Folk, null=True, default=None, related_name="+", editable=False)
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.title.name, self.kingdom.user.username)
@@ -39,6 +40,28 @@ class AvailableTitle(models.Model):
 			'kingdom': self.kingdom,
 		}
 		status, param = execute(self.title.condition, self.folk, context)
+
+		return status
+
+	def affect(self, folk):
+		"""
+		Affect folk to the title.
+		"""
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.title.on_affect, self.folk, context)
+
+		return status
+
+	def defect(self):
+		"""
+		Defect folk from the title
+		"""
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.title.on_defect, self.folk, context)
 
 		return status
 
