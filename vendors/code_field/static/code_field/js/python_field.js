@@ -22,7 +22,7 @@ $(document).ready(function(){
 		});
 	}
 
-	$('.add-row').click(function(){
+	$('.add-row a').click(function(){
 		setTimeout(convert, 200);
 	})
 
