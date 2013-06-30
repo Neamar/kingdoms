@@ -53,13 +53,20 @@ class Folk(NamedModel):
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
 	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
-	
+
+
+class QualityCategory(DescribedModel):
+	"""
+	A category for some qualities.
+	"""
+	pass
+
 
 class Quality(DescribedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
-	pass
+	category = models.ForeignKey(QualityCategory)
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
 
 

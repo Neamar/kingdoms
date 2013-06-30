@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from kingdom.models import Kingdom, Folk, Quality, ModalMessage, Message, Claim
+from kingdom.models import Kingdom, Folk, Quality, QualityCategory, ModalMessage, Message, Claim
 from config.lib.admin import DescribedModelAdmin
 
 
@@ -20,6 +20,11 @@ class FolkAdmin(admin.ModelAdmin):
 admin.site.register(Folk, FolkAdmin)
 
 
+admin.site.register(QualityCategory, DescribedModelAdmin)
+
+
+class FolkAdmin(admin.ModelAdmin):
+	list_display = ('name', 'sex')
 admin.site.register(Quality, DescribedModelAdmin)
 
 
