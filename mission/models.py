@@ -65,13 +65,11 @@ class PendingMission(models.Model):
 		if not self.is_started:
 			raise ValidationError("Unable to resolve unstarted mission.")
 
-		if self.is_finished:
-			raise ValidationError("Mission already resolved.")
-
 		status, params = execute(self.mission.on_resolution, self)
 
 		self.is_finished = True
 		self.save()
+		self.delete()
 
 		return status
 
