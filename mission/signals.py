@@ -14,7 +14,7 @@ def no_defect_after_mission_start(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=PendingMissionAffectation)
 def no_affect_after_mission_start(sender, instance, **kwargs):
-	if instance.pending_mission.is_started:
+	if not instance.pk and instance.pending_mission.is_started:
 		raise IntegrityError("No folk affection after mission start.")
 
 
@@ -34,6 +34,10 @@ def check_pending_mission_affectation_condition(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=PendingMissionAffectation)
 def check_pending_mission_affectation_length(sender, instance, **kwargs):
+
+	if instance.pk:
+		return
+
 	count = PendingMissionAffectation.objects.filter(
 		pending_mission=instance.pending_mission,
 		mission_grid=instance.mission_grid
