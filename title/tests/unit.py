@@ -171,3 +171,40 @@ param.save()
 		at.save()
 
 		self.assertEquals(self.f.loyalty, 50)
+
+	def test_title_affect_defect(self):
+		self.t.on_affect = """
+param.loyalty = 80
+param.save()
+"""
+		self.t.on_defect = """
+param.loyalty = 20
+param.save()
+"""
+		self.t.save()
+
+		f2 = Folk(
+			name="Another folk",
+			kingdom=self.k
+		)
+		f2.save()
+
+		# Sanity check
+		self.assertEquals(self.f.loyalty, 0)
+		self.assertEquals(f2.loyalty, 0)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		at.save()
+
+		# Assertion
+		self.assertEquals(self.f.loyalty, 80)
+
+		at.folk = f2
+		at.save()
+
+		self.assertEquals(self.f.loyalty, 20)
+		self.assertEquals(f2.loyalty, 80)
