@@ -36,9 +36,6 @@ def folk_validate_parent_sex(sender, instance, **kwargs):
 @receiver(m2m_changed, sender=Folk.quality_set.through)
 def check_incompatible_qualities(sender, instance, action, reverse, pk_set, **kwargs):
 
-	if len(pk_set) > 1:
-		raise ValidationError("Only add one quality at a time.")
-
 	if action == "pre_add" and len(pk_set) == 1:
 		folk = instance
 		quality = Quality.objects.get(id__in=pk_set)
