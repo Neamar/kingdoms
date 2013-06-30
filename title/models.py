@@ -29,7 +29,7 @@ class AvailableTitle(models.Model):
 	last_folk = models.ForeignKey(Folk, null=True, default=None, related_name="+", editable=False)
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.title.name, self.kingdom.user.username)
+		return '%s [%s]' % (self.title.name, self.kingdom)
 
 	def check_condition(self):
 		"""
@@ -51,7 +51,7 @@ class AvailableTitle(models.Model):
 			'kingdom': self.kingdom,
 		}
 		status, param = execute(self.title.on_affect, folk, context)
-		
+
 		return status
 
 	def defect(self, folk):

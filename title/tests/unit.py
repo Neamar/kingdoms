@@ -122,3 +122,52 @@ param.save()
 		at.save()
 
 		self.assertEquals(self.f.loyalty, 50)
+
+	def test_title_affect(self):
+		self.t.on_affect = """
+param.loyalty = 50
+param.save()
+"""
+		self.t.save()
+
+		# Sanity check
+		self.assertNotEquals(self.f.loyalty, 50)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+		)
+		at.save()
+
+		# Sanity check
+		self.assertNotEquals(self.f.loyalty, 50)
+
+		at.folk = self.f
+		at.save()
+
+		self.assertEquals(self.f.loyalty, 50)
+
+	def test_title_defect(self):
+		self.t.on_defect = """
+param.loyalty = 50
+param.save()
+"""
+		self.t.save()
+
+		# Sanity check
+		self.assertNotEquals(self.f.loyalty, 50)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		at.save()
+
+		# Sanity check
+		self.assertNotEquals(self.f.loyalty, 50)
+
+		at.folk = None
+		at.save()
+
+		self.assertEquals(self.f.loyalty, 50)
