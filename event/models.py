@@ -62,7 +62,7 @@ class PendingEvent(models.Model):
 
 	def fire(self):
 		"""
-		Check if this pending event associated event allows to be created.
+		Execute the code when the event append
 		Signals will check the validity.
 		"""
 		context = {
@@ -82,5 +82,17 @@ class PendingEventAction(models.Model):
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(max_length=255)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
+
+	def fire(self):
+		"""
+		Execute the code of the action
+		"""
+		context = {
+			'kingdom': self.pending_event.kingdom,
+			'folk': self.folk
+		}
+		status, param = execute(self.event_action.on_fire, self, context)
+
+		return status
 
 from event.signals import *
