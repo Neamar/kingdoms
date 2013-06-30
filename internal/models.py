@@ -17,11 +17,24 @@ class Trigger(DescribedModel):
 	fired = models.ManyToManyField(Kingdom)
 
 	def check_condition(self, kingdom):
+		"""
+		Check if the trigger should be fired for the specified kingdom.
+		It is assumed check on threshold and fired have already been made by the ORM.
+		See :signals: doc.
+		"""
 		status, param = execute(self.condition, kingdom)
 		return status
 
 	def fire(self, kingdom):
+		"""
+		Fire the trigger.
+		Register it has been fired.
+		"""
 		status, param = execute(self.on_fire, kingdom)
+
+		# Register it has been fired.
+		trigger.fired.add(instance)
+		
 		return status
 
 

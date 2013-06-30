@@ -19,4 +19,3 @@ def fire_trigger(sender, instance, **kwargs):
 		status = trigger.check_condition(instance)
 		if status == 'ok':
 			trigger.fire(instance)
-			trigger.fired.add(instance)
