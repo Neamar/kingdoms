@@ -1,8 +1,8 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, m2m_changed
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
-from kingdom.models import Folk
+from kingdom.models import Folk, Quality
 
 
 @receiver(pre_save, sender=Folk)
@@ -31,3 +31,17 @@ def folk_validate_parent_sex(sender, instance, **kwargs):
 
 	if instance.father and instance.father.sex != Folk.MALE:
 		raise ValidationError("Father must be a male.")
+
+
+@receiver(m2m_changed, sender=Folk.quality_set.through)
+def check_incompatible_qualities(sender, instance, action, reverse, pk_set, **kwargs):
+
+	if len(pk_set) > 1:
+		raise ValidationError("Only add one quality at a time.")
+
+	if action == "pre_add" and len(pk_set) == 1:
+		folk = instance
+		quality = Quality.objects.get(id__in=pk_set)
+		folk_qualities = folk.quality_set.all()
+		if quality.incompatible_qualities.filter(id__in=folk_qualities).exists():
+			raise ValidationError("Incompatible quality.")

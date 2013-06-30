@@ -87,15 +87,6 @@
 },
 {
   "pk": 1, 
-  "model": "mission.pendingmissionaffectation", 
-  "fields": {
-    "pending_mission": 1, 
-    "folk": 1, 
-    "mission_grid": 1
-  }
-},
-{
-  "pk": 1, 
   "model": "event.eventcategory", 
   "fields": {
     "frequency": 200, 

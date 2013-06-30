@@ -15,6 +15,8 @@ class Kingdom(models.Model):
 	population = models.PositiveIntegerField(default=0)
 	money = models.PositiveIntegerField(default=0)
 
+	claims = models.ManyToManyField('self', through='Claim', blank=True, symmetrical=False)
+
 	def __unicode__(self):
 		return '%s kingdom' % self.user
 
@@ -50,14 +52,22 @@ class Folk(NamedModel):
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
-	disabled = models.BooleanField()
-	
+	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
+
+
+class QualityCategory(DescribedModel):
+	"""
+	A category for some qualities.
+	"""
+	pass
+
 
 class Quality(DescribedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
-	pass
+	category = models.ForeignKey(QualityCategory)
+	incompatible_qualities = models.ManyToManyField('self', blank=True)
 
 
 class Message(models.Model):

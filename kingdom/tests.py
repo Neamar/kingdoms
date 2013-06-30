@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from datetime import datetime
-from kingdom.models import Kingdom, Folk, Claim
+from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory
 
 
 class UnitTest(TestCase):
@@ -144,3 +145,31 @@ class UnitTest(TestCase):
 			offended=k2
 		)
 		self.assertRaises(IntegrityError, c.save)
+
+	def test_incompatible_qualities(self):
+		"""
+		You can't have two incompatible qualities.
+		"""
+		qc = QualityCategory(
+			name="Cat",
+			description="..."
+		)
+		qc.save()
+
+		q = Quality(
+			category=qc,
+			name="Avare",
+			description="Jamais donner argent !")
+		q.save()
+
+		q2 = Quality(
+			category=qc,
+			name="Généreux",
+			description="Toujours donner argent !")
+		q2.save()
+
+		q.incompatible_qualities.add(q2)
+
+		self.f.quality_set.add(q)
+
+		self.assertRaises(ValidationError, (lambda: self.f.quality_set.add(q2)))
