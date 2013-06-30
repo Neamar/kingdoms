@@ -21,7 +21,7 @@ class PendingMissionAffectationInline(admin.StackedInline):
 
 
 class PendingMissionAdmin(admin.ModelAdmin):
-	list_display = ('mission', 'kingdom', 'started')
+	list_display = ('mission', 'kingdom', 'target', 'started')
 	actions = ['resolve']
 	inlines = [PendingMissionAffectationInline]
 
