@@ -59,16 +59,29 @@ class PendingMission(models.Model):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
 	def init(self):
-		
-		# Execute the script in on_init
-		status = execute(self.mission.on_init, None)
+		"""
+		Execute on_init script.
+		Called by a signal, if status != ok the mission will probably be aborted.
+		"""
+
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status = execute(self.mission.on_init, context=context)
 		return status
 
 	def start(self):
+		"""
+		Execute on_start script.
+		"""
+
 		if self.is_started:
 			raise ValidationError("Mission already started.")
 
-		status, param = execute(self.mission.on_start, self)
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.mission.on_start, self, context=context)
 
 		self.is_started = True
 		self.save()
@@ -82,7 +95,10 @@ class PendingMission(models.Model):
 		if not self.is_started:
 			raise ValidationError("Unable to resolve unstarted mission.")
 
-		status, param = execute(self.mission.on_resolution, self)
+		context = {
+			'kingdom': self.kingdom,
+		}
+		status, param = execute(self.mission.on_resolution, self, context=context)
 
 		self.is_finished = True
 		self.save()

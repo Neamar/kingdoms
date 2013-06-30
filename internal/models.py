@@ -16,13 +16,14 @@ class Trigger(DescribedModel):
 
 	fired = models.ManyToManyField(Kingdom)
 
-	def check_condition(self, Kingdom):
-		status, param = execute(self.condition, Kingdom)
-		return (status, param)
+	def check_condition(self, kingdom):
+		status, param = execute(self.condition, kingdom)
+		return status
 
-	def fire(self, Kingdom):
-		status, param = execute(self.on_fire, Kingdom)
-		return (status, param)
+	def fire(self, kingdom):
+		status, param = execute(self.on_fire, kingdom)
+		return status
+
 
 class Constant(DescribedModel):
 	value = models.IntegerField()

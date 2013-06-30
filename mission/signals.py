@@ -60,5 +60,5 @@ def check_pending_mission_on_init(sender, instance, **kwargs):
 @receiver(pre_save, sender=PendingMission)
 def start_pending_mission(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started:
-		status = instance.start() 
+		instance.start()
 		instance.is_started = True
