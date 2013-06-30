@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 from config.lib.execute import execute
@@ -69,7 +70,6 @@ class PendingEvent(models.Model):
 			'kingdom': self.kingdom,
 		}
 		status, param = execute(self.event.on_fire, self, context)
-
 		return status
 
 
@@ -92,7 +92,7 @@ class PendingEventAction(models.Model):
 			'folk': self.folk
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
-
+		self.pending_event.delete()
 		return status
 
 from event.signals import *
