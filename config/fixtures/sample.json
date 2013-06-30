@@ -48,16 +48,97 @@
 },
 {
   "pk": 1, 
+  "model": "kingdom.qualitycategory", 
+  "fields": {
+    "name": "G\u00e9n\u00e9tique", 
+    "description": "Traits g\u00e9n\u00e9tiques"
+  }
+},
+{
+  "pk": 1, 
+  "model": "kingdom.quality", 
+  "fields": {
+    "category": 1, 
+    "incompatible_qualities": [
+      2
+    ], 
+    "name": "Avare", 
+    "description": "Comme celui de Moli\u00e8re."
+  }
+},
+{
+  "pk": 2, 
+  "model": "kingdom.quality", 
+  "fields": {
+    "category": 1, 
+    "incompatible_qualities": [
+      1
+    ], 
+    "name": "Riche", 
+    "description": "Pas comme moi."
+  }
+},
+{
+  "pk": 3, 
+  "model": "kingdom.quality", 
+  "fields": {
+    "category": 1, 
+    "incompatible_qualities": [], 
+    "name": "Duelliste", 
+    "description": "Bon avec une \u00e9p\u00e9e."
+  }
+},
+{
+  "pk": 1, 
   "model": "mission.mission", 
   "fields": {
     "category": "", 
     "name": "Duel avec le chevalier noir", 
     "title": 1, 
     "cancellable": false, 
-    "description": "Le chevalier noir vous défie !", 
+    "description": "Le chevalier noir vous d\u00e9fie !", 
     "timeout": null, 
     "on_resolution": "affected = param.folk_set.all()\nkingdom = param.kingdom\n\nif len(affected) == 0:\n  kingdom.money = kingdom.money / 2\nelse:\n  if affected[0].folk.fight > 5:\n    kingdom.money += 500\n  else:\n    kingdom.money -= 50\n\nkingdom.save()", 
-    "target_list": "param=Kingdom.objects.all()", 
+    "target_list": "", 
+    "has_target": false, 
+    "target_description": "Cible", 
+    "on_start": "\n", 
+    "duration": 5, 
+    "on_init": "\n"
+  }
+},
+{
+  "pk": 2, 
+  "model": "mission.mission", 
+  "fields": {
+    "category": "", 
+    "name": "Mariage", 
+    "title": null, 
+    "cancellable": false, 
+    "description": "Le mariage pour tous !", 
+    "timeout": null, 
+    "on_resolution": "affected = param.folk_set.all()\n\nif len(affected) == 2:\n  husband = affected[0].folk\n  wife = affected[1].folk\n\n  print husband, wife\n\n  husband.spouse = wife\n  husband.save()\n\n  wife.spouse = husband\n  wife.save()\n", 
+    "target_list": "", 
+    "has_target": false, 
+    "target_description": "Cible", 
+    "on_start": "\n", 
+    "duration": 5, 
+    "on_init": "\n"
+  }
+},
+{
+  "pk": 3, 
+  "model": "mission.mission", 
+  "fields": {
+    "category": "", 
+    "name": "Kamikaze", 
+    "title": null, 
+    "cancellable": false, 
+    "description": "TUEZ LES TOUUUUUS", 
+    "timeout": null, 
+    "on_resolution": "folks[0].folk.die()\n\ntarget.population -= 20\ntarget.save()", 
+    "target_list": "\n", 
+    "has_target": true, 
     "target_description": "Cible", 
     "on_start": "\n", 
     "duration": 5, 
@@ -69,9 +150,39 @@
   "model": "mission.missiongrid", 
   "fields": {
     "length": 20, 
-    "mission": 1, 
+    "name": "Mon h\u00e9ros", 
     "condition": "\n", 
-    "name": "Mon héros"
+    "mission": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "mission.missiongrid", 
+  "fields": {
+    "length": 1, 
+    "name": "Mari", 
+    "condition": "if param.sex != Folk.MALE:\n  status=\"un homme !\"\n", 
+    "mission": 2
+  }
+},
+{
+  "pk": 3, 
+  "model": "mission.missiongrid", 
+  "fields": {
+    "length": 20, 
+    "name": "Femme", 
+    "condition": "if param.sex != Folk.FEMALE:\n  status=\"une femme !\"", 
+    "mission": 2
+  }
+},
+{
+  "pk": 4, 
+  "model": "mission.missiongrid", 
+  "fields": {
+    "length": 1, 
+    "name": "Kamikaze", 
+    "condition": "\n", 
+    "mission": 3
   }
 },
 {
