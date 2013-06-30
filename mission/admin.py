@@ -21,7 +21,8 @@ class PendingMissionAdmin(admin.ModelAdmin):
 	def resolve(self, request, queryset):
 		for pendingmission in queryset:
 			pendingmission.resolve()
-	resolve.short_description = "Resolve missions"
+		self.message_user(request, "Les missions ont été résolues")
+	resolve.short_description = "Résoudre les missions sélectionnées"
 
 admin.site.register(PendingMission, PendingMissionAdmin)
 
