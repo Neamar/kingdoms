@@ -1,7 +1,9 @@
 Documentation pour le scripting par Mission
 =======================
+![Mission models](https://github.com/Neamar/kingdoms/blob/master/mission/models.png?raw=true)
 
 Vocabulaire des missions
+------------------------
 
 Où scripter ?
 -------------
