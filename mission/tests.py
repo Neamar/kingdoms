@@ -63,6 +63,22 @@ class UnitTest(TestCase):
 
 		self.assertRaises(IntegrityError, pma2.save)
 
+	def test_cant_affect_disabled(self):
+		"""
+		A folk can't be affected when he is disabled.
+		"""
+		self.pma.delete()
+		self.f.disabled = True
+		self.f.save()
+
+		pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		self.assertRaises(ValidationError, pma.save)
+
 	def test_cant_remove_after_mission_start(self):
 		"""
 		A folk can't be removed from a mission after it started.

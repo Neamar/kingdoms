@@ -23,6 +23,12 @@ def check_pending_mission_affectation_condition(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
+def check_folk_is_able(sender, instance, **kwargs):
+	if instance.folk.disabled:
+		raise ValidationError("Is disabled, can't be part of mission")
+
+
+@receiver(pre_save, sender=PendingMissionAffectation)
 def check_pending_mission_affectation_length(sender, instance, **kwargs):
 	count = PendingMissionAffectation.objects.filter(
 		pending_mission=instance.pending_mission,
