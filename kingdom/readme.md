@@ -18,3 +18,9 @@ Que scripter ?
 
 #### Ajouter un message modal
 * `kingdom.modal_message(name, description)` : ajoute un message "modal" pour le royaume spécifié
+
+#### Faire mourir quelqu'un
+* `folk.die()` : Tue la personne
+
+#### Ajouter un trait à une personne
+* `folk.add_quality(name)`: ajoute le trait name à la personne
