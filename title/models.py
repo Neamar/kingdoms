@@ -6,9 +6,6 @@ from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
 
 
-__all__ = ['Title', 'AvailableTitle']
-
-
 class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game

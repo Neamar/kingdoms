@@ -12,10 +12,12 @@ def execute(code, param=None, context=None):
 
 	context indicates additional contexts you want to give to the scripter.
 	"""
-	from kingdom.models import *
-	from title.models import *
-	from mission.models import *
-	from event.models import *
+
+	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
+	from internal.models import Constant, Value
+	from event.models import Event, PendingEvent
+	from mission.models import Mission, PendingMission, PendingMissionAffectation
+	from Title.models import Title, AvailableTitle
 
 	_param_specified = param is not None
 

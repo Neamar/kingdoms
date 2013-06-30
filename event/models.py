@@ -7,6 +7,7 @@ from kingdom.models import Kingdom, Folk
 class EventCategory(DescribedModel):
 	frequency = models.PositiveIntegerField()
 	timeout = models.PositiveIntegerField()
+	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
 class Event(DescribedModel):

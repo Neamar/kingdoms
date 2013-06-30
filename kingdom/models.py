@@ -5,9 +5,6 @@ from django.core.validators import MaxValueValidator
 from config.lib.models import NamedModel, DescribedModel
 
 
-__all__ = ['Kingdom', 'Folk', 'Quality', 'Message', 'ModalMessage', 'Claim']
-
-
 class Kingdom(models.Model):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.
@@ -17,6 +14,8 @@ class Kingdom(models.Model):
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
 	money = models.PositiveIntegerField(default=0)
+
+	claims = models.ManyToManyField('self', through='Claim', blank=True, symmetrical=False)
 
 	def __unicode__(self):
 		return '%s kingdom' % self.user
@@ -53,12 +52,15 @@ class Folk(NamedModel):
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
+	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
+	
 
 class Quality(DescribedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
 	pass
+	incompatible_qualities = models.ManyToManyField('self')
 
 
 class Message(models.Model):

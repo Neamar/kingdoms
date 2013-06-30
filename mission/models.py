@@ -8,9 +8,6 @@ from title.models import Title
 from kingdom.models import Kingdom, Folk
 
 
-__all__ = ['Mission', 'MissionGrid', 'PendingMission', 'PendingMissionAffectation', 'AvailableMission']
-
-
 class Mission(DescribedModel):
 	"""
 	Dictionary of all available missions.
