@@ -49,6 +49,8 @@ class Folk(NamedModel):
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
+	disabled = models.BooleanField()
+	
 
 class Quality(DescribedModel):
 	"""
