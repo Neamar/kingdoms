@@ -60,7 +60,7 @@ class Quality(DescribedModel):
 	A quality a folk might have, with its description
 	"""
 	pass
-	incompatible_qualities = models.ManyToManyField('self')
+	incompatible_qualities = models.ManyToManyField('self', blank=True)
 
 
 class Message(models.Model):
