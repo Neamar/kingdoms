@@ -42,6 +42,9 @@ Que scripter ?
 #### Ajouter un trait à une personne
 * `folk.add_quality(name)`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
 
+#### Demander un sexe aléatoire
+* `folk.random_sex()`: retourne un sexe aléatoirement
+
 Exemples
 -------------
 ### Ajout d'un message
