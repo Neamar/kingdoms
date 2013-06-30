@@ -1,17 +1,17 @@
-#Python files
+# Python files
 *.log
 *.pot
 *.pyc
 *.pyo
 
-#Django specific
+# Django specific
 collected-static/*
 media/*
 *.sqlite
 *.sqlite-journal
 local_settings.py
 
-#IDE specific
+# IDE specific
 *.komodoproject
 *.project
 *.pydevproject
@@ -19,8 +19,12 @@ local_settings.py
 *.sublime-*
 *.swp
 
-#Virtual env
+# Virtual env
 .v_env/*
 
-#Mac specific
+# Mac specific
 *.DS_Store
+
+# Coverage
+.coverage
+htmlcov/*

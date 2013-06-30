@@ -69,6 +69,24 @@ def check_pending_mission_on_init(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMission)
+def check_pending_mission_target_allowed(sender, instance, **kwargs):
+	"""
+	Check there is no target if the mission forbids a target.
+	"""
+	if instance.target is not None and not instance.mission.has_target:
+			raise ValidationError("This mission does not allows for target.")
+
+
+@receiver(pre_save, sender=PendingMission)
+def check_pending_mission_target_in_list(sender, instance, **kwargs):
+	"""
+	Check the target is in the allowed list.
+	"""
+	if instance.target is not None and not instance.is_started and not instance.target in instance.targets():
+			raise ValidationError("This target is not allowed.")
+
+
+@receiver(pre_save, sender=PendingMission)
 def start_pending_mission(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started:
 		instance.start()

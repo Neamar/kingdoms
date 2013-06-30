@@ -208,9 +208,9 @@ status="NotAllowed"
 
 		self.assertRaises(IntegrityError, pma2.save)
 
-	def test_mission_target(self):
+	def test_mission_target_list_code(self):
 		"""
-		Check the target code.
+		Check the target_list code
 		"""
 
 		self.m.has_target = True
@@ -227,6 +227,28 @@ status="NotAllowed"
 		# Check : k2 matches
 		self.assertEqual(len(self.pm.targets()), 1)
 		self.assertEqual(self.pm.targets()[0], k2)
+
+	def test_mission_target_in_list(self):
+		"""
+		Check the target is in target_list
+		"""
+
+		self.m.has_target = True
+		self.m.target_list = "param = Kingdom.objects.filter(money__gte=10000)"
+		self.m.save()
+
+		# Invalid assignment, our kingdom does not match condition
+		self.pm.target = self.k
+		self.assertRaises(ValidationError, self.pm.save)
+
+	def test_mission_target_allowed(self):
+		"""
+		Check the target is in target_list
+		"""
+
+		# Invalid assignment, self.m does not define has_target=True
+		self.pm.target = self.k
+		self.assertRaises(ValidationError, self.pm.save)
 
 	def test_mission_on_init(self):
 		"""
@@ -299,8 +321,14 @@ status='mission_solved'
 		status = pm2.resolve()
 		self.assertEqual(status, 'mission_solved')
 
+	def test_mission_resolution_delete_pending_mission(self):
 		# Pendingmission must be deleted
-		self.assertTrue(pm2.is_finished)
+		self.pm.started = datetime.now()
+		self.pm.save()
+		self.pm.resolve()
+
+		self.assertTrue(self.pm.is_finished)
+		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.pk)))
 
 	def test_mission_not_cancellable(self):
 		"""
