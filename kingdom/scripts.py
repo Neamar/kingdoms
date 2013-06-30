@@ -48,3 +48,6 @@ def folk_add_quality(self, name):
 		return None
 	return quality
 Folk.add_quality = folk_add_quality
+
+
+
