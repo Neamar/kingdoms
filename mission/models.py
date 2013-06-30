@@ -62,8 +62,14 @@ class PendingMission(models.Model):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
 	def resolve(self):
+		"""
+		Resolve this mission.
+		"""
 		if not self.is_started:
 			raise ValidationError("Unable to resolve unstarted mission.")
+
+		if self.is_finished:
+			raise ValidationError("Mission already resolved.")
 
 		status, params = execute(self.mission.on_resolution, self)
 
