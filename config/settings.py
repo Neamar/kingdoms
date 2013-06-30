@@ -125,7 +125,7 @@ INSTALLED_APPS = (
 
     # Pip Lib
     'south',
-    'django_extensions',
+#    'django_extensions',
 
     # Vendor lib
     'vendors.code_field',

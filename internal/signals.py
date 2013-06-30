@@ -9,7 +9,11 @@ from internal.models import Trigger
 @receiver(post_save, sender=Kingdom)
 def fire_trigger(sender, instance, **kwargs):
 
-	triggers = Trigger.objects.filter(prestige_threshold__lte=instance.prestige, population_threshold__lte=instance.population).exclude(fired=instance).order_by('id')
+	triggers = Trigger.objects.filter(
+				prestige_threshold__lte=instance.prestige, 
+				population_threshold__lte=instance.population,
+				money_threshold__lte=instance.money,
+			).exclude(fired=instance).order_by('id')
 
 	for trigger in triggers:
 		status, param = execute(trigger.condition, instance)

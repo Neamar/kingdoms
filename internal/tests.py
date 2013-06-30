@@ -21,6 +21,7 @@ class UnitTest(TestCase):
 		self.t = Trigger(
 			prestige_threshold=10,
 			population_threshold=10,
+			money_threshold = 10,
 		)
 		self.t.save()
 
@@ -39,6 +40,7 @@ Folk(
 		# Do not fire
 		self.k.prestige = 2
 		self.k.population = 2
+		self.k.money_threshold = 2
 		# triggers are executed on save from kingdoms
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
@@ -46,18 +48,56 @@ Folk(
 		# Do not fire if only one value is ok
 		self.k.prestige = 15
 		self.k.population = 0
+		self.k.money = 0
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test also the case when only the other is ok 
+		# Test also the case when only the second one is ok 
 		self.k.prestige = 0
 		self.k.population = 15
+		self.k.money = 0 
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
+		# Test also the case when only the third one is ok 
+		self.k.prestige = 0
+		self.k.population = 0
+		self.k.money = 15
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 1)
+
+		# Test also the case when only two are ok 
+		self.k.prestige = 15
+		self.k.population = 15
+		self.k.money = 0
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 1)
+
+		# Test case when two are okay (#1) 
+		self.k.prestige = 15
+		self.k.population = 0
+		self.k.money = 15
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 1)
+
+		# Test case when two are okay (#2) 
+		self.k.prestige = 0
+		self.k.population = 15
+		self.k.money = 15
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 1)
+
+		# Test case when two are okay (#3) 
+		self.k.prestige = 0
+		self.k.population = 0
+		self.k.money = 15
+		self.k.save()
+		self.assertEquals(Folk.objects.count(), 1)
+		
 		# Fire!
 		self.k.prestige = 15
 		self.k.population = 15
+		self.k.money = 15
 		# Kingdom save to launch the triggers
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 2)
@@ -77,6 +117,7 @@ Folk(
 		# Fire!
 		self.k.prestige = 15
 		self.k.population = 15
+		self.k.money = 15
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 2)
 
@@ -89,6 +130,7 @@ raise ValidationError("Can't call twice.")
 
 		self.k.prestige = 20
 		self.k.population = 20
+		self.k.money = 20
 		self.k.save()
 
 
@@ -111,6 +153,7 @@ status = "ok"
 		# Fire !
 		self.k.prestige = 20
 		self.k.population = 20
+		self.k.money = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 2)
 
@@ -135,6 +178,7 @@ status = "NotPossible"
 		# No Fire
 		self.k.prestige = 20
 		self.k.population = 20
+		self.k.money  = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
@@ -158,6 +202,7 @@ status = "NotPossible"
 		# No Fire
 		self.k.prestige = 20
 		self.k.population = 20
+		self.k.money = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
