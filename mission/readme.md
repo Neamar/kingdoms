@@ -79,3 +79,16 @@ if param.sex != Folk.MALE:
 if param.sex != Folk.FEMALE:
   status="Seul une femme peut être la mariée."
 ```
+
+### Le kamikaze
+Utilise le système de `target`.
+
+`on_resolution` :
+```python
+# Le kamikaze meurt (probablement dans d'atroces souffrances)
+folks[0].folk.die()
+
+# Le kingdom visé perd en population.
+target.population -= 20
+target.save()
+```

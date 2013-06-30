@@ -18,8 +18,8 @@ class Mission(DescribedModel):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
-	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
-	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks.")
+	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid.", blank=True)
+	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", blank=True)
@@ -85,6 +85,30 @@ class PendingMission(models.Model):
 		status = execute(self.mission.on_init, context=context)
 		return status
 
+	def _get_context(self):
+		"""
+		Return context for scripts on_start and on_resolution
+		"""
+		affecteds = self.folk_set.all().select_related('folk')
+		grids = {}
+		for affected in affecteds:
+			if affected.mission_grid_id in grids:
+				grids[affected.mission_grid_id].append(affected.folk)
+			else:
+				grids[affected.mission_grid_id] = [affected.folk]
+
+		folks = [affected.folk for affected in affecteds]
+		grids = [v for k, v in grids.items()]
+
+		context = {
+			'kingdom': self.kingdom,
+			'folks': folks,
+			'grid': grids,
+			'target': self.target
+		}
+
+		return context
+
 	def start(self):
 		"""
 		Execute on_start script.
@@ -93,10 +117,7 @@ class PendingMission(models.Model):
 		if self.is_started:
 			raise ValidationError("Mission already started.")
 
-		context = {
-			'kingdom': self.kingdom,
-		}
-		status, param = execute(self.mission.on_start, self, context=context)
+		status, param = execute(self.mission.on_start, self, context=self._get_context())
 
 		self.is_started = True
 		self.save()
@@ -112,9 +133,10 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.folk_set.all()
+			'folks': self.folk_set.all(),
+			'target': self.target
 		}
-		status, param = execute(self.mission.on_resolution, self, context=context)
+		status, param = execute(self.mission.on_resolution, self, context=self._get_context())
 
 		self.is_finished = True
 		self.save()

@@ -11,7 +11,9 @@ class MissionGridInline(admin.StackedInline):
 
 class MissionAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'title', 'category')
+	list_filter = ('title__name',)
 	inlines = [MissionGridInline]
+
 admin.site.register(Mission, MissionAdmin)
 
 
@@ -24,6 +26,19 @@ class PendingMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom', 'target', 'started')
 	actions = ['resolve']
 	inlines = [PendingMissionAffectationInline]
+
+	def formfield_for_foreignkey(self, db_field, request, **kwargs):
+		field = super(PendingMissionAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+		
+		if db_field.name == "target":
+			
+			if request.__temp_pendingmission:
+				field.queryset = request.__temp_pendingmission.targets()
+		return field
+
+	def get_form(self, request, obj=None, **kwargs):
+		request.__temp_pendingmission = obj
+		return super(PendingMissionAdmin, self).get_form(request, obj, **kwargs)
 
 	def resolve(self, request, queryset):
 		for pendingmission in queryset:
