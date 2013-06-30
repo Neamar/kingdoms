@@ -8,9 +8,15 @@ from mission.models import PendingMission, PendingMissionAffectation
 
 
 @receiver(pre_delete, sender=PendingMissionAffectation)
-def no_delete_after_mission_start(sender, instance, **kwargs):
+def no_defect_after_mission_start(sender, instance, **kwargs):
 	if instance.pending_mission.is_started and not instance.pending_mission.is_finished:
 		raise IntegrityError("No folk defection after mission start.")
+
+
+@receiver(pre_save, sender=PendingMissionAffectation)
+def no_affect_after_mission_start(sender, instance, **kwargs):
+	if instance.pending_mission.is_started:
+		raise IntegrityError("No folk affection after mission start.")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
