@@ -5,6 +5,7 @@ Documentation for this lies in readme.md
 from datetime import datetime
 
 from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
+from django.core.exceptions import ValidationError
 
 
 def kingdom_message(self, content, level=Message.INFORMATION):
@@ -41,6 +42,12 @@ Folk.die = folk_die
 
 def folk_add_quality(self, name):
 	qual = Quality.objects.get(name=name)
-	self.quality_set.add(qual)
-	return qual
+	try:
+		self.quality_set.add(qual)
+	except ValidationError:
+		raise ValidationError("Incompatible quality.")
+	else:
+		return None
+	finally:
+		return qual
 Folk.add_quality = folk_add_quality
