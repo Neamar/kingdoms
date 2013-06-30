@@ -1,5 +1,5 @@
-CodeMirrorConfig.stylesheet = "/static/python_field/css/pythoncolors.css";
-CodeMirrorConfig.path = "/static/python_field/js/";
+CodeMirrorConfig.stylesheet = "/static/code_field/css/pythoncolors.css";
+CodeMirrorConfig.path = "/static/code_field/js/";
 CodeMirrorConfig.parserfile = "parsepython.js";
 CodeMirrorConfig.height = "dynamic";
 CodeMirrorConfig.indentUnit = 2;
