@@ -13,16 +13,16 @@ class EventCategory(DescribedModel):
 class Event(DescribedModel):
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
-	condition = ScriptField(blank=True, null=True, help_text = "Event condition. `param` is the current Kingdom object", default = "")
-	on_fire = ScriptField(blank=True, null=True, help_text = "Event code, `param` is the PendingEvent object", default = "")
+	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current Kingdom object", default="")
+	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the PendingEvent object", default="")
 	text = models.TextField()
 
 	def create(self, kingdom):
 		
 		pe = PendingEvent(
-			event = self,
-			kingdom  = kingdom,
-			text = self.text,
+			event=self,
+			kingdom=kingdom,
+			text=self.text,
 		)
 		pe.save()
 		return pe
@@ -32,6 +32,7 @@ class EventAction(NamedModel):
 	event = models.ForeignKey(Event)
 	on_fire = ScriptField(blank=True, null=True)
 	text = models.CharField(max_length=255)
+
 
 class PendingEvent(models.Model):
 	event = models.ForeignKey(Event)
