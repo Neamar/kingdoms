@@ -21,11 +21,6 @@ class EventCategoryAdmin(admin.ModelAdmin):
 admin.site.register(EventCategory, EventCategoryAdmin)
 
 
-class EventActionAdmin(admin.ModelAdmin):
-	list_display = ('name', 'event')
-admin.site.register(EventAction, EventActionAdmin)
-
-
 class PendingEventAdmin(admin.ModelAdmin):
 	list_display = ('event', 'kingdom', 'creation')
 admin.site.register(PendingEvent, PendingEventAdmin)

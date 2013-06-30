@@ -6,7 +6,7 @@ from mission.models import Mission, MissionGrid, PendingMission, PendingMissionA
 
 class MissionGridInline(admin.StackedInline):
 	model = MissionGrid
-	extra = 1
+	extra = 0
 
 
 class MissionAdmin(admin.ModelAdmin):
