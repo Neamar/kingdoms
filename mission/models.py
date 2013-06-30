@@ -18,8 +18,8 @@ class Mission(DescribedModel):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
-	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission.", blank=True)
-	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks.")
+	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target.", blank=True)
+	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target.")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", blank=True)
@@ -95,6 +95,8 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
+			'folks': self.folk_set.all(),
+			'target': self.target
 		}
 		status, param = execute(self.mission.on_start, self, context=context)
 
@@ -112,7 +114,8 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.folk_set.all()
+			'folks': self.folk_set.all(),
+			'target': self.target
 		}
 		status, param = execute(self.mission.on_resolution, self, context=context)
 
