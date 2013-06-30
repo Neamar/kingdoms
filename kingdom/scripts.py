@@ -30,7 +30,8 @@ def folk_die(self):
 Folk.die = folk_die
 
 
-def folk_addquality(self, name):
-	self.quality_set.add(Quality.objects.get(name=name))
-	self.save()
-Folk.die = folk_addquality
+def folk_add_quality(self, name):
+	qual = Quality.objects.get(name=name)
+	self.quality_set.add(qual)
+	return qual
+Folk.add_quality = folk_add_quality
