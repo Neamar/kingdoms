@@ -6,7 +6,7 @@ from config.lib.admin import DescribedModelAdmin
 
 
 class KingdomAdmin(admin.ModelAdmin):
-	list_display = ('user', 'prestige', 'population')
+	list_display = ('user', 'prestige', 'population', 'money')
 admin.site.register(Kingdom, KingdomAdmin)
 
 
