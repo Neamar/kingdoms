@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -21,7 +19,7 @@ class UnitTest(TestCase):
 		self.t = Trigger(
 			prestige_threshold=10,
 			population_threshold=10,
-			money_threshold = 10,
+			money_threshold=10,
 		)
 		self.t.save()
 
@@ -55,42 +53,42 @@ Folk(
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test also the case when only the second one is ok 
+		# Test also the case when only the second one is ok
 		self.k.prestige = 0
 		self.k.population = 15
-		self.k.money = 0 
+		self.k.money = 0
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test also the case when only the third one is ok 
+		# Test also the case when only the third one is ok
 		self.k.prestige = 0
 		self.k.population = 0
 		self.k.money = 15
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test also the case when only two are ok 
+		# Test also the case when only two are ok
 		self.k.prestige = 15
 		self.k.population = 15
 		self.k.money = 0
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test case when two are okay (#1) 
+		# Test case when two are okay (#1)
 		self.k.prestige = 15
 		self.k.population = 0
 		self.k.money = 15
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test case when two are okay (#2) 
+		# Test case when two are okay (#2)
 		self.k.prestige = 0
 		self.k.population = 15
 		self.k.money = 15
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
 
-		# Test case when two are okay (#3) 
+		# Test case when two are okay (#3)
 		self.k.prestige = 0
 		self.k.population = 0
 		self.k.money = 15
@@ -139,21 +137,16 @@ raise ValidationError("Can't call twice.")
 		self.k.money = 20
 		self.k.save()
 
-
 	def test_trigger_condition_success(self):
 		"""
 		Check that a successful condition activates the corresponding trigger
-		"""		
+		"""
 
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
 	name="New user from trigger"
 ).save()
-"""
-		# Return ok in status (minimal successful condition, well, default for status is ok )
-		self.t.condition = """
-status = "ok"
 """
 		self.t.save()
 
@@ -167,7 +160,6 @@ status = "ok"
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 2)
 
-
 	def test_trigger_condition_failure(self):
 		"""
 		Check that an unsusccessful condition does not activate the corresponding trigger
@@ -180,7 +172,6 @@ Folk(
 """
 		# return None in param(minimal failure condition)
 		self.t.condition = """
-param = None
 status = "NotPossible"
 """
 		self.t.save()
@@ -191,6 +182,6 @@ status = "NotPossible"
 		# No Fire
 		self.k.prestige = 20
 		self.k.population = 20
-		self.k.money  = 20
+		self.k.money = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)

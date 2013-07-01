@@ -6,22 +6,21 @@ Vocabulaire des Internals
 ------------------------
 * `recurring` : sera appellé régulièrement (toutes les minutes, toutes les heures ou tous les jours).
 
-* `trigger` : sera appelé (une seule fois !) lorsque certaines conditions deviennent remplies.
-<!--
-* `constante` : définie une valeur, utilisée à chaque fois que l'on en a besoin. La seule modification de cette constante met à jours tous les scripts qui l'utilisent.
--->
+* `trigger` : sera appelé (une seule fois par royaume !) lorsque certaines conditions sont remplies.
+
+* `constante` : définit une valeur utilisable dans n'importe quel environnement de script.
 
 Où scripter ?
 -------------
 ### Recurring
-* `condition` : ce code défini si le kingdom est sujet ou non à ce recurring. Pour annuler ce recurring, il faut renvoyer `param= None`.
+* `condition` : ce code définit si le `kingdom` doit se voir appliquer le `in_fire`. Pour annuler ce recurring, il faut renvoyer `param= None`.
 
-*`on_fire` : ce code sera executé lorsque le recurring passera
+* `on_fire` : ce code sera executé à intervalle régulier, si la condition s'applique.
 
 ### Trigger
-* `condition` : ce code permet d'ajouter une condition en plus des seuils
+* `condition` : ce code permet d'ajouter une condition, en plus des seuils sur `prestige`, `population` et `money`.
 
-* `on_fire`: ce code se exectué lorsque le trigger se déclanchera
+* `on_fire`: ce code sera executé au déclenchement du trigger.
 
 Que scripter ?
 ---------------
@@ -33,29 +32,33 @@ Exemples
 #### Augmentation continue de la population
 
 * `condition` : 
+
 ```python
 # S'il y a au total moins de 10 personnes dans ma cours
-if Folk.objects.filter(kingdom=kingdom).count() < 10 :
-  param = None
-# *on renvoie param=None car on ne veut pas que la population augmente s'il n'y a pas assez de folk
- ```
+if Folk.objects.filter(kingdom=kingdom).count() < 10:
+	# On renvoie un status car on ne veut pas que la population augmente s'il n'y a pas assez de folk
+	"not_enough_people"
+```
 
  * `on_fire` :
- ```python
- #on augmente la population
-kingdom.population *=1.1
+
+```python
+# On augmente la population
+kingdom.population *= 1.1
 kingdom.save()
  ```
 
 ### Trigger
-#### Lancement de l'event Banquet lorsque la pop dépasse 1000
-* `condition` : on n'a pas besoin de condition ici.
+#### Lancement de l'évènement Banquet lorsque la population dépasse 1 000
+* `condition` : pas nécessaire, la limite est dans `population_threshold`.
 
 *`on_fire` : 
-# On affect l'event Banquet à ce kingdom
-PendingEvent (
-  event=Event.objects.get(name="Banquet"),
+
+```python
+# On affecte l'event Banquet au Kingdom
+PendingEvent(
+  event=Event.objects.get(slug="banquet"),
   kingdom=param,
-  text="youppppi"
-).save()  # Et on sauvegarde
+).save()
+```
 

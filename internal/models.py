@@ -11,7 +11,7 @@ class Trigger(DescribedModel):
 	population_threshold = models.PositiveIntegerField(default=0)
 	money_threshold = models.PositiveIntegerField(default=0)
 
-	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.", default="")
+	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default="")
 	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 
 	fired = models.ManyToManyField(Kingdom, null=True, blank=True)
@@ -53,13 +53,12 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition must returns with `param=None` to abort.")
+	condition = ScriptField(blank=True, null=True, help_text=".")
 	on_fire = ScriptField(blank=True, null=True)
 
 	def check_condition(self, kingdom):
 		"""
-		Check if the trigger should be fired for the specified kingdom.
-		It is assumed check on threshold and fired have already been made by the ORM.
+		Check if the recurring should be fired for the specified kingdom.
 		See :signals: doc.
 		"""
 		context = {
