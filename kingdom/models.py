@@ -39,6 +39,7 @@ class Folk(NamedModel):
 	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)
 	father = models.ForeignKey('self', related_name='+', null=True, blank=True)
 	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True)
+	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True)
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
