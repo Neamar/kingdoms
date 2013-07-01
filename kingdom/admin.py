@@ -33,7 +33,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class FolkAdmin(admin.ModelAdmin):
-	list_display = ('name', 'sex', 'age')
+	list_display = ('name', 'first name', 'last name', 'sex', 'age')
 	list_filter = ('sex', AliveFilter)
 admin.site.register(Folk, FolkAdmin)
 

@@ -34,6 +34,9 @@ class Folk(NamedModel):
 	)
 	kingdom = models.ForeignKey(Kingdom)
 
+	first_name = models.CharField(max_length=64)
+	last_name = models.CharField(max_length=64)
+	
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
 	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)

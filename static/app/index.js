@@ -11,7 +11,8 @@ $(function() {
 		$.getJSON("/api", function(datas){
 			self.money = datas.kingdom[0].money;
 			self.prestige = datas.kingdom[0].prestige;
-		}
+			}
+			)
 	}
 
 
