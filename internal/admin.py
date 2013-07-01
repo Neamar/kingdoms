@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from internal.models import Trigger, Constant, Value, Recurring
+from kingdom.models import Kingdom
 
 
 class TriggerAdmin(admin.ModelAdmin):
@@ -20,4 +21,14 @@ admin.site.register(Value, ValueAdmin)
 
 class RecurringAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'frequency')
+	actions = ['resolve']
+
+	def resolve(self, request, queryset):
+		kingdoms = Kingdom.objects.all()
+		for recurring in queryset:
+			for kingdom in kingdoms:
+				if recurring.check_condition(kingdom) == "ok":
+					recurring.fire(kingdom)
+		self.message_user(request, "Les recurrings ont été lancées")
+	resolve.short_description = "Do it now"
 admin.site.register(Recurring, RecurringAdmin)

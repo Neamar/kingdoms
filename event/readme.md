@@ -52,3 +52,14 @@ kingdom.save()
 kingdom.population /= 2
 kingdom.save()
 ```
+
+#On choisi de faire appel à un medecin
+* `on_fire` : 
+```python
+#On crée une nouvelle PendingMission
+PendingMission(
+ mission=Mission.objects.get(name="Partir en quête d'un medecin"),
+ kingdom=kingdom,
+).save() #On sauvegarde cette pending mission
+
+```

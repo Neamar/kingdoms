@@ -98,7 +98,7 @@
     "cancellable": false, 
     "description": "Le chevalier noir vous d\u00e9fie !", 
     "timeout": null, 
-    "on_resolution": "affected = param.folk_set.all()\nkingdom = param.kingdom\n\nif len(affected) == 0:\n  kingdom.money = kingdom.money / 2\nelse:\n  if affected[0].folk.fight > 5:\n    kingdom.money += 500\n  else:\n    kingdom.money -= 50\n\nkingdom.save()", 
+    "on_resolution": "if len(folks) == 0:\n  kingdom.money = kingdom.money / 2\nelse:\n  if folks[0].fight > 5:\n    kingdom.money += 500\n  else:\n    kingdom.money -= 50\n\nkingdom.save()", 
     "target_list": "", 
     "has_target": false, 
     "target_description": "Cible", 

@@ -65,6 +65,8 @@ class UnitTest(TestCase):
 		self.e.condition = """
 status="notAllowed"
 """
+		self.e.save()
+		
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
