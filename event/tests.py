@@ -109,7 +109,7 @@ kingdom.save()
 		"""
 		Check the on-fire code is only ran once.
 		"""
-		
+
 		self.e.on_fire = """
 kingdom.population += 10
 kingdom.save()
@@ -152,3 +152,34 @@ kingdom.save()
 """
 		self.pea.fire()
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=self.pe.pk)))
+
+	def test_templates_and_context(self):
+		"""
+		Pending event must be deleted after event resolution.
+		"""
+
+		self.e.on_fire = """
+kingdom.money=666
+kingdom.save()
+
+param = {
+	"value": "test",
+	"kingdom": kingdom
+}
+"""
+		self.e.text = "EVENT:{{ value }}-{{ kingdom.money}}"
+		self.e.save()
+
+		self.a.text = "ACTION:{{ value }}-{{ kingdom.money}}"
+		self.a.save()
+
+		self.pe.delete()
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+		pea = pe.pendingeventaction_set.all()[0]
+
+		self.assertEqual(pe.text, "EVENT:test-666")
+		self.assertEqual(pea.text, "ACTION:test-666")

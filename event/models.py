@@ -47,7 +47,7 @@ class PendingEvent(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	creation = models.DateTimeField(auto_now_add=True)
 	datas = models.TextField(blank=True, null=True)
-	text = models.TextField()
+	text = models.TextField(editable=False)
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.event, self.kingdom)
@@ -83,7 +83,7 @@ class PendingEventAction(models.Model):
 
 	pending_event = models.ForeignKey(PendingEvent)
 	event_action = models.ForeignKey(EventAction)
-	text = models.CharField(max_length=255)
+	text = models.CharField(editable=False, max_length=512)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
 
 	def fire(self):
