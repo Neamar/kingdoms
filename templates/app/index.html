@@ -14,19 +14,43 @@
 {% block content %}
 <h1>Que mon règne vienne !</h1>
 
-<div class="container">
-	<div data-bind="page: {id: 'start'}">
-		<p><a href="#structure">Structure</a></p>
+<!-- Kingdom -->
+<h2>Mon royaume</h2>
+<ul>
+	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
+	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
+	<li>Population : <span data-bind="text: kingdom.population"></span></li>
+</ul>
+
+<a href="#">Retour</a>
+
+<div class="row">
+	<div class="small-3 columns" id="folk">
+		{% include "app/_folk.html" %}
 	</div>
 
-	<div data-bind="page: {id: 'structure'}">
-		<p>Structure details</p>
+	<div class="small-7 columns" id="content">
+		<div data-bind="page: {id: 'start'}">
+			{% include "app/_index.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'title'}">
+			{% include "app/_title.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'mission'}">
+			{% include "app/_mission.html" %}
+		</div>
+
+		<div data-bind="page: {id: '?'}">
+			<h3>Oups !</h3>
+			<p>Désolé, mais cette page n'existe pas.</p>
+			<p><a data-bind="page-href: #">Go back</a></p>
+		</div>
 	</div>
 
-	<div data-bind="page: {id: '?'}">
-		<h3>Error</h3>
-		<p>The page you requested does not exist.</p>
-		<p><a data-bind="page-href: '../'">Go back</a></p>
+	<div class="small-2 columns" id="messages">
+		{% include "app/_event.html" %}
 	</div>
 </div>
 {% endblock content %}
