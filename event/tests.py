@@ -18,6 +18,7 @@ class UnitTest(TestCase):
 
 		self.e = Event(
 			name="Event 1",
+			slug="event_1",
 			category=self.c,
 			text="Event 1",
 			on_fire=""
@@ -38,6 +39,7 @@ class UnitTest(TestCase):
 
 		e2 = Event(
 			name="Event 2",
+			slug="event_2",
 			category=self.c,
 			text="Event 2",
 		)
