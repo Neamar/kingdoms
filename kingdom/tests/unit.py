@@ -183,3 +183,16 @@ class UnitTest(TestCase):
 		self.f.quality_set.add(q)
 
 		self.assertRaises(ValidationError, (lambda: self.f.quality_set.add(q2)))
+
+	def test_value_store(self):
+		"""
+		Store values on the kingdom
+		"""
+		self.k.set_value("foo", "bar")
+		self.k.set_value("foo2", 2)
+		self.k.set_value("folk", self.f)
+
+
+		self.assertEquals(self.k.get_value("foo"), "bar")
+		self.assertEquals(self.k.get_value("foo2"), 2)
+		self.assertEquals(self.k.get_value("folk"), self.f)
