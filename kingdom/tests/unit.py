@@ -192,7 +192,6 @@ class UnitTest(TestCase):
 		self.k.set_value("foo2", 2)
 		self.k.set_value("folk", self.f)
 
-
 		self.assertEquals(self.k.get_value("foo"), "bar")
 		self.assertEquals(self.k.get_value("foo2"), 2)
 		self.assertEquals(self.k.get_value("folk"), self.f)
