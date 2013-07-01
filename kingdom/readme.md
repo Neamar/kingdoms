@@ -37,7 +37,7 @@ Que scripter ?
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
-* `folk.die()` : tue la personne
+* `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)
 
 #### Ajouter un trait à une personne
 * `folk.add_quality(name)`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
