@@ -14,46 +14,19 @@
 {% block content %}
 <h1>Que mon règne vienne !</h1>
 
-<!-- Kingdom -->
-<h2>Mon royaume</h2>
-<ul>
-	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
-	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
-	<li>Population : <span data-bind="text: kingdom.population"></span></li>
-</ul>
-
-<div class="row">
-	<div class="small-3 columns" id="cour">
-		<h3>Ma cour</h3>
-		<ul data-bind="foreach: folks">
-			<li>
-				{% include "app/_folk.html" %}
-			</li>
-		</ul>
+<div class="container">
+	<div data-bind="page: {id: 'start'}">
+		<p><a href="#structure">Structure</a></p>
 	</div>
-	<div class="small-7 columns" id="content">
 
-		 <div data-bind="page: {id: 'start'}">
-			<p>Hello there ! <a href="#!/s">Structure</a></p>
-		</div>
-
-		<div data-bind="page: {id: 's'}">
-			<p>La structure...</p>
-		</div>
-		
-		<div data-bind="page: {id: '?'}">
-			<h3>Error</h3>
-			<p>The page you requested does not exist.</p>
-			<p><a data-bind="page-href: '../'">Go back</a></p>
-		</div>
+	<div data-bind="page: {id: 'structure'}">
+		<p>Structure details</p>
 	</div>
-	<div class="small-2 columns" id="messages">
-		<h3>Évènements</h3>
-		<ul data-bind="foreach: messages">
-			<li>
-				{% include "app/_message.html" %}
-			</li>
-		</ul>
+
+	<div data-bind="page: {id: '?'}">
+		<h3>Error</h3>
+		<p>The page you requested does not exist.</p>
+		<p><a data-bind="page-href: '../'">Go back</a></p>
 	</div>
 </div>
 {% endblock content %}
