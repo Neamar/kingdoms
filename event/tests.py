@@ -16,28 +16,21 @@ class UnitTest(TestCase):
 		)
 		self.c.save()
 
-		self.e1 = Event(
+		self.e = Event(
 			name="Event 1",
 			category=self.c,
 			text="Event 1",
 		)
-		self.e1.save()
-
-		self.e2 = Event(
-			name="Event 2",
-			category=self.c,
-			text="Event 2",
-		)
-		self.e2.save()
+		self.e.save()
 
 		self.a = EventAction(
-			event=self.e1,
+			event=self.e,
 			text="some text",
 		)
 		self.a.save()
 		
 		self.pe = PendingEvent(
-			event=self.e1,
+			event=self.e,
 			kingdom=self.k,
 			text="some text"
 		)
@@ -54,8 +47,16 @@ class UnitTest(TestCase):
 		"""
 		Check the pending_event and the event_action always refers to the same event.
 		"""
+
+		e2 = Event(
+			name="Event 2",
+			category=self.c,
+			text="Event 2",
+		)
+		e2.save()
+
 		self.pe = PendingEvent(
-			event=self.e2,
+			event=e2,
 			kingdom=self.k,
 			text="PendingEvent",
 		)
@@ -74,11 +75,11 @@ class UnitTest(TestCase):
 		Check condition is triggered.
 		"""
 		self.pe.delete()
-		self.e1.condition = """
+		self.e.condition = """
 status="notAllowed"
 """
 		self.pe = PendingEvent(
-			event=self.e1,
+			event=self.e,
 			kingdom=self.k,
 			text="some text"
 		)
@@ -86,19 +87,49 @@ status="notAllowed"
 
 	def test_on_fire_event(self):
 		"""
-		Check the on-fire code
+		Check the on-fire code (for event initialisation)
 		"""
-		self.e1.on_fire = """
+		self.e.on_fire = """
 kingdom.population = 10
 kingdom.save()
 """
-		self.e1.save()
+		self.e.save()
+
+		# Delete the old event, it was saved and is therefore already fired.
+		self.pe.delete()
+		self.pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			text="some text"
+		)
+		self.pe.save()
+		self.assertEqual(self.k.population, 10)
+
+	def test_on_fire_event_twice(self):
+		"""
+		Check the on-fire code is only ran once.
+		"""
+		
+		self.e.on_fire = """
+kingdom.population += 10
+kingdom.save()
+"""
+		self.e.save()
+
+		# Delete the old event, it was saved and is therefore already fired.
+		self.pe.delete()
+		self.pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		self.pe.save()
+		self.assertEqual(self.k.population, 10)
 		self.pe.save()
 		self.assertEqual(self.k.population, 10)
 
 	def test_on_fire_action(self):
 		"""
-		Check the on_fire event_action
+		Check the on_fire event_action (when an action is selected)
 		"""
 		self.a.on_fire = """
 kingdom.money=50
@@ -111,7 +142,10 @@ kingdom.save()
 		self.assertEqual(self.k.money, 50)
 
 	def test_resolution_delete_pending_event(self):
-		# Pending event must be deleted
+		"""
+		Pending event must be deleted after event resolution.
+		"""
+
 		self.a.on_fire = """
 kingdom.money=50
 kingdom.save()

@@ -73,7 +73,7 @@ class PendingEvent(models.Model):
 			'kingdom': self.kingdom,
 		}
 		status, param = execute(self.event.on_fire, self, context)
-		return status
+		return status, param
 
 
 class PendingEventAction(models.Model):
