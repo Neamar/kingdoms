@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Mission.text'
         db.add_column(u'mission_mission', 'text',
-                      self.gf('django.db.models.fields.TextField')(default=''),
+                      self.gf('django.db.models.fields.TextField')(default='ss'),
                       keep_default=False)
 
 
