@@ -7,8 +7,6 @@ from vendors.code_field.fields import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom, Folk
 
-import re
-
 
 class EventCategory(DescribedModel):
 	frequency = models.PositiveIntegerField()
@@ -85,14 +83,14 @@ class PendingEvent(models.Model):
 	def get_context(self):
 		context = {}
 		for var in self._pendingeventvariable_set.all():
-			context[var.name] = var.get_value()
+			context[var.name] = var.value
 		return context
 
 	def set_value(self, value_name, value):
 		pev = _PendingEventVariable(
-				pending_event=self,
-				name=value_name,
-				value=value
+			pending_event=self,
+			name=value_name,
+			value=value
 		)
 
 		pev.save()
