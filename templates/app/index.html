@@ -1,7 +1,21 @@
 {% extends "app/template.html" %}
-
 {% block title %}Que mon règne vienne{% endblock title %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}app/index.css" />
+{% endblock css %}
 
 {% block content %}
 
+<div class="row">
+	<div class="small-3 columns" id="cour">
+		<h3>Ma cour</h3>
+	</div>
+	<div class="small-7 columns" id="content">
+
+	</div>
+	<div class="small-2 columns" id="messages">
+		<h3>Évènements</h3>
+	</div>
+</div>
 {% endblock content %}
