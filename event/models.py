@@ -110,4 +110,16 @@ class PendingEventVariable(models.Model):
 	name = models.CharField(max_length=255)
 	value = models.CharField(max_length=255)
 
+	def get_value(self):
+		return self.value
+
+	def set_value(self, value):
+		if isinstance(value, (int, basestring)):
+			self.value = value
+		elif isinstance(value, models.Model):
+			name = value.__class__.__name__
+			value = '`%s`:%s' % (name, value.pk)
+		else:
+			raise ValidationError("Context must be int, string of DB objects.")
+
 from event.signals import *
