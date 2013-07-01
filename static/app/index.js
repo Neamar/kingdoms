@@ -1,9 +1,9 @@
 $(function() {
 	datas = {
-		"kingdom": [{
+		"kingdom": {
 			"money": 50,
 			"prestige": 12,
-		}]
+		}
 	}
 
 	function kingdom_value(){
@@ -13,5 +13,5 @@ $(function() {
 	}
 
 
-	ko.applyBindings(new kingdom_json());
+	ko.applyBindings(datas);
 });
