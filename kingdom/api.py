@@ -1,4 +1,4 @@
-from kingdom.models import Kingdom, Folk, Message
+from kingdom.models import Folk, Message
 from kingdom.serializers import serialize_folk, serialize_kingdom, serialize_message
 
 
@@ -9,7 +9,7 @@ def kingdom_api(request):
 
 	resp = {}
 
-	kingdom = Kingdom.objects.get(pk=1)
+	kingdom = request.user.kingdom
 	resp['kingdom'] = serialize_kingdom(kingdom)
 
 	folks = Folk.objects.filter(kingdom=kingdom)

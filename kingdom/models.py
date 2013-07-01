@@ -9,7 +9,7 @@ class Kingdom(models.Model):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.
 	"""
-	user = models.ForeignKey(User, null=True)
+	user = models.OneToOneField(User, null=True)
 
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
