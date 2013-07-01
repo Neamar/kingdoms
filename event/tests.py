@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from kingdom.models import Kingdom, Folk
-from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction, _PendingEventVariable
+from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
 
 
 class UnitTest(TestCase):
@@ -196,61 +196,34 @@ param.set_value("kingdom", kingdom)
 		self.assertEqual(pe.text, "EVENT:test-666")
 		self.assertEqual(pea.text, "ACTION:test-666")
 
-	def test_pendingeventvariable(self):
-		"""
-		Test that setting and retrieving the value of a PendingEventVariable works
-		"""
-
-		pe = PendingEvent(
-			event = self.e,
-			kingdom = Kingdom.objects.get(id=1),
-		)
-		pe.save()
-
-		pev = _PendingEventVariable(
-			pending_event = pe,
-			name = "PendingEventVariable",
-		)
-
-		pev.set_value("`Kingdom`:1")
-		pev.save()
-
-		localk = pev.get_value()
-		self.assertEqual(Kingdom.objects.get(id=1), localk)
-
 	def test_pendingevent_set_get_value(self):
 		"""
 		Test that setting and retrieving a context value through a Pending Event works
 		"""
 
 		pe = PendingEvent(
-			event = self.e,
-			kingdom = self.k,
+			event=self.e,
+			kingdom=self.k,
 		)
 		pe.save()
 
 		f = Folk(
-			kingdom = self.k
+			kingdom=self.k
 		)
 		f.save()
 
-		pe.set_value("Peon", f)
-		f2 = pe.get_value("Peon")
+		pe.set_value("peon", f)
+		f2 = pe.get_value("peon")
 		self.assertEqual(f, f2)
 
 		pe.set_value("Narnia", self.k)
-		k2 = pe.get_value("Narnia")
-		self.assertEqual(self.k, k2)
+		self.assertEqual(self.k, pe.get_value("Narnia"))
 
-		
 		pe.set_value("nompourri", "Kevin")
-		n2 = pe.get_value("nompourri")
-		self.assertEqual(n2, "Kevin")
+		self.assertEqual(pe.get_value("nompourri"), "Kevin")
 
 		pe.set_value("beastnum", 666)
-		num = pe.get_value("beastnum")
-		self.assertEqual(num, 666)
-
+		self.assertEqual(pe.get_value("beastnum"), 666)
 
 	def test_pendingevent_savecontext(self):
 		"""
@@ -259,10 +232,9 @@ param.set_value("kingdom", kingdom)
 
 		self.e.on_fire = "param.set_value('beastnum', 666)"
 		pe = PendingEvent(
-			event = self.e,
-			kingdom = self.k,
+			event=self.e,
+			kingdom=self.k,
 		)
 		pe.save()
 
-		n = pe.get_value("beastnum")
-		self.assertEqual(n, 666)
+		self.assertEqual(pe.get_value("beastnum"), 666)
