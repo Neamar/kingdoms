@@ -13,7 +13,7 @@ class Mission(DescribedModel):
 	"""
 	Dictionary of all available missions.
 	"""
-
+	slug = models.SlugField(max_length=255, unique=True)
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
