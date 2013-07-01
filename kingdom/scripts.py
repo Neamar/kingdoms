@@ -8,6 +8,9 @@ from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
 from django.core.exceptions import ValidationError
 
 
+######
+# Kingdom scripts
+######
 def kingdom_message(self, content, level=Message.INFORMATION):
 	"""
 	Register a message on this kingdom.
@@ -46,6 +49,27 @@ def kingdom_add_claim(self, kingdom):
 Kingdom.add_claim = kingdom_add_claim
 
 
+def kingdom_set_value(self, name, value):
+	"""
+	Store a value.
+	"""
+
+	self.value_set.create(name=name, value=value)
+Kingdom.set_value = kingdom_set_value
+
+
+def kingdom_get_value(self, name):
+	"""
+	Retrieve a value.
+	"""
+
+	self.value_set.get(name=name)
+Kingdom.get_value = kingdom_get_value
+
+
+######
+# Folks scripts
+######
 def folk_die(self):
 	"""
 	Kill this folk.
