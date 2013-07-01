@@ -98,4 +98,16 @@ class PendingEventAction(models.Model):
 		self.pending_event.delete()
 		return status
 
+
+class PendingEventVariable(models.Model):
+	"""
+	A variable, stored to give some context to the event.
+	"""
+	class Meta:
+		unique_together = ('pending_event', 'name')
+
+	pending_event = models.ForeignKey(PendingEvent)
+	name = models.CharField(max_length=255)
+	value = models.CharField(max_length=255)
+
 from event.signals import *
