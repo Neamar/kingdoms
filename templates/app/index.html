@@ -5,11 +5,20 @@
 	<link rel="stylesheet" href="{{ STATIC_URL }}app/index.css" />
 {% endblock css %}
 
+{% block js %}
+	<script type="text/javascript" src="../static/knockout/knockout-2.2.1.js"></script>
+	<script type="text/javascript" src="./index.js"></script>
+{% endblock js %}
+
 {% block content %}
 
 <div class="row">
 	<div class="small-3 columns" id="cour">
 		<h3>Ma cour</h3>
+	<ul>
+		<li data-bind="text: money"></li>
+		<li data-bind="text: prestige"></li>
+	</ul>
 	</div>
 	<div class="small-7 columns" id="content">
 
