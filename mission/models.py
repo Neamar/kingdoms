@@ -30,6 +30,8 @@ class Mission(DescribedModel):
 	title = models.ForeignKey(Title, blank=True, null=True)
 	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
 
+	text = models.TextField()
+
 
 class MissionGrid(NamedModel):
 	"""
