@@ -87,10 +87,7 @@ def folk_add_quality(self, name):
 	"""
 
 	quality = Quality.objects.get(name=name)
-	try:
-		self.quality_set.add(quality)
-	except ValidationError:
-		return None
+	self.quality_set.add(quality)
 	return quality
 Folk.add_quality = folk_add_quality
 
@@ -99,7 +96,17 @@ def folk_age(self):
 	"""
 	Returns the age of the folk
 	"""
+
 	final_date = datetime.now() if self.death is None else self.death
 	delta = final_date - self.birth
 	return delta.days
 Folk.age = folk_age
+
+
+def folk_has_quality(self, name):
+	"""
+	Returns True is the folk has the name
+	"""
+
+	return Quality.objects.get(name=name) in self.quality_set.all()
+Folk.has_quality = folk_has_quality
