@@ -70,6 +70,6 @@ class ScriptField(models.TextField):
 
 try:
 	from south.modelsinspector import add_introspection_rules
-	add_introspection_rules([], ['^vendors.code_field\.fields\.ScriptField'])
+	add_introspection_rules([], ['^config\.fields\.script_field\.ScriptField'])
 except ImportError:
 	pass

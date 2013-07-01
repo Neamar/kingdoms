@@ -127,9 +127,6 @@ INSTALLED_APPS = (
     'south',
  #   'django_extensions',
 
-    # Vendor lib
-    'vendors.code_field',
-
     # Kingdom apps
     'kingdom',
     'title',

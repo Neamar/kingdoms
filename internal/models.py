@@ -1,8 +1,8 @@
 from django.db import models
 
-from vendors.code_field.fields import ScriptField
+from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel
-from config.lib.value_field import StoredValueField
+from config.fields.stored_value import StoredValueField
 
 from kingdom.models import Kingdom
 from config.lib.execute import execute

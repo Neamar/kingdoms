@@ -2,8 +2,8 @@
 from django.db import models
 
 from config.lib.execute import execute
-from config.lib.value_field import StoredValueField
-from vendors.code_field.fields import ScriptField
+from config.fields.stored_value import StoredValueField
+from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from kingdom.models import Kingdom, Folk
 

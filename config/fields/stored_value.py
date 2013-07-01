@@ -56,6 +56,6 @@ class StoredValueField(models.CharField):
 
 try:
 	from south.modelsinspector import add_introspection_rules
-	add_introspection_rules([], ['^config.lib\.value_field\.StoredValueField'])
+	add_introspection_rules([], ['^config.fields.stored_value\.StoredValueField'])
 except ImportError:
 	pass
