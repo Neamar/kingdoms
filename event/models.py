@@ -84,16 +84,17 @@ class PendingEvent(models.Model):
 	def get_context(self):
 		context = {}
 		for var in self._pendingeventvariable_set.all():
-			context[var.name] = var.get_value()	
+			context[var.name] = var.get_value()
 		return context
 
 	def set_value(self, value_name, value):
 		pev = _PendingEventVariable(
-				pending_event = self,
-				name = value_name,
-			)
+				pending_event=self,
+				name=value_name,
+		)
 		pev.set_value(value)
 		pev.save()
+
 
 class PendingEventAction(models.Model):
 	"""
@@ -109,7 +110,6 @@ class PendingEventAction(models.Model):
 		"""
 		Execute the code of the action
 		"""
-
 		
 		context = {
 			'kingdom': self.pending_event.kingdom,
@@ -118,6 +118,12 @@ class PendingEventAction(models.Model):
 		status, param = execute(self.event_action.on_fire, self, context)
 		self.pending_event.delete()
 		return status
+
+	def get_value(self, value_name):
+		"""
+		Proxy method, for script convenience.
+		"""
+		return self.pending_event.get_value(value_name)
 
 
 class _PendingEventVariable(models.Model):

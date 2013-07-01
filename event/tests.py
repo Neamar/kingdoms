@@ -238,3 +238,29 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.get_value("beastnum"), 666)
+
+	def test_context_restored_on_action(self):
+		"""
+		Check the context defined in the Event.on_fire is available to EventAction.on_fire.
+		"""
+		self.e.on_fire = """
+param.set_value('beastnum', 666)
+"""
+		self.e.save()
+
+		self.a.on_fire = """
+if param.pending_event.get_value('beastnum') != 666:
+	raise ValidationError("Unable to retrieve pending value.")
+"""
+		self.a.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		pea = pe.pendingeventaction_set.all()[0]
+
+		# No exception should be raised.
+		pea.fire()
