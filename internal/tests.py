@@ -198,4 +198,3 @@ status = "NotPossible"
 		self.assertEquals(self.k.get_value("foo"), "bar")
 		self.assertEquals(self.k.get_value("foo2"), 2)
 		self.assertEquals(self.k.get_value("folk"), self.f)
-

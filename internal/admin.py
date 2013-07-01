@@ -15,7 +15,7 @@ admin.site.register(Constant, ConstantAdmin)
 
 
 class ValueAdmin(admin.ModelAdmin):
-	list_display = ('name', 'kingdom', 'value', 'expiration')
+	list_display = ('name', 'kingdom', 'value')
 admin.site.register(Value, ValueAdmin)
 
 
