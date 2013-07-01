@@ -10,6 +10,7 @@ Vocabulaire des Internals
 
 * `constante` : définit une valeur utilisable dans n'importe quel environnement de script.
 
+
 Où scripter ?
 -------------
 ### Recurring
