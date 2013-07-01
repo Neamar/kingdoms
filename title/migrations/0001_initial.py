@@ -13,9 +13,9 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('condition', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
-            ('on_affect', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
-            ('on_defect', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(blank=True)),
+            ('on_affect', self.gf('config.fields.script_field.ScriptField')(blank=True)),
+            ('on_defect', self.gf('config.fields.script_field.ScriptField')(blank=True)),
         ))
         db.send_create_signal(u'title', ['Title'])
 
@@ -138,12 +138,12 @@ class Migration(SchemaMigration):
         },
         u'title.title': {
             'Meta': {'object_name': 'Title'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_affect': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
-            'on_defect': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'})
+            'on_affect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
+            'on_defect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'})
         }
     }
 

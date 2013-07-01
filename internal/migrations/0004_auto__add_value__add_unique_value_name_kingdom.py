@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
@@ -8,15 +9,26 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Trigger.slug'
-        db.add_column(u'internal_trigger', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(default='trigger', unique=True, max_length=255),
-                      keep_default=False)
+        # Adding model 'Value'
+        db.create_table(u'internal_value', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+            ('kingdom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kingdom.Kingdom'])),
+            ('value', self.gf('django.db.models.fields.IntegerField')()),
+            ('expiration', self.gf('django.db.models.fields.DateTimeField')()),
+        ))
+        db.send_create_signal(u'internal', ['Value'])
+
+        # Adding unique constraint on 'Value', fields ['name', 'kingdom']
+        db.create_unique(u'internal_value', ['name', 'kingdom_id'])
 
 
     def backwards(self, orm):
-        # Deleting field 'Trigger.slug'
-        db.delete_column(u'internal_trigger', 'slug')
+        # Removing unique constraint on 'Value', fields ['name', 'kingdom']
+        db.delete_unique(u'internal_value', ['name', 'kingdom_id'])
+
+        # Deleting model 'Value'
+        db.delete_table(u'internal_value')
 
 
     models = {
@@ -94,6 +106,14 @@ class Migration(SchemaMigration):
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'internal.value': {
+            'Meta': {'unique_together': "(('name', 'kingdom'),)", 'object_name': 'Value'},
+            'expiration': ('django.db.models.fields.DateTimeField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'value': ('django.db.models.fields.IntegerField', [], {})
         },
         u'kingdom.claim': {
             'Meta': {'unique_together': "(('offender', 'offended'),)", 'object_name': 'Claim'},

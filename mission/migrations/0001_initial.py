@@ -15,11 +15,11 @@ class Migration(SchemaMigration):
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('duration', self.gf('django.db.models.fields.PositiveIntegerField')(default='5')),
             ('timeout', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
-            ('on_init', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
-            ('on_start', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
-            ('on_resolution', self.gf('vendors.code_field.fields.ScriptField')()),
+            ('on_init', self.gf('config.fields.script_field.ScriptField')(blank=True)),
+            ('on_start', self.gf('config.fields.script_field.ScriptField')(blank=True)),
+            ('on_resolution', self.gf('config.fields.script_field.ScriptField')()),
             ('has_target', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('target_list', self.gf('vendors.code_field.fields.ScriptField')(default='param=Kingdom.objects.all()')),
+            ('target_list', self.gf('config.fields.script_field.ScriptField')(default='param=Kingdom.objects.all()')),
             ('target_description', self.gf('django.db.models.fields.CharField')(default='Cible', max_length=255)),
             ('cancellable', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('title', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['title.Title'], null=True, blank=True)),
@@ -33,7 +33,7 @@ class Migration(SchemaMigration):
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('mission', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['mission.Mission'])),
             ('length', self.gf('django.db.models.fields.PositiveIntegerField')(default=20)),
-            ('condition', self.gf('vendors.code_field.fields.ScriptField')(blank=True)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(blank=True)),
         ))
         db.send_create_signal(u'mission', ['MissionGrid'])
 
@@ -185,17 +185,17 @@ class Migration(SchemaMigration):
             'has_target': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_init': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
-            'on_resolution': ('vendors.code_field.fields.ScriptField', [], {}),
-            'on_start': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
+            'on_init': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
+            'on_resolution': ('config.fields.script_field.ScriptField', [], {}),
+            'on_start': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
             'target_description': ('django.db.models.fields.CharField', [], {'default': "'Cible'", 'max_length': '255'}),
-            'target_list': ('vendors.code_field.fields.ScriptField', [], {'default': "'param=Kingdom.objects.all()'"}),
+            'target_list': ('config.fields.script_field.ScriptField', [], {'default': "'param=Kingdom.objects.all()'"}),
             'timeout': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['title.Title']", 'null': 'True', 'blank': 'True'})
         },
         u'mission.missiongrid': {
             'Meta': {'object_name': 'MissionGrid'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'length': ('django.db.models.fields.PositiveIntegerField', [], {'default': '20'}),
             'mission': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mission.Mission']"}),
@@ -220,12 +220,12 @@ class Migration(SchemaMigration):
         },
         u'title.title': {
             'Meta': {'object_name': 'Title'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_affect': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
-            'on_defect': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'})
+            'on_affect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
+            'on_defect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'})
         }
     }
 
