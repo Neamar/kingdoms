@@ -10,7 +10,9 @@ Setup
 * `virtualenv --no-site-packages .v_env` : create a virtual-env for python code
 * `source .v_env/bin/activate` : activate the v_env.
 * `pip install -r requirements.txt` : install all requirements
-* `./manage.py syncdb --noinput && ./manage.py loaddata config/fixtures/sample.json` : creates the DB and load some sample datas
+* `./manage.py syncdb --noinput` : create DB
+* `./manage;py migrate` : migrate DB
+* `./manage.py loaddata config/fixtures/sample.json` : load some sample datas
 
 Running
 -------
