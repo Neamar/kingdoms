@@ -249,7 +249,7 @@ param.set_value('beastnum', 666)
 		self.e.save()
 
 		self.a.on_fire = """
-if param.pending_event.get_value('beastnum') != 666:
+if param.get_value('beastnum') != 666:
 	raise ValidationError("Unable to retrieve pending value.")
 """
 		self.a.save()

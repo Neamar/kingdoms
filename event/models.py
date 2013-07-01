@@ -119,12 +119,6 @@ class PendingEventAction(models.Model):
 		self.pending_event.delete()
 		return status
 
-	def get_value(self, value_name):
-		"""
-		Proxy method, for script convenience.
-		"""
-		return self.pending_event.get_value(value_name)
-
 
 class _PendingEventVariable(models.Model):
 	"""
@@ -155,7 +149,7 @@ class _PendingEventVariable(models.Model):
 			return instance
 		else:
 			try:
-				return	int(self.value)
+				return int(self.value)
 			except ValueError:
 				return self.value
 	"""
@@ -170,4 +164,5 @@ class _PendingEventVariable(models.Model):
 		else:
 			raise ValidationError("Context must be int, string of DB objects.")
 
+from event.scripts import *
 from event.signals import *
