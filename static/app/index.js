@@ -3,13 +3,21 @@ $(function() {
 
 	function loadDatas()
 	{
-		$.getJSON('/api', function(result) {
-			old_datas = datas;
-			datas = ko.mapping.fromJS(result);
-
-			if(!old_datas)
+		$.getJSON('/api/', function(result) {
+			if(!datas)
+			{
+				datas = ko.mapping.fromJS(result);
 				ko.applyBindings(datas);
+			}
+			else
+			{
+				ko.mapping.fromJS(result, datas);
+			}
+
+				
 		});
+
+		setTimeout(loadDatas, 4000);
 	}
 
 	loadDatas();

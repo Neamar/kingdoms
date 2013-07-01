@@ -23,6 +23,31 @@
 <div class="row">
 	<div class="small-3 columns" id="cour">
 		<h3>Ma cour</h3>
+		<ul data-bind="foreach: folks">
+			<li>
+				<h5 data-bind="text: name"></h5>
+				<table>
+					<thead>
+						<tr>
+							<th>C</th>
+							<th>I</th>
+							<th>D</th>
+							<th>É</th>
+							<th>L</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td data-bind="text: fight"></td>
+							<td data-bind="text: plot"></td>
+							<td data-bind="text: diplomacy"></td>
+							<td data-bind="text: scholarship"></td>
+							<td data-bind="text: loyalty"></td>
+						</tr>
+					</tbody>
+				</table>
+			</li>
+		</ul>
 	</div>
 	<div class="small-7 columns" id="content">
 
