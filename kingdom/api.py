@@ -1,5 +1,4 @@
-from kingdom.models import Kingdom, Folk, ModalMessage, Message
-from kingdom.utils import *
+from kingdom.models import Kingdom, Folk, Message
 from kingdom.serializers import serialize_folk, serialize_kingdom, serialize_message
 
 
