@@ -14,7 +14,7 @@ class Trigger(DescribedModel):
 	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom.", default="")
 	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
 
-	fired = models.ManyToManyField(Kingdom)
+	fired = models.ManyToManyField(Kingdom, null=True, blank=True)
 
 	def check_condition(self, kingdom):
 		"""
@@ -64,6 +64,32 @@ class Recurring(DescribedModel):
 
 	condition = ScriptField(blank=True, null=True, help_text="Condition must returns with `param=None` to abort.")
 	on_fire = ScriptField(blank=True, null=True)
+
+	def check_condition(self, kingdom):
+		"""
+		Check if the trigger should be fired for the specified kingdom.
+		It is assumed check on threshold and fired have already been made by the ORM.
+		See :signals: doc.
+		"""
+		context = {
+			'kingdom': kingdom,
+		}
+
+		status, param = execute(self.condition, kingdom, context)
+		return status
+
+	def fire(self, kingdom):
+		"""
+		Fire the recurring.
+		Register it has been fired.
+		"""
+		context = {
+			'kingdom': kingdom,
+		}
+
+		status, param = execute(self.on_fire, kingdom, context)
+
+		return status
 
 
 class FirstName (NamedModel):
