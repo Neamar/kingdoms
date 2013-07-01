@@ -3,21 +3,18 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-import random
-import string
+
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Mission.slug'
-        db.add_column(u'mission_mission', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(default="slug", max_length=255),
-                      keep_default=False)
+        # Adding unique constraint on 'Mission', fields ['slug']
+        db.create_unique(u'mission_mission', ['slug'])
 
 
     def backwards(self, orm):
-        # Deleting field 'Mission.slug'
-        db.delete_column(u'mission_mission', 'slug')
+        # Removing unique constraint on 'Mission', fields ['slug']
+        db.delete_unique(u'mission_mission', ['slug'])
 
 
     models = {
@@ -75,6 +72,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
             'loyalty': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'mentor': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['kingdom.Folk']"}),
             'mother': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['kingdom.Folk']"}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'plot': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
@@ -124,7 +122,7 @@ class Migration(SchemaMigration):
             'on_init': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
             'on_resolution': ('vendors.code_field.fields.ScriptField', [], {}),
             'on_start': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'}),
             'target_description': ('django.db.models.fields.CharField', [], {'default': "'Cible'", 'max_length': '255'}),
             'target_list': ('vendors.code_field.fields.ScriptField', [], {'blank': 'True'}),
             'timeout': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
