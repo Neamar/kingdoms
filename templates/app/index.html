@@ -8,6 +8,7 @@
 {% block js %}
 	<script type="text/javascript" src="{{ STATIC_URL }}app/index.js"></script>
 
+	<base href="/app/" />
 {% endblock js %}
 
 {% block content %}
@@ -32,6 +33,19 @@
 	</div>
 	<div class="small-7 columns" id="content">
 
+		 <div data-bind="page: {id: 'start'}">
+			<p>Hello there ! <a href="#!/s">Structure</a></p>
+		</div>
+
+		<div data-bind="page: {id: 's'}">
+			<p>La structure...</p>
+		</div>
+		
+		<div data-bind="page: {id: '?'}">
+			<h3>Error</h3>
+			<p>The page you requested does not exist.</p>
+			<p><a data-bind="page-href: '../'">Go back</a></p>
+		</div>
 	</div>
 	<div class="small-2 columns" id="messages">
 		<h3>Évènements</h3>
