@@ -94,6 +94,7 @@
   "fields": {
     "category": "", 
     "name": "Duel avec le chevalier noir", 
+    "slug": "duel_chevalier_noir",
     "title": 1, 
     "cancellable": false, 
     "description": "Le chevalier noir vous d\u00e9fie !", 
@@ -113,6 +114,7 @@
   "fields": {
     "category": "", 
     "name": "Mariage", 
+    "slug": "mariage",
     "title": null, 
     "cancellable": false, 
     "description": "Le mariage pour tous !", 
@@ -132,6 +134,7 @@
   "fields": {
     "category": "", 
     "name": "Kamikaze", 
+    "slug": "kamikaze",
     "title": null, 
     "cancellable": false, 
     "description": "TUEZ LES TOUUUUUS", 
