@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring
+from internal.models import Trigger, Constant, Recurring
 from kingdom.models import Kingdom
 
 
@@ -12,11 +12,6 @@ admin.site.register(Trigger, TriggerAdmin)
 class ConstantAdmin (admin.ModelAdmin):
 	list_display = ('name', 'value', 'description')
 admin.site.register(Constant, ConstantAdmin)
-
-
-class ValueAdmin(admin.ModelAdmin):
-	list_display = ('name', 'kingdom', 'value', 'expiration')
-admin.site.register(Value, ValueAdmin)
 
 
 class RecurringAdmin(admin.ModelAdmin):

@@ -42,15 +42,6 @@ class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
-class Value(NamedModel):
-	class Meta:
-		unique_together = ('name', 'kingdom')
-
-	kingdom = models.ForeignKey(Kingdom)
-	value = models.IntegerField()
-	expiration = models.DateTimeField()
-
-
 class Recurring(DescribedModel):
 	HOURLY = 'hourly'
 	DAILY = 'daily'

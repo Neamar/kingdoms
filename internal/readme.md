@@ -8,7 +8,7 @@ Vocabulaire des Internals
 
 * `trigger` : sera appelé (une seule fois !) lorsque certaines conditions deviennent remplies.
 <!--
-* `Constante` : définie une valeur, utilisée à chaque fois que l'on en a besoin. La seule modification de cette constante met à jours tous les scripts qui l'utilisent.
+* `constante` : définie une valeur, utilisée à chaque fois que l'on en a besoin. La seule modification de cette constante met à jours tous les scripts qui l'utilisent.
 -->
 
 Où scripter ?
