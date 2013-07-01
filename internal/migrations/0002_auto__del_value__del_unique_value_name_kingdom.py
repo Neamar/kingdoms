@@ -86,22 +86,22 @@ class Migration(SchemaMigration):
         },
         u'internal.recurring': {
             'Meta': {'object_name': 'Recurring'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'frequency': ('django.db.models.fields.CharField', [], {'default': "'hourly'", 'max_length': '8'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'})
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'})
         },
         u'internal.trigger': {
             'Meta': {'object_name': 'Trigger'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'fired': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['kingdom.Kingdom']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'money_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },

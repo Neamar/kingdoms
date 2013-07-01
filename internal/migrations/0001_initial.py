@@ -16,8 +16,8 @@ class Migration(SchemaMigration):
             ('prestige_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('population_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('money_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('condition', self.gf('vendors.code_field.fields.ScriptField')(default='', null=True, blank=True)),
-            ('on_fire', self.gf('vendors.code_field.fields.ScriptField')(null=True, blank=True)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(default='', null=True, blank=True)),
+            ('on_fire', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'internal', ['Trigger'])
 
@@ -58,8 +58,8 @@ class Migration(SchemaMigration):
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('frequency', self.gf('django.db.models.fields.CharField')(default='hourly', max_length=8)),
-            ('condition', self.gf('vendors.code_field.fields.ScriptField')(null=True, blank=True)),
-            ('on_fire', self.gf('vendors.code_field.fields.ScriptField')(null=True, blank=True)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
+            ('on_fire', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'internal', ['Recurring'])
 
@@ -160,22 +160,22 @@ class Migration(SchemaMigration):
         },
         u'internal.recurring': {
             'Meta': {'object_name': 'Recurring'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'frequency': ('django.db.models.fields.CharField', [], {'default': "'hourly'", 'max_length': '8'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'})
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'})
         },
         u'internal.trigger': {
             'Meta': {'object_name': 'Trigger'},
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'fired': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Kingdom']", 'symmetrical': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'money_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },

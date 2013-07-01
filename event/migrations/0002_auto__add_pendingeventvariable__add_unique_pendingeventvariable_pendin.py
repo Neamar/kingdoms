@@ -81,11 +81,11 @@ class Migration(SchemaMigration):
         u'event.event': {
             'Meta': {'object_name': 'Event'},
             'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.EventCategory']"}),
-            'condition': ('vendors.code_field.fields.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {}),
             'weight': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'})
         },
@@ -94,7 +94,7 @@ class Migration(SchemaMigration):
             'event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.Event']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('vendors.code_field.fields.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'event.eventcategory': {
