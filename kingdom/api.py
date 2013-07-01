@@ -20,7 +20,7 @@ def kingdom_api(request):
 	messages = Message.objects.filter(kingdom=kingdom)
 	resp['messages'] = []
 	for message in messages:
-		resp['messages'].append(serialize_message(messages))
+		resp['messages'].append(serialize_message(message))
 
 	return resp
 

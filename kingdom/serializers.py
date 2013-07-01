@@ -42,10 +42,10 @@ def serialize_message(message):
 	"""
 	
 	r = {
-			'content': message.content,
-			'level': message.level,
-			'read': message.read,
-			'creation': message.creation
+		'content': message.content,
+		'level': message.level,
+		'read': message.read,
+		'creation': message.creation
 	}
 
 	return r

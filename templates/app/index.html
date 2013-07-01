@@ -7,6 +7,7 @@
 
 {% block js %}
 	<script type="text/javascript" src="{{ STATIC_URL }}app/index.js"></script>
+
 {% endblock js %}
 
 {% block content %}
@@ -25,27 +26,7 @@
 		<h3>Ma cour</h3>
 		<ul data-bind="foreach: folks">
 			<li>
-				<h5 data-bind="text: name"></h5>
-				<table>
-					<thead>
-						<tr>
-							<th>C</th>
-							<th>I</th>
-							<th>D</th>
-							<th>É</th>
-							<th>L</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td data-bind="text: fight"></td>
-							<td data-bind="text: plot"></td>
-							<td data-bind="text: diplomacy"></td>
-							<td data-bind="text: scholarship"></td>
-							<td data-bind="text: loyalty"></td>
-						</tr>
-					</tbody>
-				</table>
+				{% include "app/_folk.html" %}
 			</li>
 		</ul>
 	</div>
@@ -54,6 +35,11 @@
 	</div>
 	<div class="small-2 columns" id="messages">
 		<h3>Évènements</h3>
+		<ul data-bind="foreach: messages">
+			<li>
+				{% include "app/_message.html" %}
+			</li>
+		</ul>
 	</div>
 </div>
 {% endblock content %}
