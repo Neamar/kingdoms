@@ -11,7 +11,7 @@ Setup
 * `source .v_env/bin/activate` : activate the v_env.
 * `pip install -r requirements.txt` : install all requirements
 * `./manage.py syncdb --noinput` : create DB
-* `./manage;py migrate` : migrate DB
+* `./manage.py migrate` : migrate DB
 * `./manage.py loaddata config/fixtures/sample.json` : load some sample datas
 
 Running

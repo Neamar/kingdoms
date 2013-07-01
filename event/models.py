@@ -17,7 +17,7 @@ class Event(DescribedModel):
 	"""
 	Dictionary of all available events.
 	"""
-
+	slug = models.SlugField(max_length=255)
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current Kingdom object", default="")
