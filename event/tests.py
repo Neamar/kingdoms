@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from kingdom.models import Kingdom
-from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
+from kingdom.models import Kingdom, Folk
+from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction, _PendingEventVariable
 
 
 class UnitTest(TestCase):
@@ -168,17 +168,15 @@ kingdom.save()
 
 	def test_templates_and_context(self):
 		"""
-		Pending event must be deleted after event resolution.
+		Check templating works on event and EventAction.
 		"""
 
 		self.e.on_fire = """
 kingdom.money=666
 kingdom.save()
 
-param = {
-	"value": "test",
-	"kingdom": kingdom
-}
+param.set_value("value", "test")
+param.set_value("kingdom", kingdom)
 """
 		self.e.text = "EVENT:{{ value }}-{{ kingdom.money}}"
 		self.e.save()
@@ -195,3 +193,74 @@ param = {
 
 		self.assertEqual(pe.text, "EVENT:test-666")
 		self.assertEqual(pea.text, "ACTION:test-666")
+
+	def test_pendingeventvariable(self):
+		"""
+		Test that setting and retrieving the value of a PendingEventVariable works
+		"""
+
+		pe = PendingEvent(
+			event = self.e,
+			kingdom = Kingdom.objects.get(id=1),
+		)
+		pe.save()
+
+		pev = _PendingEventVariable(
+			pending_event = pe,
+			name = "PendingEventVariable",
+		)
+
+		pev.set_value("`Kingdom`:1")
+		pev.save()
+
+		localk = pev.get_value()
+		self.assertEqual(Kingdom.objects.get(id=1), localk)
+
+	def test_pendingevent_set_get_value(self):
+		"""
+		Test that setting and retrieving a context value through a Pending Event works
+		"""
+
+		pe = PendingEvent(
+			event = self.e,
+			kingdom = self.k,
+		)
+		pe.save()
+
+		f = Folk(
+			kingdom = self.k
+		)
+		f.save()
+
+		pe.set_value("Peon", f)
+		f2 = pe.get_value("Peon")
+		self.assertEqual(f, f2)
+
+		pe.set_value("Narnia", self.k)
+		k2 = pe.get_value("Narnia")
+		self.assertEqual(self.k, k2)
+
+		
+		pe.set_value("nompourri", "Kevin")
+		n2 = pe.get_value("nompourri")
+		self.assertEqual(n2, "Kevin")
+
+		pe.set_value("beastnum", 666)
+		num = pe.get_value("beastnum")
+		self.assertEqual(num, 666)
+
+
+	def test_pendingevent_savecontext(self):
+		"""
+		Test the saving context mechanism in post_save signal on PendingEvent
+		"""
+
+		self.e.on_fire = "param.set_value('beastnum', 666)"
+		pe = PendingEvent(
+			event = self.e,
+			kingdom = self.k,
+		)
+		pe.save()
+
+		n = pe.get_value("beastnum")
+		self.assertEqual(n, 666)

@@ -29,7 +29,8 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 	if created:
 		# Only fire and create action just after the PendingEvent creation
-		status, raw_context = instance.fire()
+		status, param = instance.fire()
+		raw_context = instance.get_context()
 		context = Context(raw_context)
 
 		# Create text from templates
