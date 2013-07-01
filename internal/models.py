@@ -7,7 +7,7 @@ from config.lib.execute import execute
 
 
 class Trigger(DescribedModel):
-	slug = models.SlugField(max_lenght=255, unique=True)
+	slug = models.SlugField(max_length=255, unique=True)
 	prestige_threshold = models.PositiveIntegerField(default=0)
 	population_threshold = models.PositiveIntegerField(default=0)
 	money_threshold = models.PositiveIntegerField(default=0)
