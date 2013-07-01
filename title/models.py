@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from vendors.code_field.fields import ScriptField
+from config.fields.script_field import ScriptField
 
 from config.lib.execute import execute
 from config.lib.models import DescribedModel

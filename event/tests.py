@@ -208,13 +208,13 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		f = Folk(
-			kingdom=self.k
+			kingdom=self.k,
+			name="peon"
 		)
 		f.save()
 
 		pe.set_value("peon", f)
-		f2 = pe.get_value("peon")
-		self.assertEqual(f, f2)
+		self.assertEqual(f, pe.get_value("peon"))
 
 		pe.set_value("Narnia", self.k)
 		self.assertEqual(self.k, pe.get_value("Narnia"))

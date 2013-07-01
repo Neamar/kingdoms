@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
@@ -8,16 +9,22 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Trigger.slug'
-        db.add_column(u'internal_trigger', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(default='trigger', unique=True, max_length=255),
+        # Deleting field 'Value.expiration'
+        db.delete_column(u'internal_value', 'expiration')
+
+
+        # Changing field 'Value.value'
+        db.alter_column(u'internal_value', 'value', self.gf('config.fields.stored_value.StoredValueField')(max_length=512))
+
+    def backwards(self, orm):
+        # Adding field 'Value.expiration'
+        db.add_column(u'internal_value', 'expiration',
+                      self.gf('django.db.models.fields.DateTimeField')(default=None),
                       keep_default=False)
 
 
-    def backwards(self, orm):
-        # Deleting field 'Trigger.slug'
-        db.delete_column(u'internal_trigger', 'slug')
-
+        # Changing field 'Value.value'
+        db.alter_column(u'internal_value', 'value', self.gf('django.db.models.fields.IntegerField')())
 
     models = {
         u'auth.group': {
@@ -94,6 +101,13 @@ class Migration(SchemaMigration):
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
+        },
+        u'internal.value': {
+            'Meta': {'unique_together': "(('name', 'kingdom'),)", 'object_name': 'Value'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'value': ('config.fields.stored_value.StoredValueField', [], {'max_length': '512'})
         },
         u'kingdom.claim': {
             'Meta': {'unique_together': "(('offender', 'offended'),)", 'object_name': 'Claim'},

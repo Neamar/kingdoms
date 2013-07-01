@@ -1,7 +1,9 @@
 from django.db import models
 
-from vendors.code_field.fields import ScriptField
+from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel
+from config.fields.stored_value import StoredValueField
+
 from kingdom.models import Kingdom
 from config.lib.execute import execute
 
@@ -48,8 +50,7 @@ class Value(NamedModel):
 		unique_together = ('name', 'kingdom')
 
 	kingdom = models.ForeignKey(Kingdom)
-	value = models.IntegerField()
-	expiration = models.DateTimeField()
+	value = StoredValueField()
 
 
 class Recurring(DescribedModel):

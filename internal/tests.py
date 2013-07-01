@@ -13,6 +13,7 @@ class UnitTest(TestCase):
 
 		self.f = Folk(
 			kingdom=self.k,
+			name="Someone"
 		)
 		self.f.save()
 
@@ -185,3 +186,15 @@ status = "NotPossible"
 		self.k.money = 20
 		self.k.save()
 		self.assertEquals(Folk.objects.count(), 1)
+
+	def test_value_store(self):
+		"""
+		Store values on the kingdom
+		"""
+		self.k.set_value("foo", "bar")
+		self.k.set_value("foo2", 2)
+		self.k.set_value("folk", self.f)
+
+		self.assertEquals(self.k.get_value("foo"), "bar")
+		self.assertEquals(self.k.get_value("foo2"), 2)
+		self.assertEquals(self.k.get_value("folk"), self.f)

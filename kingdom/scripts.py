@@ -63,7 +63,8 @@ def kingdom_get_value(self, name):
 	Retrieve a value.
 	"""
 
-	self.value_set.get(name=name)
+	v = self.value_set.get(name=name)
+	return v.value
 Kingdom.get_value = kingdom_get_value
 
 
