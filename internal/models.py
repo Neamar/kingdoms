@@ -71,7 +71,6 @@ class Recurring(DescribedModel):
 	def fire(self, kingdom):
 		"""
 		Fire the recurring.
-		Register it has been fired.
 		"""
 		context = {
 			'kingdom': kingdom,

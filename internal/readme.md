@@ -52,7 +52,7 @@ kingdom.save()
 #### Lancement de l'évènement Banquet lorsque la population dépasse 1 000
 * `condition` : pas nécessaire, la limite est dans `population_threshold`.
 
-*`on_fire` : 
+* `on_fire` : 
 
 ```python
 # On affecte l'event Banquet au Kingdom
