@@ -20,28 +20,16 @@ class UnitTest(TestCase):
 			name="Event 1",
 			category=self.c,
 			text="Event 1",
+			on_fire=""
 		)
 		self.e.save()
 
 		self.a = EventAction(
 			event=self.e,
 			text="some text",
+			on_fire="",
 		)
 		self.a.save()
-		
-		self.pe = PendingEvent(
-			event=self.e,
-			kingdom=self.k,
-			text="some text"
-		)
-		self.pe.save()
-
-		self.pea = PendingEventAction(
-			pending_event=self.pe,
-			event_action=self.a,
-			text="some text"
-		)
-		self.pea.save()
 
 	def test_references_coherence(self):
 		"""
@@ -55,35 +43,34 @@ class UnitTest(TestCase):
 		)
 		e2.save()
 
-		self.pe = PendingEvent(
+		pe = PendingEvent(
 			event=e2,
 			kingdom=self.k,
 			text="PendingEvent",
 		)
-		self.pe.save()
+		pe.save()
 
-		self.pea = PendingEventAction(
-			pending_event=self.pe,
+		pea = PendingEventAction(
+			pending_event=pe,
 			event_action=self.a,
 			text="PendingEventAction",
 		)
 
-		self.assertRaises(ValidationError, self.pea.save)
+		self.assertRaises(ValidationError, pea.save)
 
 	def test_condition_event(self):
 		"""
 		Check condition is triggered.
 		"""
-		self.pe.delete()
 		self.e.condition = """
 status="notAllowed"
 """
-		self.pe = PendingEvent(
+		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
 			text="some text"
 		)
-		self.assertRaises(ValidationError, self.pe.save)
+		self.assertRaises(ValidationError, pe.save)
 
 	def test_on_fire_event(self):
 		"""
@@ -95,14 +82,15 @@ kingdom.save()
 """
 		self.e.save()
 
-		# Delete the old event, it was saved and is therefore already fired.
-		self.pe.delete()
-		self.pe = PendingEvent(
+		# Sanity check
+		self.assertEqual(self.k.population, 0)
+
+		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
 			text="some text"
 		)
-		self.pe.save()
+		pe.save()
 		self.assertEqual(self.k.population, 10)
 
 	def test_on_fire_event_twice(self):
@@ -116,15 +104,18 @@ kingdom.save()
 """
 		self.e.save()
 
-		# Delete the old event, it was saved and is therefore already fired.
-		self.pe.delete()
-		self.pe = PendingEvent(
+		# Sanity check
+		self.assertEqual(self.k.population, 0)
+
+		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
 		)
-		self.pe.save()
+		pe.save()
 		self.assertEqual(self.k.population, 10)
-		self.pe.save()
+		
+		# Save again : no action
+		pe.save()
 		self.assertEqual(self.k.population, 10)
 
 	def test_on_fire_action(self):
@@ -137,7 +128,17 @@ kingdom.save()
 """
 		self.a.save()
 
-		self.pea.fire()
+		# Sanity check
+		self.assertEqual(self.k.money, 0)
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		pea = pe.pendingeventaction_set.all()[0]
+		pea.fire()
 
 		self.assertEqual(self.k.money, 50)
 
@@ -150,8 +151,18 @@ kingdom.save()
 kingdom.money=50
 kingdom.save()
 """
-		self.pea.fire()
-		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=self.pe.pk)))
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		pea = pe.pendingeventaction_set.all()[0]
+		pea.fire()
+
+		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=pe.pk)))
+		self.assertRaises(PendingEventAction.DoesNotExist, (lambda: PendingEventAction.objects.get(pk=pea.pk)))
 
 	def test_templates_and_context(self):
 		"""
@@ -173,7 +184,6 @@ param = {
 		self.a.text = "ACTION:{{ value }}-{{ kingdom.money}}"
 		self.a.save()
 
-		self.pe.delete()
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
