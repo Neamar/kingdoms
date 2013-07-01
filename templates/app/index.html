@@ -1,5 +1,5 @@
 {% extends "app/template.html" %}
-{% block title %}Que mon règne vienne{% endblock title %}
+{% block title %}Que mon règne vienne !{% endblock title %}
 
 {% block css %}
 	<link rel="stylesheet" href="{{ STATIC_URL }}app/index.css" />
@@ -10,14 +10,19 @@
 {% endblock js %}
 
 {% block content %}
+<h1>Que mon règne vienne !</h1>
+
+<!-- Kingdom -->
+<h2>Mon royaume</h2>
+<ul>
+	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
+	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
+	<li>Population : <span data-bind="text: kingdom.population"></span></li>
+</ul>
 
 <div class="row">
 	<div class="small-3 columns" id="cour">
 		<h3>Ma cour</h3>
-	<ul>
-		<li data-bind="text: kingdom.money"></li>
-		<li data-bind="text: kingdom.prestige"></li>
-	</ul>
 	</div>
 	<div class="small-7 columns" id="content">
 
