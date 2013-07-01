@@ -1,6 +1,3 @@
-from kingdom.serializers import to_javascript_timestamp
-
-
 def serialize_pending_mission(pending_mission):
 	"""
 	Serialize a kingdom object to JSON.
@@ -26,13 +23,13 @@ def serialize_folk(folk):
 			'father': folk.father_id,
 			'spouse': folk.spouse_id,
 			'mentor': folk.mentor_id,
-			'birth': to_javascript_timestamp(folk.birth),
-			'death': to_javascript_timestamp(folk.death),
+			'birth': folk.birth,
+			'death': folk.death,
 			'fight': folk.fight,
 			'diplomacy': folk.diplomacy,
 			'plot': folk.plot,
 			'scholarship': folk.scholarship,
-			'loyalty': folk.loyalty
+			'loyalty': folk.loyalty,
 	}
 
 	return r
@@ -47,7 +44,7 @@ def serialize_message(message):
 			'content': message.content,
 			'level': message.level,
 			'read': message.read,
-			'creation': to_javascript_timestamp(message.creation)
+			'creation': message.creation,
 	}
 
 	return r

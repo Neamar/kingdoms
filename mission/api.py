@@ -1,5 +1,5 @@
 from mission.models import PendingMission, AvailableMission
-from mission.serializers import serialize_folk, serialize_kingdom, serialize_message
+from mission.serializers import serialize_pending_mission
 
 
 def mission_api(request):
@@ -7,7 +7,7 @@ def mission_api(request):
 	JSON contribution from this app.
 	"""
 
-	resp = {}
+	resp = {"hello":True}
 
 	return resp
 

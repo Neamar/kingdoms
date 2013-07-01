@@ -1,10 +1,3 @@
-import time
-
-
-def to_javascript_timestamp(localtime):
-	return time.mktime(localtime.timetuple()) * 1000 if localtime is not None else None
-
-
 def serialize_kingdom(kingdom):
 	"""
 	Serialize a kingdom object to JSON.
@@ -31,8 +24,8 @@ def serialize_folk(folk):
 			'father': folk.father_id,
 			'spouse': folk.spouse_id,
 			'mentor': folk.mentor_id,
-			'birth': to_javascript_timestamp(folk.birth),
-			'death': to_javascript_timestamp(folk.death),
+			'birth': folk.birth,
+			'death': folk.death,
 			'fight': folk.fight,
 			'diplomacy': folk.diplomacy,
 			'plot': folk.plot,
@@ -52,7 +45,7 @@ def serialize_message(message):
 			'content': message.content,
 			'level': message.level,
 			'read': message.read,
-			'creation': to_javascript_timestamp(message.creation)
+			'creation': message.creation
 	}
 
 	return r

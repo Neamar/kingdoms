@@ -175,4 +175,5 @@ class AvailableMission(models.Model):
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
+from mission.api import *
 from mission.signals import *

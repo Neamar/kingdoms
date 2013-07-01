@@ -1,5 +1,6 @@
-from django.utils import simplejson
 from django.http import HttpResponse
+
+from kingdom.utils import to_json
 
 
 def json_view(func):
@@ -10,7 +11,7 @@ def json_view(func):
 	def wrap(request, *a, **kw):
 		response = func(request, *a, **kw)
 		if isinstance(response, dict):
-			json = simplejson.dumps(response)
+			json = to_json(response)
 			return HttpResponse(json, mimetype='application/json')
 		else:
 			return response
