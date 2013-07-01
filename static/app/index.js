@@ -8,8 +8,10 @@ $(function() {
 
 	function kingdom_value(){
 		var self = this;
-		self.money = datas.kingdom[0].money;
-		self.prestige = datas.kingdom[0].prestige;
+		$.getJSON("/api", function(datas){
+			self.money = datas.kingdom[0].money;
+			self.prestige = datas.kingdom[0].prestige;
+		}
 	}
 
 
