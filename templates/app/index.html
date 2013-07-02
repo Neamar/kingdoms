@@ -12,7 +12,17 @@
 {% endblock js %}
 
 {% block content %}
-<h1>Que mon règne vienne !</h1>
+<div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+	<a href="#" class="pure-menu-heading">Que mon règne vienne !</a>
+
+	<ul>
+		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
+		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
+		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
+		<li>Population : <span data-bind="text: kingdom.population"></span></li>
+	</ul>
+</div>
+
 
 <!-- Kingdom -->
 <h2>Mon royaume</h2>
