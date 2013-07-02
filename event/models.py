@@ -16,17 +16,18 @@ class EventCategory(DescribedModel):
 	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
-class Event(DescribedModel):
+class Event(NamedModel):
 	"""
 	Dictionary of all available events.
 	"""
 	slug = models.SlugField(max_length=255, unique=True)
+	text = models.TextField()
+
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' someerror'` to abort the event.", default="")
 	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
-	text = models.TextField()
-
+	
 
 class EventAction(models.Model):
 	"""
