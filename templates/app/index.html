@@ -17,20 +17,15 @@
 
 	<ul>
 		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
+		<li class="pure-menu-selected"><a href="#title">Titres</a></li>
+		<li class="pure-menu-selected"><a href="#mission">Missions</a></li>
+		<li class="pure-menu-selected"><a href="#event">Évènements</a></li>
 		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
 		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
 		<li>Population : <span data-bind="text: kingdom.population"></span></li>
 	</ul>
 </div>
 
-
-<!-- Kingdom -->
-<h2>Mon royaume</h2>
-<ul>
-	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
-	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
-	<li>Population : <span data-bind="text: kingdom.population"></span></li>
-</ul>
 
 <a href="#">Retour</a>
 
@@ -41,26 +36,34 @@
 
 	<div class="pure-u-1-2" id="content">
 		<div data-bind="page: {id: 'start'}">
+			<h1>Mon royaume</h1>
 			{% include "app/_index.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'title'}">
+			<h1>Titres</h1>
 			{% include "app/_title.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'mission'}">
+			<h1>Missions</h1>
 			{% include "app/_mission.html" %}
 		</div>
 
+		<div data-bind="page: {id: 'event'}">
+			<h1>Évènements</h1>
+			{% include "app/_event.html" %}
+		</div>
+
 		<div data-bind="page: {id: '?'}">
-			<h3>Oups !</h3>
+			<h1>Oups !</h1>
 			<p>Désolé, mais cette page n'existe pas.</p>
 			<p><a data-bind="page-href: #">Go back</a></p>
 		</div>
 	</div>
 
 	<div class="pure-u-1-6" id="messages">
-		{% include "app/_event.html" %}
+		{% include "app/_message.html" %}
 	</div>
 </div>
 {% endblock content %}

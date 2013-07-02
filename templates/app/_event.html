@@ -1,6 +1,11 @@
-<h3>Évènements</h3>
-<ul data-bind="foreach: messages">
-	<li>
-		{% include "app/templates/_message.html" %}
-	</li>
-</ul> 
+<p data-bind="visible: pending_events().length > 1">
+	<span data-bind="text: pending_events().length - 1"></span> évènement<span data-bind="if:pending_events().length > 2">s</span> en attente
+</p>
+<p data-bind="visible: pending_events().length == 0">
+	Aucun évènement pour l'instant.<br />
+	Allez vous occuper de votre royaume !
+</p>
+
+<div data-bind="foreach: pending_events">
+	{% include "app/templates/_pending_event.html" %}
+</div>

@@ -9,8 +9,11 @@ api.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-	url(r'^login', 'kingdom.views.index.login'),
 	url(r'^admin/', include(admin.site.urls)),
+
+	url(r'^login', 'kingdom.views.index.login'),
+	
+	url(r'^api/event/', include('event.urls')),
 	url(r'^api/$', 'kingdom.views.api.api'),
 
 	url(r'^app/$', TemplateView.as_view(template_name="app/index.html")),

@@ -1,12 +1,36 @@
+/*
+ * Fire the selected action to resolve the event.
+ */
+function pendingEventActionFire(val) {
+	$.post(val.links.fire())
+}
+function unwrapId(data) {
+	return ko.utils.unwrapObservable(data.id);
+}
+var mapping = {
+	'pending_events': {
+		key: unwrapId
+	},
+	'folks': {
+		key: unwrapId 
+	},
+	'kingdom': {
+		key: unwrapId
+	},
+	'pending_missions': {
+		key: unwrapId
+	}
+}
+
 $(function() {
 	var datas = null;
 
 	function loadDatas()
 	{
 		$.getJSON('/api/', function(result) {
-			if(!datas)
+			if(!datas) //first dada mapping
 			{
-				datas = ko.mapping.fromJS(result);
+				datas = ko.mapping.fromJS(result, mapping);
 				pager.extendWithPage(datas);
 				ko.applyBindings(datas);
 				pager.start();
@@ -16,7 +40,7 @@ $(function() {
 				ko.mapping.fromJS(result, datas);
 			}
 
-			setTimeout(loadDatas, 4000);
+			setTimeout(loadDatas, 1000);
 		});
 
 	}
