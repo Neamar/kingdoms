@@ -118,7 +118,8 @@ class UnitTest(TestCase):
 		self.pm.save()
 
 		f2 = Folk(
-			name="Another one",
+			first_name="Another one",
+			last_name="aa",
 			kingdom=self.k
 		)
 		f2.save()
@@ -163,7 +164,8 @@ status="NotAllowed"
 
 		f2 = Folk(
 			kingdom=self.k,
-			name="Another folk"
+			first_name="Another one",
+			last_name="aa"
 		)
 		f2.save()
 
