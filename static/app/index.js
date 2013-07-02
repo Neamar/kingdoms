@@ -1,3 +1,10 @@
+/*
+ * Fire the selected action to resolve the event.
+ */
+function pendingEventActionFire(val) {
+	$.post(val.links.fire())
+}
+
 $(function() {
 	var datas = null;
 

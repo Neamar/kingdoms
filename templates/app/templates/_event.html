@@ -2,5 +2,5 @@
 <p data-bind="text : text"></p>
 
 <div data-bind="foreach: actions">
-	<a class="pure-button" href="#" data-bind="text: text"></a>
+	<a class="pure-button" href="#" data-bind="text: text, click: pendingEventActionFire"></a>
 </div>

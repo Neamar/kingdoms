@@ -10,8 +10,8 @@ def pending_event_action_fire(request, pk):
 	"""
 	Fire the specified pending event
 	"""
-	#if not request.POST:
-	#	raise Http404("Only call this URL by POST.")
+	if not request.method == 'POST':
+		raise Http404("Only call this URL by POST.")
 
 	# Retrieve the object
 	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom)
