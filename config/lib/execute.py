@@ -38,7 +38,7 @@ def execute(code, param=None, context=None):
 		for k, v in context.items():
 			l[k] = v
 
-	exec(code)
+	exec("# -*- coding: utf-8 -*-\n" + code)
 
 	if _param_specified:
 		return status, param

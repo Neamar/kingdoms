@@ -9,9 +9,9 @@ def kingdom_get_folk_in_title(self, title):
 	"""
 	try:
 		the_folk = Folk.objects.get(title__title__name=title, kingdom=self)
+		return the_folk
 	except Folk.DoesNotExist:
 		return None
-	return the_folk
 Kingdom.get_folk_in_title = kingdom_get_folk_in_title
 
 
