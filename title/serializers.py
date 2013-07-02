@@ -4,6 +4,8 @@ def serialize_available_title(available_title):
 	"""
 
 	r = {
+		'id': available_title.id,
+		'title_id': available_title.title_id,
 		'name': available_title.title.name,
 		'description': available_title.title.description,
 		'folk': available_title.folk_id

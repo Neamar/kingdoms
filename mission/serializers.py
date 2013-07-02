@@ -8,6 +8,7 @@ def serialize_pending_mission(pending_mission):
 		'created': pending_mission.created,
 		'started': pending_mission.started,
 		'name': pending_mission.mission.name,
+		'text': pending_mission.mission.text,
 		'duration': pending_mission.mission.duration,
 		'timeout': pending_mission.mission.timeout,
 		'cancellable': pending_mission.mission.cancellable
@@ -24,9 +25,7 @@ def serialize_available_mission(available_mission):
 	r = {
 		'id': available_mission.id,
 		'name': available_mission.mission.name,
-		'duration': available_mission.mission.duration,
-		'timeout': available_mission.mission.timeout,
-		'cancellable': available_mission.mission.cancellable
+		'text': available_mission.mission.text,
 	}
 
 	return r
