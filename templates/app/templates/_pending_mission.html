@@ -7,5 +7,10 @@
 	<div class="pure-u-2-3">
 		<h2 data-bind="text : name"></h2>
 		<p data-bind="text : text"></p>
+
+		<div data-bind="foreach: grids">
+			<span data-bind="text:name"></span> 
+			<span data-bind="text:length"></span>
+		</div>
 	</div>
 </div>

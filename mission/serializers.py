@@ -11,7 +11,22 @@ def serialize_pending_mission(pending_mission):
 		'text': pending_mission.mission.text,
 		'duration': pending_mission.mission.duration,
 		'timeout': pending_mission.mission.timeout,
-		'cancellable': pending_mission.mission.cancellable
+		'cancellable': pending_mission.mission.cancellable,
+		'grids': [serialize_mission_grid(o) for o in pending_mission.mission.missiongrid_set.all()]
+	}
+
+	return r
+
+
+def serialize_mission_grid(mission_grid):
+	"""
+	Serialize an available mission object to JSON.
+	"""
+
+	r = {
+		'id': mission_grid.id,
+		'name': mission_grid.name,
+		'length': mission_grid.length,
 	}
 
 	return r
