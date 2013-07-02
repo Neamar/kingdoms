@@ -62,7 +62,7 @@ class Folk(models.Model):
 	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
 
 	def __unicode__(self):
-		return '%s %s' % self.first_name % self.last_name
+		return '%s %s' % (self.first_name, self.last_name)
 
 
 class QualityCategory(DescribedModel):
