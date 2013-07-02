@@ -23,17 +23,3 @@ def api(request):
 		resp['messages'].append(serialize_message(message))
 
 	return resp
-
-
-def dict(request):
-	"""
-	JSON contribution to /api/kingdom from this app.
-	"""
-
-	resp = {}
-
-	qualities = Quality.objects.all()
-
-	resp['qualities']
-	for quality in qualities:
-		resp['qualities'].append(serialize_quality(quality))

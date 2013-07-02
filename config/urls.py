@@ -11,8 +11,7 @@ urlpatterns = patterns('',
 	url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	url(r'^login', 'kingdom.views.index.login'),
 	url(r'^admin/', include(admin.site.urls)),
-	url(r'^api/kingdom$', 'kingdom.views.api.kingdom'),
-	url(r'^api/dictionary$', 'kingdom.views.api.dictionary'),
+	url(r'^api/$', 'kingdom.views.api.api'),
 
 	url(r'^app/$', TemplateView.as_view(template_name="app/index.html")),
 )
