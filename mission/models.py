@@ -33,6 +33,7 @@ class Mission(DescribedModel):
 
 	text = models.TextField()
 
+
 class MissionGrid(NamedModel):
 	"""
 	A grid to store folk affectation on a mission.
@@ -44,7 +45,6 @@ class MissionGrid(NamedModel):
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
-
 
 
 class PendingMission(models.Model):
@@ -62,7 +62,9 @@ class PendingMission(models.Model):
 	is_finished = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+		if self.kingdom.user:
+			return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+		return 'unnamed kingdom'
 
 	def targets(self):
 		"""
@@ -161,6 +163,7 @@ class PendingMission(models.Model):
 		)
 		pmv.save()
 
+
 class PendingMissionAffectation(models.Model):
 	"""
 	Folk affectation on a mission currently running.
@@ -200,7 +203,7 @@ class _PendingMissionVariable(models.Model):
 		db_table = "mission_pendingmissionvariable"
 		unique_together = ('mission', 'name')
 
-	mission = models.ForeignKey(Mission)
+	pending_mission = models.ForeignKey(PendingMission)
 	name = models.CharField(max_length=255)
 	value = StoredValueField()
 

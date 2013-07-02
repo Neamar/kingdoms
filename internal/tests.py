@@ -214,7 +214,6 @@ status = "NotPossible"
 		self.assertEquals(self.k.get_value("foo2"), 2)
 		self.assertEquals(self.k.get_value("folk"), self.f)
 
-<<<<<<< HEAD
 	def test_recurring_condition(self):
 		self.k.population = 50
 		self.k.save()
@@ -246,7 +245,7 @@ status = "bla"
 		self.r.check_condition(self.k)
 		status = self.r.fire(self.k)
 		self.assertEqual(status, "bla")
-=======
+
 	def test_execution_order(self):
 		"""
 		Test that simultaneous triggers are executed in their creation order
@@ -319,4 +318,3 @@ param = kingdom.money
 
 		call_function_loc("First_Function_evar", kingdom = self.k)
 		self.assertEqual(self.k.money, 80)
->>>>>>> 983148ed7aec494d0ca8f54524f70ee58a72e17c
