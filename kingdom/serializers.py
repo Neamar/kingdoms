@@ -4,6 +4,7 @@ def serialize_kingdom(kingdom):
 	"""
 
 	r = {
+		'id': kingdom.pk,
 		'population': kingdom.population,
 		'prestige': kingdom.prestige,
 		'money': kingdom.money
@@ -18,7 +19,7 @@ def serialize_folk(folk):
 	"""
 	
 	r = {
-			'id': folk.id,
+			'id': folk.pk,
 			'first_name': folk.first_name,
 			'last_name': folk.last_name,
 			'mother': folk.mother_id,
@@ -32,7 +33,7 @@ def serialize_folk(folk):
 			'plot': folk.plot,
 			'scholarship': folk.scholarship,
 			'loyalty': folk.loyalty,
-			'qualities': []
+			'qualities': [q.pk for q in folk.quality_set.all()]
 	}
 
 	return r
@@ -44,6 +45,7 @@ def serialize_message(message):
 	"""
 	
 	r = {
+		'id': message.pk,
 		'content': message.content,
 		'level': message.level,
 		'read': message.read,
