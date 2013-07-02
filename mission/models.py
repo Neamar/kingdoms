@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from config.lib.execute import execute
 from config.lib.models import NamedModel, DescribedModel
 from config.fields.script_field import ScriptField
+from config.fields.stored_value import StoredValueField
 from title.models import Title
 from kingdom.models import Kingdom, Folk
 
@@ -32,7 +33,6 @@ class Mission(DescribedModel):
 
 	text = models.TextField()
 
-
 class MissionGrid(NamedModel):
 	"""
 	A grid to store folk affectation on a mission.
@@ -44,6 +44,7 @@ class MissionGrid(NamedModel):
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
+
 
 
 class PendingMission(models.Model):
@@ -148,6 +149,17 @@ class PendingMission(models.Model):
 
 		return status
 
+	def get_value(self, name):
+		pmv = _PendingMissionVariable.objects.get(mission=self, name=name)
+		return pmv.value
+		
+	def set_value(self, name, value):
+		pmv = _PendingMissionVariable(
+			mission=self,
+			name=name,
+			value=value
+		)
+		pmv.save()
 
 class PendingMissionAffectation(models.Model):
 	"""
@@ -179,5 +191,17 @@ class AvailableMission(models.Model):
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+
+class _PendingMissionVariable(models.Model):
+	"""
+	A variable, stored to give some context to the mission
+	"""
+	class Meta:
+		db_table = "mission_pendingmissionvariable"
+		unique_together = ('mission', 'name')
+
+	mission = models.ForeignKey(Mission)
+	name = models.CharField(max_length=255)
+	value = StoredValueField()
 
 from mission.signals import *
