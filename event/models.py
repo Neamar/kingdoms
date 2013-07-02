@@ -2,11 +2,12 @@
 from datetime import datetime
 
 from django.db import models
+from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
 from config.fields.stored_value import StoredValueField
 from config.fields.script_field import ScriptField
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
 
 
@@ -16,13 +17,14 @@ class EventCategory(DescribedModel):
 	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
-class Event(NamedModel):
+class Event(models.Model):
 	"""
 	Dictionary of all available events.
 	"""
+	name = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, unique=True)
 	text = models.TextField()
-
+	
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 
@@ -99,26 +101,28 @@ class PendingEvent(models.Model):
 			context[var.name] = var.value
 		return context
 
-	def set_value(self, value_name, value):
+	def set_value(self, name, value):
 		"""
 		Sets a value
 		"""
+		if self.pk is None:
+			raise ValidationError("Save before storing value.")
+
 		pev = _PendingEventVariable(
 			pending_event=self,
-			name=value_name,
+			name=name,
 			value=value
 		)
 
 		pev.save()
 
-	def pendingevent_move_values(self, pending_event_action):
+	def move_values(self, pending_event_action):
 		"""
 		Moves values from a pending event to an other
 		"""
-		values = pending_event_action.pending_event._pendingeventvariable_set.all()
-		for value in values:
-			value.pending_event = pending_event_action.pending_event
-		values.save()
+		variables = pending_event_action.pending_event._pendingeventvariable_set.all()
+		for variable in variables:
+			self.set_value(variable.name, variable.value)
 
 
 class PendingEventAction(models.Model):

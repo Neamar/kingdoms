@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
@@ -345,3 +346,34 @@ pe2.start()
 		self.pe.start()
 		
 		self.assertRaises(ValidationError, (lambda: self.pe.start()))
+
+	def test_move_values(self):
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+		pe.set_value("valeur", 10)
+		pe.start()
+
+		# Sanity check
+		self.assertEqual(10, pe.get_value("valeur"))
+
+		e2 = Event(
+			name="Event 2",
+			slug="event_2",
+			category=self.c,
+			text="Event 2",
+		)
+		e2.save()
+
+		pe2 = PendingEvent(
+			event=e2,
+			kingdom=self.k,
+		)
+		pe2.save()
+
+		pe2.move_values(pe.pendingeventaction_set.all()[0])
+
+		self.assertEqual(10, pe2.get_value("valeur"))
