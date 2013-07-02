@@ -12,15 +12,11 @@ def api(request):
 	# Pending missions
 	pending_missions = PendingMission.objects.filter(kingdom=request.user.kingdom).select_related("mission")
 
-	resp['pending_missions'] = []
-	for pending_mission in pending_missions:
-		resp['pending_missions'].append(serialize_pending_mission(pending_mission))
+	resp['pending_missions'] = [serialize_pending_mission(o) for o in pending_missions]
 
 	# Available missions
 	available_missions = AvailableMission.objects.filter(kingdom=request.user.kingdom).select_related("mission")
 
-	resp['available_missions'] = []
-	for available_mission in available_missions:
-		resp['available_missions'].append(serialize_available_mission(available_mission))
+	resp['available_missions'] = [serialize_available_mission(o) for o in available_missions]
 
 	return resp
