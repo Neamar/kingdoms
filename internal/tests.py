@@ -13,7 +13,8 @@ class UnitTest(TestCase):
 
 		self.f = Folk(
 			kingdom=self.k,
-			name="Someone"
+			first_name="Another one",
+			last_name="aa"
 		)
 		self.f.save()
 
@@ -31,7 +32,8 @@ class UnitTest(TestCase):
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	name="New user from trigger"
+	first_name="Another oneeeee",
+	last_name="aaaaaaaa"
 ).save()
 """
 		self.t.save()
@@ -111,7 +113,8 @@ Folk(
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	name="New user from trigger"
+	first_name="Another one",
+	last_name="aaaa"
 ).save()
 """
 		self.t.save()
@@ -146,7 +149,8 @@ raise ValidationError("Can't call twice.")
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	name="New user from trigger"
+	first_name="Anotheraa one",
+	last_name="aaaaaaa"
 ).save()
 """
 		self.t.save()

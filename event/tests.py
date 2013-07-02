@@ -209,7 +209,8 @@ param.set_value("kingdom", kingdom)
 
 		f = Folk(
 			kingdom=self.k,
-			name="peon"
+			first_name="peon",
+			last_name="aa"
 		)
 		f.save()
 

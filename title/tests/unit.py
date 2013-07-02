@@ -217,7 +217,8 @@ param.save()
 		self.t.save()
 
 		f2 = Folk(
-			name="Another folk",
+			first_name="Another one",
+			last_name="aa",
 			kingdom=self.k
 		)
 		f2.save()
