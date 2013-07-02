@@ -17,7 +17,14 @@ Où scripter ?
 Que scripter ?
 ---------------
 #### Définir une variable pour un texte :
-param.set_value ("nom de la variable", valeur de la variable)
+```python
+param.set_value("nom de la variable", valeur de la variable)
+```
+
+#### Récupérer une variable
+```python
+param.get_value("nom de la varaible")
+```
 
 Exemples
 -------------
@@ -38,16 +45,19 @@ kingdom.save()
 # On n'oublie pas de sauvegarder
 ```
 
+
 #### Les résolutions
-# On choisi de mettre en quarantaine tous les malades
+# On choisit de mettre en quarantaine tous les malades
+
+#### Les solutions
 * `on_fire` :
 ```python
 # On a quand même quelques pertes, mais on en a sauvé pas mal !
-kingdom.population *=1.5
+kingdom.population *= 1.5
 kingdom.save()
 ```
 
-# On choisi de les laisser mourrir
+# On choisit de les laisser mourrir
 * `on_fire`:
 ```python
 # C'est assez dramatique !
@@ -55,21 +65,31 @@ kingdom.population /= 2
 kingdom.save()
 ```
 
-#On choisi de faire appel à un medecin
+# On choisit de faire appel à un medecin
 * `on_fire` : 
 ```python
 #On crée une nouvelle PendingMission
 PendingMission(
- mission=Mission.objects.get(name="Partir en quête d'un medecin"),
- kingdom=kingdom,
-).save() #On sauvegarde cette pending mission
+	mission=Mission.objects.get(slug="recherche_medecin"),
+	kingdom=kingdom,
+).save()
 ```
 
-#### Ajouter un délai à un pending_event
+### Lancer un évènement dans un futur programmé
 ```python
-pendingEvent(
-	
+PendingEvent(
+	event=Event.objects.get(slug="le slug"),
+	kingdom=kingdom,
+	started= datetime.now() + timedelta(days=5) #on peut aussi utiliser hours, minutes, months
+	).save()
+```
+### Lancer un évènement plus tard, à un moment indeterminé
+```python
+pe = PendingEvent(
+	event=Event.objects.get(slug="le slug"),
+	kingdom=kingdom,
+	started= None # la pending mission ne démarre pas maintenant
+	).save()
 
-
-)
+pe.start() #la PendingMission démarre maintenant
 ```
