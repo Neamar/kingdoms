@@ -9,7 +9,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class EventAdmin(admin.ModelAdmin):
-	list_display = ('name', 'slug', 'description', 'weight', 'category',)
+	list_display = ('slug', 'text', 'weight', 'category',)
 	list_filter = ('category__name',)
 	inlines = [
 		EventActionAdminInline,
@@ -25,7 +25,7 @@ admin.site.register(EventCategory, EventCategoryAdmin)
 
 class PendingEventAdmin(admin.ModelAdmin):
 	readonly_fields = ('text',)
-	list_display = ('event', 'kingdom', 'started')
+	list_display = ('event', 'kingdom', 'started', 'text')
 admin.site.register(PendingEvent, PendingEventAdmin)
 
 

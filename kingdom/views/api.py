@@ -1,51 +1,35 @@
-from django.utils import simplejson
-from django.http import HttpResponse
-from kingdom.models import Kingdom, Folk, ModalMessage, Message
+import importlib
+from django.conf import settings
+
+from kingdom.decorators import json_view
 from kingdom.utils import *
 
 
+__plugged_apis = []
+
+
+def autodiscover():
+	"""
+	Discover all api views.
+	"""
+	for app in settings.INSTALLED_APPS:
+		try:
+			app_api = importlib.import_module("%s.api" % app)
+			__plugged_apis.append(app_api.api)
+		except:
+			pass
+
+
+@json_view
 def api(request):
+	"""
+	Build huge responses from registered app,
+	inlcuding all datas for the current kingdom
+	"""
+
 	resp = {}
+	for plugged_api in __plugged_apis:
+		# Add context from objects
+		resp.update(plugged_api(request))
 
-	kingdom = Kingdom.objects.get(pk=1)
-	resp['kingdom'] = {
-		'population': kingdom.population,
-		'prestige': kingdom.prestige
-	}
-
-	folks = Folk.objects.filter(kingdom=kingdom)
-	resp['folks'] = []
-	for folk in folks:
-		resp['folks'].append({
-			'id': folk.id,
-			'name': folk.name,
-			'mother': folk.mother_id,
-			'father': folk.father_id,
-			'spouse': folk.spouse_id,
-			'birth': toTimestamp(folk.birth),
-			'death': toTimestamp(folk.death),
-			'fight': folk.fight,
-			'diplomacy': folk.diplomacy,
-			'plot': folk.plot,
-			'scholarship': folk.scholarship,
-			'loyalty': folk.loyalty
-		})
-
-	messages = Message.objects.filter(kingdom=kingdom)
-	resp['messages'] = []
-	for message in messages:
-		resp['folks'].append({
-			'content': message.content,
-			'level': message.level,
-			'read': message.read,
-			'creation': toTimestamp(message.creation)
-		})
-
-	modal_messages = ModalMessage.objects.filter(kingdom=kingdom)
-	resp['modal_messages'] = []
-	for modal_message in modal_messages:
-		resp['modal_messages'].append({
-			'creation': toTimestamp(modal_message.creation),
-		})
-
-	return HttpResponse(simplejson.dumps(resp))
+	return resp

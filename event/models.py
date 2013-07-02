@@ -16,19 +16,21 @@ class EventCategory(DescribedModel):
 	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
-class Event(DescribedModel):
+class Event(NamedModel):
 	"""
 	Dictionary of all available events.
 	"""
 	slug = models.SlugField(max_length=255, unique=True)
-	weight = models.PositiveIntegerField(default=1)
-	category = models.ForeignKey(EventCategory)
-	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' someerror'` to abort the event.", default="")
-	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
 	text = models.TextField()
 
+	weight = models.PositiveIntegerField(default=1)
+	category = models.ForeignKey(EventCategory)
 
-class EventAction(NamedModel):
+	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default="")
+	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
+
+
+class EventAction(models.Model):
 	"""
 	Actions registered with an event.
 	"""
@@ -140,6 +142,8 @@ class _PendingEventVariable(models.Model):
 	name = models.CharField(max_length=255)
 	value = StoredValueField()
 
+	def __unicode__(self):
+		return "%s [%s]" % (self.name, self.value)
 
-from event.scripts import *
+
 from event.signals import *

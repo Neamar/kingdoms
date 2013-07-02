@@ -1,20 +1,25 @@
 $(function() {
-	datas = {
-		"kingdom": {
-			"money": 50,
-			"prestige": 12,
-		}
-	}
+	var datas = null;
 
-	function kingdom_value(){
-		var self = this;
-		$.getJSON("/api", function(datas){
-			self.money = datas.kingdom[0].money;
-			self.prestige = datas.kingdom[0].prestige;
+	function loadDatas()
+	{
+		$.getJSON('/api/', function(result) {
+			if(!datas)
+			{
+				datas = ko.mapping.fromJS(result);
+				pager.extendWithPage(datas);
+				ko.applyBindings(datas);
+				pager.start();
 			}
-			)
+			else
+			{
+				ko.mapping.fromJS(result, datas);
+			}
+
+			setTimeout(loadDatas, 4000);
+		});
+
 	}
 
-
-	ko.applyBindings(datas);
+	loadDatas();
 });

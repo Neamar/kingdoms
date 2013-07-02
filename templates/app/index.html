@@ -1,5 +1,5 @@
 {% extends "app/template.html" %}
-{% block title %}Que mon règne vienne{% endblock title %}
+{% block title %}Que mon règne vienne !{% endblock title %}
 
 {% block css %}
 	<link rel="stylesheet" href="{{ STATIC_URL }}app/index.css" />
@@ -7,23 +7,60 @@
 
 {% block js %}
 	<script type="text/javascript" src="{{ STATIC_URL }}app/index.js"></script>
+
+	<base href="/app/" />
 {% endblock js %}
 
 {% block content %}
+<div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+	<a href="#" class="pure-menu-heading">Que mon règne vienne !</a>
 
-<div class="row">
-	<div class="small-3 columns" id="cour">
-		<h3>Ma cour</h3>
 	<ul>
-		<li data-bind="text: kingdom.money"></li>
-		<li data-bind="text: kingdom.prestige"></li>
+		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
+		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
+		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
+		<li>Population : <span data-bind="text: kingdom.population"></span></li>
 	</ul>
-	</div>
-	<div class="small-7 columns" id="content">
+</div>
 
+
+<!-- Kingdom -->
+<h2>Mon royaume</h2>
+<ul>
+	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
+	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
+	<li>Population : <span data-bind="text: kingdom.population"></span></li>
+</ul>
+
+<a href="#">Retour</a>
+
+<div class="pure-g-r">
+	<div class="pure-u-1-6" id="folk">
+		{% include "app/_folk.html" %}
 	</div>
-	<div class="small-2 columns" id="messages">
-		<h3>Évènements</h3>
+
+	<div class="pure-u-1-2" id="content">
+		<div data-bind="page: {id: 'start'}">
+			{% include "app/_index.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'title'}">
+			{% include "app/_title.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'mission'}">
+			{% include "app/_mission.html" %}
+		</div>
+
+		<div data-bind="page: {id: '?'}">
+			<h3>Oups !</h3>
+			<p>Désolé, mais cette page n'existe pas.</p>
+			<p><a data-bind="page-href: #">Go back</a></p>
+		</div>
+	</div>
+
+	<div class="pure-u-1-6" id="messages">
+		{% include "app/_event.html" %}
 	</div>
 </div>
 {% endblock content %}
