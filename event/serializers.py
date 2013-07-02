@@ -1,3 +1,6 @@
+from django.core.urlresolvers import reverse
+
+
 def serialize_pending_event(pending_event):
 	"""
 	Serialize a pending event object to JSON.
@@ -21,7 +24,10 @@ def serialize_pending_event_action(pending_event_action):
 	
 	r = {
 		'id': pending_event_action.pk,
-		'text': pending_event_action.text
+		'text': pending_event_action.text,
+		'links': {
+			'fire': reverse('event.views.pending_event_action_fire', args=(pending_event_action.pk,))
+		}
 	}
 
 	return r
