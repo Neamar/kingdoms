@@ -34,6 +34,9 @@ Que scripter ?
 #### Ajouter une claim
 * `kingdom.add_claim(kingdom)` : ajoute une claim avec le `kingdom` défini
 
+#### Connaitre la personne qui a un certaint titre
+* `kingdom.get_title("title")` : renvoie le folk le la personne ayant ce titre. Si personne ne l'a, renvoie None
+
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un

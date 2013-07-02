@@ -69,3 +69,4 @@ class AvailableTitle(models.Model):
 		return status
 
 from title.signals import *
+from title.scripts import *
