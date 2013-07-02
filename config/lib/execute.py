@@ -14,7 +14,8 @@ def execute(code, param=None, context=None):
 	"""
 
 	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
-	from internal.models import Constant
+	#call_function could be moved later
+	from internal.models import Constant, call_function
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation
 	from title.models import Title, AvailableTitle

@@ -33,7 +33,8 @@
     "kingdom": 1, 
     "fight": 10, 
     "death": null, 
-    "name": "Thorgal Guerrier", 
+    "first_name": "Thorgal", 
+    "last_name": "Aegirsson",
     "diplomacy": 0, 
     "father": null, 
     "plot": 0, 
@@ -226,7 +227,7 @@
   "model": "event.pendingevent", 
   "fields": {
     "kingdom": 1, 
-    "creation": "2013-06-29T19:07:30.445", 
+    "created": "2013-06-29T19:07:30.445", 
     "event": 1
   }
 },
