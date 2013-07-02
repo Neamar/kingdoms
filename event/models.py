@@ -23,8 +23,8 @@ class Event(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
-	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' someerror'` to abort the event.", default="")
-	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
+	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' someerror'` to abort the event.", default="")
+	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
 	text = models.TextField()
 
 
@@ -57,7 +57,7 @@ class PendingEvent(models.Model):
 	text = models.TextField()
 
 	def __unicode__(self):
-		return "%s [%s]" % (self.event, self.kingdom)
+		return "%s [%s]" % (self.event.name, self.kingdom)
 
 	def check_condition(self):
 		"""
