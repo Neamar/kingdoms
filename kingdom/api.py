@@ -4,7 +4,7 @@ from kingdom.serializers import serialize_folk, serialize_kingdom, serialize_mes
 
 def api(request):
 	"""
-	JSON contribution from this app.
+	JSON contribution to /api/kingdom from this app.
 	"""
 
 	resp = {}
@@ -23,3 +23,17 @@ def api(request):
 		resp['messages'].append(serialize_message(message))
 
 	return resp
+
+
+def dict(request):
+	"""
+	JSON contribution to /api/kingdom from this app.
+	"""
+
+	resp = {}
+
+	qualities = Quality.objects.all()
+
+	resp['qualities']
+	for quality in qualities:
+		resp['qualities'].append(serialize_quality(quality))
