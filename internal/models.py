@@ -93,10 +93,16 @@ class Recurring(DescribedModel):
 
 
 class FirstName (NamedModel):
+	"""
+	Dictionary for first name.
+	"""
 	pass
 
 
 class LastName (NamedModel):
+	"""
+	Dictionary for last name.
+	"""
 	pass
 
 from internal.signals import *

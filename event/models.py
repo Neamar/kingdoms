@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from django.db import models
 
 from config.lib.execute import execute
@@ -21,8 +23,8 @@ class Event(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
-	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current Kingdom object", default="")
-	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the context object", default="")
+	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' someerror'` to abort the event.", default="")
+	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
 	text = models.TextField()
 
 
@@ -46,8 +48,12 @@ class PendingEvent(models.Model):
 
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
-	creation = models.DateTimeField(auto_now_add=True)
-	datas = models.TextField(blank=True, null=True)
+
+	created = models.DateTimeField(auto_now_add=True)
+	started = models.DateTimeField(default=datetime.now, blank=True, null=True)
+
+	is_started = models.BooleanField(default=False, editable=False)
+
 	text = models.TextField(editable=False)
 
 	def __unicode__(self):
@@ -60,8 +66,9 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folk': self.kingdom.folk_set.all()
 		}
-		status, param = execute(self.event.condition, self.kingdom, context)
+		status, param = execute(self.event.condition, self, context)
 
 		return status
 
@@ -72,6 +79,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folk': self.kingdom.folk_set.all()
 		}
 		status, param = execute(self.event.on_fire, self, context)
 		return status, param

@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import DescribedModel
 
 
 class Kingdom(models.Model):
@@ -21,7 +21,7 @@ class Kingdom(models.Model):
 		return '%s kingdom' % self.user
 
 
-class Folk(NamedModel):
+class Folk(models.Model):
 	"""
 	The folk are the people in your kingdom.
 	"""
@@ -33,6 +33,12 @@ class Folk(NamedModel):
 		(FEMALE, '♀')
 	)
 	kingdom = models.ForeignKey(Kingdom)
+
+	first_name = models.CharField(max_length=64)
+	last_name = models.CharField(max_length=64)
+	
+	class Meta:
+		unique_together = ('first_name', 'last_name')
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
@@ -54,6 +60,9 @@ class Folk(NamedModel):
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 
 	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
+
+	def __unicode__(self):
+		return '%s %s' % (self.first_name, self.last_name)
 
 
 class QualityCategory(DescribedModel):

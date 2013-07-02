@@ -18,8 +18,10 @@ class AliveFilter(admin.SimpleListFilter):
 	def queryset(self, request, queryset):
 		if self.value() == 'no':
 			return queryset.exclude(death=None)
-		else:
+		elif self.value() == 'yes':
 			return queryset.filter(death=None)
+		else:
+			return queryset.all()
 
 
 class KingdomAdmin(admin.ModelAdmin):
@@ -33,7 +35,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class FolkAdmin(admin.ModelAdmin):
-	list_display = ('name', 'sex', 'age')
+	list_display = ('first_name', 'last_name', 'sex', 'age')
 	list_filter = ('sex', AliveFilter)
 admin.site.register(Folk, FolkAdmin)
 

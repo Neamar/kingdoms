@@ -34,6 +34,9 @@ Que scripter ?
 #### Ajouter une claim
 * `kingdom.add_claim(kingdom)` : ajoute une claim avec le `kingdom` défini
 
+#### Connaitre la personne qui a un certaint titre
+* `kingdom.get_title("title")` : renvoie le folk le la personne ayant ce titre. Si personne ne l'a, renvoie None
+
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
@@ -42,8 +45,12 @@ Que scripter ?
 #### Ajouter un trait à une personne
 * `folk.add_quality(name)`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
 
-#### Demander un sexe aléatoire
-* `folk.random_sex()`: retourne un sexe aléatoirement
+#### Savoir si une personne a un certaint trait
+* `folk.has_attribute(name)` : renvoie True si la personne a le trait sinon renvoie False
+
+#### Connaitre l'age d'une personne
+* `folk.age()`: renvoie l'age de la personne en années
+
 
 Exemples
 -------------

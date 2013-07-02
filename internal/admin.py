@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring
+from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName
 from kingdom.models import Kingdom
 
 
@@ -32,3 +32,7 @@ class RecurringAdmin(admin.ModelAdmin):
 		self.message_user(request, "Les recurrings ont été lancées")
 	resolve.short_description = "Do it now"
 admin.site.register(Recurring, RecurringAdmin)
+
+
+admin.site.register(FirstName)
+admin.site.register(LastName)

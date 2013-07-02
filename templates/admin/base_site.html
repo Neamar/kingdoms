@@ -5,6 +5,18 @@
  
 {% block branding %}
 <h1 id="site-name">Administration des royaumes</h1>
+
+<style type="text/css">
+.CodeMirror-wrapping iframe + div
+{
+	display: none;
+}
+
+.CodeMirror-wrapping iframe:hover + div
+{
+	display: block;
+}
+</style>
 {% endblock %}
  
 {% block nav-global %}{% endblock %}

@@ -30,6 +30,8 @@ class Mission(DescribedModel):
 	title = models.ForeignKey(Title, blank=True, null=True)
 	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
 
+	text = models.TextField()
+
 
 class MissionGrid(NamedModel):
 	"""
@@ -38,7 +40,7 @@ class MissionGrid(NamedModel):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
-	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
+	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected.", blank=True)
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
@@ -136,7 +138,9 @@ class PendingMission(models.Model):
 			'folks': self.folk_set.all(),
 			'target': self.target
 		}
-		status, param = execute(self.mission.on_resolution, self, context=self._get_context())
+		context.update(self._get_context())
+		
+		status, param = execute(self.mission.on_resolution, self, context)
 
 		self.is_finished = True
 		self.save()
@@ -160,8 +164,9 @@ class PendingMissionAffectation(models.Model):
 		"""
 		context = {
 			'kingdom': self.pending_mission.kingdom,
+			'folk': self.folk,
 		}
-		status, param = execute(self.mission_grid.condition, self.folk, context)
+		status, param = execute(self.mission_grid.condition, self, context)
 		return status
 
 

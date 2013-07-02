@@ -1,5 +1,6 @@
 Kingdoms
 ========
+Pour la documentation, [suivre ce lien](docs/readme.md).
 
 ![Models](https://github.com/Neamar/kingdoms/blob/master/models.png?raw=true)
 
