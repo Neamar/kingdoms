@@ -87,6 +87,9 @@ class PendingEvent(models.Model):
 		return status, param
 
 	def get_value(self, value_name):
+		"""
+		Gets a value
+		"""
 		pev = _PendingEventVariable.objects.get(pending_event=self, name=value_name)
 		return pev.value
 
@@ -97,6 +100,9 @@ class PendingEvent(models.Model):
 		return context
 
 	def set_value(self, value_name, value):
+		"""
+		Sets a value
+		"""
 		pev = _PendingEventVariable(
 			pending_event=self,
 			name=value_name,
@@ -104,6 +110,15 @@ class PendingEvent(models.Model):
 		)
 
 		pev.save()
+
+	def pendingevent_move_values(self, pending_event_action):
+		"""
+		Moves values from a pending event to an other
+		"""
+		values = pending_event_action.pending_event._pendingeventvariable_set.all()
+		for value in values:
+			value.pending_event = pending_event_action.pending_event
+		values.save()
 
 
 class PendingEventAction(models.Model):
