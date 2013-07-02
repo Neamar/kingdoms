@@ -21,6 +21,10 @@ def execute(code, param=None, context=None):
 	from config.scripts.random import random_between, random_value
 	from config.scripts.utils import sum_folks
 
+	from title.scripts import *
+	from event.scripts import *
+	from kingdom.scripts import *
+
 	from datetime import datetime, timedelta
 
 	_param_specified = param is not None

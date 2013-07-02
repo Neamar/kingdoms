@@ -105,7 +105,7 @@ class PendingMission(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 			'folks': folks,
-			'grid': grids,
+			'grids': grids,
 			'target': self.target
 		}
 

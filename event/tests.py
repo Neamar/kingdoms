@@ -311,7 +311,7 @@ pe2.start()
 
 	def test_pendingevent_delayed(self):
 		"""
-		Test you can create a pending event in the future, and condition is not checked yet.
+		Tests if ou can create a pending event in the future, and condition is not checked yet.
 		"""
 
 		pe = PendingEvent(
@@ -330,3 +330,18 @@ pe2.start()
 
 		# Pending event actions created
 		self.assertEquals(1, pe.pendingeventaction_set.count())
+
+	def test_start_pendingevent_twice_fail(self):
+		"""
+		Tests if we can't start twice a pendingevent
+		"""
+		self.pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		self.pe.save()
+
+		self.pe.start()
+		
+		self.assertRaises(ValidationError, (lambda: self.pe.start()))
