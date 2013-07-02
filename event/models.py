@@ -28,7 +28,7 @@ class Event(DescribedModel):
 	text = models.TextField()
 
 
-class EventAction(NamedModel):
+class EventAction(models.Model):
 	"""
 	Actions registered with an event.
 	"""
