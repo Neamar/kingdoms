@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8" />
+	<title>{% block title %}{% endblock %}</title>
+
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css">
+
+	<script src="{{ STATIC_URL }}jquery/jquery-1.10.1.min.js"></script>
+	<script src="{{ STATIC_URL }}knockout/knockout-2.2.1.js"></script>
+	<script src="{{ STATIC_URL }}knockout/knockout.mapping-2.4.1.min.js"></script>
+	<script src="{{ STATIC_URL }}knockout/pagerjs.js"></script>
+
+	{% block css %}{% endblock %}
+	{% block js %}{% endblock %}
+
+</head>
+<body>
+
+	{% block content %}
+	{% endblock content %}
+</body>
+</html>
