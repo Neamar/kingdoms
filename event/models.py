@@ -31,6 +31,9 @@ class Event(models.Model):
 	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default=" ")
 	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default=" ")
 
+	def __unicode__(self):
+		return self.name
+
 
 class EventAction(models.Model):
 	"""
