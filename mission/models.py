@@ -18,12 +18,12 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
-	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid.", blank=True)
-	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.")
+	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", blank=True, default="")
+	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid.", blank=True, default="")
+	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", blank=True, default="")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
-	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", blank=True)
+	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", blank=True, default="")
 	target_description = models.CharField(max_length=255, default="Cible")
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
@@ -41,7 +41,7 @@ class MissionGrid(NamedModel):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
-	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected.", blank=True)
+	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected.", blank=True, default="")
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)

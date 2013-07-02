@@ -34,7 +34,7 @@ class EventAction(NamedModel):
 	"""
 
 	event = models.ForeignKey(Event)
-	on_fire = ScriptField(blank=True, null=True)
+	on_fire = ScriptField(blank=True, null=True, default="")
 	text = models.CharField(max_length=255)
 
 

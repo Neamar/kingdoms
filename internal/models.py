@@ -7,6 +7,7 @@ from config.fields.stored_value import StoredValueField
 from kingdom.models import Kingdom
 from config.lib.execute import execute
 
+
 def call_function(name, **kwargs):
 	"""
 	Call the function which slug is name with arguments kwargs
@@ -15,6 +16,7 @@ def call_function(name, **kwargs):
 	f = Function.objects.get(slug=name)
 	ret = f.fire(kwargs)
 	return ret
+
 
 class Trigger(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
@@ -48,7 +50,6 @@ class Trigger(DescribedModel):
 		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
 		self.fired.add(kingdom)
 		status, param = execute(self.on_fire, self, context)
-
 		
 		return status
 
@@ -117,13 +118,14 @@ class LastName (NamedModel):
 	"""
 	pass
 
+
 class Function (models.Model):
 	"""
 	Class Function accessible from scripts to be reused
 	"""
 
 	slug = models.SlugField(max_length=255, unique=True)
-	body = ScriptField(blank=True, null=True, help_text="Body of the function", default="")
+	body = ScriptField(blank=True, help_text="Body of the function", default="")
 
 	def fire(self, kwargs):
 		context = kwargs
