@@ -1,8 +1,11 @@
 <tr>
-	<td data-bind="text: first_name() + ' ' + last_name()"></td>
+	<td data-bind="text: first_name() + ' ' + last_name()"rowspan="2"></td>
 	<td data-bind="text: fight"></td>
 	<td data-bind="text: plot"></td>
 	<td data-bind="text: diplomacy"></td>
 	<td data-bind="text: scholarship"></td>
 	<td data-bind="text: loyalty"></td>
+</tr>
+<tr>
+	<td colspan="5" data-bind="foreach: qualities"><span data-bind="text:$data"></span>
 </tr>
