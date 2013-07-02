@@ -7,28 +7,21 @@ from django.template import Template, Context
 from event.models import PendingEvent, PendingEventAction
 
 
-@receiver(pre_save, sender=PendingEvent)
-def check_event_condition(sender, instance, **kwargs):
-	"""
-	Check the pending event can be created.
-	"""
-	# Do not check if already created
-	if instance.pk:
-		return
-
-	status = instance.check_condition()
-	if status != 'ok':
-		raise ValidationError("Impossible de créer cet évènement : %s" % status)
-
-
 @receiver(post_save, sender=PendingEvent)
 def set_event_actions_and_fire(sender, instance, created, **kwargs):
 	"""
-	Create all pending event actions from event actions.
+	Create all pending event actions from event actions on start.
 	"""
 
-	if created:
-		# Only fire and create action just after the PendingEvent creation
+	if instance.started and not instance.is_started:
+		# Only fire and create actions after started is set.
+
+		# Check condition
+		status = instance.check_condition()
+		if status != 'ok':
+			instance.delete()
+			raise ValidationError("Impossible de créer cet évènement : %s" % status)
+
 		status, param = instance.fire()
 		raw_context = instance.get_context()
 		context = Context(raw_context)
@@ -36,6 +29,8 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		# Create text from templates
 		text_template = Template(instance.event.text)
 		instance.text = text_template.render(context)
+
+		instance.is_started = True
 		instance.save()
 
 		for event_action in instance.event.eventaction_set.all():

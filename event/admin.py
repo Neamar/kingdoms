@@ -24,7 +24,7 @@ admin.site.register(EventCategory, EventCategoryAdmin)
 
 
 class PendingEventAdmin(admin.ModelAdmin):
-	list_display = ('event', 'kingdom', 'creation')
+	list_display = ('event', 'kingdom', 'started')
 admin.site.register(PendingEvent, PendingEventAdmin)
 
 
