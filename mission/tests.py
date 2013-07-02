@@ -28,7 +28,6 @@ class UnitTest(TestCase):
 		self.m = Mission(
 			name="Stub mission",
 			slug="stub",
-			description="My description.",
 			on_resolution="",
 			title=self.t,
 		)
@@ -188,7 +187,6 @@ status="not_allowed"
 		"""
 		m2 = Mission(
 			name="Stub mission2",
-			description="My description.",
 			on_resolution="",
 			title=self.t,
 		)
@@ -259,7 +257,6 @@ status="not_allowed"
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
-			description="My description.",
 			on_resolution="",
 			on_init="status='Abort Mission'",
 			title=self.t
@@ -280,7 +277,6 @@ status="not_allowed"
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
-			description="My description.",
 			on_resolution="",
 			on_start="""
 Kingdom().save()
@@ -323,7 +319,6 @@ Kingdom().save()
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
-			description="My description.",
 			on_resolution="""
 status='mission_solved'
 """,
