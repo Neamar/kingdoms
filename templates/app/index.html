@@ -24,14 +24,6 @@
 </div>
 
 
-<!-- Kingdom -->
-<h2>Mon royaume</h2>
-<ul>
-	<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
-	<li>Argent : <span data-bind="text: kingdom.money"></span></li>
-	<li>Population : <span data-bind="text: kingdom.population"></span></li>
-</ul>
-
 <a href="#">Retour</a>
 
 <div class="pure-g-r">
@@ -50,6 +42,10 @@
 
 		<div data-bind="page: {id: 'mission'}">
 			{% include "app/_mission.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'event'}">
+			{% include "app/_event.html" %}
 		</div>
 
 		<div data-bind="page: {id: '?'}">

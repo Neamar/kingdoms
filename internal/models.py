@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 from config.fields.script_field import ScriptField
@@ -109,7 +110,14 @@ class FirstName (NamedModel):
 	"""
 	Dictionary for first name.
 	"""
-	pass
+	MALE = 'm'
+	FEMALE = 'f'
+
+	SEX_CHOICES = (
+		(MALE, '♂'),
+		(FEMALE, '♀')
+	)
+	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
 
 class LastName (NamedModel):
