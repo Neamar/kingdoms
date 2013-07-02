@@ -54,7 +54,7 @@ class PendingEvent(models.Model):
 
 	is_started = models.BooleanField(default=False, editable=False)
 
-	text = models.TextField(editable=False)
+	text = models.TextField()
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.event, self.kingdom)
