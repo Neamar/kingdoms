@@ -19,7 +19,8 @@ def serialize_folk(folk):
 	
 	r = {
 			'id': folk.id,
-			'name': folk.name,
+			'first_name': folk.first_name,
+			'last_name': folk.last_name,
 			'mother': folk.mother_id,
 			'father': folk.father_id,
 			'spouse': folk.spouse_id,
@@ -30,7 +31,8 @@ def serialize_folk(folk):
 			'diplomacy': folk.diplomacy,
 			'plot': folk.plot,
 			'scholarship': folk.scholarship,
-			'loyalty': folk.loyalty
+			'loyalty': folk.loyalty,
+			'qualities': []
 	}
 
 	return r
@@ -46,6 +48,20 @@ def serialize_message(message):
 		'level': message.level,
 		'read': message.read,
 		'creation': message.creation
+	}
+
+	return r
+
+
+def serialize_quality(quality):
+	"""
+	Serialize a message object to JSON.
+	"""
+	
+	r = {
+		'id': quality.pk,
+		'name': quality.name,
+		'description': quality.description
 	}
 
 	return r

@@ -1,6 +1,17 @@
 <h3>Ma cour</h3>
-<ul data-bind="foreach: folks">
-	<li>
+<table>
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>C</th>
+			<th>I</th>
+			<th>D</th>
+			<th>É</th>
+			<th>L</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: folks">
 		{% include "app/templates/_folk.html" %}
-	</li>
-</ul>
+	</tbody>
+</table>
+
