@@ -138,7 +138,9 @@ class PendingMission(models.Model):
 			'folks': self.folk_set.all(),
 			'target': self.target
 		}
-		status, param = execute(self.mission.on_resolution, self, context=self._get_context())
+		context.update(self._get_context())
+		
+		status, param = execute(self.mission.on_resolution, self, context)
 
 		self.is_finished = True
 		self.save()

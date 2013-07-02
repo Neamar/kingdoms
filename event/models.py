@@ -60,6 +60,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folk': self.folk,
 		}
 		status, param = execute(self.event.condition, self.kingdom, context)
 
@@ -72,6 +73,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folk': self.folk,
 		}
 		status, param = execute(self.event.on_fire, self, context)
 		return status, param
