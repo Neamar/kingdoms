@@ -33,6 +33,9 @@ class Mission(models.Model):
 
 	title = models.ForeignKey(Title, blank=True, null=True)
 
+	def __unicode__(self):
+		return self.name
+
 
 class MissionGrid(NamedModel):
 	"""
