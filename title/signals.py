@@ -37,6 +37,13 @@ def check_title_condition(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=AvailableTitle)
+def check_folk_kingdom(sender, instance, **kwargs):
+	# Check folk is part of the same kingdom
+	if instance.folk and instance.folk.kingdom != instance.kingdom:
+		raise ValidationError("Cette personne ne fait pas partie du bon royaume.")
+
+
+@receiver(pre_save, sender=AvailableTitle)
 def on_availabletitle_affection_defection(sender, instance, **kwargs):
 	if instance.last_folk_id != instance.folk_id:
 		# Was there a prior defection?
