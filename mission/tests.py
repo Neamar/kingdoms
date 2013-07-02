@@ -118,8 +118,8 @@ class UnitTest(TestCase):
 		self.pm.save()
 
 		f2 = Folk(
-			first_name="Another one",
-			last_name="aa",
+			first_name="Hot",
+			last_name="Pie",
 			kingdom=self.k
 		)
 		f2.save()
@@ -140,8 +140,7 @@ class UnitTest(TestCase):
 
 		self.pma.delete()
 		self.mg.condition = """
-param = None
-status="NotAllowed"
+status="not_allowed"
 """
 		self.mg.save()
 
@@ -164,8 +163,8 @@ status="NotAllowed"
 
 		f2 = Folk(
 			kingdom=self.k,
-			first_name="Another one",
-			last_name="aa"
+			first_name="Cersei",
+			last_name="Lannister"
 		)
 		f2.save()
 

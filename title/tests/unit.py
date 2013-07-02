@@ -127,8 +127,8 @@ class UnitTest(TestCase):
 		"""
 
 		self.t.on_affect = """
-param.loyalty = 50
-param.save()
+folk.loyalty = 50
+folk.save()
 """
 		self.t.save()
 
@@ -150,8 +150,8 @@ param.save()
 		"""
 
 		self.t.on_affect = """
-param.loyalty = 50
-param.save()
+folk.loyalty = 50
+folk.save()
 """
 		self.t.save()
 
@@ -178,8 +178,8 @@ param.save()
 		"""
 
 		self.t.on_defect = """
-param.loyalty = 50
-param.save()
+folk.loyalty = 50
+folk.save()
 """
 		self.t.save()
 
@@ -207,18 +207,18 @@ param.save()
 		"""
 
 		self.t.on_affect = """
-param.loyalty = 80
-param.save()
+folk.loyalty = 80
+folk.save()
 """
 		self.t.on_defect = """
-param.loyalty = 20
-param.save()
+folk.loyalty = 20
+folk.save()
 """
 		self.t.save()
 
 		f2 = Folk(
-			first_name="Another one",
-			last_name="aa",
+			first_name="Robb",
+			last_name="Stark",
 			kingdom=self.k
 		)
 		f2.save()

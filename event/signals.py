@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -13,7 +14,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 	Create all pending event actions from event actions on start.
 	"""
 
-	if instance.started and not instance.is_started:
+	if instance.started and instance.started <= datetime.now() and not instance.is_started:
 		# Only fire and create actions after started is set.
 
 		# Check condition

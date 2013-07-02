@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
@@ -209,8 +210,8 @@ param.set_value("kingdom", kingdom)
 
 		f = Folk(
 			kingdom=self.k,
-			first_name="peon",
-			last_name="aa"
+			first_name="Theon",
+			last_name="Greyjoy"
 		)
 		f.save()
 
@@ -266,9 +267,9 @@ if param.get_value('beastnum') != 666:
 		# No exception should be raised.
 		pea.fire()
 
-	def test_pendingevent_delayed(self):
+	def test_pendingevent_delayed_add_context_postsave(self):
 		"""
-		Test you can create a pending event, store values on it and condition is fired after.
+		Test you can create a pending event, store values on it and condition is fired after with this context.
 		"""
 
 		e2 = Event(
@@ -304,3 +305,25 @@ pe2.start()
 
 		pea = pe.pendingeventaction_set.all()[0]
 		pea.fire()
+
+	def test_pendingevent_delayed(self):
+		"""
+		Test you can create a pending event in the future, and condition is not checked yet.
+		"""
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=datetime.now()+timedelta(days=2)
+		)
+		pe.save()
+
+		# No pending event action created
+		self.assertEquals(0, pe.pendingeventaction_set.count())
+
+		#If started updated :
+		pe.started = datetime.now()
+		pe.save()
+
+		# Pending event actions created
+		self.assertEquals(1, pe.pendingeventaction_set.count())

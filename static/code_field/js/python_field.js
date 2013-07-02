@@ -3,7 +3,7 @@ CodeMirrorConfig.path = "/static/code_field/js/";
 CodeMirrorConfig.parserfile = "parsepython.js";
 CodeMirrorConfig.height = "dynamic";
 CodeMirrorConfig.indentUnit = 2;
-//CodeMirrorConfig.lineNumbers = true;
+CodeMirrorConfig.lineNumbers = true;
 
 var convert_to_CodeMirror = function(obj){
 	// alert(obj);
