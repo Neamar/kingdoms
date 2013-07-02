@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 from config.fields.script_field import ScriptField
@@ -7,6 +8,7 @@ from config.fields.stored_value import StoredValueField
 from kingdom.models import Kingdom
 from config.lib.execute import execute
 
+
 def call_function(name, **kwargs):
 	"""
 	Call the function which slug is name with arguments kwargs
@@ -15,6 +17,7 @@ def call_function(name, **kwargs):
 	f = Function.objects.get(slug=name)
 	ret = f.fire(kwargs)
 	return ret
+
 
 class Trigger(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
@@ -49,7 +52,6 @@ class Trigger(DescribedModel):
 		self.fired.add(kingdom)
 		status, param = execute(self.on_fire, self, context)
 
-		
 		return status
 
 
@@ -108,7 +110,14 @@ class FirstName (NamedModel):
 	"""
 	Dictionary for first name.
 	"""
-	pass
+	MALE = 'm'
+	FEMALE = 'f'
+
+	SEX_CHOICES = (
+		(MALE, '♂'),
+		(FEMALE, '♀')
+	)
+	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
 
 class LastName (NamedModel):
@@ -116,6 +125,7 @@ class LastName (NamedModel):
 	Dictionary for last name.
 	"""
 	pass
+
 
 class Function (models.Model):
 	"""

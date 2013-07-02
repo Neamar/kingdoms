@@ -1,0 +1,15 @@
+<ul>
+	<li><a href="#title">Voir les titres</a></li>
+	<li><a href="#mission">Voir les missions</a></li>
+	<li><a href="#event">Voir les évènements</a></li>
+	<li><a href="#kingdom">Voir mon Royaume</a></li>
+</ul>
+
+<div>
+	<h1 data-bind="text : name"></h1>
+	<p data-bind="text : text"></p>
+	<ul data-bind=" foreach: pengindeventaction">
+		<li data-bind="text: text"></li>
+	</ul>
+	<h5 data-bind="text: pendingevent.count() + 'autre(s) évènement(s)"></h5>
+</div>
