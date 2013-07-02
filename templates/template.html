@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-
 <head>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width" />
 	<title>{% block title %}{% endblock %}</title>
 
-	<!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
-	<link rel="stylesheet" href="{{ STATIC_URL }}pure/pure-0.2.0.css" />
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css">
 
 	<script src="{{ STATIC_URL }}jquery/jquery-1.10.1.min.js"></script>
 	<script src="{{ STATIC_URL }}knockout/knockout-2.2.1.js"></script>

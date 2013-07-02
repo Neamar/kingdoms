@@ -24,12 +24,12 @@
 
 <a href="#">Retour</a>
 
-<div class="row">
-	<div class="small-3 columns" id="folk">
+<div class="pure-g-r">
+	<div class="pure-u-1-6" id="folk">
 		{% include "app/_folk.html" %}
 	</div>
 
-	<div class="small-7 columns" id="content">
+	<div class="pure-u-1-2" id="content">
 		<div data-bind="page: {id: 'start'}">
 			{% include "app/_index.html" %}
 		</div>
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 
-	<div class="small-2 columns" id="messages">
+	<div class="pure-u-1-6" id="messages">
 		{% include "app/_event.html" %}
 	</div>
 </div>
