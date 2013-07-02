@@ -64,7 +64,8 @@ class PendingMission(models.Model):
 	def __unicode__(self):
 		if self.kingdom.user:
 			return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
-		return 'unnamed kingdom'
+		else:
+			return '%s [unnamed kingdom]' % self.mission.name
 
 	def targets(self):
 		"""
@@ -87,7 +88,7 @@ class PendingMission(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status = execute(self.mission.on_init, context=context)
+		status, param = execute(self.mission.on_init, self, context)
 		return status
 
 	def _get_context(self):
@@ -152,15 +153,16 @@ class PendingMission(models.Model):
 		return status
 
 	def get_value(self, name):
-		pmv = _PendingMissionVariable.objects.get(mission=self, name=name)
+		pmv = _PendingMissionVariable.objects.get(pending_mission=self, name=name)
 		return pmv.value
 		
 	def set_value(self, name, value):
 		pmv = _PendingMissionVariable(
-			mission=self,
+			pending_mission=self,
 			name=name,
 			value=value
 		)
+
 		pmv.save()
 
 

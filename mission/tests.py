@@ -437,9 +437,13 @@ status = grids[0][0].first_name + " " + grids[0][1].first_name
 		Test the context access in on_init.
 		"""
 
-		self.m.on_init = "param.set_value('beastnum', 666)"
+		self.m.on_init = """
+print type(param)
+param.set_value('beastnum', 666)"""
 		self.m.save()
 
+		# Internal machinery works to delete.
+		self.pm.is_finished = True
 		self.pm.delete()
 		pm = PendingMission(
 			mission=self.m,
