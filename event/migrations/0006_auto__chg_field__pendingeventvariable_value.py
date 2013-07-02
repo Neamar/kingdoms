@@ -9,43 +9,13 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Changing field 'MissionGrid.condition'
-        db.alter_column(u'mission_missiongrid', 'condition', self.gf('config.fields.script_field.ScriptField')())
-
-        # Changing field 'Mission.target_list'
-        db.alter_column(u'mission_mission', 'target_list', self.gf('config.fields.script_field.ScriptField')())
-
-        # Changing field 'Mission.on_start'
-        db.alter_column(u'mission_mission', 'on_start', self.gf('config.fields.script_field.ScriptField')())
-
-        # Changing field 'Mission.text'
-        db.alter_column(u'mission_mission', 'text', self.gf('django.db.models.fields.TextField')(null=True))
-
-        # Changing field 'Mission.on_init'
-        db.alter_column(u'mission_mission', 'on_init', self.gf('config.fields.script_field.ScriptField')())
-
-        # Changing field 'Mission.on_resolution'
-        db.alter_column(u'mission_mission', 'on_resolution', self.gf('config.fields.script_field.ScriptField')())
+        # Changing field '_PendingEventVariable.value'
+        db.alter_column('event_pendingeventvariable', 'value', self.gf('config.fields.stored_value.StoredValueField')(max_length=512, null=True))
 
     def backwards(self, orm):
 
-        # Changing field 'MissionGrid.condition'
-        db.alter_column(u'mission_missiongrid', 'condition', self.gf('config.fields.script_field..ScriptField')())
-
-        # Changing field 'Mission.target_list'
-        db.alter_column(u'mission_mission', 'target_list', self.gf('config.fields.script_field..ScriptField')())
-
-        # Changing field 'Mission.on_start'
-        db.alter_column(u'mission_mission', 'on_start', self.gf('config.fields.script_field..ScriptField')())
-
-        # Changing field 'Mission.text'
-        db.alter_column(u'mission_mission', 'text', self.gf('django.db.models.fields.TextField')(default=''))
-
-        # Changing field 'Mission.on_init'
-        db.alter_column(u'mission_mission', 'on_init', self.gf('config.fields.script_field..ScriptField')())
-
-        # Changing field 'Mission.on_resolution'
-        db.alter_column(u'mission_mission', 'on_resolution', self.gf('config.fields.script_field..ScriptField')())
+        # Changing field '_PendingEventVariable.value'
+        db.alter_column('event_pendingeventvariable', 'value', self.gf('config.fields.stored_value.StoredValueField')(max_length=512))
 
     models = {
         u'auth.group': {
@@ -84,6 +54,60 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'event._pendingeventvariable': {
+            'Meta': {'unique_together': "(('pending_event', 'name'),)", 'object_name': '_PendingEventVariable', 'db_table': "'event_pendingeventvariable'"},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'pending_event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.PendingEvent']"}),
+            'value': ('config.fields.stored_value.StoredValueField', [], {'max_length': '512', 'null': 'True'})
+        },
+        u'event.event': {
+            'Meta': {'object_name': 'Event'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.EventCategory']"}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'}),
+            'text': ('django.db.models.fields.TextField', [], {}),
+            'weight': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'})
+        },
+        u'event.eventaction': {
+            'Meta': {'object_name': 'EventAction'},
+            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.Event']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'text': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        u'event.eventcategory': {
+            'Meta': {'object_name': 'EventCategory'},
+            'available_kingdoms': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Kingdom']", 'symmetrical': 'False'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            'frequency': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'timeout': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'event.pendingevent': {
+            'Meta': {'unique_together': "(('event', 'kingdom'),)", 'object_name': 'PendingEvent'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.Event']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_started': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
+            'started': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'null': 'True', 'blank': 'True'}),
+            'text': ('django.db.models.fields.TextField', [], {})
+        },
+        u'event.pendingeventaction': {
+            'Meta': {'object_name': 'PendingEventAction'},
+            'event_action': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.EventAction']"}),
+            'folk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Folk']", 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'pending_event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.PendingEvent']"}),
+            'text': ('django.db.models.fields.CharField', [], {'max_length': '512'})
+        },
         u'kingdom.claim': {
             'Meta': {'unique_together': "(('offender', 'offended'),)", 'object_name': 'Claim'},
             'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
@@ -92,7 +116,7 @@ class Migration(SchemaMigration):
             'offender': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'offender_set'", 'to': u"orm['kingdom.Kingdom']"})
         },
         u'kingdom.folk': {
-            'Meta': {'object_name': 'Folk'},
+            'Meta': {'unique_together': "(('first_name', 'last_name'),)", 'object_name': 'Folk'},
             'birth': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'death': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'diplomacy': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
@@ -106,7 +130,6 @@ class Migration(SchemaMigration):
             'loyalty': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'mentor': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['kingdom.Folk']"}),
             'mother': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['kingdom.Folk']"}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'plot': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'quality_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['kingdom.Quality']", 'null': 'True', 'blank': 'True'}),
             'scholarship': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
@@ -135,67 +158,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'mission.availablemission': {
-            'Meta': {'object_name': 'AvailableMission'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
-            'mission': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mission.Mission']"})
-        },
-        u'mission.mission': {
-            'Meta': {'object_name': 'Mission'},
-            'cancellable': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'category': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '255', 'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'duration': ('django.db.models.fields.PositiveIntegerField', [], {'default': "'5'"}),
-            'has_target': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_init': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            'on_resolution': ('config.fields.script_field.ScriptField', [], {}),
-            'on_start': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'}),
-            'target_description': ('django.db.models.fields.CharField', [], {'default': "'Cible'", 'max_length': '255'}),
-            'target_list': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            'text': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'timeout': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['title.Title']", 'null': 'True', 'blank': 'True'})
-        },
-        u'mission.missiongrid': {
-            'Meta': {'object_name': 'MissionGrid'},
-            'condition': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'length': ('django.db.models.fields.PositiveIntegerField', [], {'default': '20'}),
-            'mission': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mission.Mission']"}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'mission.pendingmission': {
-            'Meta': {'object_name': 'PendingMission'},
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_finished': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_started': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
-            'mission': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mission.Mission']"}),
-            'started': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'target': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['kingdom.Kingdom']"})
-        },
-        u'mission.pendingmissionaffectation': {
-            'Meta': {'object_name': 'PendingMissionAffectation'},
-            'folk': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'mission'", 'unique': 'True', 'to': u"orm['kingdom.Folk']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mission_grid': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mission.MissionGrid']"}),
-            'pending_mission': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'folk_set'", 'to': u"orm['mission.PendingMission']"})
-        },
-        u'title.title': {
-            'Meta': {'object_name': 'Title'},
-            'condition': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_affect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'}),
-            'on_defect': ('config.fields.script_field.ScriptField', [], {'blank': 'True'})
         }
     }
 
-    complete_apps = ['mission']
+    complete_apps = ['event']

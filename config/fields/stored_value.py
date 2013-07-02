@@ -15,6 +15,7 @@ class StoredValueField(models.CharField):
 
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 512
+		kwargs['null'] = True
 		super(StoredValueField, self).__init__(*args, **kwargs)
 
 	def to_python(self, value):
@@ -37,6 +38,8 @@ class StoredValueField(models.CharField):
 		
 			instance = value_class.objects.get(id=instance_id)
 			return instance
+		elif value is None:
+			return None
 		else:
 			try:
 				return int(value)
