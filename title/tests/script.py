@@ -5,7 +5,7 @@ from title.models import Title, AvailableTitle
 
 class ScriptTest(TestCase):
 	"""
-	Unit tests for title app
+	Unit tests for title script
 	"""
 
 	def setUp(self):
@@ -23,20 +23,44 @@ class ScriptTest(TestCase):
 		)
 		self.t.save()
 
-	def test_kingdom_get_title(self):
+	def test_kingdom_get_folk_in_title(self):
+		"""
+		check if the folk is well returned
+		"""
 		at2 = AvailableTitle(
 			title=self.t,
 			kingdom=self.k,
 			folk=self.f
 		)
 		at2.save()
-		self.assertEquals(self.f, self.k.get_title("Dummy title"))
+		self.assertEquals(self.f, self.k.get_folk_in_title("Dummy title"))
 
-	def test_kingdom_get_title_fail(self):
+	def test_kingdom_get_folk_in_title_fail(self):
+		"""
+		check if None is well returned
+		"""
 		at2 = AvailableTitle(
 			title=self.t,
 			kingdom=self.k,
 			folk=self.f
 		)
 		at2.save()
-		self.assertIsNone(self.k.get_title("zerfzef"))
+		self.assertIsNone(self.k.get_folk_in_title("zerfzef"))
+
+	def test_kingdom_unlock_title(self):
+		"""
+		check if the available title is well created
+		"""
+		at = self.k.unlock_title("Dummy title")
+		self.assertEquals(at.kingdom, self.k)
+		self.assertEquals(at.title, self.t)
+
+	def test_kingdom_unlock_title_already_available(self):
+		"""
+		check if the available title is well returned
+		"""
+
+		at = self.k.unlock_title("Dummy title")
+
+		at2 = self.k.unlock_title("Dummy title")
+		self.assertEquals(at, at2)
