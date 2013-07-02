@@ -5,7 +5,7 @@ from event.models import Event, EventCategory, EventAction, PendingEvent, Pendin
 
 class EventActionAdminInline(admin.StackedInline):
 	model = EventAction
-	extra = 2
+	extra = 0
 
 
 class EventAdmin(admin.ModelAdmin):
