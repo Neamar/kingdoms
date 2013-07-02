@@ -26,8 +26,8 @@ class Event(NamedModel):
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 
-	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default="")
-	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default="")
+	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default=" ")
+	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default=" ")
 
 
 class EventAction(models.Model):
@@ -36,7 +36,7 @@ class EventAction(models.Model):
 	"""
 
 	event = models.ForeignKey(Event)
-	on_fire = ScriptField(blank=True, null=True, default="")
+	on_fire = ScriptField(blank=True, null=True, default=" ")
 	text = models.CharField(max_length=255)
 
 

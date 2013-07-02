@@ -112,9 +112,8 @@ def folk_has_quality(self, name):
 Folk.has_quality = folk_has_quality
 
 
-def sum_folks(self, folks, attribute):
+def sum_folks(folks, attribute):
 	"""
 	Returns the sum of the choosen attribute
 	"""
 	return sum([getattr(folk, attribute) for folk in folks])
-Folk.sum = sum_folks
