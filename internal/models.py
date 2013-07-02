@@ -7,6 +7,14 @@ from config.fields.stored_value import StoredValueField
 from kingdom.models import Kingdom
 from config.lib.execute import execute
 
+def call_function(name, **kwargs):
+	"""
+	Call the function which slug is name with arguments kwargs
+	"""
+
+	f = Function.objects.get(slug=name)
+	ret = f.fire(kwargs)
+	return ret
 
 class Trigger(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
@@ -15,7 +23,7 @@ class Trigger(DescribedModel):
 	money_threshold = models.PositiveIntegerField(default=0)
 
 	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default="")
-	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.")
+	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.", default="")
 
 	fired = models.ManyToManyField(Kingdom, null=True, blank=True)
 
@@ -33,7 +41,10 @@ class Trigger(DescribedModel):
 		Fire the trigger.
 		Register it has been fired.
 		"""
-		status, param = execute(self.on_fire, kingdom)
+		context = {
+			'kingdom': kingdom,
+		}
+		status, param = execute(self.on_fire, self, context)
 
 		# Register it has been fired.
 		self.fired.add(kingdom)
@@ -104,5 +115,17 @@ class LastName (NamedModel):
 	Dictionary for last name.
 	"""
 	pass
+
+class Function (models.Model):
+	"""
+	Class Function accessible from scripts to be reused
+	"""
+
+	slug = models.SlugField(max_length=255, unique=True)
+	body = ScriptField(blank=True, null=True, help_text="Body of the function", default="")
+
+	def fire(self, kwargs):
+		context = kwargs
+		status, param = execute(self.body, self, context)
 
 from internal.signals import *
