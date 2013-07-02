@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import DescribedModel
 
 
 class Kingdom(models.Model):
@@ -21,7 +21,7 @@ class Kingdom(models.Model):
 		return '%s kingdom' % self.user
 
 
-class Folk(NamedModel):
+class Folk(models.Model):
 	"""
 	The folk are the people in your kingdom.
 	"""
@@ -37,6 +37,9 @@ class Folk(NamedModel):
 	first_name = models.CharField(max_length=64)
 	last_name = models.CharField(max_length=64)
 	
+	class Meta:
+		unique_together = ('first_name', 'last_name')
+
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
 	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)

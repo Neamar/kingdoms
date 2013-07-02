@@ -63,6 +63,34 @@ class ScriptTest(TestCase):
 		self.f.save()
 		self.assertEquals(1, Folk.objects.get(kingdom=self.k).quality_set.count())
 
+	def test_folk_add_quality_fail(self):
+		self.qc = QualityCategory(
+			name="trait",
+			description="haha"
+		)
+		self.qc.save()
+		self.q = Quality(
+			category=self.qc,
+			name="moche"
+		)
+		self.q.save()
+		self.assertRaises(Quality.DoesNotExist, (lambda: self.f.add_quality("lol")))
+
 	def test_folk_age(self):
 		self.f.birth = datetime.now()-timedelta(days=10)
 		self.assertEquals(10, self.f.age())
+
+	def test_folk_has_quality(self):
+		self.qc = QualityCategory(
+			name="trait",
+			description="haha"
+		)
+		self.qc.save()
+		self.q = Quality(
+			category=self.qc,
+			name="moche"
+		)
+		self.q.save()
+
+		self.f.add_quality("moche")
+		self.assertEquals(True, self.f.has_quality("moche"))
