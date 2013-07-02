@@ -2,7 +2,7 @@ from mission.models import PendingMission, AvailableMission
 from mission.serializers import serialize_pending_mission, serialize_available_mission
 
 
-def mission_api(request):
+def api(request):
 	"""
 	JSON contribution from this app.
 	"""
@@ -24,8 +24,3 @@ def mission_api(request):
 		resp['available_missions'].append(serialize_available_mission(available_mission))
 
 	return resp
-
-
-# Register for execution on /api
-from kingdom.views.api import register_object
-register_object(mission_api)

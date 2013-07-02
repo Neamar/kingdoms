@@ -2,7 +2,7 @@ from kingdom.models import Folk, Message
 from kingdom.serializers import serialize_folk, serialize_kingdom, serialize_message
 
 
-def kingdom_api(request):
+def api(request):
 	"""
 	JSON contribution from this app.
 	"""
@@ -23,8 +23,3 @@ def kingdom_api(request):
 		resp['messages'].append(serialize_message(message))
 
 	return resp
-
-
-# Register for execution on /api
-from kingdom.views.api import register_object
-register_object(kingdom_api)

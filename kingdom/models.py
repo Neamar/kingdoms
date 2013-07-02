@@ -128,5 +128,4 @@ class Claim(models.Model):
 	creation = models.DateTimeField(auto_now_add=True)
 
 from kingdom.scripts import *
-from kingdom.api import *
 from kingdom.signals import *

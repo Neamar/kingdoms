@@ -1,15 +1,23 @@
+import importlib
+from django.conf import settings
+
 from kingdom.decorators import json_view
 from kingdom.utils import *
+
 
 __plugged_objects = []
 
 
-def register_object(f):
+def autodiscover():
 	"""
-	Register a new function,
-	returning some code that needs to be included in the final json.
+	Discover all api views.
 	"""
-	__plugged_objects.append(f)
+	for app in settings.INSTALLED_APPS:
+		try:
+			app_api = importlib.import_module("%s.api" % app)
+			__plugged_objects.append(app_api.api)
+		except:
+			pass
 
 
 @json_view
