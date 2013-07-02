@@ -1,5 +1,5 @@
-<h3>Me évènements</h3>
-	<tbody data-bind="foreach: pending_event">
-		{% include "app/templates/_event.html" %}
-	</tbody>
-	<p data-bind="text: pending_event.count() + 'autre(s) évènement(s)'"></p>
+<div data-bind="foreach: pending_events">
+	{% include "app/templates/_event.html" %}
+</div>
+
+<p><span data-bind="text: pending_events().length"></span> autre(s) évènement(s)</p>

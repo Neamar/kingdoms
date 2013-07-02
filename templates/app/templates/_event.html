@@ -1,7 +1,6 @@
-<div>
-	<h1 data-bind="text : name"></h1>
-	<p data-bind="text : text"></p>
-	<ul data-bind=" foreach: pengindeventaction">
-		<li data-bind="text: text"></li>
-	</ul>
+<h2 data-bind="text : name"></h2>
+<p data-bind="text : text"></p>
+
+<div data-bind="foreach: actions">
+	<a class="pure-button" href="#" data-bind="text: text"></a>
 </div>

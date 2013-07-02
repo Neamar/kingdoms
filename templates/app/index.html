@@ -33,18 +33,22 @@
 
 	<div class="pure-u-1-2" id="content">
 		<div data-bind="page: {id: 'start'}">
+			<h1>Mon royaume</h1>
 			{% include "app/_index.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'title'}">
+			<h1>Titres</h1>
 			{% include "app/_title.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'mission'}">
+			<h1>Missions</h1>
 			{% include "app/_mission.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'event'}">
+			<h1>Évènements</h1>
 			{% include "app/_event.html" %}
 		</div>
 
@@ -56,7 +60,7 @@
 	</div>
 
 	<div class="pure-u-1-6" id="messages">
-		{% include "app/_event.html" %}
+		{% include "app/_message.html" %}
 	</div>
 </div>
 {% endblock content %}

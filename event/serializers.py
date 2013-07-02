@@ -9,7 +9,7 @@ def serialize_pending_event(pending_event):
 	r = {
 		'id': pending_event.pk,
 		'started': pending_event.started,
-		'title': pending_event.event.name,
+		'name': pending_event.event.name,
 		'text': pending_event.text,
 		'actions': [serialize_pending_event_action(o) for o in pending_event.pendingeventaction_set.all()]
 	}
