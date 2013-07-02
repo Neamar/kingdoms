@@ -1,5 +1,5 @@
 <h3>Évènements</h3>
-<ul data-bind="foreach: messages">
+<ul data-bind="foreach: messages.reverse()">
 	<li>
 		{% include "app/templates/_message.html" %}
 	</li>
