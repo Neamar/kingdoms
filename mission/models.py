@@ -40,7 +40,7 @@ class MissionGrid(NamedModel):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
-	condition = ScriptField(help_text="Called before folk affectation. `param` is the folk affected.", blank=True)
+	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected.", blank=True)
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
@@ -164,8 +164,9 @@ class PendingMissionAffectation(models.Model):
 		"""
 		context = {
 			'kingdom': self.pending_mission.kingdom,
+			'folk': self.folk,
 		}
-		status, param = execute(self.mission_grid.condition, self.folk, context)
+		status, param = execute(self.mission_grid.condition, self, context)
 		return status
 
 
