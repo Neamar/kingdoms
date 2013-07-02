@@ -40,7 +40,7 @@ class UnitTest(TestCase):
 		Folk(
 			kingdom=self.k,
 			mother=self.f,
-			first_name="My mother is a female"
+			first_name="My mother is a female",
 			last_name="aaa"
 		).save()
 
@@ -50,7 +50,7 @@ class UnitTest(TestCase):
 		weirdos = Folk(
 			kingdom=self.k,
 			mother=self.f,
-			first_name="My mother is a male"
+			first_name="My mother is a male",
 			last_name="aaa"
 		)
 
@@ -66,7 +66,7 @@ class UnitTest(TestCase):
 		Folk(
 			kingdom=self.k,
 			father=self.f,
-			first_name="My mother is a male"
+			first_name="My mother is a male",
 			last_name="aaa"
 		).save()
 
@@ -76,7 +76,7 @@ class UnitTest(TestCase):
 		weirdos = Folk(
 			kingdom=self.k,
 			father=self.f,
-			first_name="My mother is a female"
+			first_name="My mother is a female",
 			last_name="aaa"
 		)
 
