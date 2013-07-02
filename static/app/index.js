@@ -23,7 +23,7 @@ $(function() {
 				ko.mapping.fromJS(result, datas);
 			}
 
-			setTimeout(loadDatas, 4000);
+			setTimeout(loadDatas, 1000);
 		});
 
 	}
