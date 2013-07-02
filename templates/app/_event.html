@@ -2,4 +2,10 @@
 	{% include "app/templates/_event.html" %}
 </div>
 
-<p><span data-bind="text: pending_events().length"></span> autre(s) évènement(s)</p>
+<p data-bind="visible: pending_events().length > 1">
+	<span data-bind="text: pending_events().length - 1"></span> évènement<span data-bind="if:pending_events().length > 2">s</span> en attente
+</p>
+<p data-bind="visible: pending_events().length == 0">
+	Aucun évènement pour l'instant.<br />
+	Allez vous occuper de votre royaume !
+</p>
