@@ -240,6 +240,7 @@ kingdom.money = 111
 		)
 		t2.on_fire = """
 kingdom.money = 42
+kingdom.save()
 """
 		t2.save()
 
@@ -276,10 +277,11 @@ param = call_function("Second_Function_evar", kingdom=kingdom)
 		)
 
 		self.f2.body = """
-kingdom.money = 7
+kingdom.money += 30
+kingdom.save()
 param = kingdom.money
 """
 		self.f2.save()
 
-		call_function_loc("Second_Function_evar", kingdom = self.k)
-		self.assertEqual(self.k.money, 7)
+		call_function_loc("First_Function_evar", kingdom = self.k)
+		self.assertEqual(self.k.money, 80)

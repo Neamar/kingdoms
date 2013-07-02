@@ -44,10 +44,11 @@ class Trigger(DescribedModel):
 		context = {
 			'kingdom': kingdom,
 		}
+		# Register it has been fired.
+		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
+		self.fired.add(kingdom)
 		status, param = execute(self.on_fire, self, context)
 
-		# Register it has been fired.
-		self.fired.add(kingdom)
 		
 		return status
 
