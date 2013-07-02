@@ -3,7 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import NamedModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField
 from title.models import Title
@@ -152,10 +152,19 @@ class PendingMission(models.Model):
 		return status
 
 	def get_value(self, name):
+		"""
+		Gets a value
+		"""
 		pmv = _PendingMissionVariable.objects.get(pending_mission=self, name=name)
 		return pmv.value
 		
 	def set_value(self, name, value):
+		"""
+		Sets a value
+		"""
+		if self.pk is None:
+			raise ValidationError("Save before storing value.")
+
 		pmv = _PendingMissionVariable(
 			pending_mission=self,
 			name=name,
