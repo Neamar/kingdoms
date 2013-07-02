@@ -118,8 +118,8 @@ class UnitTest(TestCase):
 		self.pm.save()
 
 		f2 = Folk(
-			first_name="Another one",
-			last_name="aa",
+			first_name="Hot",
+			last_name="Pie",
 			kingdom=self.k
 		)
 		f2.save()

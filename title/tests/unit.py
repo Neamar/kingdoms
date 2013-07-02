@@ -217,8 +217,8 @@ folk.save()
 		self.t.save()
 
 		f2 = Folk(
-			first_name="Another one",
-			last_name="aa",
+			first_name="Robb",
+			last_name="Stark",
 			kingdom=self.k
 		)
 		f2.save()

@@ -1,6 +1,4 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 
 from kingdom.models import Kingdom, Folk
 from internal.models import Trigger
@@ -13,8 +11,8 @@ class UnitTest(TestCase):
 
 		self.f = Folk(
 			kingdom=self.k,
-			first_name="Another one",
-			last_name="aa"
+			first_name="Robert",
+			last_name="Baratheon"
 		)
 		self.f.save()
 
@@ -32,8 +30,8 @@ class UnitTest(TestCase):
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	first_name="Another oneeeee",
-	last_name="aaaaaaaa"
+	first_name="Balon",
+	last_name="Greyjoy"
 ).save()
 """
 		self.t.save()
@@ -113,8 +111,9 @@ Folk(
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	first_name="Another one",
-	last_name="aaaa"
+	first_name="Catelyn",
+	last_name="Stark",
+	sex=Folk.FEMALE
 ).save()
 """
 		self.t.save()
@@ -149,8 +148,8 @@ raise ValidationError("Can't call twice.")
 		self.t.on_fire = """
 Folk(
 	kingdom=param,
-	first_name="Anotheraa one",
-	last_name="aaaaaaa"
+	first_name="Joffrey",
+	last_name="Lannister"
 ).save()
 """
 		self.t.save()

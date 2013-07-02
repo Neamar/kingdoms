@@ -41,7 +41,7 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			mother=self.f,
 			first_name="My mother is a female",
-			last_name="aaa"
+			last_name="---"
 		).save()
 
 		# Insanity check
@@ -51,7 +51,7 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			mother=self.f,
 			first_name="My mother is a male",
-			last_name="aaa"
+			last_name="---"
 		)
 
 		self.assertRaises(ValidationError, weirdos.save)
@@ -67,7 +67,7 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			father=self.f,
 			first_name="My mother is a male",
-			last_name="aaa"
+			last_name="---"
 		).save()
 
 		# Insanity check
@@ -77,7 +77,7 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			father=self.f,
 			first_name="My mother is a female",
-			last_name="aaa"
+			last_name="---"
 		)
 
 		self.assertRaises(ValidationError, weirdos.save)
