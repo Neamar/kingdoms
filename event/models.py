@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from config.lib.execute import execute
 from config.fields.stored_value import StoredValueField
 from config.fields.script_field import ScriptField
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import DescribedModel
 from kingdom.models import Kingdom, Folk
 
 
@@ -17,13 +17,14 @@ class EventCategory(DescribedModel):
 	available_kingdoms = models.ManyToManyField(Kingdom)
 
 
-class Event(NamedModel):
+class Event(models.Model):
 	"""
 	Dictionary of all available events.
 	"""
+	name = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, unique=True)
 	text = models.TextField()
-
+	
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory)
 
