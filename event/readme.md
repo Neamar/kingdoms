@@ -16,7 +16,8 @@ Où scripter ?
 
 Que scripter ?
 ---------------
-
+#### Définir une variable pour un texte :
+param.set_value ("nom de la variable", valeur de la variable)
 
 Exemples
 -------------
@@ -37,7 +38,7 @@ kingdom.save()
 # On n'oublie pas de sauvegarder
 ```
 
-#### Les solutions
+#### Les résolutions
 # On choisi de mettre en quarantaine tous les malades
 * `on_fire` :
 ```python
@@ -62,4 +63,13 @@ PendingMission(
  mission=Mission.objects.get(name="Partir en quête d'un medecin"),
  kingdom=kingdom,
 ).save() #On sauvegarde cette pending mission
+```
+
+#### Ajouter un délai à un pending_event
+```python
+pendingEvent(
+	
+
+
+)
 ```
