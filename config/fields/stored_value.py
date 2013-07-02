@@ -36,8 +36,11 @@ class StoredValueField(models.CharField):
 			# Instantiate the class from its name
 			value_class = locals()[class_name]
 		
-			instance = value_class.objects.get(id=instance_id)
-			return instance
+			try:
+				instance = value_class.objects.get(id=instance_id)
+				return instance
+			except:
+				return None
 		elif value is None:
 			return None
 		else:
