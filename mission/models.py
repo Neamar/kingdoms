@@ -195,13 +195,14 @@ class AvailableMission(models.Model):
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
+
 class _PendingMissionVariable(models.Model):
 	"""
 	A variable, stored to give some context to the mission
 	"""
 	class Meta:
 		db_table = "mission_pendingmissionvariable"
-		unique_together = ('mission', 'name')
+		unique_together = ('pending_mission', 'name')
 
 	pending_mission = models.ForeignKey(PendingMission)
 	name = models.CharField(max_length=255)
