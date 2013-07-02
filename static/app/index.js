@@ -10,11 +10,14 @@ function unwrapId(data) {
 var mapping = {
 	'pending_events': {
 		key: unwrapId
-	}
+	},
 	'folks': {
 		key: unwrapId 
-	}
-	'kingdoms': {
+	},
+	'kingdom': {
+		key: unwrapId
+	},
+	'pending_missions': {
 		key: unwrapId
 	}
 }
