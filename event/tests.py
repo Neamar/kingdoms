@@ -227,6 +227,9 @@ param.set_value("kingdom", kingdom)
 		pe.set_value("beastnum", 666)
 		self.assertEqual(pe.get_value("beastnum"), 666)
 
+		pe.set_value("void", None)
+		self.assertEqual(pe.get_value("void"), None)
+
 	def test_pendingevent_savecontext(self):
 		"""
 		Test the saving context mechanism in post_save signal on PendingEvent
