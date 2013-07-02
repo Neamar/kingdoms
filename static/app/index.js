@@ -4,6 +4,20 @@
 function pendingEventActionFire(val) {
 	$.post(val.links.fire())
 }
+function unwrapId(data) {
+	return ko.utils.unwrapObservable(data.id);
+}
+var mapping = {
+	'pending_events': {
+		key: unwrapId
+	}
+	'folks': {
+		key: unwrapId 
+	}
+	'kingdoms': {
+		key: unwrapId
+	}
+}
 
 $(function() {
 	var datas = null;
@@ -11,9 +25,9 @@ $(function() {
 	function loadDatas()
 	{
 		$.getJSON('/api/', function(result) {
-			if(!datas)
+			if(!datas) //first dada mapping
 			{
-				datas = ko.mapping.fromJS(result);
+				datas = ko.mapping.fromJS(result, mapping);
 				pager.extendWithPage(datas);
 				ko.applyBindings(datas);
 				pager.start();
