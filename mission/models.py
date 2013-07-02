@@ -10,11 +10,13 @@ from title.models import Title
 from kingdom.models import Kingdom, Folk
 
 
-class Mission(DescribedModel):
+class Mission(NamedModel):
 	"""
 	Dictionary of all available missions.
 	"""
 	slug = models.SlugField(max_length=255, unique=True)
+	text = models.TextField()
+
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
@@ -30,8 +32,6 @@ class Mission(DescribedModel):
 
 	title = models.ForeignKey(Title, blank=True, null=True)
 	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
-
-	text = models.TextField()
 
 
 class MissionGrid(NamedModel):
