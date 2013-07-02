@@ -39,15 +39,16 @@ kingdom.save()
 
 #### Les solutions
 # On choisi de mettre en quarantaine tous les malades
-* `on_fire`:
-```pyhton
+* `on_fire` :
+```python
 # On a quand même quelques pertes, mais on en a sauvé pas mal !
 kingdom.population *=1.5
 kingdom.save()
 ```
+
 # On choisi de les laisser mourrir
 * `on_fire`:
-```pyhton
+```python
 # C'est assez dramatique !
 kingdom.population /= 2
 kingdom.save()
@@ -61,5 +62,4 @@ PendingMission(
  mission=Mission.objects.get(name="Partir en quête d'un medecin"),
  kingdom=kingdom,
 ).save() #On sauvegarde cette pending mission
-
 ```
