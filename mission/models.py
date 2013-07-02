@@ -31,7 +31,6 @@ class Mission(NamedModel):
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
 	title = models.ForeignKey(Title, blank=True, null=True)
-	category = models.CharField(max_length=255, default="", blank=True, help_text="Category within the title for organisation in AvailableMission.")
 
 
 class MissionGrid(NamedModel):
