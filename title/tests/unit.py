@@ -121,6 +121,21 @@ class UnitTest(TestCase):
 
 		self.assertRaises(ValidationError, at.save)
 
+	def test_title_folk_kingdom(self):
+		"""
+		Folk must be in the AvailableTitle kingdom.
+		"""
+
+		k2 = Kingdom()
+		k2.save()
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=k2,
+			folk=self.f
+		)
+
+		self.assertRaises(ValidationError, at.save)
+
 	def test_title_affect_direct(self):
 		"""
 		You can create and affect in the same time.

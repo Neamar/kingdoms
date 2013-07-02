@@ -24,6 +24,7 @@ admin.site.register(EventCategory, EventCategoryAdmin)
 
 
 class PendingEventAdmin(admin.ModelAdmin):
+	readonly_fields = ('text',)
 	list_display = ('event', 'kingdom', 'started', 'text')
 admin.site.register(PendingEvent, PendingEventAdmin)
 

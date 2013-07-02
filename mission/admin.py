@@ -19,7 +19,7 @@ admin.site.register(Mission, MissionAdmin)
 
 class PendingMissionAffectationInline(admin.StackedInline):
 	model = PendingMissionAffectation
-	extra = 1
+	extra = 0
 
 
 class PendingMissionAdmin(admin.ModelAdmin):

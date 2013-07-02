@@ -51,7 +51,7 @@ class Trigger(DescribedModel):
 		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
 		self.fired.add(kingdom)
 		status, param = execute(self.on_fire, self, context)
-
+		
 		return status
 
 
@@ -133,7 +133,7 @@ class Function (models.Model):
 	"""
 
 	slug = models.SlugField(max_length=255, unique=True)
-	body = ScriptField(blank=True, null=True, help_text="Body of the function", default="")
+	body = ScriptField(blank=True, help_text="Body of the function", default="")
 
 	def fire(self, kwargs):
 		context = kwargs

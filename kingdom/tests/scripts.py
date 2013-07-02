@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 
 from datetime import datetime, timedelta
 
 from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory, Message, ModalMessage
-from kingdom.scripts import kingdom_message, kingdom_modal_message, kingdom_add_claim, folk_add_quality, folk_age
+from kingdom.scripts import sum_folks
 
 
 class ScriptTest(TestCase):
@@ -33,14 +31,14 @@ class ScriptTest(TestCase):
 		Verify if the message is created
 		"""
 		self.m.delete()
-		kingdom_message(self.k, "coucou")
+		self.k.message("coucou")
 		self.assertEquals("coucou", Message.objects.get(kingdom=self.k).content)
 
 	def text_kingdom_modal_message(self):
 		"""
 		Verify if the modal message is created
 		"""
-		kingdom_modal_message(self.k, "a name", "a description")
+		self.k.modal_message("a name", "a description")
 		self.assertEquals(("a name", "a description"), (ModalMessage.objects.get(kingdom=self.k).name, ModalMessage.objects.get(kingdom=self.k).description))
 
 	def test_kingdom_add_claim(self):
@@ -49,7 +47,7 @@ class ScriptTest(TestCase):
 		"""
 		self.k2 = Kingdom()
 		self.k2.save()
-		kingdom_add_claim(self.k, self.k2)
+		self.k.add_claim(self.k2)
 		self.assertEquals(self.k, Claim.objects.get(offender=self.k2).offended)
 
 	def test_folk_die(self):
@@ -130,4 +128,4 @@ class ScriptTest(TestCase):
 		self.f.fight = 5
 		self.f.save()
 
-		self.assertEquals(15, self.f.sum((self.f, self.f2), "fight"))
+		self.assertEquals(15, sum_folks([self.f, self.f2], "fight"))

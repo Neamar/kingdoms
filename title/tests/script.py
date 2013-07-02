@@ -47,6 +47,17 @@ class ScriptTest(TestCase):
 		at2.save()
 		self.assertIsNone(self.k.get_folk_in_title("zerfzef"))
 
+	def test_kingdom_get_folk_in_title_empty(self):
+		"""
+		check if None is well returned
+		"""
+		at2 = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+		)
+		at2.save()
+		self.assertIsNone(self.k.get_folk_in_title("Dummy title"))
+
 	def test_kingdom_unlock_title(self):
 		"""
 		check if the available title is well created
