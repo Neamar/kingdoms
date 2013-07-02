@@ -35,10 +35,10 @@ Exemples
 * `condition` : 
 
 ```python
-# S'il y a au total moins de 10 personnes dans ma cours
+# S'il y a au total moins de 10 personnes dans ma cour
 if Folk.objects.filter(kingdom=kingdom).count() < 10:
 	# On renvoie un status car on ne veut pas que la population augmente s'il n'y a pas assez de folk
-	"not_enough_people"
+	status = "not_enough_people"
 ```
 
  * `on_fire` :

@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger
+from internal.models import Trigger, Recurring
 
 
 class UnitTest(TestCase):
@@ -201,3 +201,35 @@ status = "NotPossible"
 		self.assertEquals(self.k.get_value("foo"), "bar")
 		self.assertEquals(self.k.get_value("foo2"), 2)
 		self.assertEquals(self.k.get_value("folk"), self.f)
+
+	def test_recurring_condition(self):
+		self.k.population = 50
+		self.k.save()
+		self.r = Recurring(
+			condition="""
+if kingdom.population > 10:
+	status = "bla"
+"""
+		)
+		self.r.save()
+
+		status = self.r.check_condition(self.k)
+
+		self.assertEqual(status, "bla")
+
+	def test_recurring_code(self):
+		self.k.population = 50
+		self.k.save()
+		self.r = Recurring(
+			condition="""
+pass
+""",
+			on_fire="""
+status = "bla"
+"""
+		)
+		self.r.save()
+
+		self.r.check_condition(self.k)
+		status = self.r.fire(self.k)
+		self.assertEqual(status, "bla")

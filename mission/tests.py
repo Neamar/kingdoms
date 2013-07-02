@@ -373,3 +373,34 @@ status='mission_solved'
 		"""
 		self.m.cancellable = True
 		self.pm.delete()
+
+	def test_grid_with_two_people(self):
+		"""
+		check if folks are well put in the grid
+		"""
+		self.m.on_resolution = """
+status = grids[0][0].first_name + " " + grids[0][1].first_name
+"""
+		self.m.save()
+
+		self.f.first_name = "a"
+		self.f.save()
+
+		self.f2 = Folk(
+			kingdom=self.k,
+			first_name="aaa"
+		)
+		self.f2.save()
+
+		self.mg.length = 2
+		self.mg.save()
+
+		self.pma2 = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=self.mg,
+			folk=self.f2
+		)
+		self.pma2.save()
+		self.pm.start()
+		status = self.pm.resolve()
+		self.assertEqual(status, 'a aaa')

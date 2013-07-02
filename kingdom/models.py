@@ -126,6 +126,5 @@ class Claim(models.Model):
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
 	creation = models.DateTimeField(auto_now_add=True)
-
-from kingdom.scripts import *
+	
 from kingdom.signals import *

@@ -110,3 +110,11 @@ def folk_has_quality(self, name):
 
 	return Quality.objects.get(name=name) in self.quality_set.all()
 Folk.has_quality = folk_has_quality
+
+
+def sum_folks(self, folks, attribute):
+	"""
+	Returns the sum of the choosen attribute
+	"""
+	return sum([getattr(folk, attribute) for folk in folks])
+Folk.sum = sum_folks
