@@ -35,7 +35,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class FolkAdmin(admin.ModelAdmin):
-	list_display = ('first_name', 'last_name', 'sex', 'age')
+	list_display = ('first_name', 'last_name', 'sex', 'birth')
 	list_filter = ('sex', AliveFilter)
 admin.site.register(Folk, FolkAdmin)
 

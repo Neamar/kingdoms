@@ -141,5 +141,4 @@ class _PendingEventVariable(models.Model):
 	value = StoredValueField()
 
 
-from event.scripts import *
 from event.signals import *
