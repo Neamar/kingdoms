@@ -10,10 +10,11 @@ from title.models import Title
 from kingdom.models import Kingdom, Folk
 
 
-class Mission(NamedModel):
+class Mission(models.Model):
 	"""
 	Dictionary of all available missions.
 	"""
+	name = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, unique=True)
 	text = models.TextField()
 
