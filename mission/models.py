@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from config.lib.execute import execute
 from config.lib.models import NamedModel, DescribedModel
 from config.fields.script_field import ScriptField
+from config.fields.stored_value import StoredValueField
 from title.models import Title
 from kingdom.models import Kingdom, Folk
 
@@ -17,7 +18,7 @@ class Mission(DescribedModel):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission. Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
+	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", blank=True)
 	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid.", blank=True)
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.")
 
@@ -61,7 +62,10 @@ class PendingMission(models.Model):
 	is_finished = models.BooleanField(default=False, editable=False, help_text="Internal value for triggers.")
 
 	def __unicode__(self):
-		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+		if self.kingdom.user:
+			return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+		else:
+			return '%s [unnamed kingdom]' % self.mission.name
 
 	def targets(self):
 		"""
@@ -84,7 +88,7 @@ class PendingMission(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status = execute(self.mission.on_init, context=context)
+		status, param = execute(self.mission.on_init, self, context)
 		return status
 
 	def _get_context(self):
@@ -148,6 +152,19 @@ class PendingMission(models.Model):
 
 		return status
 
+	def get_value(self, name):
+		pmv = _PendingMissionVariable.objects.get(pending_mission=self, name=name)
+		return pmv.value
+		
+	def set_value(self, name, value):
+		pmv = _PendingMissionVariable(
+			pending_mission=self,
+			name=name,
+			value=value
+		)
+
+		pmv.save()
+
 
 class PendingMissionAffectation(models.Model):
 	"""
@@ -179,5 +196,18 @@ class AvailableMission(models.Model):
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
+
+
+class _PendingMissionVariable(models.Model):
+	"""
+	A variable, stored to give some context to the mission
+	"""
+	class Meta:
+		db_table = "mission_pendingmissionvariable"
+		unique_together = ('pending_mission', 'name')
+
+	pending_mission = models.ForeignKey(PendingMission)
+	name = models.CharField(max_length=255)
+	value = StoredValueField()
 
 from mission.signals import *

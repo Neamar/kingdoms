@@ -1,8 +1,17 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Recurring
+from internal.models import Trigger, Function, Recurring, call_function
 
+
+def call_function_loc(name, **kwargs):
+	"""
+	Call the function which slug is name with arguments kwargs
+	"""
+
+	f = Function.objects.get(slug=name)
+	ret = f.fire(kwargs)
+	return ret
 
 class UnitTest(TestCase):
 	def setUp(self):
@@ -17,11 +26,14 @@ class UnitTest(TestCase):
 		self.f.save()
 
 		self.t = Trigger(
+			slug = 'Trigger_internal_test',
+			name = 'Trigger_internal_test',
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
 		)
 		self.t.save()
+
 
 	def test_threshold(self):
 		"""
@@ -29,7 +41,7 @@ class UnitTest(TestCase):
 		"""
 		self.t.on_fire = """
 Folk(
-	kingdom=param,
+	kingdom=kingdom,
 	first_name="Balon",
 	last_name="Greyjoy"
 ).save()
@@ -110,7 +122,7 @@ Folk(
 		"""
 		self.t.on_fire = """
 Folk(
-	kingdom=param,
+	kingdom=kingdom,
 	first_name="Catelyn",
 	last_name="Stark",
 	sex=Folk.FEMALE
@@ -147,7 +159,7 @@ raise ValidationError("Can't call twice.")
 
 		self.t.on_fire = """
 Folk(
-	kingdom=param,
+	kingdom=kingdom,
 	first_name="Joffrey",
 	last_name="Lannister"
 ).save()
@@ -170,7 +182,7 @@ Folk(
 		"""
 		self.t.on_fire = """
 Folk(
-	kingdom=param,
+	kingdom=kingdom,
 	name="New user from trigger"
 ).save()
 """
@@ -233,3 +245,76 @@ status = "bla"
 		self.r.check_condition(self.k)
 		status = self.r.fire(self.k)
 		self.assertEqual(status, "bla")
+
+	def test_execution_order(self):
+		"""
+		Test that simultaneous triggers are executed in their creation order
+		"""
+
+		t1 = Trigger(
+			slug = "Trigger1_internal_test",
+			name = "Trigger1_internal_test",
+			prestige_threshold=10,
+			population_threshold=10,
+			money_threshold=10,
+		)
+		t1.on_fire = """
+kingdom.money = 111
+"""
+
+		t1.save()
+
+		t2 = Trigger(
+			slug = "Trigger2_internal_test",
+			name = "Trigger2_internal_test",
+			prestige_threshold=10,
+			population_threshold=10,
+			money_threshold=10,
+		)
+		t2.on_fire = """
+kingdom.money = 42
+kingdom.save()
+"""
+		t2.save()
+
+		
+		# Fire!
+		self.k.prestige = 15
+		self.k.population = 15
+		self.k.money = 15
+		# Kingdom save to launch the triggers
+		self.k.save()
+
+		self.assertEqual(self.k.money, 42) 
+
+	def test_function(self):
+		"""
+		Test the call to a function from inside a script
+		"""
+		self.k.money = 0
+		self.k.save()
+
+		self.f1 = Function(
+			slug = "First_Function_evar",
+		)
+
+		self.f1.body = """
+kingdom.money += 50
+kingdom.save()
+param = call_function("Second_Function_evar", kingdom=kingdom)
+"""
+		self.f1.save()
+
+		self.f2 = Function(
+			slug = "Second_Function_evar",
+		)
+
+		self.f2.body = """
+kingdom.money += 30
+kingdom.save()
+param = kingdom.money
+"""
+		self.f2.save()
+
+		call_function_loc("First_Function_evar", kingdom = self.k)
+		self.assertEqual(self.k.money, 80)

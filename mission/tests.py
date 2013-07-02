@@ -404,3 +404,63 @@ status = grids[0][0].first_name + " " + grids[0][1].first_name
 		self.pm.start()
 		status = self.pm.resolve()
 		self.assertEqual(status, 'a aaa')
+
+	def test_pendingmission_set_get_value(self):
+		"""
+		Test that setting and retrieving a context value through a PendingMission works
+		"""
+
+		f = Folk(
+			kingdom=self.k,
+			first_name="Theon",
+			last_name="Greyjoy"
+		)
+		f.save()
+
+		self.pm.set_value("peon", f)
+		self.assertEqual(f, self.pm.get_value("peon"))
+
+		self.pm.set_value("Narnia", self.k)
+		self.assertEqual(self.k, self.pm.get_value("Narnia"))
+
+		self.pm.set_value("nompourri", "Kevin")
+		self.assertEqual(self.pm.get_value("nompourri"), "Kevin")
+
+		self.pm.set_value("beastnum", 666)
+		self.assertEqual(self.pm.get_value("beastnum"), 666)
+
+		self.pm.set_value("void", None)
+		self.assertEqual(self.pm.get_value("void"), None)
+
+	def test_pendingmission_context_start(self):
+		"""
+		Test the context access in on_start.
+		"""
+
+		self.m.on_start = """
+param.set_value('beastnum', 666)
+"""
+		self.m.save()
+
+		# Internal machinery works to delete.
+		self.pm.start()
+		self.assertEqual(self.pm.get_value("beastnum"), 666)
+
+	def test_pendingmission_context_resolve(self):
+		"""
+		Test the context access in on_resolve.
+		"""
+
+		self.m.on_start = """
+param.set_value('beastnum', 666)
+"""
+		self.m.on_resolve = """
+if param.get_value('beastnum') != 666:
+	from django.core.exceptions import ValidationError
+	raise ValidationError("HUM")
+"""
+		self.m.save()
+
+		# Internal machinery works to delete.
+		self.pm.start()
+		self.pm.resolve()
