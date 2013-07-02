@@ -8,10 +8,7 @@
 	<title>{% block title %}{% endblock %}</title>
 
 	<!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
-	<link rel="stylesheet" href="{{ STATIC_URL }}foundation/css/normalize.css" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}foundation/css/foundation.css" />
-
-	<script src="{{ STATIC_URL }}foundation/js/vendor/custom.modernizr.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}pure/pure-0.2.0.css" />
 
 	<script src="{{ STATIC_URL }}jquery/jquery-1.10.1.min.js"></script>
 	<script src="{{ STATIC_URL }}knockout/knockout-2.2.1.js"></script>
@@ -26,29 +23,5 @@
 
 	{% block content %}
 	{% endblock content %}
-
-	<script>
-	document.write('<script src=' +
-	('__proto__' in {} ? '{{ STATIC_URL }}foundation/js/vendor/zepto' : 'js/vendor/jquery') +
-	'.js><\/script>')
-	</script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.alerts.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.clearing.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.cookie.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.dropdown.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.forms.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.joyride.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.magellan.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.orbit.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.placeholder.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.reveal.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.section.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.tooltips.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.topbar.js"></script>
-	<script src="{{ STATIC_URL }}foundation/js/foundation/foundation.interchange.js"></script>
-	<script>
-		$(document).foundation();
-	</script>
 </body>
 </html>
