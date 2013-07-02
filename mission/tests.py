@@ -432,22 +432,35 @@ status = grids[0][0].first_name + " " + grids[0][1].first_name
 		self.pm.set_value("void", None)
 		self.assertEqual(self.pm.get_value("void"), None)
 
-	def test_pendingmission_context_init(self):
+	def test_pendingmission_context_start(self):
 		"""
-		Test the context access in on_init.
+		Test the context access in on_start.
 		"""
 
-		self.m.on_init = """
-print type(param)
-param.set_value('beastnum', 666)"""
+		self.m.on_start = """
+param.set_value('beastnum', 666)
+"""
 		self.m.save()
 
 		# Internal machinery works to delete.
-		self.pm.is_finished = True
-		self.pm.delete()
-		pm = PendingMission(
-			mission=self.m,
-			kingdom=self.k
-		)
-		pm.save()
-		self.assertEqual(pm.get_value("beastnum"), 666)
+		self.pm.start()
+		self.assertEqual(self.pm.get_value("beastnum"), 666)
+
+	def test_pendingmission_context_resolve(self):
+		"""
+		Test the context access in on_resolve.
+		"""
+
+		self.m.on_start = """
+param.set_value('beastnum', 666)
+"""
+		self.m.on_resolve = """
+if param.get_value('beastnum') != 666:
+	from django.core.exceptions import ValidationError
+	raise ValidationError("HUM")
+"""
+		self.m.save()
+
+		# Internal machinery works to delete.
+		self.pm.start()
+		self.pm.resolve()
