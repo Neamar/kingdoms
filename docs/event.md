@@ -28,7 +28,7 @@ param.set_value("variable_name", "variable_value")
 #### Récupérer une variable
 Depuis n'importe quel script du module (`condition`, et les deux `on_fire`) :
 ```python
-param.get_value("variable_name") #[le paramètre est un string]
+param.get_value("variable_name")
 ```
 Attention, la variable doit forcément exister.
 
@@ -36,7 +36,7 @@ Attention, la variable doit forcément exister.
 #### Créer un nouvel PendingEvent en gardant les variables
 Depuis un penging_event
 ```python
-param.next_event(Event.objects.get(slug="slug du pending_event à créer")).start() # [la paramètre slug est un string]
+param.next_event(Event.objects.get(slug="slug du pending_event à créer")).start()
 ```
 
 Exemples
@@ -46,7 +46,7 @@ Exemples
 * `condition` :
 
 ```python
-#si le royaume est trop riche, il dispose des conditions sanitaire suffisante pour en être exempté
+# Si le royaume est trop riche, il dispose des conditions sanitaires suffisantes pour en être exempté.
 if param.money > 100:
 	status="trop riche"
 ```
@@ -73,7 +73,7 @@ kingdom.population *= 1.5
 kingdom.save()
 ```
 
-# On choisit de les laisser mourrir
+# On choisit de les laisser mourir
 * `on_fire` :
 
 ```python
@@ -86,7 +86,7 @@ kingdom.save()
 * `on_fire` : 
 
 ```python
-#On crée une nouvelle PendingMission
+# On crée une nouvelle PendingMission
 PendingMission(
 	mission=Mission.objects.get(slug="recherche_medecin"),
 	kingdom=kingdom,
@@ -103,7 +103,8 @@ PendingEvent(
 
 # La condition sur l'évènement sera déclenchée au moment programmé.
 ```
-### Lancer un évènement plus tard, à un moment indeterminé
+
+### Stocker des valeurs pour le nouvel évènement
 ```python
 pe = PendingEvent(
 	event=Event.objects.get(slug="le slug"),
