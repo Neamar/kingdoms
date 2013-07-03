@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from config.lib.models import DescribedModel
+import random
 
 
 class Kingdom(models.Model):
@@ -34,8 +35,8 @@ class Folk(models.Model):
 	)
 	kingdom = models.ForeignKey(Kingdom)
 
-	first_name = models.CharField(max_length=64)
-	last_name = models.CharField(max_length=64)
+	first_name = models.CharField(max_length=64, default=random_first_name)
+	last_name = models.CharField(max_length=64, default=random_last_name)
 	
 	class Meta:
 		unique_together = ('first_name', 'last_name')
