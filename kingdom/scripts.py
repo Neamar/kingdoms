@@ -87,7 +87,10 @@ def folk_add_quality(self, name):
 	"""
 
 	quality = Quality.objects.get(name__iexact=name)
-	self.quality_set.add(quality)
+	try:
+		self.quality_set.add(quality)
+	except:
+		pass
 	return quality
 Folk.add_quality = folk_add_quality
 

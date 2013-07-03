@@ -123,6 +123,7 @@ class PendingEvent(models.Model):
 		pending_event2 = PendingEvent(
 			kingdom=self.kingdom,
 			event=event,
+			started=None
 		)
 		pending_event2.save()
 		variables = self._pendingeventvariable_set.all()

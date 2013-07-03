@@ -367,7 +367,7 @@ pe2.start()
 		)
 		e2.save()
 
-		pe.next_event(e2)
+		pe.next_event(e2).start()
 
 		pe2 = PendingEvent.objects.get(kingdom=self.k, event=e2)
 		self.assertEqual(10, pe2.get_value("valeur"))
