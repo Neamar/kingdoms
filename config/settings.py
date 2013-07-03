@@ -18,8 +18,8 @@ if os.getenv('DB') == 'postgres':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'myapp_test',
-            'USER': 'postgres'
+            'NAME': 'kingdoms',
+            'USER': 'postgres',
         }
     }
 else:
