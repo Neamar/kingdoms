@@ -17,11 +17,11 @@ class Command(BaseCommand):
 	objects = {}
 	dependencies = defaultdict(list)
 
-	pending_event_slug = re.compile("PendingEvent.+slug=\"([a-z_]+)\"")
-	next_event_slug = re.compile("next_event.+slug=\"([a-z_]+)")
+	pending_event_slug = re.compile("PendingEvent.+slug=\"(\w+)\"")
+	next_event_slug = re.compile("next_event.+slug=\"(\w+)")
 	event_regexps = [pending_event_slug, next_event_slug]
 
-	pending_mission_slug = re.compile("PendingMission.+slug=\"([a-z_]+)\"")
+	pending_mission_slug = re.compile("PendingMission.+slug=\"(\w+)\"")
 	mission_regexps = [pending_mission_slug]
 
 	def handle(self, *args, **options):
