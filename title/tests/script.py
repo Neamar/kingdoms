@@ -65,9 +65,10 @@ class ScriptTest(TestCase):
 		"""
 		check if the available title is well created
 		"""
-		at = self.k.unlock_title("Dummy title")
-		self.assertEqual(at.kingdom, self.k)
-		self.assertEqual(at.title, self.t)
+		self.k.unlock_title("Dummy title")
+		
+		# AssertNoRaises
+		AvailableTitle.objects.get(kingdom=self.k, title=self.t)
 
 	def test_kingdom_unlock_title_already_available(self):
 		"""
