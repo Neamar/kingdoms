@@ -76,6 +76,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folks': self.folk_set.all(),
 		}
 		status, param = execute(self.event.condition, self, context)
 
@@ -88,6 +89,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
+			'folks': self.folk_set.all(),
 		}
 		status, param = execute(self.event.on_fire, self, context)
 		return status, param
@@ -160,7 +162,7 @@ class PendingEventAction(models.Model):
 		
 		context = {
 			'kingdom': self.pending_event.kingdom,
-			'folk': self.folk,
+			'folks': self.folk_set.all(),
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
 		self.pending_event.delete()
