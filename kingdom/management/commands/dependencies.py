@@ -24,11 +24,8 @@ class Command(BaseCommand):
 	mission_regexps = [pending_mission_slug]
 
 	def handle(self, *args, **options):
-		print "Loading events..."
 		events = Event.objects.all().prefetch_related('eventaction_set')
 
-		print "Parsing events..."
-		
 		for event in events:
 			deps = []
 
@@ -39,10 +36,7 @@ class Command(BaseCommand):
 			for dep in set(deps):
 				self.dependencies['event_' + event.slug].append(dep)
 
-		print "Loading missions..."
 		missions = Mission.objects.all()
-
-		print "Parsing missions..."
 		for mission in missions:
 			deps = []
 
@@ -54,9 +48,7 @@ class Command(BaseCommand):
 				self.dependencies['mission_' + mission.slug].append(dep)
 
 		# Output results
-		print "Generating results..."
 		out = self._output_dot()
-		print "------------"
 		self.stdout.write(out)
 
 	def _read_script(self, code):
