@@ -76,7 +76,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.folk_set.all(),
+			'folks': self.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event.condition, self, context)
 
