@@ -13,6 +13,7 @@ def call_function_loc(name, **kwargs):
 	ret = f.fire(kwargs)
 	return ret
 
+
 class UnitTest(TestCase):
 	def setUp(self):
 		self.k = Kingdom()
@@ -26,14 +27,13 @@ class UnitTest(TestCase):
 		self.f.save()
 
 		self.t = Trigger(
-			slug = 'Trigger_internal_test',
-			name = 'Trigger_internal_test',
+			slug='Trigger_internal_test',
+			name='Trigger_internal_test',
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
 		)
 		self.t.save()
-
 
 	def test_threshold(self):
 		"""
@@ -252,8 +252,8 @@ status = "bla"
 		"""
 
 		t1 = Trigger(
-			slug = "Trigger1_internal_test",
-			name = "Trigger1_internal_test",
+			slug="Trigger1_internal_test",
+			name="Trigger1_internal_test",
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
@@ -265,8 +265,8 @@ kingdom.money = 111
 		t1.save()
 
 		t2 = Trigger(
-			slug = "Trigger2_internal_test",
-			name = "Trigger2_internal_test",
+			slug="Trigger2_internal_test",
+			name="Trigger2_internal_test",
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
@@ -277,7 +277,6 @@ kingdom.save()
 """
 		t2.save()
 
-		
 		# Fire!
 		self.k.prestige = 15
 		self.k.population = 15
@@ -285,7 +284,7 @@ kingdom.save()
 		# Kingdom save to launch the triggers
 		self.k.save()
 
-		self.assertEqual(self.k.money, 42) 
+		self.assertEqual(self.k.money, 42)
 
 	def test_function(self):
 		"""
@@ -295,7 +294,7 @@ kingdom.save()
 		self.k.save()
 
 		self.f1 = Function(
-			slug = "First_Function_evar",
+			slug="First_Function_evar",
 		)
 
 		self.f1.body = """
@@ -306,7 +305,7 @@ param = call_function("Second_Function_evar", kingdom=kingdom)
 		self.f1.save()
 
 		self.f2 = Function(
-			slug = "Second_Function_evar",
+			slug="Second_Function_evar",
 		)
 
 		self.f2.body = """
@@ -316,5 +315,5 @@ param = kingdom.money
 """
 		self.f2.save()
 
-		call_function_loc("First_Function_evar", kingdom = self.k)
+		call_function_loc("First_Function_evar", kingdom=self.k)
 		self.assertEqual(self.k.money, 80)

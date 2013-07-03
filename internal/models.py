@@ -119,12 +119,21 @@ class FirstName (NamedModel):
 	)
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
+	@classmethod
+	def random(self):
+		if self.sex == "m":
+			return FirstName.objects.filter(sex="m").order_by('?')[0]
+		else:
+			return FirstName.objects.filter(sex="f").order_by('?')[0]
 
+	
 class LastName (NamedModel):
 	"""
 	Dictionary for last name.
 	"""
-	pass
+	@classmethod
+	def random():
+		return LastName.objects.all().order_by('?')[0]
 
 
 class Function (models.Model):
