@@ -124,6 +124,22 @@ class PendingEvent(models.Model):
 		for variable in variables:
 			self.set_value(variable.name, variable.value)
 
+	def next_event(self, event):
+		"""
+		Creates a new pending event with the context of the previous
+		"""
+		pending_event2 = PendingEvent(
+			kingdom=self.kingdom,
+			event=event,
+		)
+		pending_event2.save()
+		variables = self._pendingeventvariable_set.all()
+		for variable in variables:
+			pending_event2.set_value(variable.name, variable.value)
+
+		
+		return pending_event2
+
 
 class PendingEventAction(models.Model):
 	"""
