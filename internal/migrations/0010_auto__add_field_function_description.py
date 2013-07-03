@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Function.description'
         db.add_column(u'internal_function', 'description',
-                      self.gf('django.db.models.fields.TextField')(default='', blank=True),
+                      self.gf('django.db.models.fields.TextField')(default='description', blank=True),
                       keep_default=False)
 
 
