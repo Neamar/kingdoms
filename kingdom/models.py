@@ -106,6 +106,9 @@ class Message(models.Model):
 
 	creation = models.DateTimeField(auto_now_add=True)
 
+	def __unicode__(self):
+		return self.content[0:50]
+
 
 class ModalMessage(DescribedModel):
 	"""

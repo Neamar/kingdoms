@@ -12,7 +12,7 @@ var mapping = {
 		key: unwrapId
 	},
 	'folks': {
-		key: unwrapId 
+		key: unwrapId
 	},
 	'kingdom': {
 		key: unwrapId

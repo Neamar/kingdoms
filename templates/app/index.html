@@ -17,9 +17,10 @@
 
 	<ul>
 		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
-		<li class="pure-menu-selected"><a href="#title">Titres</a></li>
-		<li class="pure-menu-selected"><a href="#mission">Missions</a></li>
-		<li class="pure-menu-selected"><a href="#event">Évènements</a></li>
+		<li class=""><a href="#title">Titres</a></li>
+		<li class=""><a href="#mission">Missions</a></li>
+		<li class=""><a href="#event">Évènements</a></li>
+		<li class=""><a href="#debug">Debug</a></li>
 		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
 		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
 		<li>Population : <span data-bind="text: kingdom.population"></span></li>
@@ -55,6 +56,11 @@
 			{% include "app/_event.html" %}
 		</div>
 
+		<div data-bind="page: {id: 'debug'}">
+			<h1>Debug</h1>
+			{% include "app/_debug.html" %}
+		</div>
+
 		<div data-bind="page: {id: '?'}">
 			<h1>Oups !</h1>
 			<p>Désolé, mais cette page n'existe pas.</p>
@@ -63,6 +69,7 @@
 	</div>
 
 	<div class="pure-u-1-6" id="messages">
+		<h3>Messages</h3>
 		{% include "app/_message.html" %}
 	</div>
 </div>
