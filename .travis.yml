@@ -1,0 +1,9 @@
+language: python
+python:
+  - "2.7"
+  - "pypy"
+install:
+  - "pip install -r requirements.txt"
+  - "./manage.py syncdb --noinput"
+  - "./manage.py migrate"
+script: "./manage.py test kingdom mission title internal event"
