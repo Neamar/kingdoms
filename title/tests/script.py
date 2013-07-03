@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
@@ -13,6 +14,7 @@ class ScriptTest(TestCase):
 		self.k.save()
 
 		self.f = Folk(
+			first_name="bob",
 			kingdom=self.k,
 		)
 		self.f.save()
@@ -75,3 +77,19 @@ class ScriptTest(TestCase):
 
 		at2 = self.k.unlock_title("Dummy title")
 		self.assertEquals(at, at2)
+
+	def test_folk_add_title(self):
+		"""
+		Check is the title is added
+		"""
+		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("Dummy title"))
+
+		self.at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		self.at.save()
+		self.f.add_title("Dummy title")
+		
+		self.assertEqual("bob", self.k.get_folk_in_title("Dummy title").first_name)

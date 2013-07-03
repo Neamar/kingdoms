@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
 from django.db import IntegrityError
@@ -29,3 +30,13 @@ def kingdom_unlock_title(self, title):
 		available_title = AvailableTitle.objects.get(title__name=title, kingdom=self)
 	return available_title
 Kingdom.unlock_title = kingdom_unlock_title
+
+
+def folk_add_title(self, title_name):
+	"""
+	Add the title to the folk
+	"""
+	available_title = AvailableTitle.objects.get(title__name=title_name)
+	available_title.folk = self
+	available_title.save()
+Folk.add_title = folk_add_title

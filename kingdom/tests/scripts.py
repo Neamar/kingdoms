@@ -129,3 +129,16 @@ class ScriptTest(TestCase):
 		self.f.save()
 
 		self.assertEquals(15, sum_folks([self.f, self.f2], "fight"))
+
+	def test_has_claim(self):
+		"""
+		Checks if the has_claim works
+		"""
+		self.k2 = Kingdom()
+		self.k2.save()
+
+		self.assertFalse(self.k.offended_set.filter(offender=self.k2).exists())
+
+		self.k.add_claim(self.k2)
+		
+		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
