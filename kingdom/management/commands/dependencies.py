@@ -80,13 +80,14 @@ class Command(BaseCommand):
 		"""
 
 		events = ';'.join([o for o in self.objects.keys() if o.startswith('event_')])
-		missions = ';'.join([o for o in self.objects.keys() if o.startswith('misison_')])
+		missions = ';'.join([o for o in self.objects.keys() if o.startswith('mission_')])
 
 		ret = """digraph name {\n
 	fontname = "Helvetica"
 	fontsize = 8
 	node [color=lightblue2, style=filled]; %s
 	node [color=lightyellow2, style=filled]; %s
+	node [color=red, style=filled];
 """ % (events, missions)
 
 		for k, o in self.objects.items():
