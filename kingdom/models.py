@@ -69,6 +69,8 @@ class QualityCategory(DescribedModel):
 	"""
 	A category for some qualities.
 	"""
+	class Meta:
+		verbose_name_plural = "Quality categories"
 	pass
 
 

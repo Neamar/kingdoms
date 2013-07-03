@@ -12,6 +12,9 @@ from kingdom.models import Kingdom, Folk
 
 
 class EventCategory(DescribedModel):
+	class Meta:
+		verbose_name_plural = "Event categories"
+
 	frequency = models.PositiveIntegerField()
 	timeout = models.PositiveIntegerField()
 	available_kingdoms = models.ManyToManyField(Kingdom)
