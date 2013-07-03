@@ -116,14 +116,6 @@ class PendingEvent(models.Model):
 
 		pev.save()
 
-	def move_values(self, pending_event_action):
-		"""
-		Moves values from a pending event to an other
-		"""
-		variables = pending_event_action.pending_event._pendingeventvariable_set.all()
-		for variable in variables:
-			self.set_value(variable.name, variable.value)
-
 	def next_event(self, event):
 		"""
 		Creates a new pending event with the context of the previous
