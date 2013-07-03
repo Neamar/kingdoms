@@ -33,7 +33,7 @@ def serialize_folk(folk):
 		'plot': folk.plot,
 		'scholarship': folk.scholarship,
 		'loyalty': folk.loyalty,
-		'qualities': [q.pk for q in folk.quality_set.all()]
+		'raw_qualities': [q.pk for q in folk.quality_set.all()]
 	}
 
 	return r
@@ -57,7 +57,7 @@ def serialize_message(message):
 
 def serialize_quality(quality):
 	"""
-	Serialize a message object to JSON.
+	Serialize a quality object to JSON.
 	"""
 	
 	r = {

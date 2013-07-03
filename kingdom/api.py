@@ -19,5 +19,5 @@ def api(request):
 	resp['messages'] = [serialize_message(o) for o in messages]
 
 	qualities = Quality.objects.all()
-	resp['qualities'] = [serialize_quality(o) for o in qualities]
+	resp['qualities'] = {o.pk: serialize_quality(o) for o in qualities}
 	return resp

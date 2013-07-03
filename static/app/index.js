@@ -12,12 +12,14 @@ function pendingEventActionFire(val) {
 //##################################
 // MAPPINGS & MODELS
 //##################################
-var folkModel = function(data) {
+var folkModel = function(data, qualities) {
 	var self = this;
 	ko.mapping.fromJS(data, {}, this);
 
-	self.nameLength = ko.computed(function() {
-		return self.first_name().length;
+	self.qualities = ko.computed(function() {
+		return ko.utils.arrayMap(self.raw_qualities(), function(raw_quality) {
+				return qualities[raw_quality];
+		});
 	});
 }
 
@@ -31,7 +33,7 @@ var mapping = {
 	'folks': {
 		key: unwrapId,
 		create: function(options) {
-			return new folkModel(options.data);
+			return new folkModel(options.data, options.parent.qualities);
 		}
 	},
 	'kingdom': {
