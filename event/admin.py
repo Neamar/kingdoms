@@ -10,6 +10,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 class EventAdmin(admin.ModelAdmin):
 	list_display = ('name', 'slug', 'text', 'weight', 'category',)
+	search_fields = ('name', 'text')
 	list_filter = ('category__name',)
 	inlines = [
 		EventActionAdminInline,
@@ -20,17 +21,20 @@ admin.site.register(Event, EventAdmin)
 
 class EventCategoryAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'frequency', 'timeout')
+	search_fields = ('name', 'description')
 admin.site.register(EventCategory, EventCategoryAdmin)
 
 
 class PendingEventAdmin(admin.ModelAdmin):
 	readonly_fields = ('text',)
 	list_display = ('event', 'kingdom', 'started', 'text')
+	search_fields = ('event__name', 'text')
 admin.site.register(PendingEvent, PendingEventAdmin)
 
 
 class PendingEventActionAdmin (admin.ModelAdmin):
 	list_display = ('pending_event', 'text', 'folk')
+	search_fields = ('event__name', 'text')
 	actions = ['fire']
 
 	def fire(self, request, queryset):

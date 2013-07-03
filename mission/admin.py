@@ -11,6 +11,7 @@ class MissionGridInline(admin.StackedInline):
 
 class MissionAdmin(admin.ModelAdmin):
 	list_display = ('name', 'slug', 'text', 'title')
+	search_fields = ('name', 'text', 'title')
 	list_filter = ('title__name',)
 	inlines = [MissionGridInline]
 
@@ -51,4 +52,5 @@ admin.site.register(PendingMission, PendingMissionAdmin)
 
 class AvailableMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom')
+	list_filter = ('mission')
 admin.site.register(AvailableMission, AvailableMissionAdmin)

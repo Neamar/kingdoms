@@ -26,6 +26,7 @@ class AliveFilter(admin.SimpleListFilter):
 
 class KingdomAdmin(admin.ModelAdmin):
 	list_display = ('user', 'prestige', 'population', 'money')
+	search_fields = ('user__username', )
 admin.site.register(Kingdom, KingdomAdmin)
 
 
@@ -36,6 +37,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 class FolkAdmin(admin.ModelAdmin):
 	list_display = ('first_name', 'last_name', 'sex', 'birth')
+	search_fields = ('first_name', 'last_name')
 	list_filter = ('sex', AliveFilter)
 admin.site.register(Folk, FolkAdmin)
 
@@ -45,6 +47,7 @@ admin.site.register(QualityCategory, DescribedModelAdmin)
 
 class QualityAdmin(DescribedModelAdmin):
 	list_display = ('name', 'category', 'description')
+	search_fields = ('name', 'description')
 	list_filter = ('category__name',)
 admin.site.register(Quality, QualityAdmin)
 

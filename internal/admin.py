@@ -6,11 +6,13 @@ from kingdom.models import Kingdom
 
 class TriggerAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'prestige_threshold', 'population_threshold')
+	search_fields = ('name', 'description')
 admin.site.register(Trigger, TriggerAdmin)
 
 
 class ConstantAdmin (admin.ModelAdmin):
-	list_display = ('name', 'value', 'description')
+	list_display = ('name', 'description', 'value')
+	search_fields = ('name', 'description')
 admin.site.register(Constant, ConstantAdmin)
 
 
@@ -21,6 +23,7 @@ admin.site.register(Value, ValueAdmin)
 
 class RecurringAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'frequency')
+	search_fields = ('name', 'description')
 	actions = ['resolve']
 
 	def resolve(self, request, queryset):
@@ -34,5 +37,9 @@ class RecurringAdmin(admin.ModelAdmin):
 admin.site.register(Recurring, RecurringAdmin)
 
 
-admin.site.register(FirstName)
+class FirstNameAdmin(admin.ModelAdmin):
+	list_filter = ('sex',)
+	list_display = ('name', 'sex')
+	search_fields = ('name',)
+admin.site.register(FirstName, FirstNameAdmin)
 admin.site.register(LastName)
