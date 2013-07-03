@@ -32,7 +32,7 @@ class Event(models.Model):
 	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default=" ")
 
 	def __unicode__(self):
-		return self.name
+		return self.slug
 
 
 class EventAction(models.Model):
