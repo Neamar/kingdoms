@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, call_function
+from internal.models import Trigger, Function, Recurring, call_function, FirstName, LastName
 
 
 def call_function_loc(name, **kwargs):
@@ -317,3 +317,17 @@ param = kingdom.money
 
 		call_function_loc("First_Function_evar", kingdom=self.k)
 		self.assertEqual(self.k.money, 80)
+
+	def test_auto_name_for_folk(self):
+		"""
+		The name is automatically filled.
+		"""
+
+		FirstName(name="Gendry", sex=Folk.MALE).save()
+		LastName(name="Baratheon").save()
+
+		f2 = Folk(kingdom=self.k)
+		f2.save()
+
+		self.assertEqual(f2.first_name, "Gendry")
+		self.assertEqual(f2.last_name, "Baratheon")

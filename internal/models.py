@@ -5,7 +5,7 @@ from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from config.fields.stored_value import StoredValueField
 
-from kingdom.models import Kingdom
+from kingdom.models import Kingdom, Folk
 from config.lib.execute import execute
 
 
@@ -110,30 +110,14 @@ class FirstName (NamedModel):
 	"""
 	Dictionary for first name.
 	"""
-	MALE = 'm'
-	FEMALE = 'f'
-
-	SEX_CHOICES = (
-		(MALE, '♂'),
-		(FEMALE, '♀')
-	)
-	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
-
-	@classmethod
-	def random(self):
-		if self.sex == "m":
-			return FirstName.objects.filter(sex="m").order_by('?')[0]
-		else:
-			return FirstName.objects.filter(sex="f").order_by('?')[0]
+	sex = models.CharField(max_length=1, choices=Folk.SEX_CHOICES, default=Folk.MALE)
 
 	
 class LastName (NamedModel):
 	"""
 	Dictionary for last name.
 	"""
-	@classmethod
-	def random():
-		return LastName.objects.all().order_by('?')[0]
+	pass
 
 
 class Function (models.Model):
