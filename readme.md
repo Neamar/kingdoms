@@ -26,3 +26,8 @@ Maintenance
 
 ### Generating models
 Enable `django_extensions` in `config/settings.py`, then `./graph.sh`.
+
+Code Status
+-----------
+
+[![Travis Status](https://travis-ci.org/rricard/kingdoms)](https://api.travis-ci.org/rricard/kingdoms.png)
