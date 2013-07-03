@@ -118,7 +118,7 @@ class Function (models.Model):
 	slug = models.SlugField(max_length=255, unique=True)
 	body = ScriptField(blank=True, help_text="Body of the function", default="")
 
-	def fire(self, kwargs):
+	def fire(self, **kwargs):
 		context = kwargs
 		status, param = execute(self.body, self, context)
 

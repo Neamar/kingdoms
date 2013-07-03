@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
@@ -24,7 +27,14 @@ def fire_trigger(sender, instance, **kwargs):
 @receiver(pre_save, sender=Folk)
 def fill_name(sender, instance, **kwargs):
 	if instance.first_name == '':
-		instance.first_name = FirstName.objects.filter(sex=instance.sex).order_by('?')[0].name
-
+		try:
+			instance.first_name = FirstName.objects.filter(sex=instance.sex).order_by('?')[0].name
+		except IndexError:
+			# Empty FirstName table
+			instance.first_name = ''.join(random.choice(string.lowercase) for i in range(10))
 	if instance.last_name == '':
-		instance.last_name = LastName.objects.all().order_by('?')[0].name
+		try:
+			instance.last_name = LastName.objects.all().order_by('?')[0].name
+		except IndexError:
+			# Empty LastName table
+			instance.last_name = ''.join(random.choice(string.lowercase) for i in range(10))

@@ -294,7 +294,7 @@ status = "foo"
 """
 		f.save()
 
-		status = self.r.fire(self.k)
+		status = f.fire()
 		self.assertEqual(status, "foo")
 
 	def test_auto_name_for_folk(self):
