@@ -1,7 +1,5 @@
 language: python
-python:
-  - "2.7"
-  - "pypy"
+python: "2.7"
 env:
   - DB=sqlite
   - DB=postgres
