@@ -1,10 +1,10 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, FirstName, LastName
+from internal.scripts import *
 
 
-class UnitTest(TestCase):
+class ScriptTest(TestCase):
 	def setUp(self):
 		self.k = Kingdom()
 		self.k.save()
@@ -16,43 +16,30 @@ class UnitTest(TestCase):
 		)
 		self.f.save()
 
-		self.t = Trigger(
-			slug='Trigger_internal_test',
-			name='Trigger_internal_test',
-			prestige_threshold=10,
-			population_threshold=10,
-			money_threshold=10,
-		)
-		self.t.save()
-
-	def test_function(self):
+	def test_function_calls(self):
 		"""
 		Test the call to a function from inside a script
 		"""
 		self.k.money = 0
 		self.k.save()
 
-		self.f1 = Function(
-			slug="first_function_evar",
+		f1 = Function(
+			slug="first_function",
 		)
+		f1.on_fire = """
+foo += 50
+param = call_function("second_function", foo=foo)
+"""
+		f1.save()
 
-		self.f2 = Function(
-			slug="Second_Function_evar",
+		f2 = Function(
+			slug="second_function",
 		)
-
-		self.f1.body = """
-kingdom.money += 50
-kingdom.save()
-param = call_function("second_Function_evar", kingdom=kingdom)
+		f2.on_fire = """
+foo += 30
+param = foo
 """
-		self.f1.save()
+		f2.save()
 
-		self.f2.body = """
-kingdom.money += 30
-kingdom.save()
-param = kingdom.money
-"""
-		self.f2.save()
-
-		call_function_loc("first_function_evar", kingdom=self.k)
-		self.assertEqual(self.k.money, 80)
+		param = call_function("first_function", foo=0)
+		self.assertEqual(param, 80)

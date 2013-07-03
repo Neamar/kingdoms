@@ -209,20 +209,20 @@ status = "NotPossible"
 		Test recurring conditions are executed.
 		"""
 
-		self.r = Recurring(
+		r = Recurring(
 			condition="""
 if kingdom.population > 10:
 	status = "foo"
 """
 		)
-		self.r.save()
+		r.save()
 
-		status = self.r.check_condition(self.k)
+		status = r.check_condition(self.k)
 		self.assertEqual(status, "ok")
 
 		self.k.population = 50
 		self.k.save()
-		status = self.r.check_condition(self.k)
+		status = r.check_condition(self.k)
 		self.assertEqual(status, "foo")
 
 	def test_recurring_code(self):
@@ -230,14 +230,14 @@ if kingdom.population > 10:
 		Test recurring condition code.
 		"""
 
-		self.r = Recurring(
+		r = Recurring(
 			on_fire="""
 status = "foo"
 """
 		)
-		self.r.save()
+		r.save()
 
-		status = self.r.fire(self.k)
+		status = r.fire(self.k)
 		self.assertEqual(status, "foo")
 
 	def test_execution_order(self):
@@ -289,13 +289,29 @@ kingdom.save()
 		f = Function(
 			slug="test_function",
 		)
-		self.on_fire = """
-status = "foo"
+		f.on_fire = """
+param = "foo"
 """
 		f.save()
 
-		status = f.fire()
-		self.assertEqual(status, "foo")
+		param = f.fire()
+		self.assertEqual(param, "foo")
+
+	def test_function_params(self):
+		"""
+		Test function code.
+		"""
+
+		f = Function(
+			slug="test_function",
+		)
+		f.on_fire = """
+param = foo * bar
+"""
+		f.save()
+
+		param = f.fire(foo=2, bar=3)
+		self.assertEqual(param, 6)
 
 	def test_auto_name_for_folk(self):
 		"""

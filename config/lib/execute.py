@@ -25,6 +25,7 @@ def execute(code, param=None, context=None):
 	from title.scripts import *
 	from event.scripts import *
 	from kingdom.scripts import *
+	from internal.scripts import *
 
 	from datetime import datetime, timedelta
 

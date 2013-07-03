@@ -7,5 +7,5 @@ def call_function(name, **kwargs):
 	"""
 
 	f = Function.objects.get(slug=name)
-	ret = f.fire(kwargs)
+	ret = f.fire(**kwargs)
 	return ret
