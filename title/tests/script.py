@@ -2,6 +2,7 @@
 from django.test import TestCase
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
+from title.scripts import *
 
 
 class ScriptTest(TestCase):

@@ -20,15 +20,15 @@ def kingdom_unlock_title(self, title):
 	"""
 	Unlock the title and return the available_title unlocked
 	"""
+	title = Title.objects.get(name=title)
 	try:
 		available_title = AvailableTitle(
-			title=Title.objects.get(name=title),
+			title=title,
 			kingdom=self
 		)
 		available_title.save()
 	except IntegrityError:
-		available_title = AvailableTitle.objects.get(title__name=title, kingdom=self)
-	return available_title
+		pass
 Kingdom.unlock_title = kingdom_unlock_title
 
 
