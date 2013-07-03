@@ -112,8 +112,8 @@ def folk_has_quality(self, quality):
 Folk.has_quality = folk_has_quality
 
 
-def sum_folks(folks, quality):
+def sum_folks(folks, attribute):
 	"""
-	Returns the sum of the choosen quality
+	Returns the sum of the choosen attribute
 	"""
-	return sum([getattr(folk, quality) for folk in folks])
+	return sum([getattr(folk, attribute) for folk in folks])

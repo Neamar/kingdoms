@@ -60,6 +60,9 @@ Que scripter ?
 #### Affecter une personne à un titre
 * `folk.add_title("available_title")`
 
+### Sur la liste des folks
+#### Récupérer la somme d'un attribut d'une liste de personne
+* `folks.sum_folks("attibute")`: renvoie la somme des attributs des personnes
 
 Exemples
 -------------
