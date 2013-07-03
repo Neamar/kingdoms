@@ -25,7 +25,9 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		status, param = instance.fire()
 
-		raw_context = instance.get_context()
+		raw_context = {}
+		for var in instance._pendingeventvariable_set.all():
+			raw_context[var.name] = var.value
 		raw_context['kingdom'] = instance.kingdom
 		context = Context(raw_context)
 

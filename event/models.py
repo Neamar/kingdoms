@@ -101,12 +101,6 @@ class PendingEvent(models.Model):
 		pev = _PendingEventVariable.objects.get(pending_event=self, name=value_name)
 		return pev.value
 
-	def get_context(self):
-		context = {}
-		for var in self._pendingeventvariable_set.all():
-			context[var.name] = var.value
-		return context
-
 	def set_value(self, name, value):
 		"""
 		Sets a value
