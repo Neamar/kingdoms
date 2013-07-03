@@ -2,12 +2,15 @@
 from django.contrib import admin
 
 from title.models import Title, AvailableTitle
-from config.lib.admin import DescribedModelAdmin
 
 
-admin.site.register(Title, DescribedModelAdmin)
+class TitleAdmin(admin.ModelAdmin):
+	list_display = ('name', 'description')
+	search_fields = ('name', 'description')
+admin.site.register(Title, TitleAdmin)
 
 
 class AvailableTitleAdmin(admin.ModelAdmin):
 	list_display = ('title', 'kingdom', 'folk')
+	list_filter = ('title',)
 admin.site.register(AvailableTitle, AvailableTitleAdmin)

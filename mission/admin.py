@@ -52,5 +52,5 @@ admin.site.register(PendingMission, PendingMissionAdmin)
 
 class AvailableMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom')
-	list_filter = ('mission')
+	list_filter = ('mission',)
 admin.site.register(AvailableMission, AvailableMissionAdmin)
