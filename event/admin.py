@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+from django.forms import TextInput
+from django.db import models
+
 from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventAction
 
 
 class EventActionAdminInline(admin.StackedInline):
 	model = EventAction
+	formfield_overrides = {
+		models.CharField: {'widget': TextInput(attrs={'size': '100'})},
+	}
+
 	extra = 0
 
 
