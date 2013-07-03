@@ -131,7 +131,7 @@ INSTALLED_APPS = (
 
     # Pip Lib
     'south',
-    'django_extensions',
+    #'django_extensions',
 
     # Kingdom apps
     'kingdom',
