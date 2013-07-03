@@ -32,15 +32,15 @@ Que scripter ?
 * `kingdom.modal_message(name, description)` : ajoute un message "modal" pour le royaume spécifié
 
 #### Ajouter une claim
-* `kingdom.add_claim(kingdom)` : ajoute une claim avec le `kingdom` défini
+* `kingdom.add_claim(kingdom)` : ajoute une claim avec le `kingdom` défini.
 
 #### Connaitre la personne qui a un certain titre
 * `kingdom.get_folk_in_title("title")` : renvoie le folk le la personne ayant ce titre. Si personne ne l'a, renvoie None
 
 #### Débloquer un AvailableTitle
-* `kingdom.unlock_title("title")` : débloque le titre(un string) (s'il ne l'était pas avant) et retourne ce titre (l'objet)
+* `kingdom.unlock_title("title")` : débloque le titre (s'il ne l'était pas avant) et retourne l'objet `AvailableTitle`.
 
-#### Savoir si un kingdom à une claim vers un autre kingdom
+#### Savoir si un kingdom a une claim vers un autre kingdom
 * `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
 
 
@@ -49,17 +49,16 @@ Que scripter ?
 * `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)
 
 #### Ajouter un trait à une personne
-* `folk.add_quality("quality")`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
+* `folk.add_quality("quality")`: ajoute le trait `quality` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
 
-#### Savoir si une personne a un certaint trait
-* `folk.has_quality("quality")` : renvoie True si la personne a le trait sinon renvoie False
+#### Savoir si une personne a un certain trait
+* `folk.has_quality("quality")` : renvoie True si la personne a le trait, sinon renvoie `False`.
 
-#### Connaitre l'age d'une personne
-* `folk.age()`: renvoie l'age de la personne en années
+#### Connaître l'âge d'une personne
+* `folk.age()` : renvoie l'âge de la personne en années
 
-#### Ajouter un titre à quelqu'un
-* `folk.add_title("available_title")
-
+#### Affecter une personne à un titre
+* `folk.add_title("available_title")`
 
 
 Exemples
@@ -80,7 +79,7 @@ On dispose déjà d'un objet folk.
 
 ```python
 # Ajouter le trait avare, qu'on suppose créé auparavant.
-folk.add_quality("avare")      # /!\Le nom est sensible à la casse. avare =/= Avare.
+folk.add_quality("avare")      # /!\Le nom est sensible à la casse. "avare" =/= "Avare".
 # On diminue la loyauté de 15
 folk.loyalty -= 15 
 # On augmente la diplomatie de 2

@@ -86,7 +86,7 @@ def folk_add_quality(self, name):
 	Add a new quality.
 	"""
 
-	quality = Quality.objects.get(name=name)
+	quality = Quality.objects.get(name__iexact=name)
 	self.quality_set.add(quality)
 	return quality
 Folk.add_quality = folk_add_quality
@@ -103,12 +103,12 @@ def folk_age(self):
 Folk.age = folk_age
 
 
-def folk_has_quality(self, name):
+def folk_has_quality(self, quality):
 	"""
-	Returns True is the folk has the name
+	Returns True is the folk has the quality
 	"""
 
-	return Quality.objects.get(name=name) in self.quality_set.all()
+	return Quality.objects.get(name__iexact=quality) in self.quality_set.all()
 Folk.has_quality = folk_has_quality
 
 
