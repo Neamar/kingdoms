@@ -36,7 +36,7 @@ def folk_add_title(self, title_name):
 	"""
 	Add the title to the folk
 	"""
-	available_title = AvailableTitle.objects.get(title__name=title_name)
+	available_title = AvailableTitle.objects.get(title__name=title_name, kingdom=self.kingdom)
 	available_title.folk = self
 	available_title.save()
 Folk.add_title = folk_add_title
