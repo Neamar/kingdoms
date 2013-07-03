@@ -14,6 +14,7 @@ class Command(BaseCommand):
 	args = ''
 	help = 'Generate dependencies graph for Event and Missions'
 
+	objects = {}
 	dependencies = defaultdict(list)
 
 	pending_event_slug = re.compile("PendingEvent.+slug=\"([a-z_]+)\"")
@@ -27,8 +28,9 @@ class Command(BaseCommand):
 		events = Event.objects.all().prefetch_related('eventaction_set')
 
 		for event in events:
-			deps = []
+			self.objects["event_" + event.slug] = (event.slug, event.name)
 
+			deps = []
 			deps += self._read_script(event.on_fire)
 			for event_action in event.eventaction_set.all():
 				deps += self._read_script(event_action.on_fire)
@@ -38,6 +40,7 @@ class Command(BaseCommand):
 
 		missions = Mission.objects.all()
 		for mission in missions:
+			self.objects["mission_" + mission.slug] = (mission.slug, mission.name)
 			deps = []
 
 			deps += self._read_script(mission.on_init)
@@ -75,7 +78,23 @@ class Command(BaseCommand):
 		"""
 		Return dot files for current dependencies.
 		"""
-		ret = "digraph G {\n"
+
+		events = ';'.join([o for o in self.objects.keys() if o.startswith('event_')])
+		missions = ';'.join([o for o in self.objects.keys() if o.startswith('misison_')])
+
+		ret = """digraph name {\n
+	fontname = "Helvetica"
+	fontsize = 8
+	node [color=lightblue2, style=filled]; %s
+	node [color=lightyellow2, style=filled]; %s
+""" % (events, missions)
+
+		for k, o in self.objects.items():
+			ret += """%s [label=<
+	<FONT FACE="Helvetica Bold">%s</FONT>
+	<br />
+	<FONT FACE="Helvetica Italic">%s</FONT>
+		>]\n\n""" % (k, o[1], o[0])
 
 		for k, vs in self.dependencies.items():
 			for v in vs:
