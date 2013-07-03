@@ -1,9 +1,26 @@
+//##################################
+// ACTIONS
+//##################################
+
 /*
  * Fire the selected action to resolve the event.
  */
 function pendingEventActionFire(val) {
 	$.post(val.links.fire())
 }
+
+//##################################
+// MAPPINGS & MODELS
+//##################################
+var folkModel = function(data) {
+	var self = this;
+	ko.mapping.fromJS(data, {}, this);
+
+	self.nameLength = ko.computed(function() {
+		return self.first_name().length;
+	});
+}
+
 function unwrapId(data) {
 	return ko.utils.unwrapObservable(data.id);
 }
@@ -12,7 +29,10 @@ var mapping = {
 		key: unwrapId
 	},
 	'folks': {
-		key: unwrapId
+		key: unwrapId,
+		create: function(options) {
+			return new folkModel(options.data);
+		}
 	},
 	'kingdom': {
 		key: unwrapId
@@ -25,6 +45,10 @@ var mapping = {
 	}
 }
 
+
+//##################################
+// DATA BINDING
+//##################################
 $(function() {
 	var datas = null;
 
