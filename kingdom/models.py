@@ -35,8 +35,8 @@ class Folk(models.Model):
 	)
 	kingdom = models.ForeignKey(Kingdom)
 
-	first_name = models.CharField(max_length=64)
-	last_name = models.CharField(max_length=64)
+	first_name = models.CharField(max_length=64, blank=True)
+	last_name = models.CharField(max_length=64, blank=True)
 	
 	class Meta:
 		unique_together = ('first_name', 'last_name')

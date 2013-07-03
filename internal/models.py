@@ -9,16 +9,6 @@ from kingdom.models import Kingdom, Folk
 from config.lib.execute import execute
 
 
-def call_function(name, **kwargs):
-	"""
-	Call the function which slug is name with arguments kwargs
-	"""
-
-	f = Function.objects.get(slug=name)
-	ret = f.fire(kwargs)
-	return ret
-
-
 class Trigger(DescribedModel):
 	slug = models.SlugField(max_length=255, unique=True)
 	prestige_threshold = models.PositiveIntegerField(default=0)

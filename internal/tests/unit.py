@@ -1,17 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, call_function, FirstName, LastName
-
-
-def call_function_loc(name, **kwargs):
-	"""
-	Call the function which slug is name with arguments kwargs
-	"""
-
-	f = Function.objects.get(slug=name)
-	ret = f.fire(kwargs)
-	return ret
+from internal.models import Trigger, Function, Recurring, FirstName, LastName
 
 
 class UnitTest(TestCase):
@@ -215,36 +205,40 @@ status = "NotPossible"
 		self.assertEquals(self.k.get_value("folk"), self.f)
 
 	def test_recurring_condition(self):
-		self.k.population = 50
-		self.k.save()
+		"""
+		Test recurring conditions are executed.
+		"""
+
 		self.r = Recurring(
 			condition="""
 if kingdom.population > 10:
-	status = "bla"
+	status = "foo"
 """
 		)
 		self.r.save()
 
 		status = self.r.check_condition(self.k)
+		self.assertEqual(status, "ok")
 
-		self.assertEqual(status, "bla")
-
-	def test_recurring_code(self):
 		self.k.population = 50
 		self.k.save()
+		status = self.r.check_condition(self.k)
+		self.assertEqual(status, "foo")
+
+	def test_recurring_code(self):
+		"""
+		Test recurring condition code.
+		"""
+
 		self.r = Recurring(
-			condition="""
-pass
-""",
 			on_fire="""
-status = "bla"
+status = "foo"
 """
 		)
 		self.r.save()
 
-		self.r.check_condition(self.k)
 		status = self.r.fire(self.k)
-		self.assertEqual(status, "bla")
+		self.assertEqual(status, "foo")
 
 	def test_execution_order(self):
 		"""
@@ -252,8 +246,8 @@ status = "bla"
 		"""
 
 		t1 = Trigger(
-			slug="Trigger1_internal_test",
-			name="Trigger1_internal_test",
+			slug="trigger1_internal_test",
+			name="Trigger1 internal test",
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
@@ -265,8 +259,8 @@ kingdom.money = 111
 		t1.save()
 
 		t2 = Trigger(
-			slug="Trigger2_internal_test",
-			name="Trigger2_internal_test",
+			slug="trigger2_internal_test",
+			name="Trigger2 internal test",
 			prestige_threshold=10,
 			population_threshold=10,
 			money_threshold=10,
@@ -281,6 +275,7 @@ kingdom.save()
 		self.k.prestige = 15
 		self.k.population = 15
 		self.k.money = 15
+
 		# Kingdom save to launch the triggers
 		self.k.save()
 
@@ -288,35 +283,19 @@ kingdom.save()
 
 	def test_function(self):
 		"""
-		Test the call to a function from inside a script
+		Test function code.
 		"""
-		self.k.money = 0
-		self.k.save()
 
-		self.f1 = Function(
-			slug="First_Function_evar",
+		f = Function(
+			slug="test_function",
 		)
-
-		self.f1.body = """
-kingdom.money += 50
-kingdom.save()
-param = call_function("Second_Function_evar", kingdom=kingdom)
+		self.on_fire = """
+status = "foo"
 """
-		self.f1.save()
+		f.save()
 
-		self.f2 = Function(
-			slug="Second_Function_evar",
-		)
-
-		self.f2.body = """
-kingdom.money += 30
-kingdom.save()
-param = kingdom.money
-"""
-		self.f2.save()
-
-		call_function_loc("First_Function_evar", kingdom=self.k)
-		self.assertEqual(self.k.money, 80)
+		status = self.r.fire(self.k)
+		self.assertEqual(status, "foo")
 
 	def test_auto_name_for_folk(self):
 		"""
