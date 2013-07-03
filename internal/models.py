@@ -116,6 +116,8 @@ class Function (models.Model):
 	"""
 
 	slug = models.SlugField(max_length=255, unique=True)
+	description = models.TextField(blank=True, default="")
+
 	on_fire = ScriptField(blank=True, help_text="Body of the function. Returns data with `param`.", default="")
 
 	def fire(self, **kwargs):
