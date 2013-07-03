@@ -28,9 +28,16 @@ param.set_value("variable_name", "variable_value")
 #### Récupérer une variable
 Depuis n'importe quel script du module (`condition`, et les deux `on_fire`) :
 ```python
-param.get_value("variable_name")
+param.get_value("variable_name") #[le paramètre est un string]
 ```
 Attention, la variable doit forcément exister.
+
+
+#### Créer un nouvel PendingEvent en gardant les variables
+Depuis un penging_event
+```python
+param.next_event(Event.objects.get(slug="slug du pending_event à créer")).start() # [la paramètre slug est un string]
+```
 
 Exemples
 -------------

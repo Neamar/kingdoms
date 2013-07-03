@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Documentation for this lies in readme.md
 """
@@ -44,7 +45,6 @@ def kingdom_add_claim(self, kingdom):
 	Claim(
 		offender=kingdom,
 		offended=self,
-		creation=datetime.now()
 	).save()
 Kingdom.add_claim = kingdom_add_claim
 
@@ -112,8 +112,8 @@ def folk_has_quality(self, name):
 Folk.has_quality = folk_has_quality
 
 
-def sum_folks(folks, attribute):
+def sum_folks(folks, quality):
 	"""
-	Returns the sum of the choosen attribute
+	Returns the sum of the choosen quality
 	"""
-	return sum([getattr(folk, attribute) for folk in folks])
+	return sum([getattr(folk, quality) for folk in folks])

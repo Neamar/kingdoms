@@ -11,7 +11,7 @@ Où scripter ?
 * `on_init` : ce code sera exécuté lorsqu'une mission sera créée pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours. Pour annuler cette mission, il faut renvoyer `status= "la raison de l'erreur"`.
 * `on_start` : ce code sera exécuté lorsque la mission démarre pour un joueur donné (au clic sur le bouton "débuter la mission"). Le paramètre `param` contiendra la `PendingMission` en cours.
 * `on_resolution` : ce code sera exécuté lorsque la mission esr résolue pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours.
-* `target_list` : définit la liste des kingdom cibles
+* `target_list` : définit la liste des kingdom ciblables
 
 ### Sur une grille
 * `condition`: ce code définit les conditions de validité pour qu'une personne puisse appartenir à la liste. Pour empêcher l'affectation, renvoyer `status="la raison de l'erreur"`.
@@ -82,6 +82,12 @@ if param.sex != Folk.FEMALE:
 
 ### Le kamikaze
 Utilise le système de `target`.
+
+`target_list` :
+```python
+# Les kamikazes ne cibles que les pays riches et développés
+param = Kingdom.objects.filter(population>100, money>1000)
+```
 
 `on_resolution` :
 ```python

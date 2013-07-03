@@ -24,8 +24,8 @@ Que scripter ?
 ### Depuis un objet `Kingdom`
 #### Ajouter un message
 
-* `kingdom.message(content)` : ajoute un message pour le royaume spécifié.
-* `kingdom.message(content, level)` : ajoute un message pour le royaume spécifié, du niveau indiqué par `level` (peut être `Message.TRIVIAL`, `Message.INFORMATION`, `Message.WARNING`, `Message.IMPORTANT` ou `Message.NUCLEAR`).
+* `kingdom.message("message")` : ajoute un message pour le royaume spécifié.
+* `kingdom.message("message", level)` : ajoute un message pour le royaume spécifié, du niveau indiqué par `level` (peut être `Message.TRIVIAL`, `Message.INFORMATION`, `Message.WARNING`, `Message.IMPORTANT` ou `Message.NUCLEAR`).
 
 
 #### Ajouter un message modal
@@ -40,18 +40,26 @@ Que scripter ?
 #### Débloquer un AvailableTitle
 * `kingdom.unlock_title("title")` : débloque le titre(un string) (s'il ne l'était pas avant) et retourne ce titre (l'objet)
 
+#### Savoir si un kingdom à une claim vers un autre kingdom
+* `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
+
+
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
 * `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)
 
 #### Ajouter un trait à une personne
-* `folk.add_quality(name)`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
+* `folk.add_quality("quality")`: ajoute le trait `name` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
 
 #### Savoir si une personne a un certaint trait
-* `folk.has_attribute(name)` : renvoie True si la personne a le trait sinon renvoie False
+* `folk.has_quality("quality")` : renvoie True si la personne a le trait sinon renvoie False
 
 #### Connaitre l'age d'une personne
 * `folk.age()`: renvoie l'age de la personne en années
+
+#### Ajouter un titre à quelqu'un
+* `folk.add_title("available_title")
+
 
 
 Exemples

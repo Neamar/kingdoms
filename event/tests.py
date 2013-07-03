@@ -348,6 +348,9 @@ pe2.start()
 		self.assertRaises(ValidationError, (lambda: self.pe.start()))
 
 	def test_move_values(self):
+		"""
+		Tests if the values a moved
+		"""
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
@@ -377,3 +380,27 @@ pe2.start()
 		pe2.move_values(pe.pendingeventaction_set.all()[0])
 
 		self.assertEqual(10, pe2.get_value("valeur"))
+
+	def test_next_event(self):
+		"""
+		Tests if the new event is created with the context
+		"""
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+		pe.set_value("valeur", 10)
+
+		e2 = Event(
+			name="Event 2",
+			slug="event_2",
+			category=self.c,
+			text="Event 2",
+		)
+		e2.save()
+
+		pe.next_event(e2)
+
+		self.assertEqual(10, PendingEvent.objects.get(kingdom=self.k, event=e2).get_value("valeur"))
