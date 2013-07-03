@@ -157,7 +157,7 @@ folk.save()
 		)
 		at.save()
 
-		self.assertEquals(self.f.loyalty, 50)
+		self.assertEqual(self.f.loyalty, 50)
 
 	def test_title_affect(self):
 		"""
@@ -185,7 +185,7 @@ folk.save()
 		at.folk = self.f
 		at.save()
 
-		self.assertEquals(self.f.loyalty, 50)
+		self.assertEqual(self.f.loyalty, 50)
 
 	def test_title_defect(self):
 		"""
@@ -214,7 +214,7 @@ folk.save()
 		at.folk = None
 		at.save()
 
-		self.assertEquals(self.f.loyalty, 50)
+		self.assertEqual(self.f.loyalty, 50)
 
 	def test_title_affect_defect(self):
 		"""
@@ -239,8 +239,8 @@ folk.save()
 		f2.save()
 
 		# Sanity check
-		self.assertEquals(self.f.loyalty, 0)
-		self.assertEquals(f2.loyalty, 0)
+		self.assertEqual(self.f.loyalty, 0)
+		self.assertEqual(f2.loyalty, 0)
 
 		at = AvailableTitle(
 			title=self.t,
@@ -250,10 +250,10 @@ folk.save()
 		at.save()
 
 		# Assertion
-		self.assertEquals(self.f.loyalty, 80)
+		self.assertEqual(self.f.loyalty, 80)
 
 		at.folk = f2
 		at.save()
 
-		self.assertEquals(self.f.loyalty, 20)
-		self.assertEquals(f2.loyalty, 80)
+		self.assertEqual(self.f.loyalty, 20)
+		self.assertEqual(f2.loyalty, 80)

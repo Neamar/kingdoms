@@ -88,11 +88,11 @@ class UnitTest(TestCase):
 		"""
 		self.f.fight = 21
 		self.f.save()
-		self.assertEquals(self.f.fight, 20)
+		self.assertEqual(self.f.fight, 20)
 
 		self.f.fight = -1
 		self.f.save()
-		self.assertEquals(self.f.fight, 0)
+		self.assertEqual(self.f.fight, 0)
 
 	def test_diplomacy_threshold(self):
 		"""
@@ -100,11 +100,11 @@ class UnitTest(TestCase):
 		"""
 		self.f.diplomacy = 21
 		self.f.save()
-		self.assertEquals(self.f.diplomacy, 20)
+		self.assertEqual(self.f.diplomacy, 20)
 
 		self.f.diplomacy = -1
 		self.f.save()
-		self.assertEquals(self.f.diplomacy, 0)
+		self.assertEqual(self.f.diplomacy, 0)
 
 	def test_plot_threshold(self):
 		"""
@@ -112,11 +112,11 @@ class UnitTest(TestCase):
 		"""
 		self.f.plot = 21
 		self.f.save()
-		self.assertEquals(self.f.plot, 20)
+		self.assertEqual(self.f.plot, 20)
 
 		self.f.plot = -1
 		self.f.save()
-		self.assertEquals(self.f.plot, 0)
+		self.assertEqual(self.f.plot, 0)
 
 	def test_scholarship_threshold(self):
 		"""
@@ -124,11 +124,11 @@ class UnitTest(TestCase):
 		"""
 		self.f.scholarship = 21
 		self.f.save()
-		self.assertEquals(self.f.scholarship, 20)
+		self.assertEqual(self.f.scholarship, 20)
 
 		self.f.scholarship = -1
 		self.f.save()
-		self.assertEquals(self.f.scholarship, 0)
+		self.assertEqual(self.f.scholarship, 0)
 
 	def test_loyalty_threshold(self):
 		"""
@@ -136,11 +136,11 @@ class UnitTest(TestCase):
 		"""
 		self.f.loyalty = 101
 		self.f.save()
-		self.assertEquals(self.f.loyalty, 100)
+		self.assertEqual(self.f.loyalty, 100)
 
 		self.f.loyalty = -1
 		self.f.save()
-		self.assertEquals(self.f.loyalty, 0)
+		self.assertEqual(self.f.loyalty, 0)
 
 	def test_claim_unicity(self):
 		"""

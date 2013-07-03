@@ -19,7 +19,7 @@ class CodeTest(TestCase):
 
 		status = execute(code)
 
-		self.assertEquals(status, 'ok')
+		self.assertEqual(status, 'ok')
 
 	def test_status_changed(self):
 		"""
@@ -31,7 +31,7 @@ status="fine"
 
 		status = execute(code)
 
-		self.assertEquals(status, 'fine')
+		self.assertEqual(status, 'fine')
 
 	def test_params_unchanged(self):
 		"""
@@ -42,7 +42,7 @@ status="fine"
 		"""
 
 		status, param = execute(code, param=1)
-		self.assertEquals(param, 1)
+		self.assertEqual(param, 1)
 
 	def test_params_changed(self):
 		"""
@@ -53,7 +53,7 @@ param=2
 		"""
 
 		status, param = execute(code, param=1)
-		self.assertEquals(param, 2)
+		self.assertEqual(param, 2)
 
 	def test_access_to_modules(self):
 		"""
@@ -64,11 +64,11 @@ param=Kingdom.objects.count()
 		"""
 
 		status, param = execute(code, param=False)
-		self.assertEquals(param, 0)
+		self.assertEqual(param, 0)
 
 		Kingdom().save()
 		status, param = execute(code, param=False)
-		self.assertEquals(param, 1)
+		self.assertEqual(param, 1)
 
 	def test_advanced_code(self):
 		"""
@@ -89,15 +89,15 @@ else:
 """
 
 		status, param = execute(code, param=False)
-		self.assertEquals(status, 'no_kingdom')
-		self.assertEquals(param, 0)
+		self.assertEqual(status, 'no_kingdom')
+		self.assertEqual(param, 0)
 
 		Kingdom().save()
 		status, param = execute(code, param=False)
-		self.assertEquals(status, '1_kingdom')
-		self.assertEquals(param, 1)
+		self.assertEqual(status, '1_kingdom')
+		self.assertEqual(param, 1)
 
 		Kingdom().save()
 		status, param = execute(code, param=False)
-		self.assertEquals(status, '2_kingdoms')
-		self.assertEquals(param, 2)
+		self.assertEqual(status, '2_kingdoms')
+		self.assertEqual(param, 2)

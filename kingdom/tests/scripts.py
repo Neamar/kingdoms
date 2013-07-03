@@ -32,14 +32,14 @@ class ScriptTest(TestCase):
 		"""
 		self.m.delete()
 		self.k.message("coucou")
-		self.assertEquals("coucou", Message.objects.get(kingdom=self.k).content)
+		self.assertEqual("coucou", Message.objects.get(kingdom=self.k).content)
 
 	def text_kingdom_modal_message(self):
 		"""
 		Verify if the modal message is created
 		"""
 		self.k.modal_message("a name", "a description")
-		self.assertEquals(("a name", "a description"), (ModalMessage.objects.get(kingdom=self.k).name, ModalMessage.objects.get(kingdom=self.k).description))
+		self.assertEqual(("a name", "a description"), (ModalMessage.objects.get(kingdom=self.k).name, ModalMessage.objects.get(kingdom=self.k).description))
 
 	def test_kingdom_add_claim(self):
 		"""
@@ -48,7 +48,7 @@ class ScriptTest(TestCase):
 		self.k2 = Kingdom()
 		self.k2.save()
 		self.k.add_claim(self.k2)
-		self.assertEquals(self.k, Claim.objects.get(offender=self.k2).offended)
+		self.assertEqual(self.k, Claim.objects.get(offender=self.k2).offended)
 
 	def test_folk_die(self):
 		"""
@@ -74,7 +74,7 @@ class ScriptTest(TestCase):
 		self.q.save()
 		self.f.add_quality("moche")
 		self.f.save()
-		self.assertEquals(1, Folk.objects.get(kingdom=self.k).quality_set.count())
+		self.assertEqual(1, Folk.objects.get(kingdom=self.k).quality_set.count())
 
 	def test_folk_add_quality_fail(self):
 		self.qc = QualityCategory(
@@ -94,7 +94,7 @@ class ScriptTest(TestCase):
 		Verify if the good age is returned
 		"""
 		self.f.birth = datetime.now()-timedelta(days=10)
-		self.assertEquals(10, self.f.age())
+		self.assertEqual(10, self.f.age())
 
 	def test_folk_has_quality(self):
 		"""
@@ -112,7 +112,7 @@ class ScriptTest(TestCase):
 		self.q.save()
 
 		self.f.add_quality("moche")
-		self.assertEquals(True, self.f.has_quality("moche"))
+		self.assertEqual(True, self.f.has_quality("moche"))
 
 	def test_sum_folks(self):
 		"""
@@ -128,7 +128,7 @@ class ScriptTest(TestCase):
 		self.f.fight = 5
 		self.f.save()
 
-		self.assertEquals(15, sum_folks([self.f, self.f2], "fight"))
+		self.assertEqual(15, sum_folks([self.f, self.f2], "fight"))
 
 	def test_has_claim(self):
 		"""

@@ -39,7 +39,7 @@ Folk(
 		self.t.save()
 	
 		# Sanity check
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Do not fire
 		self.k.prestige = 2
@@ -47,56 +47,56 @@ Folk(
 		self.k.money_threshold = 2
 		# triggers are executed on save from kingdoms
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Do not fire if only one value is ok
 		self.k.prestige = 15
 		self.k.population = 0
 		self.k.money = 0
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test also the case when only the second one is ok
 		self.k.prestige = 0
 		self.k.population = 15
 		self.k.money = 0
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test also the case when only the third one is ok
 		self.k.prestige = 0
 		self.k.population = 0
 		self.k.money = 15
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test also the case when only two are ok
 		self.k.prestige = 15
 		self.k.population = 15
 		self.k.money = 0
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test case when two are okay (#1)
 		self.k.prestige = 15
 		self.k.population = 0
 		self.k.money = 15
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test case when two are okay (#2)
 		self.k.prestige = 0
 		self.k.population = 15
 		self.k.money = 15
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Test case when two are okay (#3)
 		self.k.prestige = 0
 		self.k.population = 0
 		self.k.money = 15
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 		
 		# Fire!
 		self.k.prestige = 15
@@ -104,7 +104,7 @@ Folk(
 		self.k.money = 15
 		# Kingdom save to launch the triggers
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 2)
+		self.assertEqual(Folk.objects.count(), 2)
 
 	def test_trigger_only_once(self):
 		"""
@@ -121,14 +121,14 @@ Folk(
 		self.t.save()
 	
 		# Sanity check
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 		# Fire!
 		self.k.prestige = 15
 		self.k.population = 15
 		self.k.money = 15
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 2)
+		self.assertEqual(Folk.objects.count(), 2)
 
 		# No Fire again!
 		self.t.on_fire = """
@@ -157,14 +157,14 @@ Folk(
 		self.t.save()
 
 		# Sanity check
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 		
 		# Fire !
 		self.k.prestige = 20
 		self.k.population = 20
 		self.k.money = 20
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 2)
+		self.assertEqual(Folk.objects.count(), 2)
 
 	def test_trigger_condition_failure(self):
 		"""
@@ -183,14 +183,14 @@ status = "NotPossible"
 		self.t.save()
 
 		# Sanity check
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 		
 		# No Fire
 		self.k.prestige = 20
 		self.k.population = 20
 		self.k.money = 20
 		self.k.save()
-		self.assertEquals(Folk.objects.count(), 1)
+		self.assertEqual(Folk.objects.count(), 1)
 
 	def test_value_store(self):
 		"""
@@ -200,9 +200,9 @@ status = "NotPossible"
 		self.k.set_value("foo2", 2)
 		self.k.set_value("folk", self.f)
 
-		self.assertEquals(self.k.get_value("foo"), "bar")
-		self.assertEquals(self.k.get_value("foo2"), 2)
-		self.assertEquals(self.k.get_value("folk"), self.f)
+		self.assertEqual(self.k.get_value("foo"), "bar")
+		self.assertEqual(self.k.get_value("foo2"), 2)
+		self.assertEqual(self.k.get_value("folk"), self.f)
 
 	def test_recurring_condition(self):
 		"""

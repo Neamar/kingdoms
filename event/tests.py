@@ -323,14 +323,14 @@ pe2.start()
 		pe.save()
 
 		# No pending event action created
-		self.assertEquals(0, pe.pendingeventaction_set.count())
+		self.assertEqual(0, pe.pendingeventaction_set.count())
 
 		#If started updated :
 		pe.started = datetime.now()
 		pe.save()
 
 		# Pending event actions created
-		self.assertEquals(1, pe.pendingeventaction_set.count())
+		self.assertEqual(1, pe.pendingeventaction_set.count())
 
 	def test_start_pendingevent_twice_fail(self):
 		"""
