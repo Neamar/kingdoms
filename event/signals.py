@@ -24,7 +24,9 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 			raise ValidationError("Impossible de créer cet évènement : %s" % status)
 
 		status, param = instance.fire()
+
 		raw_context = instance.get_context()
+		raw_context['kingdom'] = instance.kingdom
 		context = Context(raw_context)
 
 		# Create text from templates
