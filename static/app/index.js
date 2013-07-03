@@ -19,6 +19,9 @@ var mapping = {
 	},
 	'pending_missions': {
 		key: unwrapId
+	},
+	'messages': {
+		key: unwrapId
 	}
 }
 

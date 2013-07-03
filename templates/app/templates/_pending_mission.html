@@ -8,6 +8,12 @@
 		<h2 data-bind="text : name"></h2>
 		<p data-bind="text : text"></p>
 
+		<form class="pure-form pure-form-aligned" data-bind="if: has_target">
+			<label for="target">Cible :</label>
+			<select name="target" id="target" data-bind="options:targets, optionsText: 'name', value: id"></select>
+
+		</p>
+
 		<div data-bind="foreach: grids">
 			<span data-bind="text:name"></span> 
 			<span data-bind="text:length"></span>
