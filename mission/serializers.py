@@ -1,3 +1,4 @@
+from datetime import timedelta
 from markdown import markdown
 
 
@@ -8,16 +9,20 @@ def serialize_pending_mission(pending_mission):
 
 	r = {
 		'id': pending_mission.id,
-		'created': pending_mission.created,
+		'timeout': pending_mission.created,
 		'started': pending_mission.started,
 		'name': pending_mission.mission.name,
 		'text': markdown(pending_mission.mission.text),
 		'duration': pending_mission.mission.duration,
-		'timeout': pending_mission.mission.timeout,
 		'cancellable': pending_mission.mission.cancellable,
 		'grids': [serialize_mission_grid(o, pending_mission) for o in pending_mission.mission.missiongrid_set.all()],
 		'has_target': pending_mission.mission.has_target,
 	}
+
+	if pending_mission.mission.timeout is not None:
+		r['timeout'] = pending_mission.created+timedelta(minutes=pending_mission.mission.timeout)
+	else:
+		r['timeout'] = None
 
 	if pending_mission.mission.has_target:
 		r['targets'] = [serialize_target(o) for o in pending_mission.targets()]

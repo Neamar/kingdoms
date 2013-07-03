@@ -1,8 +1,8 @@
-<img src="http://placehold.it/500x300" alt="Event">
+<img src="http://placehold.it/500x300" alt="Event" />
 
 <h2 data-bind="text : name"></h2>
 <p data-bind="html : text"></p>
-
+<small data-bind="text: new Date(timeout())"></small>
 <div data-bind="foreach: actions">
 	<a class="pure-button" href="#" data-bind="text: text, click: pendingEventActionFire"></a>
 </div>

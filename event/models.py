@@ -17,7 +17,7 @@ class EventCategory(DescribedModel):
 
 	frequency = models.PositiveIntegerField()
 	timeout = models.PositiveIntegerField()
-	available_kingdoms = models.ManyToManyField(Kingdom)
+	available_kingdoms = models.ManyToManyField(Kingdom, blank=True)
 
 
 class Event(models.Model):

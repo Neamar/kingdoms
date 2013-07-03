@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from markdown import markdown
 from django.core.urlresolvers import reverse
 
@@ -9,7 +11,7 @@ def serialize_pending_event(pending_event):
 
 	r = {
 		'id': pending_event.pk,
-		'started': pending_event.started,
+		'timeout': pending_event.started+timedelta(minutes=pending_event.event.category.timeout),
 		'name': pending_event.event.name,
 		'text': markdown(pending_event.text),
 		'actions': [serialize_pending_event_action(o) for o in pending_event.pendingeventaction_set.all()]
