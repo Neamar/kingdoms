@@ -168,6 +168,9 @@ class PendingEventAction(models.Model):
 		self.pending_event.delete()
 		return status
 
+	def __unicode__(self):
+		return "%s [%s]" % (self.text, self.pending_event.event.slug)
+
 
 class _PendingEventVariable(models.Model):
 	"""
