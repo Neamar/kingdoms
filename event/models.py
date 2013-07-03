@@ -142,8 +142,6 @@ class PendingEvent(models.Model):
 		variables = self._pendingeventvariable_set.all()
 		for variable in variables:
 			pending_event2.set_value(variable.name, variable.value)
-
-		
 		return pending_event2
 
 
