@@ -30,22 +30,22 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
 
         # Changing field 'MissionGrid.condition'
-        db.alter_column(u'mission_missiongrid', 'condition', self.gf('config.fields.script_field..ScriptField')())
+        db.alter_column(u'mission_missiongrid', 'condition', self.gf('config.fields.script_field.ScriptField')())
 
         # Changing field 'Mission.target_list'
-        db.alter_column(u'mission_mission', 'target_list', self.gf('config.fields.script_field..ScriptField')())
+        db.alter_column(u'mission_mission', 'target_list', self.gf('config.fields.script_field.ScriptField')())
 
         # Changing field 'Mission.on_start'
-        db.alter_column(u'mission_mission', 'on_start', self.gf('config.fields.script_field..ScriptField')())
+        db.alter_column(u'mission_mission', 'on_start', self.gf('config.fields.script_field.ScriptField')())
 
         # Changing field 'Mission.text'
         db.alter_column(u'mission_mission', 'text', self.gf('django.db.models.fields.TextField')(default=''))
 
         # Changing field 'Mission.on_init'
-        db.alter_column(u'mission_mission', 'on_init', self.gf('config.fields.script_field..ScriptField')())
+        db.alter_column(u'mission_mission', 'on_init', self.gf('config.fields.script_field.ScriptField')())
 
         # Changing field 'Mission.on_resolution'
-        db.alter_column(u'mission_mission', 'on_resolution', self.gf('config.fields.script_field..ScriptField')())
+        db.alter_column(u'mission_mission', 'on_resolution', self.gf('config.fields.script_field.ScriptField')())
 
     models = {
         u'auth.group': {
