@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 
 DATABASES = {}
 
-if getenv('DB') == 'postgres':
+if os.getenv('DB') == 'postgres':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
