@@ -40,6 +40,10 @@ Que scripter ?
 #### Débloquer un AvailableTitle
 * `kingdom.unlock_title("title")` : débloque le titre(un string) (s'il ne l'était pas avant) et retourne ce titre (l'objet)
 
+#### Savoir si un kingdom à une claim vers un autre kingdom
+* `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
+
+
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
 * `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)
@@ -53,8 +57,8 @@ Que scripter ?
 #### Connaitre l'age d'une personne
 * `folk.age()`: renvoie l'age de la personne en années
 
-#### Savoir si un kingdom à une claim vers un autre kingdom
-* `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
+#### Ajouter un titre à quelqu'un
+* `folk.add_title("available_title")
 
 
 
