@@ -162,7 +162,7 @@ class PendingEventAction(models.Model):
 		
 		context = {
 			'kingdom': self.pending_event.kingdom,
-			'folks': self.folk_set.all(),
+			'folks': self.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
 		self.pending_event.delete()
