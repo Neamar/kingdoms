@@ -37,7 +37,7 @@ class RecurringAdmin(admin.ModelAdmin):
 			for kingdom in kingdoms:
 				if recurring.check_condition(kingdom) == "ok":
 					recurring.fire(kingdom)
-		self.message_user(request, "Les recurrings ont été lancées")
+		self.message_user(request, "Les recurrings ont été lancés")
 	resolve.short_description = "Do it now"
 admin.site.register(Recurring, RecurringAdmin)
 
