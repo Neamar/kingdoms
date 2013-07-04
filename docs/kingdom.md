@@ -15,7 +15,9 @@ Enfin, les `claims` permettent de définir des relations entre les royaumes pour
 
 Où scripter ?
 -------------
-Aucun script par ici.
+### Les traits
+* `on_affect` : ce code est executé lorsque le folk gagne ce trait
+* `on_deffect` : ce code est executé lorsque le folk perd ce trait
 
 
 Que scripter ?
@@ -64,6 +66,9 @@ Que scripter ?
 #### Récupérer la somme d'un attribut d'une liste de personne
 * `folks.sum_folks("attibute")`: renvoie la somme des attributs des personnes
 
+
+
+
 Exemples
 -------------
 ### Ajout d'un message
@@ -103,4 +108,17 @@ foe = Kingdom.objects.get(name="michael")
 
 # Ajouter une claim du kingdom actuel vers l'ennemi
 kingdom.add_claim(foe)    # Dorénavant, kingdom pourra attaquer foe.
+```
+
+### Création d'un trait
+* `on_affect` : 
+```python
+folk.fight += 1 # Le folk qui gagne ce trait gagne 1 de combat
+folk.save()
+```
+
+* `on_deffect` : 
+```python
+folk.fight -= 1 # Le folk qui gagne ce trait perd le bonus de combat
+folk.save()
 ```
