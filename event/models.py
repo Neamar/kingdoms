@@ -172,7 +172,7 @@ class _PendingEventVariable(models.Model):
 	value = StoredValueField()
 
 	def __unicode__(self):
-		return "%s [%s]" % (self.name, self.value)
+		return "%s=%s" % (self.name, self.value)
 
 
 from event.signals import *
