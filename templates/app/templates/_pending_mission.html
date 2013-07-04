@@ -11,7 +11,7 @@
 	<div data-bind="foreach: grids">
 		<div>
 			<p data-bind="text: name"></p>
-			<div data-bind="sortable: raw_affectations">
+			<div data-bind="sortable: {data: raw_affectations, afterMove: pendingMissionGridAffect} ">
 				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
 			</div>
 		</div>

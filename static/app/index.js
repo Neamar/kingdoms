@@ -9,6 +9,11 @@ function pendingEventActionFire(val) {
 	$.post(val.links.fire())
 }
 
+function pendingMissionGridAffect(val)
+{
+	console.log(val.item.last_name());
+}
+
 //##################################
 // MAPPINGS & MODELS
 //##################################
