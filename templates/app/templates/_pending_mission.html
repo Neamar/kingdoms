@@ -12,13 +12,13 @@
 			<p data-bind="text: name"></p>
 			<div data-bind="foreach: affectations">
 				<div>
-					<img src="http://placehold.it/50x50/aa00aa" alt="Affectation" style="margin:10px;" />
+					<img src="http://placehold.it/50x60/aa00aa" alt="Affectation" style="margin:10px;" />
 					<span data-bind="text:first_name() + ' ' + last_name()"></span>
 				</div>
 			</div>
 
 			<div data-bind="visible: (affectations().length < length()), droppable: true">
-				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
+				<img src="http://placehold.it/50x60" alt="Affectation" style="margin:10px;" />
 			</div>
 		</div>
 	</div>
