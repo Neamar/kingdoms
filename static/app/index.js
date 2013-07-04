@@ -121,11 +121,8 @@ function change_pending_mission_update_target(context, event) {
 	target_id = $(event.currentTarget).val()
 	pending_mission = context
 
-	if(target_id != pending_mission.target())
-	{
-		http_pendingMissionGridDefect
-		console.log(pending_mission, target_id)
-	}
+	if(target_id != '' && target_id != pending_mission.target())
+		http_pendingMissionTarget(pending_mission, target_id)
 
 }
 

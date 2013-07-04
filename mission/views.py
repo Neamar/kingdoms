@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from kingdom.decorators import json_view, force_post
-from kingdom.models import Folk
+from kingdom.models import Kingdom, Folk
 from mission.models import PendingMission, PendingMissionAffectation, MissionGrid
 
 
@@ -46,6 +46,28 @@ def pending_mission_grid_defect(request, pk):
 
 	# Defect
 	pending_mission_affectation.delete()
+
+	status = 'ok'
+	return {'status': status}
+
+
+@force_post
+@json_view
+def pending_mission_set_target(request, pk):
+	"""
+	Update the target.
+	"""
+
+	if 'target' not in request.POST:
+		raise Http404("Specify target in POST")
+
+	# Retrieve the objects
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
+	target = get_object_or_404(Kingdom, pk=request.POST['target'])
+
+	# Defect
+	pending_mission.target = target
+	pending_mission.save()
 
 	status = 'ok'
 	return {'status': status}
