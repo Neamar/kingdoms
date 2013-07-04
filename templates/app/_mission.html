@@ -1,17 +1,16 @@
 <ul class="pure-paginator">
-	<li><a class="pure-button" href="#mission/pending">Missions en attente</a></li>
-	<li><a class="pure-button" href="#mission/running">Missions en cours</a></li>
+	<li><a class="pure-button" data-bind="page-href: 'start'">Missions en attente</a></li>
+	<li><a class="pure-button" data-bind="page-href: 'running'">Missions en cours</a></li>
 </ul>
 
-<div data-bind="page: {id: 'pending'}">
-	<div data-bind="foreach: pending_missions">
+<div data-bind="page: {id: 'start'}">
+	<div data-bind="foreach: unstarted_pending_missions">
 		{% include "app/templates/_pending_mission.html" %}
 	</div>
 </div>
 
 <div data-bind="page: {id: 'running'}">
-	RUN
-	<div data-bind="foreach: pending_missions">
+	<div data-bind="foreach: started_pending_missions">
 		{% include "app/templates/_pending_mission.html" %}
 	</div>
 </div>

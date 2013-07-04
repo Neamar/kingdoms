@@ -66,6 +66,7 @@ var folkModel = function(data, qualities) {
 function unwrapId(data) {
 	return ko.utils.unwrapObservable(data.id);
 }
+
 var mapping = {
 	'pending_events': {
 		key: unwrapId
@@ -87,6 +88,25 @@ var mapping = {
 	}
 }
 
+var global_mapping = {
+	create: function(options) {
+		datas = ko.mapping.fromJS(options.data, mapping, this);
+
+		self= datas
+		datas.started_pending_missions = ko.computed(function() {
+			return ko.utils.arrayFilter(self.pending_missions(), function(item) {
+				return item.started() != null;
+			})
+		})
+
+		datas.unstarted_pending_missions = ko.computed(function() {
+			return ko.utils.arrayFilter(self.pending_missions(), function(item) {
+				return item.started() == null;
+			})
+		})
+		return datas;
+	},
+}
 
 //##################################
 // DATA BINDING
@@ -99,7 +119,7 @@ $(function() {
 		$.getJSON('/api/', function(result) {
 			if(!datas) //first dada mapping
 			{
-				datas = ko.mapping.fromJS(result, mapping);
+				datas = ko.mapping.fromJS(result, global_mapping);
 				pager.extendWithPage(datas);
 				ko.applyBindings(datas);
 				pager.start();

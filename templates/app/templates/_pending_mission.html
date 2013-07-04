@@ -23,7 +23,13 @@
 	</div>
 </div>
 
-<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
+<div data-bind="if: started() == null">
+	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
 
-<a class="pure-button" href="#" data-bind="click: http_pendingEventActionFire">Démarrer la mission</a>
+	<a class="pure-button" href="#" data-bind="click: http_pendingEventActionFire">Démarrer la mission</a>
+</div>
+
+<div data-bind="if: started() != null">
+	<p>Résolution : <span data-bind="text: new Date(started() + duration() * 60000)"></p>
+</div>
 <hr />
