@@ -11,7 +11,7 @@ class MissionGridInline(admin.StackedInline):
 
 class MissionAdmin(admin.ModelAdmin):
 	list_display = ('name', 'slug', 'text', 'title')
-	search_fields = ('name', 'text', 'title')
+	search_fields = ('name', 'text', 'title', 'slug')
 	list_filter = ('title__name',)
 	inlines = [MissionGridInline]
 
