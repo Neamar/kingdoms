@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 from datetime import datetime, timedelta
 
@@ -178,6 +179,14 @@ class ScriptTest(TestCase):
 		self.k.set_value("foo", self.f)
 
 		self.assertEqual(self.k.get_value("foo"), self.f)
+
+	def test_kingdom_value_store_fk_unsavec(self):
+		"""
+		Can't store unsaved models.
+		"""
+		f2 = Folk(kingdom=self.k)
+
+		self.assertRaises(ValidationError, (lambda: self.k.set_value("foo", f2)))
 
 	def test_kingdom_value_store_fk_deletion(self):
 		"""

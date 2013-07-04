@@ -61,6 +61,8 @@ class StoredValueField(models.CharField):
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)
 		elif isinstance(value, models.Model):
+			if value.pk is None:
+				raise ValidationError("ForeignKey must be saved before being stored.")
 			name = value.__class__.__name__
 			return '`%s`:%s' % (name, value.pk)
 		elif value is None:
