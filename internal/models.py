@@ -127,4 +127,6 @@ class Function (models.Model):
 		status, param = execute(self.on_fire, self, kwargs)
 		return param
 
+	def __unicode__(self):
+		return self.slug + "()"
 from internal.signals import *
