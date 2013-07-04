@@ -81,6 +81,10 @@ var folkModel = function(data, qualities) {
 				return qualities[raw_quality];
 		});
 	});
+
+	self.name = ko.computed(function() {
+		return self.first_name() + " " + self.last_name()
+	});
 }
 
 
