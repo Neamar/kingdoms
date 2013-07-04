@@ -4,7 +4,7 @@
 
 	<form class="pure-form pure-form-aligned" data-bind="if: has_target">
 		<label for="target">Cible :</label>
-		<select name="target" id="target" data-bind="options:targets, optionsText: 'name', value: id"></select>
+		<select name="target" id="target" data-bind="event: {change: change_pending_mission_update_target }, options:targets, optionsText: 'name', optionsValue: 'id', optionsCaption: 'Sélectionnez...', value: target"></select>
 	</form>
 
 	<div data-bind="foreach: grids">

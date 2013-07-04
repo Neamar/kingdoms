@@ -26,6 +26,13 @@ function http_pendingMissionGridDefect(affectation) {
 /*
  * Start the mission
  */
+function http_pendingMissionTarget(pending_mission, target_id) {
+	$.post(pending_mission.links.target(), {'target': target_id}, loadDatas);
+}
+
+/*
+ * Start the mission
+ */
 function http_pendingMissionStart(pending_mission) {
 	$.post(pending_mission.links.start(), {}, loadDatas);
 }
@@ -110,11 +117,16 @@ function droppable_available_title_affect_folk(event, ui) {
 /**
  * Called when a folk is dropped onto an available title
  */
-function change_pending_mission_update_target() {
-	target_id = $(this).val()
-	pending_mission = ko.dataFor($(this))
+function change_pending_mission_update_target(context, event) {
+	target_id = $(event.currentTarget).val()
+	pending_mission = context
 
-	console.log(pending_mission, target_id)
+	if(target_id != pending_mission.target())
+	{
+		http_pendingMissionGridDefect
+		console.log(pending_mission, target_id)
+	}
+
 }
 
 //##################################
