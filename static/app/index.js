@@ -6,11 +6,11 @@
  * Fire the selected action to resolve the event.
  */
 function http_pendingEventActionFire(action) {
-	$.post(action.links.fire());
+	$.post(action.links.fire(), {}, loadDatas);
 }
 
 function http_pendingMissionGridAffect(grid, folk_id) {
-	$.post(grid.links.affect(), {'folk': folk_id});
+	$.post(grid.links.affect(), {'folk': folk_id}, loadDatas);
 }
 
 
@@ -111,28 +111,30 @@ var global_mapping = {
 //##################################
 // DATA BINDING
 //##################################
+var viewModel = null;
+
+function loadDatas()
+{
+	$.getJSON('/api/', function(result) {
+		if(!viewModel) //first dada mapping
+		{
+			viewModel = ko.mapping.fromJS(result, global_mapping);
+			pager.extendWithPage(viewModel);
+			ko.applyBindings(viewModel);
+			pager.start();
+		}
+		else
+		{
+			ko.mapping.fromJS(result, viewModel);
+		}
+	});
+
+}
+
+
+//##################################
+// LET'S ROLL
+//##################################
 $(function() {
-	var datas = null;
-
-	function loadDatas()
-	{
-		$.getJSON('/api/', function(result) {
-			if(!datas) //first dada mapping
-			{
-				datas = ko.mapping.fromJS(result, global_mapping);
-				pager.extendWithPage(datas);
-				ko.applyBindings(datas);
-				pager.start();
-			}
-			else
-			{
-				ko.mapping.fromJS(result, datas);
-			}
-
-			//setTimeout(loadDatas, 1000);
-		});
-
-	}
-
 	loadDatas();
 });
