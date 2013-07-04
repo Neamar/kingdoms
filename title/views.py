@@ -21,8 +21,8 @@ def available_title_affect(request, pk):
 	available_title = get_object_or_404(AvailableTitle, pk=pk, kingdom=request.user.kingdom)
 	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
 
-	# Execute code
-	#status = available_title.affect(folk)
-	print available_title, folk
+	# Save
+	available_title.folk = folk
+	available_title.save()
 
-	return {'status': status}
+	return {'status': 'ok'}

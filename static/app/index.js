@@ -75,7 +75,7 @@ function droppable_pending_mission_grid_affect_folk(event, ui) {
 function droppable_available_title_affect_folk(event, ui) {
 	available_title = ko.dataFor($(this)[0]);
 	folk_id = ko.dataFor(ui.draggable[0]).id();
-	console.log(available_title, folk_id);
+	http_availableTitleAffect(available_title, folk_id);
 }
 
 //##################################
