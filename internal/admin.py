@@ -22,7 +22,7 @@ admin.site.register(Value, ValueAdmin)
 
 
 class FunctionAdmin(admin.ModelAdmin):
-	list_display = ('slug', )
+	list_display = ('slug', 'description')
 admin.site.register(Function, FunctionAdmin)
 
 

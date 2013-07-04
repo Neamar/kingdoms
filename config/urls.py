@@ -12,9 +12,11 @@ urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
 
 	url(r'^login', 'kingdom.views.index.login'),
+	url(r'^dependencies/$', 'kingdom.views.index.dependencies'),
 	
 	url(r'^api/event/', include('event.urls')),
 	url(r'^api/$', 'kingdom.views.api.api'),
 
 	url(r'^app/$', TemplateView.as_view(template_name="app/index.html")),
+
 )

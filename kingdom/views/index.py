@@ -1,8 +1,12 @@
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login as login_user
+from django.http import HttpResponse, Http404
 
 
 def login(request):
+	"""
+	Log in form
+	"""
 	state = "Please log in below..."
 	username = password = ''
 	if request.POST:
@@ -20,3 +24,41 @@ def login(request):
 				state = "Your username and/or password were incorrect."
 
 	return render_to_response('login.html', {'state': state, 'username': username})
+
+
+def dependencies(request):
+	"""
+	Display dependencies graph, automatically generated just for you.
+	"""
+	import subprocess
+
+	from django.core.management import call_command
+	from StringIO import StringIO
+
+	dependencies_file_dot = '/tmp/dependencies.dot'
+	dependencies_file_image = '/tmp/dependencies.png'
+
+	content = StringIO()
+	call_command('dependencies', stdout=content)
+	content.seek(0)
+	dot_file = content.read()
+	with open(dependencies_file_dot, 'a') as temp_file:
+		temp_file.write(dot_file)
+
+	params = [
+		'dot',
+		'-T',
+		'png',
+		'-o',
+		dependencies_file_image,
+		dependencies_file_dot
+	]
+
+	if subprocess.call(params) == 0:
+		contents = open(dependencies_file_image, 'rb').read()
+		response = HttpResponse(contents, mimetype='image/png')
+		response["Content-Length"] = len(contents)
+
+		return response
+	else:
+		raise Http404("Oups ! Merci de m'appeler ;)")
