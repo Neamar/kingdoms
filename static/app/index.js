@@ -17,6 +17,13 @@ function http_pendingMissionGridAffect(grid, folk_id) {
 }
 
 /*
+ * Defect folk_id from the specified mission grid.
+ */
+function http_pendingMissionGridDefect(affectation) {
+	$.post(affectation.links.defect(), {}, loadDatas);
+}
+
+/*
  * Affect folk_id to the specified title
  */
 function http_availableTitleAffect(title, folk_id) {

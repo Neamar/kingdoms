@@ -50,7 +50,14 @@ def serialize_mission_grid(mission_grid, pending_mission):
 	Serialize a mission grid object to JSON.
 	Needs the current pending mission to display the affectation.
 	"""
-	affectations = [serialize_folk_min(o.folk) for o in pending_mission.folk_set.filter(mission_grid=mission_grid)]
+
+	affectations = []
+	for o in pending_mission.folk_set.filter(mission_grid=mission_grid):
+		d = serialize_folk_min(o.folk)
+		d.update({'links': {
+			'defect': reverse('mission.views.pending_mission_grid_defect', args=(o.pk, ))
+		}})
+		affectations.append(d)
 
 	r = {
 		'id': mission_grid.id,
