@@ -15,7 +15,7 @@ class Command(BaseCommand):
 	help = 'Generate dependencies graph for Event and Missions'
 
 	objects = {}
-	dependencies = defaultdict(list)
+	dependencies = []
 
 	pending_event_slug = re.compile("PendingEvent.+slug=\"(\w+)\"")
 	next_event_slug = re.compile("next_event.+slug=\"(\w+)")
@@ -25,6 +25,9 @@ class Command(BaseCommand):
 	mission_regexps = [pending_mission_slug]
 
 	def handle(self, *args, **options):
+		self.dependencies = defaultdict(list)
+		self.objects = {}
+
 		events = Event.objects.all().prefetch_related('eventaction_set')
 
 		for event in events:

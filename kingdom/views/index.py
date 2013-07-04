@@ -42,7 +42,7 @@ def dependencies(request):
 	call_command('dependencies', stdout=content)
 	content.seek(0)
 	dot_file = content.read()
-	with open(dependencies_file_dot, 'a') as temp_file:
+	with open(dependencies_file_dot, 'a+') as temp_file:
 		temp_file.write(dot_file)
 
 	params = [
