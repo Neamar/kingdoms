@@ -26,7 +26,7 @@ class Mission(models.Model):
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", blank=True, default=" ")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
-	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. ", blank=True, default=" ")
+	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", blank=True, default=" ")
 	target_description = models.CharField(max_length=255, default="Cible")
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
@@ -78,7 +78,7 @@ class PendingMission(models.Model):
 		context = {
 			'kingdom': self.kingdom,
 		}
-		status, targets = execute(self.mission.target_list, Kingdom.objects.all(), context)
+		status, targets = execute(self.mission.target_list, Kingdom.objects.exclude(id=self.kingdom.id), context)
 		
 		return targets
 
