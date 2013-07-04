@@ -13,6 +13,9 @@ class StoredValueField(models.CharField):
 
 	__metaclass__ = models.SubfieldBase
 
+	fk_regexp = re.compile("`\w*`:\w*")
+	array_regexp = re.compile("\[.+\]")
+
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 512
 		kwargs['null'] = True
@@ -25,15 +28,17 @@ class StoredValueField(models.CharField):
 		from mission.models import Mission, PendingMission, PendingMissionAffectation
 		from title.models import Title, AvailableTitle
 
-		if isinstance(value, models.Model):
+		if isinstance(value, (models.Model, list, tuple)):
 			return value
 
-		regexp = re.compile("`\w*`:\w*")
-
 		# Foreign Key
-		if isinstance(value, basestring) and regexp.match(value):
-			class_name = value.split(':')[0][1:-1]
-			instance_id = int(value.split(':')[1], 10)
+		if isinstance(value, basestring) and self.array_regexp.match(value):
+			raw_values = value[1:-1].split('_|_')
+			return [self.to_python(raw) for raw in raw_values]
+		elif isinstance(value, basestring) and self.fk_regexp.match(value):
+			class_name, instance_id = value.split(':')
+			class_name = class_name[1:-1]
+			instance_id = int(instance_id, 10)
 
 			# Instantiate the class from its name
 			value_class = locals()[class_name]
@@ -56,10 +61,12 @@ class StoredValueField(models.CharField):
 				return value
 
 	def get_prep_value(self, value):
-		if isinstance(value, (int, basestring)):
-			return value
+		if isinstance(value, (list, tuple)):
+			return "[" + "_|_".join([str(self.get_prep_value(v)) for v in value]) + "]"
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)
+		if isinstance(value, (int, basestring)):
+			return value
 		elif isinstance(value, models.Model):
 			if value.pk is None:
 				raise ValidationError("ForeignKey must be saved before being stored.")

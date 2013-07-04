@@ -196,3 +196,12 @@ class ScriptTest(TestCase):
 
 		self.f.delete()
 		self.assertEqual(self.k.get_value("foo"), None)
+
+	def test_kingdom_value_store_list(self):
+		"""
+		Store string values on the kingdom
+		"""
+		datas = [1, 2, "lol", True]
+		self.k.set_value("foo", datas)
+
+		self.assertEqual(self.k.get_value("foo"), datas)
