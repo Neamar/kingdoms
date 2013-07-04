@@ -9,10 +9,19 @@ function http_pendingEventActionFire(action) {
 	$.post(action.links.fire(), {}, loadDatas);
 }
 
+/*
+ * Affect folk_id to the specified mission grid.
+ */
 function http_pendingMissionGridAffect(grid, folk_id) {
 	$.post(grid.links.affect(), {'folk': folk_id}, loadDatas);
 }
 
+/*
+ * Affect folk_id to the specified title
+ */
+function http_availableTitleAffect(title, folk_id) {
+	$.post(title.links.affect(), {'folk': folk_id}, loadDatas);
+}
 
 //##################################
 // CUSTOM BINDINGS

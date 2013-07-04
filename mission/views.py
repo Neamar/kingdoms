@@ -16,7 +16,7 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 		raise Http404("Only call this URL by POST.")
 
 	if 'folk' not in request.POST:
-		raise Http404("Specify folk")
+		raise Http404("Specify folk in POST")
 
 	# Retrieve the objects
 	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
