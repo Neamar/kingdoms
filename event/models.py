@@ -44,7 +44,7 @@ class EventAction(models.Model):
 	"""
 
 	event = models.ForeignKey(Event)
-	on_fire = ScriptField(blank=True, null=True, default=" ")
+	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=" ")
 	text = models.CharField(max_length=255)
 
 
