@@ -111,7 +111,7 @@ def folk_has_quality(self, quality):
 	Returns True is the folk has the quality
 	"""
 
-	return Quality.objects.get(name__iexact=quality) in self.quality_set.all()
+	return self.quality_set.filter(name__iexact=quality).exists()
 Folk.has_quality = folk_has_quality
 
 
