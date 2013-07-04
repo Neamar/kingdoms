@@ -74,15 +74,16 @@ class QualityCategory(DescribedModel):
 		verbose_name_plural = "Quality categories"
 	pass
 
-	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default="")
-	on_defect = ScriptField(blank=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default="")
-
 
 class Quality(DescribedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
 	category = models.ForeignKey(QualityCategory)
+	
+	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default="")
+	on_defect = ScriptField(blank=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default="")
+
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
 
 
