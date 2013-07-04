@@ -95,6 +95,9 @@ class Recurring(DescribedModel):
 
 		return status
 
+	def __unicode(self):
+		return self.slug + "()"
+
 
 class FirstName (NamedModel):
 	"""
