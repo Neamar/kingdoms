@@ -17,10 +17,10 @@
 
 	<ul>
 		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
-		<li class=""><a href="#title">Titres</a></li>
-		<li class=""><a href="#mission">Missions</a></li>
-		<li class=""><a href="#event">Évènements</a></li>
-		<li class=""><a href="#debug">Debug</a></li>
+		<li class=""><a data-bind="page-href: 'title'">Titres</a></li>
+		<li class=""><a data-bind="page-href: 'mission'">Missions</a></li>
+		<li class=""><a data-bind="page-href: 'event'">Évènements</a></li>
+		<li class=""><a data-bind="page-href: 'debug'">Debug</a></li>
 		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
 		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
 		<li>Population : <span data-bind="text: kingdom.population"></span></li>

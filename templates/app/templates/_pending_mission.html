@@ -16,7 +16,8 @@
 					<span data-bind="text:first_name() + ' ' + last_name()"></span>
 				</div>
 			</div>
-			<div data-bind="visible: affectations().length < length(), droppable: true">
+
+			<div data-bind="visible: (affectations().length < length()), droppable: true">
 				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
 			</div>
 		</div>
