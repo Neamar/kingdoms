@@ -48,6 +48,10 @@ function http_availableTitleDefect(title) {
 //##################################
 // CUSTOM BINDINGS
 //##################################
+
+/*
+ * Allow the item to be dragged.
+ */
 ko.bindingHandlers.draggable = {
 	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 		$(element).draggable({ opacity: 0.9, helper: "clone" });
@@ -59,6 +63,9 @@ ko.bindingHandlers.draggable = {
 	}
 };
 
+/*
+ * Allow dragged items to be dropped on those items.
+ */
 ko.bindingHandlers.droppable = {
 	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 		var drop_function = valueAccessor()
@@ -98,6 +105,16 @@ function droppable_available_title_affect_folk(event, ui) {
 	available_title = ko.dataFor($(this)[0]);
 	folk_id = ko.dataFor(ui.draggable[0]).id();
 	http_availableTitleAffect(available_title, folk_id);
+}
+
+/**
+ * Called when a folk is dropped onto an available title
+ */
+function change_pending_mission_update_target() {
+	target_id = $(this).val()
+	pending_mission = ko.dataFor($(this))
+
+	console.log(pending_mission, target_id)
 }
 
 //##################################
