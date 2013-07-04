@@ -1,6 +1,8 @@
 from datetime import timedelta
 from markdown import markdown
 
+from kingdom.serializers import serialize_folk
+
 
 def serialize_pending_mission(pending_mission):
 	"""
@@ -47,13 +49,13 @@ def serialize_mission_grid(mission_grid, pending_mission):
 	Serialize a mission grid object to JSON.
 	Needs the current pending mission to display the affectation.
 	"""
-	affectations = [o.folk_id for o in pending_mission.folk_set.all()]
+	affectations = [serialize_folk(o.folk) for o in pending_mission.folk_set.all().prefetch_related('folk')]
 	affectations += [None]*(mission_grid.length-len(affectations))
 
 	r = {
 		'id': mission_grid.id,
 		'name': mission_grid.name,
-		'raw_affectations': affectations
+		'affectations': affectations
 	}
 
 	return r
