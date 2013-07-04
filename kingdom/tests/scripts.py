@@ -142,3 +142,48 @@ class ScriptTest(TestCase):
 		self.k.add_claim(self.k2)
 		
 		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
+
+	def test_kingdom_value_store_string(self):
+		"""
+		Store string values on the kingdom
+		"""
+		self.k.set_value("foo", "bar")
+
+		self.assertEqual(self.k.get_value("foo"), "bar")
+
+	def test_kingdom_value_store_int(self):
+		"""
+		Store int values on the kingdom
+		"""
+
+		self.k.set_value("foo", 2)
+
+		self.assertEqual(self.k.get_value("foo"), 2)
+
+	def test_kingdom_value_store_boolean(self):
+		"""
+		Store int values on the kingdom
+		"""
+
+		self.k.set_value("foo", True)
+		self.k.set_value("foo2", False)
+
+		self.assertEqual(self.k.get_value("foo"), True)
+		self.assertEqual(self.k.get_value("foo2"), False)
+
+	def test_kingdom_value_store_fk(self):
+		"""
+		Store foreign keys values on the kingdom
+		"""
+		self.k.set_value("foo", self.f)
+
+		self.assertEqual(self.k.get_value("foo"), self.f)
+
+	def test_kingdom_value_store_fk_deletion(self):
+		"""
+		Store string values on the kingdom
+		"""
+		self.k.set_value("foo", self.f)
+
+		self.f.delete()
+		self.assertEqual(self.k.get_value("foo"), None)

@@ -29,6 +29,8 @@ class StoredValueField(models.CharField):
 			return value
 
 		regexp = re.compile("`\w*`:\w*")
+
+		# Foreign Key
 		if isinstance(value, basestring) and regexp.match(value):
 			class_name = value.split(':')[0][1:-1]
 			instance_id = int(value.split(':')[1], 10)
@@ -43,6 +45,10 @@ class StoredValueField(models.CharField):
 				return None
 		elif value is None:
 			return None
+		elif value == "`True`":
+			return True
+		elif value == "`False`":
+			return False
 		else:
 			try:
 				return int(value)
@@ -52,6 +58,8 @@ class StoredValueField(models.CharField):
 	def get_prep_value(self, value):
 		if isinstance(value, (int, basestring)):
 			return value
+		elif isinstance(value, bool):
+			return "`%s`" % str(value)
 		elif isinstance(value, models.Model):
 			name = value.__class__.__name__
 			return '`%s`:%s' % (name, value.pk)

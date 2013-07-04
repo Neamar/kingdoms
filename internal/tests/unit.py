@@ -192,18 +192,6 @@ status = "NotPossible"
 		self.k.save()
 		self.assertEqual(Folk.objects.count(), 1)
 
-	def test_value_store(self):
-		"""
-		Store values on the kingdom
-		"""
-		self.k.set_value("foo", "bar")
-		self.k.set_value("foo2", 2)
-		self.k.set_value("folk", self.f)
-
-		self.assertEqual(self.k.get_value("foo"), "bar")
-		self.assertEqual(self.k.get_value("foo2"), 2)
-		self.assertEqual(self.k.get_value("folk"), self.f)
-
 	def test_recurring_condition(self):
 		"""
 		Test recurring conditions are executed.
