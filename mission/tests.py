@@ -132,6 +132,32 @@ class UnitTest(TestCase):
 		# Can't affect after start
 		self.assertRaises(IntegrityError, pma2.save)
 
+	def test_cant_update_target_after_mission_start(self):
+		"""
+		The target can't be changed after mission start.
+		"""
+
+		self.m.has_target = True
+
+		k2 = Kingdom()
+		k2.save()
+
+		k3 = Kingdom()
+		k3.save()
+
+		# Sanity check
+		self.pm.target = k2
+		self.pm.save()
+		self.pm.target = k3
+		self.pm.save()
+
+		self.pm.started = datetime.now()
+		self.pm.save()
+		self.pm.target = k2
+
+		# Can't change target
+		self.assertRaises(IntegrityError, self.pm.save)
+
 	def test_grid_condition(self):
 		"""
 		Check condition is triggered.
