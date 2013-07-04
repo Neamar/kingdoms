@@ -4,10 +4,14 @@
 	<title>{% block title %}{% endblock %}</title>
 
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
 	<script src="{{ STATIC_URL }}jquery/jquery-1.10.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 	<script src="{{ STATIC_URL }}knockout/knockout-2.2.1.js"></script>
 	<script src="{{ STATIC_URL }}knockout/knockout.mapping-2.4.1.min.js"></script>
+	<script src="{{ STATIC_URL }}knockout/knockout.sortable-0.8.1.min.js"></script>
 	<script src="{{ STATIC_URL }}knockout/pagerjs.js"></script>
 
 	{% block css %}{% endblock %}

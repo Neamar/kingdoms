@@ -23,6 +23,18 @@ var folkModel = function(data, qualities) {
 	});
 }
 
+var pendingMissionModel = function(data, qualities) {
+	var self = this;
+	ko.mapping.fromJS(data, {}, this);
+
+	self.affectations = ko.utils.arrayMap(self.affectations, function(affectation) {
+			if(affectation != null)
+				return new folkModel(affectation);
+			else
+				return null;
+	});
+}
+
 function unwrapId(data) {
 	return ko.utils.unwrapObservable(data.id);
 }
@@ -40,7 +52,10 @@ var mapping = {
 		key: unwrapId
 	},
 	'pending_missions': {
-		key: unwrapId
+		key: unwrapId,
+		create: function(options) {
+			return new pendingMissionModel(options.data, options.parent.folks);
+		}
 	},
 	'messages': {
 		key: unwrapId
