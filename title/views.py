@@ -12,8 +12,6 @@ def available_title_affect(request, pk):
 	"""
 	Affect folk to the title.
 	"""
-	if not request.method == 'POST':
-		raise Http404("Only call this URL by POST.")
 
 	if 'folk' not in request.POST:
 		raise Http404("Specify folk in POST.")

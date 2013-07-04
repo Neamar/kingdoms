@@ -20,6 +20,9 @@ def serialize_pending_mission(pending_mission):
 		'cancellable': pending_mission.mission.cancellable,
 		'grids': [serialize_mission_grid(o, pending_mission) for o in pending_mission.mission.missiongrid_set.all()],
 		'has_target': pending_mission.mission.has_target,
+		'links': {
+			'start': reverse('mission.views.pending_mission_start', args=(pending_mission.pk,))
+		}
 	}
 
 	if pending_mission.mission.timeout is not None:

@@ -40,8 +40,21 @@ def pending_mission_grid_defect(request, pk):
 	"""
 	Defect the folk from the mission
 	"""
-	if not request.method == 'POST':
-		raise Http404("Only call this URL by POST.")
+	# Retrieve the objects
+	pending_mission_affectation = get_object_or_404(PendingMissionAffectation, pk=pk, pending_mission__kingdom=request.user.kingdom)
+
+	# Defect
+	pending_mission_affectation.delete()
+
+	status = 'ok'
+	return {'status': status}
+
+
+@json_view
+def pending_mission_start(request, pk):
+	"""
+	Start the pending mission
+	"""
 
 	# Retrieve the objects
 	pending_mission_affectation = get_object_or_404(PendingMissionAffectation, pk=pk, pending_mission__kingdom=request.user.kingdom)
