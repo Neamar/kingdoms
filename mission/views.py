@@ -15,10 +15,13 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 	if not request.method == 'POST':
 		raise Http404("Only call this URL by POST.")
 
+	if 'folk' not in request.POST:
+		raise Http404("Specify folk")
+
 	# Retrieve the objects
 	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
-	mission_grid = get_object_or_404(MissionGrid, pk=pk, mission=pending_mission.mission_id)
-	folk = get_object_or_404(Folk, pk=pk, kingdom=request.user.kingdom)
+	mission_grid = get_object_or_404(MissionGrid, pk=grid_pk, mission=pending_mission.mission_id)
+	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
 
 	# Affect
 	pma = PendingMissionAffectation(
