@@ -21,6 +21,12 @@ class UnitTest(TestCase):
 		)
 		self.f.save()
 
+		self.qc = QualityCategory(
+			name="Stub quality category",
+			description="A stub."
+		)
+		self.qc.save()
+
 	def test_death_after_birth(self):
 		"""
 		Should raise an ValidationError if death < birth
@@ -164,20 +170,14 @@ class UnitTest(TestCase):
 		"""
 		You can't have two incompatible qualities.
 		"""
-		qc = QualityCategory(
-			name="Cat",
-			description="..."
-		)
-		qc.save()
-
 		q = Quality(
-			category=qc,
+			category=self.qc,
 			name="Avare",
 			description="Jamais donner argent !")
 		q.save()
 
 		q2 = Quality(
-			category=qc,
+			category=self.qc,
 			name="Généreux",
 			description="Toujours donner argent !")
 		q2.save()
@@ -187,3 +187,46 @@ class UnitTest(TestCase):
 		self.f.quality_set.add(q)
 
 		self.assertRaises(ValidationError, (lambda: self.f.quality_set.add(q2)))
+
+	def test_quality_on_affect(self):
+		"""
+		Test on affect code is executed.
+		"""
+
+		q = Quality(
+			category=self.qc,
+			name="Avare",
+			description="Jamais donner argent !")
+		q.on_affect = """
+folk.kingdom.money = 15
+folk.kingdom.save()
+"""
+		q.save()
+
+		# Sanity check
+		self.assertEqual(self.k.money, 0)
+		
+		self.f.quality_set.add(q)
+		self.assertEqual(self.k.money, 15)
+
+	def test_quality_on_defect(self):
+		"""
+		Test on_defect code is executed.
+		"""
+
+		q = Quality(
+			category=self.qc,
+			name="Avare",
+			description="Jamais donner argent !")
+		q.on_defect = """
+folk.kingdom.money = 15
+folk.kingdom.save()
+"""
+		q.save()
+
+		self.f.quality_set.add(q)
+		# Sanity check
+		self.assertEqual(self.k.money, 0)
+
+		self.f.quality_set.remove(q)
+		self.assertEqual(self.k.money, 15)
