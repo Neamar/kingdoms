@@ -227,14 +227,9 @@ class ScriptTest(TestCase):
 		"""
 		f2 = Folk(kingdom=self.k)
 		f2.save()
-		f3 = Folk(kingdom=self.k)
-		f3.save()
-		f4 = Folk(kingdom=self.k)
-		f4.save()
-		datas = [self.f, f2, f3, f4]
+		datas = [self.f, f2, True, 0, "trololol"]
 		self.k.set_value("foo", datas)
 
-		real_folks = [self.f, f2, f3, f4]
-		stored_folks = self.k.get_value("foo")
-		for r, s in zip(real_folks, stored_folks):
+		stored_datas = self.k.get_value("foo")
+		for r, s in zip(datas, stored_datas):
 			self.assertEqual(r, s)
