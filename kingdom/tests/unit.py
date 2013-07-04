@@ -27,6 +27,42 @@ class UnitTest(TestCase):
 		)
 		self.qc.save()
 
+	def test_money_threshold(self):
+		"""
+		Money should be positive
+		"""
+		self.k.money = 20
+		self.k.save()
+		self.assertEqual(self.k.money, 20)
+
+		self.k.money = -1
+		self.k.save()
+		self.assertEqual(self.k.money, 0)
+
+	def test_prestige_threshold(self):
+		"""
+		Prestige should be positive
+		"""
+		self.k.prestige = 20
+		self.k.save()
+		self.assertEqual(self.k.prestige, 20)
+
+		self.k.prestige = -1
+		self.k.save()
+		self.assertEqual(self.k.prestige, 0)
+
+	def test_population_threshold(self):
+		"""
+		Population should be positive
+		"""
+		self.k.population = 20
+		self.k.save()
+		self.assertEqual(self.k.population, 20)
+
+		self.k.population = -1
+		self.k.save()
+		self.assertEqual(self.k.population, 0)
+
 	def test_death_after_birth(self):
 		"""
 		Should raise an ValidationError if death < birth
