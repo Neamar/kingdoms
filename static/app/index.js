@@ -24,6 +24,14 @@ function http_pendingMissionGridDefect(affectation) {
 }
 
 /*
+ * Start the mission
+ */
+function http_pendingMissionStart(pending_mission) {
+	$.post(pending_mission.links.start(), {}, loadDatas);
+}
+
+
+/*
  * Affect folk_id to the specified title
  */
 function http_availableTitleAffect(title, folk_id) {

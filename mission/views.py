@@ -1,3 +1,4 @@
+from datetime import datetime
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -56,11 +57,12 @@ def pending_mission_start(request, pk):
 	Start the pending mission
 	"""
 
-	# Retrieve the objects
-	pending_mission_affectation = get_object_or_404(PendingMissionAffectation, pk=pk, pending_mission__kingdom=request.user.kingdom)
+	# Retrieve the object
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 
-	# Defect
-	pending_mission_affectation.delete()
+	# Start
+	pending_mission.started = datetime.now()
+	pending_mission.save()
 
 	status = 'ok'
 	return {'status': status}
