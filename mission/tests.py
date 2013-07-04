@@ -241,6 +241,26 @@ status="not_allowed"
 		self.pm.target = self.k
 		self.assertRaises(ValidationError, self.pm.save)
 
+	def test_mission_target_default(self):
+		"""
+		Check the target is in target_list
+		"""
+
+		k2 = Kingdom(
+			money=50000
+		)
+		k2.save()
+		self.m.has_target = True
+		self.m.save()
+
+		# Assert noRaises
+		self.pm.target = k2
+		self.pm.save()
+		
+		# Our kingdom is forbidden by default
+		self.pm.target = self.k
+		self.assertRaises(ValidationError, self.pm.save)
+
 	def test_mission_target_allowed(self):
 		"""
 		Check the target is in target_list
