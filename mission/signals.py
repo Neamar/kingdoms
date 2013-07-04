@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import pre_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -86,7 +86,7 @@ def check_pending_mission_target_in_list(sender, instance, **kwargs):
 			raise ValidationError("This target is not allowed.")
 
 
-@receiver(pre_save, sender=PendingMission)
+@receiver(post_save, sender=PendingMission)
 def start_pending_mission(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started:
 		instance.start()
