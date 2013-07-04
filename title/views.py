@@ -26,3 +26,21 @@ def available_title_affect(request, pk):
 	available_title.save()
 
 	return {'status': 'ok'}
+
+
+@json_view
+def available_title_defect(request, pk):
+	"""
+	Defect folk from the title.
+	"""
+	if not request.method == 'POST':
+		raise Http404("Only call this URL by POST.")
+
+	# Retrieve the objects
+	available_title = get_object_or_404(AvailableTitle, pk=pk, kingdom=request.user.kingdom)
+
+	# Save
+	available_title.folk = None
+	available_title.save()
+
+	return {'status': 'ok'}

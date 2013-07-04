@@ -23,6 +23,13 @@ function http_availableTitleAffect(title, folk_id) {
 	$.post(title.links.affect(), {'folk': folk_id}, loadDatas);
 }
 
+/*
+ * Defect the specified title
+ */
+function http_availableTitleDefect(title) {
+	$.post(title.links.defect(), {}, loadDatas);
+}
+
 //##################################
 // CUSTOM BINDINGS
 //##################################

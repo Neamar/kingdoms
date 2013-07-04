@@ -9,7 +9,10 @@
 			<h2 data-bind="text : name"></h2>
 			<p data-bind="text : description"></p>
 
-			<p>En poste : <span data-bind="text: folk.first_name() + ' ' + folk.last_name()"></span></p>
+			<p>
+				En poste : <span data-bind="text: folk.first_name() + ' ' + folk.last_name()"></span>.<br />
+				<a href="#" data-bind="click: http_availableTitleDefect">Ouste !</a>
+			</p>
 		</div>
 	</div>
 

@@ -15,7 +15,8 @@ def serialize_available_title(available_title):
 		'description': available_title.title.description,
 		'folk': serialize_folk_min(available_title.folk) if available_title.folk is not None else None,
 		'links': {
-			'affect': reverse('title.views.available_title_affect', args=(available_title.pk,))
+			'affect': reverse('title.views.available_title_affect', args=(available_title.pk,)),
+			'defect': reverse('title.views.available_title_defect', args=(available_title.pk,))
 		}
 	}
 
