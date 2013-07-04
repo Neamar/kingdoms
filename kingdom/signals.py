@@ -27,6 +27,7 @@ def folk_validate_death_after_birth(sender, instance, **kwargs):
 	"""
 	Can't die before being born !
 	"""
+
 	if instance.death and instance.death < instance.birth:
 		raise ValidationError("Can't die before being born.")
 
@@ -36,6 +37,7 @@ def folk_validate_parent_sex(sender, instance, **kwargs):
 	"""
 	Check for sanity in your parents sex.
 	"""
+
 	if instance.mother and instance.mother.sex != Folk.FEMALE:
 		raise ValidationError("Mother must be a woman.")
 
@@ -48,6 +50,7 @@ def check_incompatible_qualities(sender, instance, action, reverse, pk_set, **kw
 	"""
 	Forbid adding incompatible qualities.
 	"""
+
 	if action == "pre_add" and len(pk_set) == 1:
 		folk = instance
 		quality = Quality.objects.get(id__in=pk_set)

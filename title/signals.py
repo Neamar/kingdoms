@@ -9,15 +9,22 @@ from title.models import AvailableTitle
 
 @receiver(post_save, sender=Folk)
 def unaffect_title_on_kingdom_changed(sender, instance, **kwargs):
-		# Retrieve AvailableTitle affected to this folk (if any):
-		at = AvailableTitle.objects.filter(folk=instance).exclude(kingdom_id=instance.kingdom_id)
-		if len(at) > 0:
-			at[0].folk = None
-			at[0].save()
+	"""
+	Remove the folk from any title when he changes kingdom.
+	"""
+	# Retrieve AvailableTitle affected to this folk (if any):
+	at = AvailableTitle.objects.filter(folk=instance).exclude(kingdom_id=instance.kingdom_id)
+	if len(at) > 0:
+		at[0].folk = None
+		at[0].save()
 
 
 @receiver(post_save, sender=Folk)
 def unaffect_title_on_death(sender, instance, **kwargs):
+	"""
+	Remove the folk from any title when he dies.
+	"""
+
 	if instance.death:
 		try:
 			at = AvailableTitle.objects.get(folk=instance)
@@ -29,7 +36,10 @@ def unaffect_title_on_death(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=AvailableTitle)
 def check_title_condition(sender, instance, **kwargs):
-	# Run condition code, checking if the specified folk can be affected on this title.
+	"""
+	Run condition code, checking if the specified folk can be affected to this title.
+	"""
+
 	if instance.last_folk_id != instance.folk_id and instance.folk_id is not None:
 		status = instance.check_condition()
 		if status != 'ok':
@@ -38,13 +48,20 @@ def check_title_condition(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=AvailableTitle)
 def check_folk_kingdom(sender, instance, **kwargs):
-	# Check folk is part of the same kingdom
+	"""
+	Check folk is part of the kingdom of this available title.
+	"""
+
 	if instance.folk and instance.folk.kingdom != instance.kingdom:
 		raise ValidationError("Cette personne ne fait pas partie du bon royaume.")
 
 
 @receiver(pre_save, sender=AvailableTitle)
 def on_availabletitle_affection_defection(sender, instance, **kwargs):
+	"""
+	Run on_affect and on_defect code.
+	"""
+
 	if instance.last_folk_id != instance.folk_id:
 		# Was there a prior defection?
 		if instance.last_folk is not None and not instance.last_folk.death:

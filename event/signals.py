@@ -56,5 +56,9 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=PendingEventAction)
 def check_pending_event_action_sanity(sender, instance, **kwargs):
+	"""
+	Check the actions refers to this event.
+	"""
+	
 	if instance.event_action.event != instance.pending_event.event:
-		raise ValidationError("The Events in EventAction and PendingEventAction are different ")
+		raise ValidationError("The events in EventAction and PendingEventAction are different ")
