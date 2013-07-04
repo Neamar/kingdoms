@@ -11,8 +11,8 @@
 	<div data-bind="foreach: grids">
 		<div>
 			<p data-bind="text: name"></p>
-			<div data-bind="foreach: raw_affectations">
-				<img src="http://placehold.it/50x50" alt="Affectation" />
+			<div data-bind="sortable: raw_affectations">
+				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
 			</div>
 		</div>
 		<div style="clear:both;"></div>

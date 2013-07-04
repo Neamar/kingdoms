@@ -70,7 +70,7 @@ $(function() {
 				ko.mapping.fromJS(result, datas);
 			}
 
-			setTimeout(loadDatas, 1000);
+			//setTimeout(loadDatas, 1000);
 		});
 
 	}

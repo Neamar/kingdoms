@@ -10,7 +10,7 @@
 			<th>L</th>
 		</tr>
 	</thead>
-	<tbody data-bind="sortable: folks">
+	<tbody data-bind="foreach: folks">
 		{% include "app/templates/_folk.html" %}
 	</tbody>
 </table>
