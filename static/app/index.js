@@ -30,14 +30,13 @@ ko.bindingHandlers.draggable = {
 
 ko.bindingHandlers.droppable = {
 	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		var drop_function = valueAccessor()
+		drop_function = ko.utils.unwrapObservable(drop_function)
+
 		$(element).droppable({
 			activeClass: "ui-state-hover",
 			hoverClass: "ui-state-active",
-			drop: function( event, ui ) {
-				grid = ko.dataFor($(this)[0]);
-				folk_id = ko.dataFor(ui.draggable[0]).id();
-				http_pendingMissionGridAffect(grid, folk_id)
-			}
+			drop: drop_function
 		});
 	},
 	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -47,6 +46,28 @@ ko.bindingHandlers.droppable = {
 	}
 };
 
+
+//##################################
+// UI ACTIONS
+//##################################
+
+/**
+ * Called when a folk is dropped onto a mission grid
+ */
+function droppable_pending_mission_grid_affect_folk(event, ui) {
+	grid = ko.dataFor($(this)[0]);
+	folk_id = ko.dataFor(ui.draggable[0]).id();
+	http_pendingMissionGridAffect(grid, folk_id)
+}
+
+/**
+ * Called when a folk is dropped onto an available title
+ */
+function droppable_available_title_affect_folk(event, ui) {
+	available_title = ko.dataFor($(this)[0]);
+	folk_id = ko.dataFor(ui.draggable[0]).id();
+	console.log(available_title, folk_id);
+}
 
 //##################################
 // MAPPINGS & MODELS
