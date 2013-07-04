@@ -13,13 +13,16 @@ def serialize_kingdom(kingdom):
 	return r
 
 
+colors = ("000", "F00", "0F0", "00F", "FF0", "0FF", "FFF", "AAA")
 def serialize_folk(folk):
 	"""
 	Serialize a folk object to JSON.
 	"""
-	
+
+
 	r = {
 		'id': folk.pk,
+		'avatar': "http://placehold.it/50x60/" + colors[folk.pk],
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
 		'mother': folk.mother_id,
@@ -48,6 +51,7 @@ def serialize_folk_min(folk):
 		'id': folk.pk,
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
+		'avatar': "http://placehold.it/50x60/" + colors[folk.pk],
 	}
 
 	return r
