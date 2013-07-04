@@ -16,7 +16,9 @@ def autodiscover():
 		try:
 			app_api = importlib.import_module("%s.api" % app)
 			__plugged_apis.append(app_api.api)
-		except:
+		except ImportError:
+			pass
+		except AttributeError:
 			pass
 
 

@@ -39,6 +39,20 @@ def serialize_folk(folk):
 	return r
 
 
+def serialize_folk_min(folk):
+	"""
+	Serialize a folk object to JSON, with minimal information.
+	"""
+	
+	r = {
+		'id': folk.pk,
+		'first_name': folk.first_name,
+		'last_name': folk.last_name,
+	}
+
+	return r
+
+
 def serialize_message(message):
 	"""
 	Serialize a message object to JSON.

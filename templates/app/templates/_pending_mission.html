@@ -5,19 +5,21 @@
 	<form class="pure-form pure-form-aligned" data-bind="if: has_target">
 		<label for="target">Cible :</label>
 		<select name="target" id="target" data-bind="options:targets, optionsText: 'name', value: id"></select>
-
 	</form>
 
 	<div data-bind="foreach: grids">
 		<div>
 			<p data-bind="text: name"></p>
-			<div data-bind="foreach: raw_affectations">
-				<div data-bind="droppable: true">
-					<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
+			<div data-bind="foreach: affectations">
+				<div>
+					<img src="http://placehold.it/50x50/aa00aa" alt="Affectation" style="margin:10px;" />
+					<span data-bind="text:first_name() + last_name()"></span>
 				</div>
 			</div>
+			<div data-bind="visible: affectations().length < length(), droppable: true">
+				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
+			</div>
 		</div>
-		<div style="clear:both;"></div>
 	</div>
 </div>
 
