@@ -2,6 +2,7 @@ from datetime import timedelta
 from markdown import markdown
 
 from kingdom.serializers import serialize_folk_min
+from django.core.urlresolvers import reverse
 
 
 def serialize_pending_mission(pending_mission):
@@ -55,7 +56,10 @@ def serialize_mission_grid(mission_grid, pending_mission):
 		'id': mission_grid.id,
 		'name': mission_grid.name,
 		'length': mission_grid.length,
-		'affectations': affectations
+		'affectations': affectations,
+		'links': {
+			'affect': reverse('mission.views.pending_mission_grid_affect', args=(pending_mission.pk, mission_grid.pk))
+		}
 	}
 
 	return r

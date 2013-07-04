@@ -1,4 +1,20 @@
 //##################################
+// HTTP ACTIONS
+//##################################
+
+/*
+ * Fire the selected action to resolve the event.
+ */
+function http_pendingEventActionFire(action) {
+	$.post(action.links.fire());
+}
+
+function http_pendingMissionGridAffect(grid, folk_id) {
+	$.post(grid.links.affect(), {'folk': folk_id});
+}
+
+
+//##################################
 // CUSTOM BINDINGS
 //##################################
 ko.bindingHandlers.draggable = {
@@ -18,10 +34,9 @@ ko.bindingHandlers.droppable = {
 			activeClass: "ui-state-hover",
 			hoverClass: "ui-state-active",
 			drop: function( event, ui ) {
-				mission = ko.dataFor($(this).parent().parent()[0]).id();
-				grid_id = ko.dataFor($(this)[0]).id();
+				grid = ko.dataFor($(this)[0]);
 				folk_id = ko.dataFor(ui.draggable[0]).id();
-				http_pendingMissionGridAffect(mission, grid_id, folk_id)
+				http_pendingMissionGridAffect(grid, folk_id)
 			}
 		});
 	},
@@ -32,42 +47,6 @@ ko.bindingHandlers.droppable = {
 	}
 };
 
-//##################################
-// HTTP ACTIONS
-//##################################
-
-/*
- * Fire the selected action to resolve the event.
- */
-function http_pendingEventActionFire(action) {
-	$.post(val.links.fire())
-}
-
-function http_pendingMissionGridAffect(mission, grid_id, folk_id) {
-	console.log(mission, grid_id, folk_id);
-}
-
-//##################################
-// UI ACTIONS
-//##################################
-
-/**
- * Affect someone to some grid.
- */
-function pendingMissionGridAffect(val)
-{
-	if(!val.targetOrigin)
-	{
-		//http_pendingMissionGridAffect
-		mission_id = ko.dataFor($(val.sourceParentNode).parent().parent()[0]).id();
-		grid_id = ko.dataFor(val.sourceParentNode).id();
-		folk_id = val.item.id()
-
-		http_pendingMissionGridAffect(mission_id, grid_id, folk_id);
-	}
-
-	val.cancelDrop = true;
-}
 
 //##################################
 // MAPPINGS & MODELS
