@@ -11,9 +11,9 @@ class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game
 	"""
-	condition = ScriptField(blank=True, help_text="Called before folk nomination. `param` is the current `AvailableTitle`, `folk` is the folk to be affected. Have the script set `status`to something other than 'ok' to abort the affectation.")
-	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.")
-	on_defect = ScriptField(blank=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.")
+	condition = ScriptField(blank=True, help_text="Called before folk nomination. `param` is the current `AvailableTitle`, `folk` is the folk to be affected. Have the script set `status`to something other than 'ok' to abort the affectation.", default="")
+	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
+	on_defect = ScriptField(blank=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
 
 
 class AvailableTitle(models.Model):
