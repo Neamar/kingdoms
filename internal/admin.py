@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function
+from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar
 from kingdom.models import Kingdom
 
 
@@ -47,4 +47,9 @@ class FirstNameAdmin(admin.ModelAdmin):
 	list_display = ('name', 'sex')
 	search_fields = ('name',)
 admin.site.register(FirstName, FirstNameAdmin)
+
+
 admin.site.register(LastName)
+
+
+admin.site.register(Avatar)
