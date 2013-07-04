@@ -99,21 +99,28 @@ class Recurring(DescribedModel):
 		return self.slug + "()"
 
 
-class FirstName (NamedModel):
+class FirstName(NamedModel):
 	"""
 	Dictionary for first name.
 	"""
 	sex = models.CharField(max_length=1, choices=Folk.SEX_CHOICES, default=Folk.MALE)
 
 	
-class LastName (NamedModel):
+class LastName(NamedModel):
 	"""
 	Dictionary for last name.
 	"""
 	pass
 
 
-class Function (models.Model):
+class Avatar(NamedModel):
+	"""
+	Dictionary for avatar.
+	"""
+	avatar = models.ImageField(upload_to="avatars/")
+
+
+class Function(models.Model):
 	"""
 	Class Function accessible from scripts to be reused
 	"""
