@@ -57,6 +57,7 @@ class PendingMission(models.Model):
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 	target = models.ForeignKey(Kingdom, related_name="+", null=True, blank=True)
+	last_target = models.ForeignKey(Kingdom, null=True, default=None, related_name="+", editable=False)
 
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
