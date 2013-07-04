@@ -11,7 +11,7 @@
 	<div data-bind="foreach: grids">
 		<div>
 			<p data-bind="text: name"></p>
-			<div data-bind="sortable: {data: raw_affectations, afterMove: pendingMissionGridAffect} ">
+			<div data-bind="sortable: {data: raw_affectations, beforeMove: pendingMissionGridAffect} ">
 				<img src="http://placehold.it/50x50" alt="Affectation" style="margin:10px;" />
 			</div>
 		</div>
@@ -20,5 +20,6 @@
 </div>
 
 <small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
-<a class="pure-button" href="#" data-bind="click: pendingEventActionFire">Démarrer la mission</a>
+
+<a class="pure-button" href="#" data-bind="click: http_pendingEventActionFire">Démarrer la mission</a>
 <hr />

@@ -1,17 +1,38 @@
 //##################################
-// ACTIONS
+// HTTP ACTIONS
 //##################################
 
 /*
  * Fire the selected action to resolve the event.
  */
-function pendingEventActionFire(val) {
+function http_pendingEventActionFire(action) {
 	$.post(val.links.fire())
 }
 
+function http_pendingMissionGridAffect(mission, grid_id, folk_id) {
+	console.log(mission, grid_id, folk_id);
+}
+
+//##################################
+// UI ACTIONS
+//##################################
+
+/**
+ * Affect someone to some grid.
+ */
 function pendingMissionGridAffect(val)
 {
-	console.log(val.item.last_name());
+	if(!val.targetOrigin)
+	{
+		//http_pendingMissionGridAffect
+		mission_id = ko.dataFor($(val.sourceParentNode).parent().parent()[0]).id();
+		grid_id = ko.dataFor(val.sourceParentNode).id();
+		folk_id = val.item.id()
+
+		http_pendingMissionGridAffect(mission_id, grid_id, folk_id);
+	}
+
+	val.cancelDrop = true;
 }
 
 //##################################
