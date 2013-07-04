@@ -13,7 +13,7 @@
 			<div data-bind="foreach: affectations">
 				<div>
 					<img src="http://placehold.it/50x50/aa00aa" alt="Affectation" style="margin:10px;" />
-					<span data-bind="text:first_name() + last_name()"></span>
+					<span data-bind="text:first_name() + ' ' + last_name()"></span>
 				</div>
 			</div>
 			<div data-bind="visible: affectations().length < length(), droppable: true">

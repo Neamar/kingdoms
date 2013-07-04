@@ -16,7 +16,13 @@ ko.bindingHandlers.droppable = {
 	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 		$(element).droppable({
 			activeClass: "ui-state-hover",
-			hoverClass: "ui-state-active"
+			hoverClass: "ui-state-active",
+			drop: function( event, ui ) {
+				mission = ko.dataFor($(this).parent().parent()[0]).id();
+				grid_id = ko.dataFor($(this)[0]).id();
+				folk_id = ko.dataFor(ui.draggable[0]).id();
+				http_pendingMissionGridAffect(mission, grid_id, folk_id)
+			}
 		});
 	},
 	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
