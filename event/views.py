@@ -1,10 +1,11 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-from kingdom.decorators import json_view
+from kingdom.decorators import json_view, force_post
 from event.models import PendingEventAction
 
 
+@force_post
 @json_view
 def pending_event_action_fire(request, pk):
 	"""

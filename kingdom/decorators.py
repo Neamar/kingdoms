@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 from kingdom.utils import to_json
 
@@ -15,5 +15,19 @@ def json_view(func):
 			return HttpResponse(json, mimetype='application/json')
 		else:
 			return response
+
+	return wrap
+
+
+def force_post(func):
+	"""
+	Force POST method for function.
+	"""
+
+	def wrap(request, *a, **kw):
+		if not request.method == 'POST':
+			raise Http404("Only call this URL by POST.")
+
+		return func(request, *a, **kw)
 
 	return wrap
