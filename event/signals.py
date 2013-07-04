@@ -29,6 +29,12 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		for var in instance._pendingeventvariable_set.all():
 			raw_context[var.name] = var.value
 		raw_context['kingdom'] = instance.kingdom
+
+		# Ugly, but necessary: give access to titles in event context.
+		from title.models import AvailableTitle
+		titles = lambda: {at.title.name: at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
+		raw_context['title'] = titles
+		
 		context = Context(raw_context)
 
 		# Create text from templates

@@ -170,7 +170,7 @@ kingdom.save()
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=pe.pk)))
 		self.assertRaises(PendingEventAction.DoesNotExist, (lambda: PendingEventAction.objects.get(pk=pea.pk)))
 
-	def test_templates_and_context(self):
+	def test_templates_and_variables(self):
 		"""
 		Check templating works on event and EventAction.
 		"""
@@ -197,6 +197,29 @@ param.set_value("kingdom", kingdom)
 
 		self.assertEqual(pe.text, "EVENT:test-666")
 		self.assertEqual(pea.text, "ACTION:test-666")
+
+	def test_templates_and_context(self):
+		"""
+		Check templating works on event and EventAction with default context.
+		"""
+		from title.models import Title, AvailableTitle
+		t = Title(name="cure", description=" ")
+		t.save()
+		f = Folk(first_name="septon", kingdom=self.k)
+		f.save()
+		at = AvailableTitle(kingdom=self.k, title=t, folk=f)
+		at.save()
+
+		self.e.text = "{{ title.cure.first_name }}"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		self.assertEqual(pe.text, "septon")
 
 	def test_pendingevent_set_get_value(self):
 		"""
