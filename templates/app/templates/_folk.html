@@ -1,7 +1,9 @@
 <tr>
-	<td data-bind="draggable: $data" rowspan="2">
-		<img src="http://placehold.it/50x50/aa00aa" />
-		<span data-bind="text: first_name() + ' ' + last_name()"></span>
+	<td rowspan="2">
+		<p data-bind="draggable: true">
+			<img src="http://placehold.it/50x50/aa00aa" />
+			<span data-bind="text: first_name() + ' ' + last_name()"></span>
+		</p>
 	</td>
 	<td data-bind="text: fight"></td>
 	<td data-bind="text: plot"></td>

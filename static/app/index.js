@@ -1,4 +1,20 @@
 //##################################
+// CUSTOM BINDINGS
+//##################################
+ko.bindingHandlers.draggable = {
+	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		
+		console.log(element)
+		$(element).draggable({ opacity: 0.9, helper: "clone" });
+	},
+	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		// This will be called once when the binding is first applied to an element,
+		// and again whenever the associated observable changes value.
+		// Update the DOM element based on the supplied values here.
+	}
+};
+
+//##################################
 // HTTP ACTIONS
 //##################################
 
