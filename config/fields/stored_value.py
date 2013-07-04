@@ -1,6 +1,7 @@
 import re
 
 from django.db import models
+from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError
 
 
@@ -28,7 +29,7 @@ class StoredValueField(models.CharField):
 		from mission.models import Mission, PendingMission, PendingMissionAffectation
 		from title.models import Title, AvailableTitle
 
-		if isinstance(value, (models.Model, list, tuple)):
+		if isinstance(value, (models.Model, list, tuple, QuerySet)):
 			return value
 
 		# Foreign Key
@@ -59,9 +60,11 @@ class StoredValueField(models.CharField):
 				return int(value)
 			except ValueError:
 				return value
+			except TypeError:
+				raise ValidationError("Unable to store this data : %s." % value)
 
 	def get_prep_value(self, value):
-		if isinstance(value, (list, tuple)):
+		if isinstance(value, (list, tuple, QuerySet)):
 			return "[" + "_|_".join([str(self.get_prep_value(v)) for v in value]) + "]"
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)

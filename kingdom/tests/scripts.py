@@ -205,3 +205,18 @@ class ScriptTest(TestCase):
 		self.k.set_value("foo", datas)
 
 		self.assertEqual(self.k.get_value("foo"), datas)
+
+	def test_kingdom_value_store_list_fk(self):
+		"""
+		Store string values on the kingdom
+		"""
+		Folk(kingdom=self.k).save()
+		Folk(kingdom=self.k).save()
+		Folk(kingdom=self.k).save()
+		datas = Folk.objects.all()
+		self.k.set_value("foo", datas)
+
+		real_folks = Folk.objects.all()
+		stored_folks = self.k.get_value("foo")
+		for r, s in zip(real_folks, stored_folks):
+			self.assertEqual(r, s)
