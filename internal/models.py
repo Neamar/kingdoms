@@ -116,10 +116,20 @@ class LastName(NamedModel):
 	pass
 
 
+class AvatarCategory(NamedModel):
+	"""
+	Dictionary for avatar categories.
+	"""
+	class Meta:
+		verbose_name_plural = "Avatar categories"
+	pass
+
+
 class Avatar(NamedModel):
 	"""
 	Dictionary for avatar.
 	"""
+	category = models.ForeignKey(AvatarCategory)
 	avatar = models.ImageField(upload_to="avatars/")
 
 
