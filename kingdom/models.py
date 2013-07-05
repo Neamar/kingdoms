@@ -111,7 +111,7 @@ class Message(models.Model):
 	level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES, default=INFORMATION)
 	read = models.DateTimeField(null=True, blank=True)
 
-	creation = models.DateTimeField(auto_now_add=True)
+	created = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
 		return self.content[0:50]
@@ -122,7 +122,7 @@ class ModalMessage(DescribedModel):
 	A modal message.
 	"""
 	kingdom = models.ForeignKey(Kingdom)
-	creation = models.DateTimeField(auto_now_add=True)
+	created = models.DateTimeField(auto_now_add=True)
 
 
 class Claim(models.Model):
@@ -135,6 +135,6 @@ class Claim(models.Model):
 	offender = models.ForeignKey(Kingdom, related_name='offender_set')
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
-	creation = models.DateTimeField(auto_now_add=True)
+	created = models.DateTimeField(auto_now_add=True)
 	
 from kingdom.signals import *

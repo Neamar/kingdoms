@@ -67,7 +67,7 @@ def serialize_message(message):
 		'content': message.content,
 		'level': message.level,
 		'read': message.read,
-		'creation': message.creation
+		'created': message.created
 	}
 
 	return r
