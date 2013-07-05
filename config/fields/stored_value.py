@@ -15,7 +15,7 @@ class StoredValueField(models.CharField):
 	__metaclass__ = models.SubfieldBase
 
 	fk_regexp = re.compile("`\w*`:\w*")
-	array_regexp = re.compile("\[.+\]")
+	array_regexp = re.compile("\[.*\]")
 
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 1024
@@ -34,6 +34,8 @@ class StoredValueField(models.CharField):
 
 		# Foreign Key
 		if isinstance(value, basestring) and self.array_regexp.match(value):
+			if value == '[]':
+				return []
 			raw_values = value[1:-1].split('_|_')
 			return [self.to_python(raw) for raw in raw_values]
 		elif isinstance(value, basestring) and self.fk_regexp.match(value):
