@@ -19,8 +19,7 @@ if os.getenv('DB') == 'postgres':
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'kingdoms',
-            'USER': 'papiel',
-            'PASSWORD': 'pwd',
+            'USER': 'postgres',
         }
     }
 else:
