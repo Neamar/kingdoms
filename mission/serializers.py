@@ -21,6 +21,9 @@ def serialize_pending_mission(pending_mission):
 		'grids': [serialize_mission_grid(o, pending_mission) for o in pending_mission.mission.missiongrid_set.all()],
 		'has_target': pending_mission.mission.has_target,
 		'target': pending_mission.target_id,
+		'has_value': pending_mission.mission.has_value,
+		'value': pending_mission.value,
+		'value_description': pending_mission.mission.value_description,
 		'links': {
 			'start': reverse('mission.views.pending_mission_start', args=(pending_mission.pk,)),
 			'cancel': reverse('mission.views.pending_mission_cancel', args=(pending_mission.pk,)),

@@ -6,6 +6,10 @@
 		<label for="target">Cible :</label>
 		<select name="target" id="target" data-bind="event: {change: change_pending_mission_update_target }, options:targets, optionsText: 'name', optionsValue: 'id', optionsCaption: 'Sélectionnez...', value: target"></select>
 	</form>
+	<form data-bind="if: has_value">
+		<label for="value" data-bind="text: value_description()"></label>
+		<input type="number" data-bind="value: value" />
+	</form>
 
 	<div data-bind="foreach: grids">
 		<div>

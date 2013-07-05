@@ -4,6 +4,10 @@
 
 	<p data-bind="if: has_target">Cible : <span data-bind="text: ko.utils.arrayFirst(targets(), function(t) { return t.id() == target()}).name()"></span>
 	</p>
+	<p data-bind="if: has_value"><span data-bind="text: value_description()"></span> <span data-bind="text:value()"></span>
+	</p>
+	<label for="value" data-bind="text: value_description()"></label>
+		<input type="number" data-bind="value: value" />
 
 	<div data-bind="foreach: grids">
 		<div>
