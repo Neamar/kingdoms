@@ -31,7 +31,7 @@ class Event(models.Model):
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory, blank=True, null=True, default=None)
 
-	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default=" ")
+	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to abort the event.", default=" ")
 	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default=" ")
 
 	def __unicode__(self):
@@ -44,6 +44,7 @@ class EventAction(models.Model):
 	"""
 
 	event = models.ForeignKey(Event)
+	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to hide this button.", default=" ")
 	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=" ")
 	text = models.CharField(max_length=255)
 
@@ -144,6 +145,18 @@ class PendingEventAction(models.Model):
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(editable=False, max_length=512)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
+
+	def check_condition(self):
+		"""
+		Check if this pending event action associated action allows to be created.
+		"""
+		context = {
+			'kingdom': self.kingdom,
+			'folks': self.kingdom.folk_set.all(),
+		}
+		status, param = execute(self.event.condition, self.pending_event, context)
+
+		return status
 
 	def fire(self):
 		"""

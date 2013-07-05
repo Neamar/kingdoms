@@ -57,7 +57,9 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 				event_action=event_action,
 				text=text_template.render(context),
 			)
-			pea.save()
+
+			if status == 'ok':
+				pea.save()
 
 
 @receiver(pre_save, sender=PendingEventAction)
