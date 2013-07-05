@@ -132,9 +132,21 @@ class Claim(models.Model):
 	class Meta:
 		unique_together = ('offender', 'offended')
 
+	REACHABLE = 0
+	CLAIM = 1
+	VENDETTA = 2
+
+	LEVEL_CHOICES = (
+		(REACHABLE, 'Atteignable'),
+		(CLAIM, 'Affront'),
+		(VENDETTA, 'Guerre ouverte'),
+	)
+
 	offender = models.ForeignKey(Kingdom, related_name='offender_set')
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
 	created = models.DateTimeField(auto_now_add=True)
-	
+
+	level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES, default=REACHABLE)
+
 from kingdom.signals import *

@@ -65,5 +65,5 @@ admin.site.register(ModalMessage)
 
 
 class ClaimAdmin(admin.ModelAdmin):
-	list_display = ('offender', 'offended', 'created')
+	list_display = ('offender', 'offended', 'level', 'created')
 admin.site.register(Claim, ClaimAdmin)
