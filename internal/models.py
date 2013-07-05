@@ -16,7 +16,7 @@ class Trigger(DescribedModel):
 	money_threshold = models.PositiveIntegerField(default=0)
 
 	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default="")
-	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom.", default="")
+	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default="")
 
 	fired = models.ManyToManyField(Kingdom, null=True, blank=True)
 
@@ -36,6 +36,7 @@ class Trigger(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
+			'folks': self.kingdom.folk_set.all(death=None),
 		}
 		# Register it has been fired.
 		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
@@ -68,8 +69,8 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text=".")
-	on_fire = ScriptField(blank=True, null=True)
+	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=" ")
+	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=" ")
 
 	def check_condition(self, kingdom):
 		"""
@@ -78,6 +79,7 @@ class Recurring(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
+			'folks': self.kingdom.folk_set.all(death=None),
 		}
 
 		status, param = execute(self.condition, kingdom, context)
@@ -89,6 +91,7 @@ class Recurring(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
+			'folks': self.kingdom.folk_set.all(death=None),
 		}
 
 		status, param = execute(self.on_fire, kingdom, context)
