@@ -130,7 +130,7 @@ class Avatar(models.Model):
 	Dictionary for avatar.
 	"""
 	category = models.ForeignKey(AvatarCategory)
-	avatar = models.ImageField(upload_to="avatars/")
+	image = models.ImageField(upload_to="avatars/")
 
 
 class Function(models.Model):

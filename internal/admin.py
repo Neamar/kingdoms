@@ -59,6 +59,6 @@ class AvatarAdmin(admin.ModelAdmin):
 	list_display = ('thumb_image', 'category')
 
 	def thumb_image(self, obj):
-		return '<img src="%s" />' % obj.avatar.url
+		return '<img src="%s" />' % obj.image.url
 	thumb_image.allow_tags = True
 admin.site.register(Avatar, AvatarAdmin)
