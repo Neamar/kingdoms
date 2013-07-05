@@ -90,6 +90,25 @@ class ScriptTest(TestCase):
 		self.q.save()
 		self.assertRaises(Quality.DoesNotExist, (lambda: self.f.add_quality("lol")))
 
+	def test_folk_remove_quality(self):
+		"""
+		Verify if the quality is removed
+		"""
+		self.qc = QualityCategory(
+			name="trait",
+			description="haha"
+		)
+		self.qc.save()
+		self.q = Quality(
+			category=self.qc,
+			name="moche"
+		)
+		self.q.save()
+		self.f.add_quality("moche")
+		self.f.save()
+		self.f.remove_quality("moche")
+		self.assertEqual(0, Folk.objects.get(kingdom=self.k).quality_set.count())
+
 	def test_folk_age(self):
 		"""
 		Verify if the good age is returned
