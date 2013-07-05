@@ -53,10 +53,12 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		for event_action in instance.event.eventaction_set.all():
 			text_template = Template(event_action.text)
+			message_template = Template(event_action.message)
 			pea = PendingEventAction(
 				pending_event=instance,
 				event_action=event_action,
 				text=text_template.render(context),
+				message=message_template.render(context),
 			)
 
 			status = pea.check_condition()

@@ -210,6 +210,7 @@ param.set_value("kingdom", kingdom)
 		self.e.save()
 
 		self.a.text = "ACTION:{{ value }}-{{ kingdom.money}}"
+		self.a.message = "ACTIONLOG:{{ value }}-{{ kingdom.money}}"
 		self.a.save()
 
 		pe = PendingEvent(
@@ -221,6 +222,7 @@ param.set_value("kingdom", kingdom)
 
 		self.assertEqual(pe.text, "EVENT:test-666")
 		self.assertEqual(pea.text, "ACTION:test-666")
+		self.assertEqual(pea.message, "ACTIONLOG:test-666")
 
 	def test_templates_and_title_context(self):
 		"""

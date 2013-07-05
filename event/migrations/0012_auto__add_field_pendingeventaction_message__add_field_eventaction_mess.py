@@ -8,13 +8,21 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding field 'PendingEventAction.message'
+        db.add_column(u'event_pendingeventaction', 'message',
+                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
+                      keep_default=False)
+
         # Adding field 'EventAction.message'
         db.add_column(u'event_eventaction', 'message',
-                      self.gf('django.db.models.fields.TextField')(default='', blank=True, null=True),
+                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
+        # Deleting field 'PendingEventAction.message'
+        db.delete_column(u'event_pendingeventaction', 'message')
+
         # Deleting field 'EventAction.message'
         db.delete_column(u'event_eventaction', 'message')
 
@@ -79,7 +87,7 @@ class Migration(SchemaMigration):
             'condition': ('config.fields.script_field.ScriptField', [], {'default': "' '", 'blank': 'True'}),
             'event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.Event']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'message': ('django.db.models.fields.TextField', [], {'default': 'None', 'blank': 'True'}),
+            'message': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'on_fire': ('config.fields.script_field.ScriptField', [], {'default': "' '", 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
@@ -107,6 +115,7 @@ class Migration(SchemaMigration):
             'event_action': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.EventAction']"}),
             'folk': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Folk']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'message': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'pending_event': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['event.PendingEvent']"}),
             'text': ('django.db.models.fields.CharField', [], {'max_length': '512'})
         },
