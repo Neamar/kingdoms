@@ -204,14 +204,14 @@ param.set_value("kingdom", kingdom)
 		Check templating works on event and EventAction with default context title.
 		"""
 		from title.models import Title, AvailableTitle
-		t = Title(name="cure", description=" ")
+		t = Title(name="Maître espion", description=" ")
 		t.save()
 		f = Folk(first_name="septon", kingdom=self.k)
 		f.save()
 		at = AvailableTitle(kingdom=self.k, title=t, folk=f)
 		at.save()
 
-		self.e.text = "{{ title.cure.first_name }}"
+		self.e.text = "{{ title.Maître_espion.first_name }}"
 		self.e.save()
 
 		pe = PendingEvent(
