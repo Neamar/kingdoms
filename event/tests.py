@@ -283,7 +283,7 @@ param.set_value("kingdom", kingdom)
 
 		self.assertEqual(pe.text, "hello")
 
-	def test_templates_and_templatetags(self):
+	def test_templates_and_folks_list_templatetags(self):
 		"""
 		Check templating loads templatetags for folk display.
 		"""
@@ -307,6 +307,32 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.text, "septon et cersei")
+
+	def test_templates_and_feminize_templatetags(self):
+		"""
+		Check templating loads templatetags for folk display.
+		"""
+		f = Folk(first_name="septon", sex=Folk.MALE, kingdom=self.k)
+		f.save()
+		f2 = Folk(first_name="cersei", sex=Folk.FEMALE, kingdom=self.k)
+		f2.save()
+
+		self.e.text = "batard{{ septon|feminize }}, batard{{ cersei|feminize }}"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+		pe.set_value("septon", f)
+		pe.set_value("cersei", f2)
+
+		pe.started = datetime.now()
+		pe.save()
+
+		self.assertEqual(pe.text, "batard, batarde")
 
 	def test_pendingevent_set_get_value(self):
 		"""
