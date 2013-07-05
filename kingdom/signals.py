@@ -27,10 +27,10 @@ def folk_attributes_constraints(sender, instance, **kwargs):
 	Validators are not enough, since ScriptField can access raw values.
 	"""
 
-	instance.fight = min(20, max(0, instance.fight))
-	instance.diplomacy = min(20, max(0, instance.diplomacy))
-	instance.plot = min(20, max(0, instance.plot))
-	instance.scholarship = min(20, max(0, instance.scholarship))
+	instance.fight = min(20, max(1, instance.fight))
+	instance.diplomacy = min(20, max(1, instance.diplomacy))
+	instance.plot = min(20, max(1, instance.plot))
+	instance.scholarship = min(20, max(1, instance.scholarship))
 
 	instance.loyalty = min(100, max(0, instance.loyalty))
 
