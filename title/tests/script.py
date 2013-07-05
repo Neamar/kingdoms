@@ -95,3 +95,21 @@ class ScriptTest(TestCase):
 		self.f.add_title("Dummy title")
 		
 		self.assertEqual("bob", self.k.get_folk_in_title("Dummy title").first_name)
+
+	def test_folk_remove_title(self):
+		"""
+		Check is the title is removed
+		"""
+		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("Dummy title"))
+
+		self.at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		self.at.save()
+		self.f.add_title("Dummy title")
+		
+		self.assertEqual("bob", self.k.get_folk_in_title("Dummy title").first_name)
+		self.f.remove_title()
+		self.assertEqual(None, self.k.get_folk_in_title("Dummy title"))
