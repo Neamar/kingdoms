@@ -1,9 +1,25 @@
-#cour
-{
-	border-right:1px solid black;
-}
-
 #messages
 {
 	border-left:1px solid black;
+}
+
+
+#folk img
+{
+	width: 50px;
+	height: 60px;
+}
+
+
+#title img
+{
+	width: 120px;
+	height: 120px;
+}
+
+
+#mission img
+{
+	width: 50px;
+	height: 60px;
 }

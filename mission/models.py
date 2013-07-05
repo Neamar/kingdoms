@@ -48,7 +48,7 @@ class MissionGrid(NamedModel):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
-	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected.", blank=True, default="")
+	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", blank=True, default="")
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)

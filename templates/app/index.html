@@ -44,27 +44,27 @@
 	</div>
 
 	<div class="span6" id="content">
-		<div data-bind="page: {id: 'start'}" class="container-fluid">
+		<div data-bind="page: {id: 'start'}" class="container-fluid" id="kingdom">
 			<h1>Mon royaume</h1>
 			{% include "app/_index.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'title'}" class="container-fluid">
+		<div data-bind="page: {id: 'title'}" class="container-fluid" id="title">
 			<h1>Titres</h1>
 			{% include "app/_title.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'mission'}" class="container-fluid">
+		<div data-bind="page: {id: 'mission'}" class="container-fluid" id="mission">
 			<h1>Missions</h1>
 			{% include "app/_mission.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'event'}" class="container-fluid">
+		<div data-bind="page: {id: 'event'}" class="container-fluid" id="event">
 			<h1>Évènements</h1>
 			{% include "app/_event.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'debug'}" class="container-fluid">
+		<div data-bind="page: {id: 'debug'}" class="container-fluid" id="debug">
 			<h1>Debug</h1>
 			{% include "app/_debug.html" %}
 		</div>

@@ -19,10 +19,9 @@ def serialize_folk(folk):
 	Serialize a folk object to JSON.
 	"""
 
-
 	r = {
 		'id': folk.pk,
-		'avatar': "http://placehold.it/50x60/" + colors[folk.pk % len(colors)],
+		'avatar': "http://placehold.it/100x120/" + colors[folk.pk % len(colors)],
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
 		'mother': folk.mother_id,
@@ -51,7 +50,7 @@ def serialize_folk_min(folk):
 		'id': folk.pk,
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
-		'avatar': "http://placehold.it/50x60/" + colors[folk.pk % len(colors)],
+		'avatar': "http://placehold.it/100x120/" + colors[folk.pk % len(colors)],
 	}
 
 	return r
