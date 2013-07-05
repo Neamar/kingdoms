@@ -17,7 +17,7 @@ def execute(code, param=None, context=None):
 	#call_function could be moved later
 	from internal.models import Constant
 	from event.models import Event, PendingEvent
-	from mission.models import Mission, PendingMission, PendingMissionAffectation
+	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
 	from title.models import Title, AvailableTitle
 	from config.scripts.random_scripts import random_in, random_value
 	from config.scripts.utils import sum_folks

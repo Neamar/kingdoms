@@ -49,8 +49,6 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		text_template = Template(instance.event.text)
 		instance.text = text_template.render(context)
 
-		print instance.text
-
 		instance.is_started = True
 		instance.save()
 

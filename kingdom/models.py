@@ -56,7 +56,7 @@ class Folk(models.Model):
 	plot = models.PositiveIntegerField(validators=[MaxValueValidator(20)], default=7)
 	scholarship = models.PositiveIntegerField(validators=[MaxValueValidator(20)], default=7)
 
-	loyalty = models.PositiveIntegerField(validators=[MaxValueValidator(100)], default=50)
+	loyalty = models.PositiveIntegerField(validators=[MaxValueValidator(100)], default=0)
 
 	quality_set = models.ManyToManyField('Quality', blank=True, null=True)
 

@@ -134,7 +134,7 @@ class UnitTest(TestCase):
 
 		self.f.fight = -1
 		self.f.save()
-		self.assertEqual(self.f.fight, 0)
+		self.assertEqual(self.f.fight, 1)
 
 	def test_diplomacy_threshold(self):
 		"""
@@ -146,7 +146,7 @@ class UnitTest(TestCase):
 
 		self.f.diplomacy = -1
 		self.f.save()
-		self.assertEqual(self.f.diplomacy, 0)
+		self.assertEqual(self.f.diplomacy, 1)
 
 	def test_plot_threshold(self):
 		"""
@@ -158,7 +158,7 @@ class UnitTest(TestCase):
 
 		self.f.plot = -1
 		self.f.save()
-		self.assertEqual(self.f.plot, 0)
+		self.assertEqual(self.f.plot, 1)
 
 	def test_scholarship_threshold(self):
 		"""
@@ -170,7 +170,7 @@ class UnitTest(TestCase):
 
 		self.f.scholarship = -1
 		self.f.save()
-		self.assertEqual(self.f.scholarship, 0)
+		self.assertEqual(self.f.scholarship, 1)
 
 	def test_loyalty_threshold(self):
 		"""
