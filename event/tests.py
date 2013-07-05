@@ -170,7 +170,7 @@ kingdom.save()
 		pea = pe.pendingeventaction_set.all()[0]
 		pea.fire()
 
-		self.assertEqual(self.k.money, 50)
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).money, 50)
 
 	def test_resolution_delete_pending_event(self):
 		"""
