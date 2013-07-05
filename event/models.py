@@ -24,6 +24,10 @@ class Event(models.Model):
 	"""
 	Dictionary of all available events.
 	"""
+
+	class Meta:
+		ordering = ['slug']
+
 	name = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, unique=True)
 	text = models.TextField()

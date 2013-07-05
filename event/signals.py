@@ -34,6 +34,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		for var in instance._pendingeventvariable_set.all():
 			raw_context[var.name] = var.value
 		raw_context['kingdom'] = instance.kingdom
+		raw_context['folks'] = instance.kingdom.folk_set.filter(death=None)
 		raw_context['dynastie'] = lambda: instance.kingdom.user.username
 
 		# Ugly, but necessary: give access to titles in event context.
