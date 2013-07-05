@@ -48,13 +48,16 @@ class MissionGrid(NamedModel):
 	"""
 	A grid to store folk affectation on a mission.
 	"""
+
+	class Meta:
+		ordering = ['mission__name']
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
 	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", blank=True, default="")
 
 	def __unicode__(self):
-		return '%s [%s (%s)]' % (self.name, self.mission.name, self.length)
+		return '%s [%s (%s)]' % (self.mission.slug, self.name, self.length)
 
 
 class PendingMission(models.Model):
