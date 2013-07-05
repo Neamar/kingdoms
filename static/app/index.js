@@ -64,6 +64,13 @@ http_actions = {
 		http_actions._post(pending_mission.links.start());
 	},
 
+	/*
+	 * Start the mission
+	 */
+	pendingMissionCancel: function(pending_mission) {
+		http_actions._post(pending_mission.links.cancel());
+	},
+
 
 	/*
 	 * Affect folk_id to the specified title
