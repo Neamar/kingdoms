@@ -1,4 +1,5 @@
 from django.http import HttpResponse, Http404
+from django.core.exceptions import ValidationError
 
 from kingdom.utils import to_json
 
@@ -15,6 +16,23 @@ def json_view(func):
 			return HttpResponse(json, mimetype='application/json')
 		else:
 			return response
+
+	return wrap
+
+
+def status_view(func):
+	"""
+	Catch ValidationError and format them nicely in dict[status] key.
+	"""
+
+	def wrap(request, *a, **kw):
+		status = 'ok'
+		try:
+			func(request, *a, **kw)
+		except ValidationError as ve:
+			status = str(ve.messages[0])
+
+		return {'status': status}
 
 	return wrap
 

@@ -2,14 +2,16 @@ from datetime import datetime
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 
-from kingdom.decorators import json_view, force_post
+from kingdom.decorators import json_view, force_post, status_view
 from kingdom.models import Kingdom, Folk
 from mission.models import PendingMission, PendingMissionAffectation, MissionGrid
 
 
 @force_post
 @json_view
+@status_view
 def pending_mission_grid_affect(request, pk, grid_pk):
 	"""
 	Affect the folk to the mission
@@ -29,10 +31,8 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 		mission_grid=mission_grid,
 		folk=folk
 	)
-	pma.save()
 
-	status = 'ok'
-	return {'status': status}
+	pma.save()
 
 
 @force_post
@@ -47,8 +47,7 @@ def pending_mission_grid_defect(request, pk):
 	# Defect
 	pending_mission_affectation.delete()
 
-	status = 'ok'
-	return {'status': status}
+	pma.save()
 
 
 @force_post
