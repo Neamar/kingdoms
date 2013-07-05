@@ -120,3 +120,17 @@ def sum_folks(folks, attribute):
 	Returns the sum of the choosen attribute
 	"""
 	return sum([getattr(folk, attribute) for folk in folks])
+
+
+def folk_remove_quality(self, name):
+	"""
+	Add a new quality.
+	"""
+
+	quality = Quality.objects.get(name__iexact=name)
+	try:
+		self.quality_set.remove(quality)
+	except:
+		pass
+	return quality
+Folk.remove_quality = folk_remove_quality
