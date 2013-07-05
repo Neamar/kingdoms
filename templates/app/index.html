@@ -12,31 +12,38 @@
 {% endblock js %}
 
 {% block content %}
-<div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
-	<a href="#" class="pure-menu-heading">Que mon règne vienne !</a>
-
-	<ul>
-		<li class="pure-menu-selected"><a href="#">Accueil</a></li>
-		<li class=""><a data-bind="page-href: 'title'">Titres</a></li>
-		<li class=""><a data-bind="page-href: 'mission'">Missions</a></li>
-		<li class=""><a data-bind="page-href: 'event'">Évènements</a></li>
-		<li data-bind="visible: debug_info()"><a data-bind="page-href: 'debug'">Debug</a></li>
-		<li class=""><a data-bind="click: loadDatas" href="#">Rafraîchir</a></li>
-		<li>Prestige : <span data-bind="text: kingdom.prestige"></span></li>
-		<li>Argent : <span data-bind="text: kingdom.money"></span></li>
-		<li>Population : <span data-bind="text: kingdom.population"></span></li>
-	</ul>
+<div class="navbar navbar-inverse navbar-fixed-bottom">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+		<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+			<a class="brand" href="#">Que mon règne vienne</a>
+			<div class="nav-collapse collapse">
+			<p class="navbar-text pull-right">
+				Prestige : <span data-bind="text: kingdom.prestige"></span> Argent : <span data-bind="text: kingdom.money"></span> Population : <span data-bind="text: kingdom.population"></span>
+			</p>
+			<ul class="nav">
+				<li class="active"><a href="#">Accueil</a></li>
+				<li class=""><a data-bind="page-href: 'title'">Titres</a></li>
+				<li class=""><a data-bind="page-href: 'mission'">Missions</a></li>
+				<li class=""><a data-bind="page-href: 'event'">Évènements</a></li>
+				<li data-bind="visible: debug_info()"><a data-bind="page-href: 'debug'">Debug</a></li>
+				<li class=""><a data-bind="click: loadDatas" href="#">Rafraîchir</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+		</div>
+	</div>
 </div>
 
-
-<a href="#">Retour</a>
-
-<div class="pure-g-r">
-	<div class="pure-u-1-6" id="folk">
+<div class="row">
+	<div class="span3" id="folk">
 		{% include "app/_folk.html" %}
 	</div>
 
-	<div class="pure-u-1-2" id="content">
+	<div class="span6" id="content">
 		<div data-bind="page: {id: 'start'}">
 			<h1>Mon royaume</h1>
 			{% include "app/_index.html" %}
@@ -69,7 +76,7 @@
 		</div>
 	</div>
 
-	<div class="pure-u-1-6" id="messages">
+	<div class="span3" id="messages">
 		<h3>Messages</h3>
 		{% include "app/_message.html" %}
 	</div>
