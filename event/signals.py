@@ -31,8 +31,6 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		add_to_builtins("kingdom.templatetags.folks_list")
 
 		raw_context = {}
-		for var in instance._pendingeventvariable_set.all():
-			raw_context[var.name] = var.value
 		raw_context['kingdom'] = instance.kingdom
 		raw_context['folks'] = instance.kingdom.folk_set.filter(death=None)
 		raw_context['dynastie'] = lambda: instance.kingdom.user.username
@@ -41,12 +39,17 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		from title.models import AvailableTitle
 		titles = lambda: {at.title.name.replace(' ', '_'): at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
 		raw_context['title'] = titles
-		
+
+		for var in instance._pendingeventvariable_set.all():
+			raw_context[var.name] = var.value
+
 		context = Context(raw_context)
 
 		# Create text from templates
 		text_template = Template(instance.event.text)
 		instance.text = text_template.render(context)
+
+		print instance.text
 
 		instance.is_started = True
 		instance.save()

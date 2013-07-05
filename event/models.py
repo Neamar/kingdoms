@@ -93,7 +93,7 @@ class PendingEvent(models.Model):
 
 	def fire(self):
 		"""
-		Execute the code when the event append
+		Execute the code when the event happen.
 		Signals will check the validity.
 		"""
 		context = {

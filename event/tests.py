@@ -302,7 +302,9 @@ param.set_value("kingdom", kingdom)
 		)
 		pe.save()
 		pe.set_value("folks", [f, f2])
-		pe.start()
+
+		pe.started = datetime.now()
+		pe.save()
 
 		self.assertEqual(pe.text, "septon et cersei")
 
