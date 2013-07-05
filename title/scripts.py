@@ -40,3 +40,16 @@ def folk_add_title(self, title_name):
 	available_title.folk = self
 	available_title.save()
 Folk.add_title = folk_add_title
+
+
+def folk_remove_title(self):
+	"""
+	Add the title to the folk
+	"""
+	try:
+		available_title = AvailableTitle.objects.get(kingdom=self.kingdom, folk=self)
+	except:
+		pass
+	available_title.folk = None
+	available_title.save()
+Folk.remove_title = folk_remove_title
