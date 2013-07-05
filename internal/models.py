@@ -132,6 +132,9 @@ class Avatar(models.Model):
 	category = models.ForeignKey(AvatarCategory)
 	image = models.ImageField(upload_to="avatars/")
 
+	def __unicode__(self):
+		return self.image.name
+
 
 class Function(models.Model):
 	"""
