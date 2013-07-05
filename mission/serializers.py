@@ -86,6 +86,9 @@ def serialize_available_mission(available_mission):
 		'id': available_mission.id,
 		'name': available_mission.mission.name,
 		'text': available_mission.mission.text,
+		'links': {
+			'start': reverse('mission.views.available_mission_start', args=(available_mission.pk,))
+		}
 	}
 
 	return r

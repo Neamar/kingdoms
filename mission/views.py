@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from kingdom.decorators import json_view, force_post, status_view
 from kingdom.models import Kingdom, Folk
-from mission.models import PendingMission, PendingMissionAffectation, MissionGrid
+from mission.models import PendingMission, PendingMissionAffectation, MissionGrid, AvailableMission
 
 
 @force_post
@@ -81,3 +81,17 @@ def pending_mission_start(request, pk):
 	# Start
 	pending_mission.started = datetime.now()
 	pending_mission.save()
+
+
+@force_post
+@json_view
+@status_view
+def available_mission_start(request, pk):
+	"""
+	Start an available mission.
+	"""
+	# Retrieve the objects
+	available_mission = get_object_or_404(AvailableMission, pk=pk, kingdom=request.user.kingdom)
+
+	# Start the mission
+	available_mission.start()

@@ -211,6 +211,12 @@ class AvailableMission(models.Model):
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 
+	def start(self):
+		"""
+		Create a pending mission for the player.
+		"""
+		PendingMission(mission=self.mission, kingdom=self.kingdom).save()
+
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
 
