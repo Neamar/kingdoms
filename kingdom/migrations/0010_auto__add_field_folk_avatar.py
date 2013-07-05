@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("internal", "0011_auto__add_avatar"),
+    )
+
     def forwards(self, orm):
         # Adding field 'Folk.avatar'
         db.add_column('kingdom_folk', 'avatar',
