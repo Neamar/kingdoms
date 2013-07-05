@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar
+from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar, AvatarCategory
 from kingdom.models import Kingdom
 
 
@@ -50,6 +50,9 @@ admin.site.register(FirstName, FirstNameAdmin)
 
 
 admin.site.register(LastName)
+
+
+admin.site.register(AvatarCategory)
 
 
 admin.site.register(Avatar)
