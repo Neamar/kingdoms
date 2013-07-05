@@ -25,6 +25,10 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		status, param = instance.fire()
 
+		import django.template.loader
+		from django.template import add_to_builtins
+		add_to_builtins("kingdom.templatetags.folks_list")
+
 		raw_context = {}
 		for var in instance._pendingeventvariable_set.all():
 			raw_context[var.name] = var.value

@@ -221,6 +221,29 @@ param.set_value("kingdom", kingdom)
 
 		self.assertEqual(pe.text, "septon")
 
+	def test_templates_and_templatetags(self):
+		"""
+		Check templating loads templatetags for folk display.
+		"""
+		f = Folk(first_name="septon", kingdom=self.k)
+		f.save()
+		f2 = Folk(first_name="cersei", kingdom=self.k)
+		f2.save()
+
+		self.e.text = "{{ folks|folks_list:'short' }}"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+		pe.set_value("folks", [f, f2])
+		pe.start()
+
+		self.assertEqual(pe.text, "septon et cersei")
+
 	def test_pendingevent_set_get_value(self):
 		"""
 		Test that setting and retrieving a context value through a Pending Event works
