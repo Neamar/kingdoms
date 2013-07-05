@@ -47,6 +47,9 @@ class EventAction(models.Model):
 	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=" ")
 	text = models.CharField(max_length=255)
 
+	def __unicode__(self):
+		return "%s [%s]" % (self.text[0:50], self.event.slug)
+
 
 class PendingEvent(models.Model):
 	"""
