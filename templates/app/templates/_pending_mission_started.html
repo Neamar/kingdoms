@@ -1,0 +1,21 @@
+<div class="well row-fluid">
+	<h2 data-bind="text : name"></h2>
+	<p data-bind="html : text"></p>
+
+	<p data-bind="if: has_target">Cible : <span data-bind="text: ko.utils.arrayFirst(targets(), function(t) { return t.id() == target()}).name()"></span>
+	</p>
+
+	<div data-bind="foreach: grids">
+		<div>
+			<p data-bind="text: name"></p>
+			<div data-bind="foreach: affectations">
+				<div>
+					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
+					<span data-bind="text:first_name() + ' ' + last_name()"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p>Résolution : <span data-bind="text: new Date(started() + duration() * 60000)"></span></p>
+</div>

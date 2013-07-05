@@ -24,15 +24,9 @@
 		</div>
 	</div>
 
-	<div data-bind="if: started() == null">
-		<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
+	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
 
-		<a class="btn" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
+	<a class="btn" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
 
-		<a class="btn" href="#" data-bind="visible:cancellable(), click: http_actions.pendingMissionCancel">Annuler la mission</a>
-	</div>
-
-	<div data-bind="if: started() != null">
-		<p>Résolution : <span data-bind="text: new Date(started() + duration() * 60000)"></span></p>
-	</div>
+	<a class="btn" href="#" data-bind="visible:cancellable(), click: http_actions.pendingMissionCancel">Annuler la mission</a>
 </div>
