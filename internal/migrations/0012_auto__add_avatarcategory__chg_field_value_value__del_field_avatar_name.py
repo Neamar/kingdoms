@@ -18,6 +18,9 @@ class Migration(SchemaMigration):
 
         # Changing field 'Value.value'
         db.alter_column('internal_value', 'value', self.gf('config.fields.stored_value.StoredValueField')(max_length=1024, null=True))
+        # Deleting field 'Avatar.name'
+        db.delete_column(u'internal_avatar', 'name')
+
         # Adding field 'Avatar.category'
         db.add_column('internal_avatar', 'category',
                       self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['internal.AvatarCategory']),
@@ -31,6 +34,9 @@ class Migration(SchemaMigration):
 
         # Changing field 'Value.value'
         db.alter_column('internal_value', 'value', self.gf('config.fields.stored_value.StoredValueField')(max_length=512, null=True))
+
+        # User chose to not deal with backwards NULL issues for 'Avatar.name'
+        raise RuntimeError("Cannot reverse this migration. 'Avatar.name' and its values cannot be restored.")
         # Deleting field 'Avatar.category'
         db.delete_column('internal_avatar', 'category_id')
 
@@ -76,8 +82,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Avatar'},
             'avatar': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['internal.AvatarCategory']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'internal.avatarcategory': {
             'Meta': {'object_name': 'AvatarCategory'},

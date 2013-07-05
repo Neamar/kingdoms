@@ -125,7 +125,7 @@ class AvatarCategory(NamedModel):
 	pass
 
 
-class Avatar(NamedModel):
+class Avatar(models.Model):
 	"""
 	Dictionary for avatar.
 	"""
