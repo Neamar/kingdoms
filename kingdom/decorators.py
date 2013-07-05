@@ -30,7 +30,7 @@ def status_view(func):
 		try:
 			func(request, *a, **kw)
 		except ValidationError as ve:
-			status = str(ve.messages[0])
+			status = unicode(ve.messages[0])
 
 		return {'status': status}
 

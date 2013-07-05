@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
 
 from kingdom.decorators import json_view, force_post, status_view
 from kingdom.models import Kingdom, Folk

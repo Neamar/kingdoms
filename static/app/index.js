@@ -210,7 +210,7 @@ var global_mapping = {
 			})
 		})
 
-		datas.debug_info = ko.observable("&empty;")
+		datas.debug_info = ko.observable("")
 		return datas;
 	},
 }
