@@ -53,6 +53,9 @@ Que scripter ?
 #### Ajouter un trait à une personne
 * `folk.add_quality("quality")`: ajoute le trait `quality` à la personne, puis retourne le trait ou `None` si l'affectation a échouée (par exemple, traits incompatibles)
 
+#### Enlever un trait à quelqu'un
+* `folk.remove_quality("quality"): enlève le trait `quality` à la personne.
+
 #### Savoir si une personne a un certain trait
 * `folk.has_quality("quality")` : renvoie True si la personne a le trait, sinon renvoie `False`.
 
