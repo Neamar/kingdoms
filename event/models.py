@@ -51,6 +51,7 @@ class EventAction(models.Model):
 	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to hide this button.", default=" ")
 	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=" ")
 	text = models.CharField(max_length=255)
+	message = models.TextField(blank=True, null=True, default="")
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.text[0:50], self.event.slug)
