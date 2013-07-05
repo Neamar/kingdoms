@@ -23,6 +23,7 @@ def serialize_pending_mission(pending_mission):
 		'target': pending_mission.target_id,
 		'links': {
 			'start': reverse('mission.views.pending_mission_start', args=(pending_mission.pk,)),
+			'cancel': reverse('mission.views.pending_mission_cancel', args=(pending_mission.pk,)),
 			'target': reverse('mission.views.pending_mission_set_target', args=(pending_mission.pk,))
 		}
 	}

@@ -68,6 +68,7 @@ def pending_mission_set_target(request, pk):
 	pending_mission.save()
 
 
+@force_post
 @json_view
 @status_view
 def pending_mission_start(request, pk):
@@ -81,6 +82,21 @@ def pending_mission_start(request, pk):
 	# Start
 	pending_mission.started = datetime.now()
 	pending_mission.save()
+
+
+@force_post
+@json_view
+@status_view
+def pending_mission_cancel(request, pk):
+	"""
+	Cancel the pending mission
+	"""
+
+	# Retrieve the object
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
+
+	# Cancel
+	pending_mission.delete()
 
 
 @force_post
