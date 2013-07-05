@@ -391,24 +391,15 @@ Kingdom().save()
 		"""
 		Check the on_resolution code.
 		"""
-		m2 = Mission(
-			name="Stub mission2",
-			slug="stub_2",
-			on_resolution="""
+		self.m.on_resolution = """
 status='mission_solved'
-""",
-			title=self.t,
-		)
-		m2.save()
+"""
+		self.m.save()
 
-		pm2 = PendingMission(
-			mission=m2,
-			kingdom=self.k,
-			started=datetime.now()
-		)
-		pm2.save()
+		self.pm.started = datetime.now()
+		self.pm.save()
 
-		status = pm2.resolve()
+		status = self.pm.resolve()
 		self.assertEqual(status, 'mission_solved')
 
 	def test_mission_resolution_with_target(self):
