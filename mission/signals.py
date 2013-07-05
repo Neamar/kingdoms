@@ -40,6 +40,19 @@ def check_no_target_change_after_start(sender, instance, **kwargs):
 	instance.last_target = instance.target
 
 
+@receiver(pre_save, sender=PendingMission)
+def check_no_value_change_after_start(sender, instance, **kwargs):
+	"""
+	Value can't be changed once the mission is started.
+	"""
+
+	if instance.is_started and instance.value != instance.last_value:
+		raise ValidationError("Impossible de modifier la valeur après le lancement de la mission !")
+
+	# Else, save for future access
+	instance.last_value = instance.value
+
+
 @receiver(pre_save, sender=PendingMissionAffectation)
 def check_folk_is_able(sender, instance, **kwargs):
 	"""
@@ -118,7 +131,7 @@ def check_pending_mission_target_allowed(sender, instance, **kwargs):
 	Check target is None if the mission forbids a target.
 	"""
 	if instance.target is not None and not instance.mission.has_target:
-			raise ValidationError("This mission does not allows for target.")
+			raise ValidationError("Cette mission ne permet pas de définir de cible.")
 
 
 @receiver(pre_save, sender=PendingMission)
@@ -128,7 +141,16 @@ def check_pending_mission_target_in_list(sender, instance, **kwargs):
 	"""
 
 	if instance.target is not None and not instance.is_started and not instance.target in instance.targets():
-			raise ValidationError("This target is not allowed.")
+			raise ValidationError("Ce royaume ne fait pas partie des cibles autorisées.")
+
+
+@receiver(pre_save, sender=PendingMission)
+def check_pending_mission_value_allowed(sender, instance, **kwargs):
+	"""
+	Check value is 0 if the mission forbids a value.
+	"""
+	if instance.value != 0 and not instance.mission.has_value:
+			raise ValidationError("Cette mission ne permet pas de définir de valeur.")
 
 
 @receiver(post_save, sender=PendingMission)

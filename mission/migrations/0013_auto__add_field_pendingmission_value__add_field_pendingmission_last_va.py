@@ -13,6 +13,11 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.PositiveIntegerField')(default=0, blank=True),
                       keep_default=False)
 
+        # Adding field 'PendingMission.last_value'
+        db.add_column('mission_pendingmission', 'last_value',
+                      self.gf('django.db.models.fields.PositiveIntegerField')(default=0, blank=True),
+                      keep_default=False)
+
         # Adding field 'Mission.has_value'
         db.add_column('mission_mission', 'has_value',
                       self.gf('django.db.models.fields.BooleanField')(default=False),
@@ -27,6 +32,9 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Deleting field 'PendingMission.value'
         db.delete_column('mission_pendingmission', 'value')
+
+        # Deleting field 'PendingMission.last_value'
+        db.delete_column('mission_pendingmission', 'last_value')
 
         # Deleting field 'Mission.has_value'
         db.delete_column('mission_mission', 'has_value')
@@ -174,10 +182,11 @@ class Migration(SchemaMigration):
             'is_started': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kingdom.Kingdom']"}),
             'last_target': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'+'", 'null': 'True', 'to': "orm['kingdom.Kingdom']"}),
+            'last_value': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0', 'blank': 'True'}),
             'mission': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['mission.Mission']"}),
             'started': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'target': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['kingdom.Kingdom']"}),
-            'value': ('django.db.models.fields.PositiveIntegerField', [], {'default': "''", 'blank': 'True'})
+            'value': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0', 'blank': 'True'})
         },
         'mission.pendingmissionaffectation': {
             'Meta': {'object_name': 'PendingMissionAffectation'},
