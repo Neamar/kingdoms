@@ -9,7 +9,7 @@ def serialize_pending_event(pending_event):
 	Serialize a pending event object to JSON.
 	"""
 
-	relative_timeout = pending_event.event.category.timeout if pending_event.event.category.timeout else 0
+	relative_timeout = pending_event.event.category.timeout if pending_event.event else 0
 
 	r = {
 		'id': pending_event.pk,
