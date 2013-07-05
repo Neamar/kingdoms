@@ -35,7 +35,7 @@ class Folk(models.Model):
 	)
 	kingdom = models.ForeignKey(Kingdom)
 
-	image = models.ForeignKey("internal.Avatar", blank=True, null=True, default=None)
+	avatar = models.ForeignKey("internal.Avatar", blank=True, null=True, default=None)
 
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)

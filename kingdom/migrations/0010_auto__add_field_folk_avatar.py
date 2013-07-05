@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Folk.image'
-        db.add_column('kingdom_folk', 'image',
+        # Adding field 'Folk.avatar'
+        db.add_column('kingdom_folk', 'avatar',
                       self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['internal.Avatar'], null=True, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Folk.image'
-        db.delete_column('kingdom_folk', 'image_id')
+        # Deleting field 'Folk.avatar'
+        db.delete_column('kingdom_folk', 'avatar_id')
 
 
     models = {
@@ -77,6 +77,7 @@ class Migration(SchemaMigration):
         },
         'kingdom.folk': {
             'Meta': {'unique_together': "(('first_name', 'last_name'),)", 'object_name': 'Folk'},
+            'avatar': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['internal.Avatar']", 'null': 'True', 'blank': 'True'}),
             'birth': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'death': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'diplomacy': ('django.db.models.fields.PositiveIntegerField', [], {'default': '7'}),
@@ -85,7 +86,6 @@ class Migration(SchemaMigration):
             'fight': ('django.db.models.fields.PositiveIntegerField', [], {'default': '7'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '64', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['internal.Avatar']", 'null': 'True', 'blank': 'True'}),
             'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kingdom.Kingdom']"}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '64', 'blank': 'True'}),
             'loyalty': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
