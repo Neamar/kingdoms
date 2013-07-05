@@ -129,7 +129,7 @@ class PendingEvent(models.Model):
 
 	def next_event(self, event):
 		"""
-		Creates a new pending event with the context of the previous
+		Creates a new pending event with the context of the previous (current) one.
 		"""
 		pending_event2 = PendingEvent(
 			kingdom=self.kingdom,

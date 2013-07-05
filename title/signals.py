@@ -34,6 +34,19 @@ def unaffect_title_on_death(sender, instance, **kwargs):
 			return
 
 
+@receiver(post_save, sender=AvailableTitle)
+def on_availabletitle_creation(sender, instance, created, **kwargs):
+	"""
+	Run on_unlock code right after creation
+	"""
+
+	if created:
+		status = instance.unlock()
+
+		if status != 'ok':
+			raise ValidationError(status)
+
+
 @receiver(pre_save, sender=AvailableTitle)
 def check_title_condition(sender, instance, **kwargs):
 	"""

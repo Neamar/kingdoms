@@ -106,6 +106,43 @@ class UnitTest(TestCase):
 		at = AvailableTitle.objects.get(pk=at.pk)
 		self.assertIsNone(at.folk)
 
+	def test_title_unlock(self):
+		"""
+		The on_unlock code is executed
+		"""
+		self.t.on_unlock = """
+kingdom.prestige = 50
+kingdom.save()
+"""
+
+		# Sanity check
+		self.assertEqual(self.k.prestige, 0)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+		)
+		at.save()
+
+		self.assertEqual(self.k.prestige, 50)
+
+	def test_title_unlock_fail(self):
+		"""
+		The on_unlock code is executed, and can stop the title creation.
+		"""
+		self.t.on_unlock = """
+status="no"
+"""
+
+		# Sanity check
+		self.assertEqual(self.k.prestige, 0)
+
+		at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+		)
+		self.assertRaises(ValidationError, at.save)
+
 	def test_title_condition(self):
 		"""
 		The condition can abort an affection
@@ -118,7 +155,6 @@ class UnitTest(TestCase):
 			kingdom=self.k,
 			folk=self.f
 		)
-
 		self.assertRaises(ValidationError, at.save)
 
 	def test_title_folk_kingdom(self):

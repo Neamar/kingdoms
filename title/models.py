@@ -11,6 +11,9 @@ class Title(DescribedModel):
 	"""
 	Dictionary of all titles in the game
 	"""
+
+	on_unlock = ScriptField(blank=True, help_text="Called after kingdom unlock. `param` is the current `AvailableTitle`, `kingdom` is the current kingdom.", default="")
+
 	condition = ScriptField(blank=True, help_text="Called before folk nomination. `param` is the current `AvailableTitle`, `folk` is the folk to be affected. Have the script set `status`to something other than 'ok' to abort the affectation.", default="")
 	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
 	on_defect = ScriptField(blank=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
@@ -30,6 +33,18 @@ class AvailableTitle(models.Model):
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.title.name, self.kingdom)
+
+	def unlock(self):
+		"""
+		Unlock the title for the kingdom.
+		"""
+		context = {
+			'kingdom': self.kingdom,
+		}
+
+		status, param = execute(self.title.on_unlock, self, context)
+
+		return status
 
 	def check_condition(self):
 		"""
