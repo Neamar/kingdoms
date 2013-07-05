@@ -26,7 +26,7 @@ class Mission(models.Model):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", blank=True, default=" ")
-	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid.", blank=True, default=" ")
+	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start. WARNING: do not set status for a mission with a timeout, unless you know exactly what you're doing.", blank=True, default=" ")
 	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", blank=True, default=" ")
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
@@ -140,6 +140,9 @@ class PendingMission(models.Model):
 			raise ValidationError("Mission already started.")
 
 		status, param = execute(self.mission.on_start, self, context=self._get_context())
+
+		if status != 'ok':
+			raise ValidationError(status)
 
 		self.is_started = True
 		self.save()

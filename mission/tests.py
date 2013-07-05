@@ -372,6 +372,29 @@ Kingdom().save()
 
 		self.assertEqual(Kingdom.objects.count(), 2)
 
+	def test_mission_on_start_aborted(self):
+		"""
+		Check the on_start code, aborting the mission.
+		"""
+		m2 = Mission(
+			name="Stub mission2",
+			slug="stub_2",
+			on_resolution="",
+			on_start="""
+status='abort'
+""",
+			title=self.t,
+		)
+		m2.save()
+
+		pm2 = PendingMission(
+			mission=m2,
+			kingdom=self.k,
+			started=datetime.now()
+		)
+		
+		self.assertRaises(ValidationError, pm2.save)
+
 	def test_mission_start_again(self):
 		"""
 		Can't start twice the same mission.
