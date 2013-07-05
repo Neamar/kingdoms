@@ -31,6 +31,14 @@ http_actions = {
 	/*
 	 * Affect folk_id to the specified mission grid.
 	 */
+	availableMissionStart: function(available_mission) {
+		http_actions._post(available_mission.links.start());
+	},
+
+
+	/*
+	 * Affect folk_id to the specified mission grid.
+	 */
 	pendingMissionGridAffect: function(grid, folk_id) {
 		http_actions._post(grid.links.affect(), {'folk': folk_id});
 	},

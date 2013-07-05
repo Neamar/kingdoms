@@ -1,6 +1,13 @@
 <ul class="pure-paginator">
+	<li><a class="pure-button" data-bind="page-href: 'available'">Missions disponibles</a></li>
 	<li><a class="pure-button" data-bind="page-href: '../mission'">Missions en attente</a></li>
 	<li><a class="pure-button" data-bind="page-href: 'running'">Missions en cours</a></li>
+</ul>
+
+<div data-bind="page: {id: 'available'}">
+	<ul data-bind="foreach: available_missions">
+		{% include "app/templates/_available_mission.html" %}
+	</div>
 </ul>
 
 <div data-bind="page: {id: 'start'}">
