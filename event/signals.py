@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.template import Template, Context
 
 from event.models import PendingEvent, PendingEventAction
@@ -66,4 +67,4 @@ def check_pending_event_action_sanity(sender, instance, **kwargs):
 	"""
 	
 	if instance.event_action.event != instance.pending_event.event:
-		raise ValidationError("The events in EventAction and PendingEventAction are different ")
+		raise IntegrityError("The events in EventAction and PendingEventAction are different ")

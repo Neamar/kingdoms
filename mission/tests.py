@@ -105,7 +105,7 @@ class UnitTest(TestCase):
 		self.pm.save()
 
 		# Can't remove affectation
-		self.assertRaises(IntegrityError, self.pma.delete)
+		self.assertRaises(ValidationError, self.pma.delete)
 
 	def test_cant_affect_after_mission_start(self):
 		"""
@@ -130,7 +130,7 @@ class UnitTest(TestCase):
 		)
 
 		# Can't affect after start
-		self.assertRaises(IntegrityError, pma2.save)
+		self.assertRaises(ValidationError, pma2.save)
 
 	def test_cant_update_target_after_mission_start(self):
 		"""
@@ -156,7 +156,7 @@ class UnitTest(TestCase):
 		self.pm.target = k2
 
 		# Can't change target
-		self.assertRaises(IntegrityError, self.pm.save)
+		self.assertRaises(ValidationError, self.pm.save)
 
 	def test_grid_condition(self):
 		"""
@@ -396,7 +396,7 @@ status='mission_solved'
 		Check the cancellable flag.
 		"""
 
-		self.assertRaises(IntegrityError, self.pm.delete)
+		self.assertRaises(ValidationError, self.pm.delete)
 
 	def test_mission_finished_not_cancellable(self):
 		"""

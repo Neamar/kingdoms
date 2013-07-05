@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 
 from kingdom.models import Kingdom, Folk
 from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
@@ -60,7 +61,7 @@ class UnitTest(TestCase):
 			text="PendingEventAction",
 		)
 
-		self.assertRaises(ValidationError, pea.save)
+		self.assertRaises(IntegrityError, pea.save)
 
 	def test_condition_event(self):
 		"""

@@ -14,7 +14,7 @@ def check_no_defection_after_mission_start(sender, instance, **kwargs):
 	"""
 
 	if instance.pending_mission.is_started and not instance.pending_mission.is_finished:
-		raise IntegrityError("Impossible de quitter la mission avant la fin")
+		raise ValidationError("Impossible de quitter la mission avant la fin")
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)
@@ -24,7 +24,7 @@ def check_no_affection_after_mission_start(sender, instance, **kwargs):
 	"""
 
 	if not instance.pk and instance.pending_mission.is_started:
-		raise IntegrityError("Impossible de rejoindre la mission après son démarrage !")
+		raise ValidationError("Impossible de rejoindre la mission après son démarrage !")
 
 
 @receiver(pre_save, sender=PendingMission)
@@ -34,7 +34,7 @@ def check_no_target_change_after_start(sender, instance, **kwargs):
 	"""
 
 	if instance.is_started and instance.target != instance.last_target:
-		raise IntegrityError("Impossible de modifier la cible après le lancement de la mission !")
+		raise ValidationError("Impossible de modifier la cible après le lancement de la mission !")
 
 	# Else, save for future access
 	instance.last_target = instance.target
@@ -150,4 +150,4 @@ def check_no_delete_if_not_cancellable_or_not_finished(sender, instance, **kwarg
 	"""
 	
 	if not instance.is_finished and not instance.mission.cancellable:
-		raise IntegrityError("Impossible d'annuler cette mission.'")
+		raise ValidationError("Impossible d'annuler cette mission.'")
