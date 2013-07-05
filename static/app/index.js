@@ -4,10 +4,20 @@
 http_actions = {
 	_post: function(url, param)
 	{
-		$.post(url, param, function(data) {
-			console.log(data);
-			loadDatas()
+		var jqxhr = $.post(url, param, function(data) {
+			if(data.status != 'ok')
+			{
+				alert(data.status);
+			}
 		});
+
+		jqxhr.fail(function(datas) {
+			console.log(datas);
+			alert("OUPS");
+		});
+
+		// Always reload datas
+		jqxhr.always(loadDatas);
 	},
 
 	/*
