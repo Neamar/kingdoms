@@ -176,12 +176,6 @@ kingdom.save()
 		"""
 		Pending event must be deleted after event resolution.
 		"""
-
-		self.a.on_fire = """
-kingdom.money=50
-kingdom.save()
-"""
-
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
@@ -194,6 +188,28 @@ kingdom.save()
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=pe.pk)))
 		self.assertRaises(PendingEventAction.DoesNotExist, (lambda: PendingEventAction.objects.get(pk=pea.pk)))
 
+	def test_resolution_create_message(self):
+		"""
+		Pending event must be deleted after event resolution.
+		"""
+		self.a.message = "get lucky!"
+		self.a.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		# Sanity check
+		self.assertEqual(0, len(self.k.message_set.all()))
+
+		pea = pe.pendingeventaction_set.all()[0]
+		pea.fire()
+
+		self.assertEqual(1, len(self.k.message_set.all()))
+		self.assertEqual(self.a.message, self.k.message_set.all()[0].content)
+		
 	def test_templates_and_variables(self):
 		"""
 		Check templating works on event and EventAction.

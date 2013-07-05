@@ -174,6 +174,10 @@ class PendingEventAction(models.Model):
 			'folks': self.pending_event.kingdom.folk_set.filter(death=None),
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
+
+		if self.message:
+			self.pending_event.kingdom.message_set.create(content=self.message)
+
 		self.pending_event.delete()
 		return status
 
