@@ -9,9 +9,11 @@ def serialize_pending_event(pending_event):
 	Serialize a pending event object to JSON.
 	"""
 
+	relative_timeout = pending_event.event.category.timeout if pending_event.event.category.timeout else 0
+
 	r = {
 		'id': pending_event.pk,
-		'timeout': pending_event.started+timedelta(minutes=pending_event.event.category.timeout),
+		'timeout': pending_event.started+timedelta(minutes=relative_timeout),
 		'name': pending_event.event.name,
 		'text': markdown(pending_event.text),
 		'actions': [serialize_pending_event_action(o) for o in pending_event.pendingeventaction_set.all()]
