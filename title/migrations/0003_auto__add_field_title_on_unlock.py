@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Title.on_unlock'
         db.add_column('title_title', 'on_unlock',
-                      self.gf('config.fields.script_field.ScriptField')(default='', blank=True),
+                      self.gf('config.fields.script_field.ScriptField')(default='# unlock code', blank=True, null=True),
                       keep_default=False)
 
 
