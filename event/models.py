@@ -151,10 +151,10 @@ class PendingEventAction(models.Model):
 		Check if this pending event action associated action allows to be created.
 		"""
 		context = {
-			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.all(),
+			'kingdom': self.pending_event.kingdom,
+			'folks': self.pending_event.kingdom.folk_set.all(),
 		}
-		status, param = execute(self.event.condition, self.pending_event, context)
+		status, param = execute(self.event_action.condition, self.pending_event, context)
 
 		return status
 

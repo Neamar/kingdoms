@@ -51,14 +51,12 @@ class UnitTest(TestCase):
 		pe = PendingEvent(
 			event=e2,
 			kingdom=self.k,
-			text="PendingEvent",
 		)
 		pe.save()
 
 		pea = PendingEventAction(
 			pending_event=pe,
 			event_action=self.a,
-			text="PendingEventAction",
 		)
 
 		self.assertRaises(IntegrityError, pea.save)
@@ -75,7 +73,6 @@ status="notAllowed"
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
-			text="some text"
 		)
 		self.assertRaises(ValidationError, pe.save)
 
@@ -99,6 +96,32 @@ kingdom.save()
 		)
 		pe.save()
 		self.assertEqual(self.k.population, 10)
+
+	def test_on_fire_event_creates_action(self):
+		"""
+		Check the on_fire code creates pending event action.
+		"""
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+		self.assertEqual(len(pe.pendingeventaction_set.all()), 1)
+		self.assertEqual(pe.pendingeventaction_set.all()[0].event_action, self.a)
+
+	def test_on_fire_event_action_condition(self):
+		"""
+		Check the on_fire code creates pending event action according to their conditions.
+		"""
+		self.a.condition = "status='no'"
+		self.a.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+		self.assertEqual(len(pe.pendingeventaction_set.all()), 0)
 
 	def test_on_fire_event_twice(self):
 		"""

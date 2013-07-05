@@ -58,6 +58,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 				text=text_template.render(context),
 			)
 
+			status = pea.check_condition()
 			if status == 'ok':
 				pea.save()
 
