@@ -198,9 +198,9 @@ param.set_value("kingdom", kingdom)
 		self.assertEqual(pe.text, "EVENT:test-666")
 		self.assertEqual(pea.text, "ACTION:test-666")
 
-	def test_templates_and_context(self):
+	def test_templates_and_title_context(self):
 		"""
-		Check templating works on event and EventAction with default context.
+		Check templating works on event and EventAction with default context title.
 		"""
 		from title.models import Title, AvailableTitle
 		t = Title(name="cure", description=" ")
@@ -220,6 +220,26 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.text, "septon")
+
+	def test_templates_and_dynasty_context(self):
+		"""
+		Check templating works on event and EventAction with default context dynasty.
+		"""
+		from django.contrib.auth.models import User
+		u = User(username="hello")
+		u.save()
+		self.k.user = u
+		self.k.save()
+		self.e.text = "{{ dynastie }}"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		self.assertEqual(pe.text, "hello")
 
 	def test_templates_and_templatetags(self):
 		"""
