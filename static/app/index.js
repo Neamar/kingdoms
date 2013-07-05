@@ -12,8 +12,8 @@ http_actions = {
 		});
 
 		jqxhr.fail(function(datas) {
-			console.log(datas);
-			alert("OUPS");
+			viewModel.debug_info(datas.responseText);
+			document.location = "#debug";
 		});
 
 		// Always reload datas
@@ -209,6 +209,8 @@ var global_mapping = {
 				return item.started() == null;
 			})
 		})
+
+		datas.debug_info = ko.observable("&empty;")
 		return datas;
 	},
 }
