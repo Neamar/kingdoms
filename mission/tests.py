@@ -138,6 +138,7 @@ class UnitTest(TestCase):
 		"""
 
 		self.m.has_target = True
+		self.m.save()
 
 		k2 = Kingdom()
 		k2.save()
@@ -153,9 +154,28 @@ class UnitTest(TestCase):
 
 		self.pm.started = datetime.now()
 		self.pm.save()
-		self.pm.target = k2
-
+		
 		# Can't change target
+		self.pm.target = k2
+		self.assertRaises(ValidationError, self.pm.save)
+
+	def test_cant_update_value_after_mission_start(self):
+		"""
+		The value can't be changed after mission start.
+		"""
+
+		self.m.has_value = True
+		self.m.save()
+
+		# Sanity check
+		self.pm.value = 10
+		self.pm.save()
+
+		self.pm.started = datetime.now()
+		self.pm.save()
+
+		# Can't change value
+		self.pm.value = 20
 		self.assertRaises(ValidationError, self.pm.save)
 
 	def test_grid_condition(self):
@@ -236,7 +256,7 @@ status="not_allowed"
 
 	def test_mission_target_list_code(self):
 		"""
-		Check the target_list code
+		Check the target_list code is runned on affectation
 		"""
 
 		self.m.has_target = True
@@ -269,7 +289,7 @@ status="not_allowed"
 
 	def test_mission_target_default(self):
 		"""
-		Check the target is in target_list
+		Check the target with default code (all kingdom but mine)
 		"""
 
 		k2 = Kingdom(
@@ -289,11 +309,20 @@ status="not_allowed"
 
 	def test_mission_target_allowed(self):
 		"""
-		Check the target is in target_list
+		Check the target is allowed on affectation.
 		"""
 
 		# Invalid assignment, self.m does not define has_target=True
 		self.pm.target = self.k
+		self.assertRaises(ValidationError, self.pm.save)
+
+	def test_mission_value_allowed(self):
+		"""
+		Check the value is allowed on affectation.
+		"""
+
+		# Invalid assignment, self.m does not define has_value=True
+		self.pm.value = 100
 		self.assertRaises(ValidationError, self.pm.save)
 
 	def test_mission_on_init(self):
