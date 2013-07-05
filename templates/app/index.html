@@ -38,38 +38,38 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row-fluid">
 	<div class="span3" id="folk">
 		{% include "app/_folk.html" %}
 	</div>
 
 	<div class="span6" id="content">
-		<div data-bind="page: {id: 'start'}">
+		<div data-bind="page: {id: 'start'}" class="container-fluid">
 			<h1>Mon royaume</h1>
 			{% include "app/_index.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'title'}">
+		<div data-bind="page: {id: 'title'}" class="container-fluid">
 			<h1>Titres</h1>
 			{% include "app/_title.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'mission'}">
+		<div data-bind="page: {id: 'mission'}" class="container-fluid">
 			<h1>Missions</h1>
 			{% include "app/_mission.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'event'}">
+		<div data-bind="page: {id: 'event'}" class="container-fluid">
 			<h1>Évènements</h1>
 			{% include "app/_event.html" %}
 		</div>
 
-		<div data-bind="page: {id: 'debug'}">
+		<div data-bind="page: {id: 'debug'}" class="container-fluid">
 			<h1>Debug</h1>
 			{% include "app/_debug.html" %}
 		</div>
 
-		<div data-bind="page: {id: '?'}">
+		<div data-bind="page: {id: '?'}" class="container-fluid">
 			<h1>Oups !</h1>
 			<p>Désolé, mais cette page n'existe pas.</p>
 			<p><a data-bind="page-href: #">Go back</a></p>
