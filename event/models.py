@@ -29,7 +29,7 @@ class Event(models.Model):
 	text = models.TextField()
 	
 	weight = models.PositiveIntegerField(default=1)
-	category = models.ForeignKey(EventCategory)
+	category = models.ForeignKey(EventCategory, blank=True, null=True, default=None)
 
 	condition = ScriptField(blank=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status=' some_error'` to abort the event.", default=" ")
 	on_fire = ScriptField(blank=True, help_text="Event code, `param` is the current `PendingEvent`.", default=" ")
