@@ -1,8 +1,8 @@
-<div class="pure-r">
+<div class="well row-fluid">
 	<h2 data-bind="text : name"></h2>
 	<p data-bind="html : text"></p>
 
-	<form class="pure-form pure-form-aligned" data-bind="if: has_target">
+	<form data-bind="if: has_target">
 		<label for="target">Cible :</label>
 		<select name="target" id="target" data-bind="event: {change: change_pending_mission_update_target }, options:targets, optionsText: 'name', optionsValue: 'id', optionsCaption: 'Sélectionnez...', value: target"></select>
 	</form>
@@ -23,17 +23,16 @@
 			</div>
 		</div>
 	</div>
+
+	<div data-bind="if: started() == null">
+		<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
+
+		<a class="btn" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
+
+		<a class="btn" href="#" data-bind="visible:cancellable(), click: http_actions.pendingMissionCancel">Annuler la mission</a>
+	</div>
+
+	<div data-bind="if: started() != null">
+		<p>Résolution : <span data-bind="text: new Date(started() + duration() * 60000)"></span></p>
+	</div>
 </div>
-
-<div data-bind="if: started() == null">
-	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
-
-	<a class="pure-button" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
-
-	<a class="pure-button" href="#" data-bind="visible:cancellable(), click: http_actions.pendingMissionCancel">Annuler la mission</a>
-</div>
-
-<div data-bind="if: started() != null">
-	<p>Résolution : <span data-bind="text: new Date(started() + duration() * 60000)"></p>
-</div>
-<hr />
