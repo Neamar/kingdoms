@@ -411,6 +411,50 @@ status='mission_solved'
 		status = pm2.resolve()
 		self.assertEqual(status, 'mission_solved')
 
+	def test_mission_resolution_with_target(self):
+		"""
+		Check the on_resolution code works with a target.
+		"""
+		k2 = Kingdom()
+		k2.save()
+
+		self.m.has_target = True
+		self.m.on_resolution = """
+if target.pk == %s:
+	status='mission_solved'
+""" % k2.pk
+		self.m.save()
+
+		self.pm.target = k2
+		self.pm.save()
+
+		self.pm.started = datetime.now()
+		self.pm.save()
+
+		status = self.pm.resolve()
+		self.assertEqual(status, 'mission_solved')
+
+	def test_mission_resolution_with_value(self):
+		"""
+		Check the on_resolution code works with a value.
+		"""
+
+		self.m.has_value = True
+		self.m.on_resolution = """
+if value == 15:
+	status='mission_solved'
+"""
+		self.m.save()
+
+		self.pm.value = 15
+		self.pm.save()
+
+		self.pm.started = datetime.now()
+		self.pm.save()
+
+		status = self.pm.resolve()
+		self.assertEqual(status, 'mission_solved')
+
 	def test_mission_resolution_delete_pending_mission(self):
 		# Pendingmission must be deleted
 		self.pm.started = datetime.now()
