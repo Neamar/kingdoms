@@ -22,7 +22,7 @@ def serialize_folk(folk):
 
 	r = {
 		'id': folk.pk,
-		'avatar': "http://placehold.it/50x60/" + colors[folk.pk],
+		'avatar': "http://placehold.it/50x60/" + colors[folk.pk % len(colors)],
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
 		'mother': folk.mother_id,
@@ -51,7 +51,7 @@ def serialize_folk_min(folk):
 		'id': folk.pk,
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
-		'avatar': "http://placehold.it/50x60/" + colors[folk.pk],
+		'avatar': "http://placehold.it/50x60/" + colors[folk.pk % len(colors)],
 	}
 
 	return r
