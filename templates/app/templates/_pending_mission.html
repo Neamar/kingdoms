@@ -14,7 +14,7 @@
 				<div>
 					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
 					<span data-bind="text:first_name() + ' ' + last_name()"></span>
-					<a href="#" data-bind="click: http_availableTitleDefect">Ouste !</a>
+					<a href="#" data-bind="click: http_actions.pendingMissionGridDefect">Ouste !</a>
 				</div>
 			</div>
 
@@ -28,7 +28,7 @@
 <div data-bind="if: started() == null">
 	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
 
-	<a class="pure-button" href="#" data-bind="click: http_pendingMissionStart">Démarrer la mission</a>
+	<a class="pure-button" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
 </div>
 
 <div data-bind="if: started() != null">

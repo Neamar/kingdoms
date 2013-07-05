@@ -1,56 +1,61 @@
 //##################################
 // HTTP ACTIONS
 //##################################
+http_actions = {
+	/*
+	 * Fire the selected action to resolve the event.
+	 */
+	pendingEventActionFire: function(action) {
+		$.post(action.links.fire(), {}, loadDatas);
+	},
 
-/*
- * Fire the selected action to resolve the event.
- */
-function http_pendingEventActionFire(action) {
-	$.post(action.links.fire(), {}, loadDatas);
+
+	/*
+	 * Affect folk_id to the specified mission grid.
+	 */
+	pendingMissionGridAffect: function(grid, folk_id) {
+		$.post(grid.links.affect(), {'folk': folk_id}, loadDatas);
+	},
+
+	/*
+	 * Defect folk_id from the specified mission grid.
+	 */
+	pendingMissionGridDefect: function(affectation) {
+		$.post(affectation.links.defect(), {}, loadDatas);
+	},
+
+	/*
+	 * Start the mission
+	 */
+	pendingMissionTarget: function(pending_mission, target_id) {
+		$.post(pending_mission.links.target(), {'target': target_id}, loadDatas);
+	},
+
+	/*
+	 * Start the mission
+	 */
+	pendingMissionStart: function(pending_mission) {
+		$.post(pending_mission.links.start(), {}, loadDatas);
+	},
+
+
+	/*
+	 * Affect folk_id to the specified title
+	 */
+	availableTitleAffect: function(title, folk_id) {
+		$.post(title.links.affect(), {'folk': folk_id}, loadDatas);
+	},
+
+	/*
+	 * Defect the specified title
+	 */
+	availableTitleDefect: function(title) {
+		$.post(title.links.defect(), {}, loadDatas);
+	}
 }
 
-/*
- * Affect folk_id to the specified mission grid.
- */
-function http_pendingMissionGridAffect(grid, folk_id) {
-	$.post(grid.links.affect(), {'folk': folk_id}, loadDatas);
-}
-
-/*
- * Defect folk_id from the specified mission grid.
- */
-function http_pendingMissionGridDefect(affectation) {
-	$.post(affectation.links.defect(), {}, loadDatas);
-}
-
-/*
- * Start the mission
- */
-function http_pendingMissionTarget(pending_mission, target_id) {
-	$.post(pending_mission.links.target(), {'target': target_id}, loadDatas);
-}
-
-/*
- * Start the mission
- */
-function http_pendingMissionStart(pending_mission) {
-	$.post(pending_mission.links.start(), {}, loadDatas);
-}
 
 
-/*
- * Affect folk_id to the specified title
- */
-function http_availableTitleAffect(title, folk_id) {
-	$.post(title.links.affect(), {'folk': folk_id}, loadDatas);
-}
-
-/*
- * Defect the specified title
- */
-function http_availableTitleDefect(title) {
-	$.post(title.links.defect(), {}, loadDatas);
-}
 
 //##################################
 // CUSTOM BINDINGS
@@ -102,7 +107,7 @@ ko.bindingHandlers.droppable = {
 function droppable_pending_mission_grid_affect_folk(event, ui) {
 	grid = ko.dataFor($(this)[0]);
 	folk_id = ko.dataFor(ui.draggable[0]).id();
-	http_pendingMissionGridAffect(grid, folk_id)
+	http_actions.pendingMissionGridAffect(grid, folk_id)
 }
 
 /**
@@ -111,7 +116,7 @@ function droppable_pending_mission_grid_affect_folk(event, ui) {
 function droppable_available_title_affect_folk(event, ui) {
 	available_title = ko.dataFor($(this)[0]);
 	folk_id = ko.dataFor(ui.draggable[0]).id();
-	http_availableTitleAffect(available_title, folk_id);
+	http_actions.availableTitleAffect(available_title, folk_id);
 }
 
 /**
@@ -122,7 +127,7 @@ function change_pending_mission_update_target(context, event) {
 	pending_mission = context
 
 	if(target_id != '' && target_id != pending_mission.target())
-		http_pendingMissionTarget(pending_mission, target_id)
+		http_actions.pendingMissionTarget(pending_mission, target_id)
 
 }
 
