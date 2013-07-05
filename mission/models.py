@@ -33,6 +33,9 @@ class Mission(models.Model):
 	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", blank=True, default=" ")
 	target_description = models.CharField(max_length=255, default="Cible")
 
+	has_value = models.BooleanField(default=False, help_text="Does this missions asks for a value?")
+	value_description = models.CharField(max_length=255, default="Valeur :")
+
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
 	title = models.ForeignKey(Title, blank=True, null=True)
@@ -62,6 +65,7 @@ class PendingMission(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	target = models.ForeignKey(Kingdom, related_name="+", null=True, blank=True)
 	last_target = models.ForeignKey(Kingdom, null=True, default=None, related_name="+", editable=False)
+	value = models.PositiveIntegerField(blank=True, default=0)
 
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(null=True, blank=True)
@@ -118,6 +122,7 @@ class PendingMission(models.Model):
 			'kingdom': self.kingdom,
 			'folks': folks,
 			'grids': grids,
+			'value': self.value,
 			'target': self.target
 		}
 
