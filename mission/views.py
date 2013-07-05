@@ -37,6 +37,7 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 
 @force_post
 @json_view
+@status_view
 def pending_mission_grid_defect(request, pk):
 	"""
 	Defect the folk from the mission
@@ -47,11 +48,10 @@ def pending_mission_grid_defect(request, pk):
 	# Defect
 	pending_mission_affectation.delete()
 
-	pma.save()
-
 
 @force_post
 @json_view
+@status_view
 def pending_mission_set_target(request, pk):
 	"""
 	Update the target.
@@ -64,15 +64,13 @@ def pending_mission_set_target(request, pk):
 	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 	target = get_object_or_404(Kingdom, pk=request.POST['target'])
 
-	# Defect
+	# Update target
 	pending_mission.target = target
 	pending_mission.save()
 
-	status = 'ok'
-	return {'status': status}
-
 
 @json_view
+@status_view
 def pending_mission_start(request, pk):
 	"""
 	Start the pending mission
@@ -84,6 +82,3 @@ def pending_mission_start(request, pk):
 	# Start
 	pending_mission.started = datetime.now()
 	pending_mission.save()
-
-	status = 'ok'
-	return {'status': status}

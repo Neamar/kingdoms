@@ -1,13 +1,14 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-from kingdom.decorators import json_view, force_post
+from kingdom.decorators import json_view, force_post, status_view
 from title.models import AvailableTitle
 from kingdom.models import Folk
 
 
 @force_post
 @json_view
+@status_view
 def available_title_affect(request, pk):
 	"""
 	Affect folk to the title.
@@ -24,11 +25,10 @@ def available_title_affect(request, pk):
 	available_title.folk = folk
 	available_title.save()
 
-	return {'status': 'ok'}
-
 
 @force_post
 @json_view
+@status_view
 def available_title_defect(request, pk):
 	"""
 	Defect folk from the title.
@@ -42,5 +42,3 @@ def available_title_defect(request, pk):
 	# Save
 	available_title.folk = None
 	available_title.save()
-
-	return {'status': 'ok'}
