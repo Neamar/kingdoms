@@ -30,6 +30,8 @@ class Event(models.Model):
 
 	name = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, unique=True)
+
+	image = models.ImageField(upload_to="events/", blank=True, null=True)
 	text = models.TextField()
 	
 	weight = models.PositiveIntegerField(default=1)
