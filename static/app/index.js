@@ -2,11 +2,19 @@
 // HTTP ACTIONS
 //##################################
 http_actions = {
+	_post: function(url, param)
+	{
+		$.post(url, param, function(data) {
+			console.log(data);
+			loadDatas()
+		});
+	},
+
 	/*
 	 * Fire the selected action to resolve the event.
 	 */
 	pendingEventActionFire: function(action) {
-		$.post(action.links.fire(), {}, loadDatas);
+		http_actions._post(action.links.fire(), {});
 	},
 
 
@@ -14,28 +22,28 @@ http_actions = {
 	 * Affect folk_id to the specified mission grid.
 	 */
 	pendingMissionGridAffect: function(grid, folk_id) {
-		$.post(grid.links.affect(), {'folk': folk_id}, loadDatas);
+		http_actions._post(grid.links.affect(), {'folk': folk_id});
 	},
 
 	/*
 	 * Defect folk_id from the specified mission grid.
 	 */
 	pendingMissionGridDefect: function(affectation) {
-		$.post(affectation.links.defect(), {}, loadDatas);
+		http_actions._post(affectation.links.defect());
 	},
 
 	/*
 	 * Start the mission
 	 */
 	pendingMissionTarget: function(pending_mission, target_id) {
-		$.post(pending_mission.links.target(), {'target': target_id}, loadDatas);
+		http_actions._post(pending_mission.links.target(), {'target': target_id});
 	},
 
 	/*
 	 * Start the mission
 	 */
 	pendingMissionStart: function(pending_mission) {
-		$.post(pending_mission.links.start(), {}, loadDatas);
+		http_actions._post(pending_mission.links.start());
 	},
 
 
@@ -43,14 +51,14 @@ http_actions = {
 	 * Affect folk_id to the specified title
 	 */
 	availableTitleAffect: function(title, folk_id) {
-		$.post(title.links.affect(), {'folk': folk_id}, loadDatas);
+		http_actions._post(title.links.affect(), {'folk': folk_id});
 	},
 
 	/*
 	 * Defect the specified title
 	 */
 	availableTitleDefect: function(title) {
-		$.post(title.links.defect(), {}, loadDatas);
+		http_actions._post(title.links.defect());
 	}
 }
 
