@@ -1,0 +1,10 @@
+<small data-bind="text: new Date(started())"></small>
+<h3>Négociations avec <span data-bind="text: partner"></span></h3>
+Statut du partenaire : <span data-bind="text: partner_state"></span><br />
+Mon statut : <span data-bind="text: state"></span>
+
+<div data-bind="foreach: shared_missions">
+	<div data-bind="with: pending_mission">
+		{% include "app/templates/_pending_mission_shared.html" %}
+	</div>
+</div>

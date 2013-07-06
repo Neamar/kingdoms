@@ -288,6 +288,7 @@ function loadDatas()
 		{
 			viewModel = ko.mapping.fromJS(result, global_mapping);
 			pager.extendWithPage(viewModel);
+
 			ko.applyBindings(viewModel);
 			pager.start();
 		}

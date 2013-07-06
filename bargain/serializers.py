@@ -24,7 +24,16 @@ def serialize_pending_bargain(pending_bargain, kingdom):
 		'state': me.state,
 		'partner': partner.kingdom.user.username,
 		'partner_state': partner.state,
-		'shared_missions': [serialize_pending_mission(o) for o in pending_bargain.pendingbargainsharedmission_set.all()]
+		'shared_missions': [serialize_shared_mission(o) for o in pending_bargain.pendingbargainsharedmission_set.all()]
+	}
+
+	return r
+
+
+def serialize_shared_mission(pending_bargain_shared_mission):
+	r = {
+		'id': pending_bargain_shared_mission.id,
+		'pending_mission': serialize_pending_mission(pending_bargain_shared_mission.pending_mission),
 	}
 
 	return r
