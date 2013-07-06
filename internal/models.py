@@ -50,10 +50,11 @@ class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
-class Value(NamedModel):
+class Value(models.Model):
 	class Meta:
 		unique_together = ('name', 'kingdom')
 
+	name = models.CharField(max_length=255)
 	kingdom = models.ForeignKey(Kingdom)
 	value = StoredValueField()
 
