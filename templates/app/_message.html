@@ -1,4 +1,4 @@
-<ul data-bind="foreach: messages().reverse()">
+<ul data-bind="foreach: {data:messages().reverse(), afterAdd: yellow_fade_in}">
 	<li>
 		{% include "app/templates/_message.html" %}
 	</li>

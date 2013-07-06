@@ -183,6 +183,18 @@ function change_pending_mission_update_value(context, event) {
 
 
 //##################################
+// UI animation
+//##################################
+
+function yellow_fade_in(element, index, data) {
+	console.log("ok")
+	$(element).filter("li")
+		.animate({ backgroundColor: 'yellow' }, 200)
+		.animate({ backgroundColor: 'white' }, 800);
+}
+
+
+//##################################
 // MAPPINGS & MODELS
 //##################################
 var folkModel = function(data, qualities) {
