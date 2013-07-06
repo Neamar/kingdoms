@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			<div data-bind="foreach: virtual_affectations">
-				<div style="opacity:0.5">
+				<div>
 					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
 					<span data-bind="text:first_name() + ' ' + last_name()"></span>
 					<a href="#" data-bind="click: http_actions.pendingMissionGridDefect">Ouste !</a>
