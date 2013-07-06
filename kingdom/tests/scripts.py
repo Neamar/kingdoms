@@ -48,8 +48,8 @@ class ScriptTest(TestCase):
 		"""
 		self.k2 = Kingdom()
 		self.k2.save()
-		self.k.add_claim(self.k2)
-		self.assertEqual(self.k, Claim.objects.get(offender=self.k2).offended)
+		self.k.add_claim(self.k2, Claim.REACHABLE)
+		self.assertEqual(self.k, Claim.objects.get(offender=self.k2, level=Claim.REACHABLE).offended)
 
 	def test_folk_die(self):
 		"""
@@ -154,14 +154,14 @@ class ScriptTest(TestCase):
 		"""
 		Checks if the has_claim works
 		"""
-		self.k2 = Kingdom()
-		self.k2.save()
+		self.k3 = Kingdom()
+		self.k3.save()
 
-		self.assertFalse(self.k.offended_set.filter(offender=self.k2).exists())
+		self.assertIsNone(self.k.has_claim(self.k3))
 
-		self.k.add_claim(self.k2)
+		self.k.add_claim(self.k3, Claim.REACHABLE)
 		
-		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
+		self.assertEqual(Claim.REACHABLE, self.k.has_claim(self.k3))
 
 	def test_kingdom_value_store_string(self):
 		"""

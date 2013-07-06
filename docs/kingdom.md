@@ -34,7 +34,10 @@ Que scripter ?
 * `kingdom.modal_message(name, description)` : ajoute un message "modal" pour le royaume spécifié
 
 #### Ajouter une claim
-* `kingdom.add_claim(kingdom)` : ajoute une claim avec le `kingdom` défini.
+* `kingdom.add_claim(kingdom, level)` : ajoute une claim avec le `kingdom` et le niveau défini.
+
+#### Savoir s'il existe une claim avec un kingdom, ainsi que son niveau:
+* `kingdom.has_claim(kingdom)` : retourne None ss'il n'y a pas de claim, sinon retourne le niveau de la claim
 
 #### Connaitre la personne qui a un certain titre
 * `kingdom.get_folk_in_title("title")` : renvoie le folk le la personne ayant ce titre. Si personne ne l'a, renvoie None
