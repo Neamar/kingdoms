@@ -222,6 +222,9 @@ class AvailableMission(models.Model):
 	"""
 	List all missions the user can choose to start.
 	"""
+	class Meta:
+		unique_together = ('mission', 'kingdom')
+
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 
