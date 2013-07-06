@@ -2,7 +2,7 @@
 from django.db import models
 
 from kingdom.models import Kingdom, Folk
-from mission.models import PendingMission
+from mission.models import PendingMission, MissionGrid
 
 
 class PendingBargain(models.Model):
@@ -52,4 +52,5 @@ class PendingBargainSharedMissionAffectation(models.Model):
 
 	pending_bargain_shared_mission = models.ForeignKey(PendingBargainSharedMission)
 
-	folk = models.ForeignKey(Folk)
+	mission_grid = models.ForeignKey(MissionGrid)
+	folk = models.OneToOneField(Folk, related_name="bargain_mission")
