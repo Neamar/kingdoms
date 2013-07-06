@@ -15,3 +15,13 @@ def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
 
 	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, kingdom=instance.pending_mission.kingdom).exists():
 		raise IntegrityError("This pending mission is now owned by a side of the negotaition.")
+
+
+@receiver(pre_save, sender=PendingBargainKingdom)
+def check_only_two_kingdoms_per_bargain(sender, instance, **kwargs):
+	"""
+	A bargain can only have two sides.
+	"""
+
+	if not instance.pk and PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain).count() == 2:
+		raise ValidationError("Only two kingdoms per negotiation.")
