@@ -33,7 +33,7 @@ def serialize_pending_bargain(pending_bargain, kingdom):
 def serialize_shared_mission(pending_bargain_shared_mission, kingdom):
 	r = {
 		'id': pending_bargain_shared_mission.id,
-		'is_mine': (pending_bargain_shared_mission.pending_mission.kingdom_id == kingdom.pk),
+		'shared_by_me': (pending_bargain_shared_mission.pending_mission.kingdom_id == kingdom.pk),
 		'pending_mission': serialize_pending_mission(pending_bargain_shared_mission.pending_mission),
 	}
 
