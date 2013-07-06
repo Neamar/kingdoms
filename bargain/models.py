@@ -57,11 +57,15 @@ class PendingBargainSharedMission(models.Model):
 	"""
 	A shared mission between the two parts of the bargain.
 	"""
+	class Meta:
+		unique_together = ('pending_bargain', 'pending_mission')
 
 	pending_bargain = models.ForeignKey(PendingBargain)
 
 	pending_mission = models.ForeignKey(PendingMission, limit_choices_to={"is_started": False})
 
+	def __unicode__(self):
+		return "%s [%s]" % (self.pending_bargain, self.pending_mission)
 
 class PendingBargainSharedMissionAffectation(models.Model):
 	"""
