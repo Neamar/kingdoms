@@ -17,6 +17,8 @@ class PendingBargainKingdom(models.Model):
 	"""
 	The kingdoms part of the negotiation
 	"""
+	class Meta:
+		unique_together = ('pending_bargain', 'kingdom')
 
 	PENDING = 0
 	OK = 1
@@ -49,7 +51,6 @@ class PendingBargainSharedMissionAffectation(models.Model):
 	Proposition of affectation to the pending mission.
 	While the bargaining is running, those affectations are purely virtual.
 	"""
-
 	pending_bargain_shared_mission = models.ForeignKey(PendingBargainSharedMission)
 
 	mission_grid = models.ForeignKey(MissionGrid)

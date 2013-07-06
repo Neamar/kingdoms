@@ -227,7 +227,7 @@ status="not_allowed"
 		self.mg.save()
 		pma2.save()
 
-	def test_grid_is_from_mission(self):
+	def test_sanity_grid_is_from_mission(self):
 		"""
 		Check the grid is part of the current mission.
 		"""
