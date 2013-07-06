@@ -22,6 +22,7 @@ class ScriptTest(TestCase):
 
 		self.t = Title(
 			name="Dummy title",
+			slug="dummy_title",
 			description="Nothing to say."
 		)
 		self.t.save()
@@ -36,7 +37,7 @@ class ScriptTest(TestCase):
 			folk=self.f
 		)
 		at2.save()
-		self.assertEqual(self.f, self.k.get_folk_in_title("Dummy title"))
+		self.assertEqual(self.f, self.k.get_folk_in_title("dummy_title"))
 
 	def test_kingdom_get_folk_in_title_fail(self):
 		"""
@@ -59,13 +60,17 @@ class ScriptTest(TestCase):
 			kingdom=self.k,
 		)
 		at2.save()
-		self.assertIsNone(self.k.get_folk_in_title("Dummy title"))
+		self.assertIsNone(self.k.get_folk_in_title("dummy_title"))
 
 	def test_kingdom_unlock_title(self):
 		"""
 		check if the available title is well created
 		"""
-		self.k.unlock_title("Dummy title")
+
+		# Sanity check
+		self.assertRaises(AvailableTitle.DoesNotExist, (lambda: AvailableTitle.objects.get(kingdom=self.k, title=self.t)))
+
+		self.k.unlock_title("dummy_title")
 		
 		# AssertNoRaises
 		AvailableTitle.objects.get(kingdom=self.k, title=self.t)
@@ -75,16 +80,15 @@ class ScriptTest(TestCase):
 		check if the available title is well returned
 		"""
 
-		at = self.k.unlock_title("Dummy title")
+		self.k.unlock_title("dummy_title")
 
-		at2 = self.k.unlock_title("Dummy title")
-		self.assertEqual(at, at2)
+		self.k.unlock_title("dummy_title")
 
 	def test_folk_add_title(self):
 		"""
 		Check is the title is added
 		"""
-		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("Dummy title"))
+		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("dummy_title"))
 
 		self.at = AvailableTitle(
 			title=self.t,
@@ -92,15 +96,15 @@ class ScriptTest(TestCase):
 			folk=self.f
 		)
 		self.at.save()
-		self.f.add_title("Dummy title")
+		self.f.add_title("dummy_title")
 		
-		self.assertEqual("bob", self.k.get_folk_in_title("Dummy title").first_name)
+		self.assertEqual("bob", self.k.get_folk_in_title("dummy_title").first_name)
 
 	def test_folk_remove_title(self):
 		"""
 		Check is the title is removed
 		"""
-		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("Dummy title"))
+		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("dummy_title"))
 
 		self.at = AvailableTitle(
 			title=self.t,
@@ -108,8 +112,8 @@ class ScriptTest(TestCase):
 			folk=self.f
 		)
 		self.at.save()
-		self.f.add_title("Dummy title")
+		self.f.add_title("dummy_title")
 		
-		self.assertEqual("bob", self.k.get_folk_in_title("Dummy title").first_name)
+		self.assertEqual("bob", self.k.get_folk_in_title("dummy_title").first_name)
 		self.f.remove_title()
-		self.assertEqual(None, self.k.get_folk_in_title("Dummy title"))
+		self.assertEqual(None, self.k.get_folk_in_title("dummy_title"))

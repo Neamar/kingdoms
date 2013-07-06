@@ -33,7 +33,7 @@ class Folk(models.Model):
 		(MALE, '♂'),
 		(FEMALE, '♀')
 	)
-	kingdom = models.ForeignKey(Kingdom)
+	kingdom = models.ForeignKey(Kingdom, null=True)
 
 	avatar = models.ForeignKey("internal.Avatar", blank=True, null=True, default=None)
 
@@ -45,10 +45,10 @@ class Folk(models.Model):
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
-	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	father = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True)
+	mother = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	father = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
@@ -83,8 +83,8 @@ class Quality(DescribedModel):
 	"""
 	category = models.ForeignKey(QualityCategory)
 	
-	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default="")
-	on_defect = ScriptField(blank=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default="")
+	on_affect = ScriptField(blank=True, null=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default=None)
+	on_defect = ScriptField(blank=True, null=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default=None)
 
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
 

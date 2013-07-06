@@ -4,23 +4,23 @@ from title.models import Title, AvailableTitle
 from django.db import IntegrityError
 
 
-def kingdom_get_folk_in_title(self, title):
+def kingdom_get_folk_in_title(self, title_slug):
 	"""
 	Return the folk who got the title, or return none if there is no folk with this title
 	"""
 	try:
-		the_folk = Folk.objects.get(title__title__name=title, kingdom=self)
-		return the_folk
+		folk = Folk.objects.get(title__title__slug=title_slug, kingdom=self)
+		return folk
 	except Folk.DoesNotExist:
 		return None
 Kingdom.get_folk_in_title = kingdom_get_folk_in_title
 
 
-def kingdom_unlock_title(self, title):
+def kingdom_unlock_title(self, title_slug):
 	"""
-	Unlock the title and return the available_title unlocked
+	Unlock the title.
 	"""
-	title = Title.objects.get(name=title)
+	title = Title.objects.get(slug=title_slug)
 	try:
 		available_title = AvailableTitle(
 			title=title,
@@ -32,11 +32,11 @@ def kingdom_unlock_title(self, title):
 Kingdom.unlock_title = kingdom_unlock_title
 
 
-def folk_add_title(self, title_name):
+def folk_add_title(self, title_slug):
 	"""
 	Add the title to the folk
 	"""
-	available_title = AvailableTitle.objects.get(title__name=title_name, kingdom=self.kingdom)
+	available_title = AvailableTitle.objects.get(title__slug=title_slug, kingdom=self.kingdom)
 	available_title.folk = self
 	available_title.save()
 Folk.add_title = folk_add_title
@@ -44,7 +44,7 @@ Folk.add_title = folk_add_title
 
 def folk_remove_title(self):
 	"""
-	Add the title to the folk
+	Remove the title from the folk
 	"""
 	try:
 		available_title = AvailableTitle.objects.get(kingdom=self.kingdom, folk=self)

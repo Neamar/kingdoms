@@ -22,7 +22,6 @@ def execute(code, param=None, context=None):
 	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
 	from title.models import Title, AvailableTitle
 	from config.scripts.random_scripts import random_in, random_value
-	from config.scripts.utils import sum_folks
 
 	from title.scripts import *
 	from event.scripts import *
@@ -42,7 +41,8 @@ def execute(code, param=None, context=None):
 			l[k] = v
 
 	try:
-		exec(code)
+		if code is not None:
+			exec(code)
 	except Exception as e:
 		# Let's try to display something useful fot the scripter team.
 

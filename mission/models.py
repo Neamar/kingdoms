@@ -25,12 +25,12 @@ class Mission(models.Model):
 	duration = models.PositiveIntegerField(help_text="Duration of the mission, in minutes.", default="5")
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
-	on_init = ScriptField(help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", blank=True, default=" ")
-	on_start = ScriptField(help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start. WARNING: do not set status for a mission with a timeout, unless you know exactly what you're doing.", blank=True, default=" ")
-	on_resolution = ScriptField(help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", blank=True, default=" ")
+	on_init = ScriptField(blank=True, null=True, help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", default=None)
+	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start. WARNING: do not set status for a mission with a timeout, unless you know exactly what you're doing.", default=None)
+	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", default=None)
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
-	target_list = ScriptField(help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", blank=True, default=" ")
+	target_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", default=None)
 	target_description = models.CharField(max_length=255, null=True, default=None)
 
 	has_value = models.BooleanField(default=False, help_text="Does this missions asks for a value?")
@@ -54,7 +54,7 @@ class MissionGrid(NamedModel):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
-	condition = ScriptField(help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", blank=True, default="")
+	condition = ScriptField(blank=True, null=True, help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", default=None)
 
 	def __unicode__(self):
 		return '%s [%s (%s)]' % (self.mission.slug, self.name, self.length)
@@ -222,6 +222,9 @@ class AvailableMission(models.Model):
 	"""
 	List all missions the user can choose to start.
 	"""
+	class Meta:
+		unique_together = ('mission', 'kingdom')
+
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 

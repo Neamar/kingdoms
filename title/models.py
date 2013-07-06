@@ -12,11 +12,13 @@ class Title(DescribedModel):
 	Dictionary of all titles in the game
 	"""
 
-	on_unlock = ScriptField(blank=True, help_text="Called after kingdom unlock. `param` is the current `AvailableTitle`, `kingdom` is the current kingdom.", default="")
+	slug = models.SlugField(unique=True)
 
-	condition = ScriptField(blank=True, help_text="Called before folk nomination. `param` is the current `AvailableTitle`, `folk` is the folk to be affected. Have the script set `status`to something other than 'ok' to abort the affectation.", default="")
-	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
-	on_defect = ScriptField(blank=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default="")
+	on_unlock = ScriptField(blank=True, null=True, help_text="Called after kingdom unlock. `param` is the current `AvailableTitle`, `kingdom` is the current kingdom.", default=None)
+
+	condition = ScriptField(blank=True, null=True, help_text="Called before folk nomination. `param` is the current `AvailableTitle`, `folk` is the folk to be affected. Have the script set `status`to something other than 'ok' to abort the affectation.", default=None)
+	on_affect = ScriptField(blank=True, null=True, help_text="Called after folk affectation. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default=None)
+	on_defect = ScriptField(blank=True, null=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default=None)
 
 
 class AvailableTitle(models.Model):

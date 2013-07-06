@@ -38,7 +38,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		# Ugly, but necessary: give access to titles in event context.
 		from title.models import AvailableTitle
-		titles = lambda: {at.title.name.replace(' ', '_'): at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
+		titles = lambda: {at.title.slug: at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
 		raw_context['title'] = titles
 
 		for var in instance._pendingeventvariable_set.all():

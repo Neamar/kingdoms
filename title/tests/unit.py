@@ -22,6 +22,7 @@ class UnitTest(TestCase):
 
 		self.t = Title(
 			name="Dummy title",
+			slug="dummy_title",
 			description="Nothing to say."
 		)
 		self.t.save()
@@ -39,6 +40,7 @@ class UnitTest(TestCase):
 
 		t2 = Title(
 			name="Dummy title2",
+			slug="dummy_title2",
 			description="Nothing to say."
 		)
 		t2.save()
