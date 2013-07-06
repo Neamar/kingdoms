@@ -79,6 +79,13 @@ http_actions = {
 	},
 
 	/*
+	 * Cancel the bargain
+	 */
+	pendingBargainCreate: function(bargains_partners, partner) {
+		http_actions._post(bargains_partners.links.create(), {'partner': partner});
+	},
+
+	/*
 	 * Set state for pending bargain
 	 */
 	pendingBargainState: function(pending_bargain, state_id) {
@@ -199,7 +206,17 @@ function change_pending_mission_update_value(context, event) {
 /**
  * Update the state for the pending bargain
  */
-function change_pending_bargain_update_state(context, event) {
+function change_pending_bargain_create(context, event) {
+	partner = $(event.currentTarget).val()
+	bargains_partners = context.bargains_partners
+	if(partner != '')
+		http_actions.pendingBargainCreate(bargains_partners, partner)
+}
+
+/**
+ * Update the state for the pending bargain
+ */
+function click_pending_bargain_update_state(context, event) {
 	state_id = $(event.currentTarget).data('state')
 	pending_bargain = context
 
@@ -210,12 +227,24 @@ function change_pending_bargain_update_state(context, event) {
 /**
  * Update the target for the mission
  */
-function change_pending_bargain_delete(context, event) {
+function click_pending_bargain_delete(context, event) {
 	pending_bargain = context
 
 	http_actions.pendingBargainDelete(pending_bargain)
 }
 
+
+
+/**
+ * Update the target for the mission
+ */
+function change_pending_mission_update_target(context, event) {
+	target_id = $(event.currentTarget).val()
+	pending_mission = context
+
+	if(target_id != '' && target_id != pending_mission.target())
+		http_actions.pendingMissionTarget(pending_mission, target_id)
+}
 
 //##################################
 // UI animation

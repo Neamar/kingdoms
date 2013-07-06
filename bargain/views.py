@@ -4,7 +4,25 @@ from django.http import Http404
 from kingdom.decorators import json_view, force_post, status_view
 from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
 from mission.models import MissionGrid
-from kingdom.models import Folk
+from kingdom.models import Kingdom, Folk
+
+
+@force_post
+@json_view
+@status_view
+def pending_bargain_create(request):
+	"""
+	Create a new pending bargain
+	"""
+
+	if 'partner' not in request.POST:
+		raise Http404("Specify partner in POST")
+
+	pending_bargain = PendingBargain()
+	pending_bargain.save()
+
+	pending_bargain.pendingbargainkingdom_set.create(kingdom=Kingdom.objects.get(pk=request.POST['partner']))
+	pending_bargain.pendingbargainkingdom_set.create(kingdom=request.user.kingdom)
 
 
 @force_post

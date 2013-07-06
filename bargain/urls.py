@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('bargain.views',
+	url(r'^create', 'pending_bargain_create'),
+
 	url(r'^pending/(?P<pk>[0-9]+)/delete', 'pending_bargain_delete'),
 	url(r'^pending/kingdom/(?P<pk>[0-9]+)/state', 'pending_bargain_kingdom_state'),
 

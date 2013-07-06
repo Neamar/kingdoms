@@ -5,6 +5,7 @@ def serialize_kingdom(kingdom):
 
 	r = {
 		'id': kingdom.pk,
+		'name': kingdom.user.username,
 		'population': kingdom.population,
 		'prestige': kingdom.prestige,
 		'money': kingdom.money
