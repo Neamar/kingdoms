@@ -51,10 +51,17 @@ http_actions = {
 	},
 
 	/*
-	 * Start the mission
+	 * Set a target for the mission
 	 */
 	pendingMissionTarget: function(pending_mission, target_id) {
 		http_actions._post(pending_mission.links.target(), {'target': target_id});
+	},
+
+	/*
+	 * Set a value for the mission
+	 */
+	pendingMissionValue: function(pending_mission, value) {
+		http_actions._post(pending_mission.links.value(), {'value': value});
 	},
 
 	/*
@@ -65,7 +72,7 @@ http_actions = {
 	},
 
 	/*
-	 * Start the mission
+	 * Cancel the mission
 	 */
 	pendingMissionCancel: function(pending_mission) {
 		http_actions._post(pending_mission.links.cancel());
@@ -153,7 +160,7 @@ function droppable_available_title_affect_folk(event, ui) {
 }
 
 /**
- * Called when a folk is dropped onto an available title
+ * Update the target for the mission
  */
 function change_pending_mission_update_target(context, event) {
 	target_id = $(event.currentTarget).val()
@@ -161,8 +168,19 @@ function change_pending_mission_update_target(context, event) {
 
 	if(target_id != '' && target_id != pending_mission.target())
 		http_actions.pendingMissionTarget(pending_mission, target_id)
-
 }
+
+/**
+ * Update the value for the mission
+ */
+function change_pending_mission_update_value(context, event) {
+	value = $(event.currentTarget).val()
+	pending_mission = context
+
+	if(value != '' && value != pending_mission.value())
+		http_actions.pendingMissionValue(pending_mission, value)
+}
+
 
 //##################################
 // MAPPINGS & MODELS
@@ -179,6 +197,19 @@ var folkModel = function(data, qualities) {
 
 	self.name = ko.computed(function() {
 		return self.first_name() + " " + self.last_name()
+	});
+}
+
+var pendingMissionModel = function(data) {
+	var self = this;
+	ko.mapping.fromJS(data, {}, this);
+
+	self.target_name = ko.computed(function() {
+		target = ko.utils.arrayFirst(self.targets(), function(t) { return t.id() == self.target()})
+		if(target)
+			return target.name()
+		else
+			return '∅'
 	});
 }
 
@@ -201,7 +232,10 @@ var mapping = {
 		key: unwrapId
 	},
 	'pending_missions': {
-		key: unwrapId
+		key: unwrapId,
+		create: function(options) {
+			return new pendingMissionModel(options.data, options.parent.qualities);
+		}
 	},
 	'messages': {
 		key: unwrapId

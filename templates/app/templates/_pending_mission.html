@@ -8,7 +8,7 @@
 	</form>
 	<form data-bind="if: has_value">
 		<label for="value" data-bind="text: value_description()"></label>
-		<input type="number" data-bind="value: value" />
+		<input type="number" id="value" name="value" data-bind="event: {change: change_pending_mission_update_value }, value: value" />
 	</form>
 
 	<div data-bind="foreach: grids">

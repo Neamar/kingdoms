@@ -71,6 +71,25 @@ def pending_mission_set_target(request, pk):
 @force_post
 @json_view
 @status_view
+def pending_mission_set_value(request, pk):
+	"""
+	Update the value.
+	"""
+
+	if 'value' not in request.POST:
+		raise Http404("Specify value in POST")
+
+	# Retrieve the objects
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
+
+	# Update target
+	pending_mission.value = request.POST['value']
+	pending_mission.save()
+
+
+@force_post
+@json_view
+@status_view
 def pending_mission_start(request, pk):
 	"""
 	Start the pending mission

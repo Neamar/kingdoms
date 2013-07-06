@@ -7,6 +7,7 @@ urlpatterns = patterns('mission.views',
 
 	# Pending mission actions
 	url(r'^pending/(?P<pk>[0-9]+)/target', 'pending_mission_set_target'),
+	url(r'^pending/(?P<pk>[0-9]+)/value', 'pending_mission_set_value'),
 	url(r'^pending/(?P<pk>[0-9]+)/start', 'pending_mission_start'),
 	url(r'^pending/(?P<pk>[0-9]+)/cancel', 'pending_mission_cancel'),
 

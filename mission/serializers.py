@@ -17,24 +17,25 @@ def serialize_pending_mission(pending_mission):
 		'name': pending_mission.mission.name,
 		'text': markdown(pending_mission.mission.text),
 		'duration': pending_mission.mission.duration,
+		'timeout': None,
 		'cancellable': pending_mission.mission.cancellable,
 		'grids': [serialize_mission_grid(o, pending_mission) for o in pending_mission.mission.missiongrid_set.all()],
 		'has_target': pending_mission.mission.has_target,
 		'target': pending_mission.target_id,
+		'targets': [],
 		'has_value': pending_mission.mission.has_value,
 		'value': pending_mission.value,
 		'value_description': pending_mission.mission.value_description,
 		'links': {
 			'start': reverse('mission.views.pending_mission_start', args=(pending_mission.pk,)),
 			'cancel': reverse('mission.views.pending_mission_cancel', args=(pending_mission.pk,)),
-			'target': reverse('mission.views.pending_mission_set_target', args=(pending_mission.pk,))
+			'target': reverse('mission.views.pending_mission_set_target', args=(pending_mission.pk,)),
+			'value': reverse('mission.views.pending_mission_set_value', args=(pending_mission.pk,))
 		}
 	}
 
 	if pending_mission.mission.timeout is not None:
 		r['timeout'] = pending_mission.created+timedelta(minutes=pending_mission.mission.timeout)
-	else:
-		r['timeout'] = None
 
 	if pending_mission.mission.has_target:
 		r['targets'] = [serialize_target(o) for o in pending_mission.targets()]
