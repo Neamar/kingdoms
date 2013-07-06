@@ -45,10 +45,10 @@ class Folk(models.Model):
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
-	mother = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	father = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True)
-	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True)
+	mother = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	father = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
+	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
 
 	birth = models.DateTimeField(auto_now_add=True)
 	death = models.DateTimeField(blank=True, null=True)
