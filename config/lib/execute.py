@@ -41,7 +41,8 @@ def execute(code, param=None, context=None):
 			l[k] = v
 
 	try:
-		exec(code)
+		if code is not None:
+			exec(code)
 	except Exception as e:
 		# Let's try to display something useful fot the scripter team.
 

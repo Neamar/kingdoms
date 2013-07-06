@@ -83,8 +83,8 @@ class Quality(DescribedModel):
 	"""
 	category = models.ForeignKey(QualityCategory)
 	
-	on_affect = ScriptField(blank=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default="")
-	on_defect = ScriptField(blank=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default="")
+	on_affect = ScriptField(blank=True, null=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default=None)
+	on_defect = ScriptField(blank=True, null=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default=None)
 
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
 

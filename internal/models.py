@@ -15,8 +15,8 @@ class Trigger(DescribedModel):
 	population_threshold = models.PositiveIntegerField(default=0)
 	money_threshold = models.PositiveIntegerField(default=0)
 
-	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default="")
-	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default="")
+	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default=None)
+	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)
 
 	fired = models.ManyToManyField(Kingdom, null=True, blank=True)
 
@@ -69,8 +69,8 @@ class Recurring(DescribedModel):
 	)
 	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=" ")
-	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=" ")
+	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=None)
+	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)
 
 	def check_condition(self, kingdom):
 		"""
@@ -144,7 +144,7 @@ class Function(models.Model):
 	slug = models.SlugField(max_length=255, unique=True)
 	description = models.TextField(blank=True, default="")
 
-	on_fire = ScriptField(blank=True, help_text="Body of the function. Returns data with `param`.", default="")
+	on_fire = ScriptField(help_text="Body of the function. Returns data with `param`.", default="")
 
 	def fire(self, **kwargs):
 		status, param = execute(self.on_fire, self, kwargs)
