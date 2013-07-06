@@ -53,6 +53,12 @@ class UnitTest(TestCase):
 		)
 		self.pm.save()
 
+		self.pbsm = PendingBargainSharedMission(
+			pending_mission=self.pm,
+			pending_bargain=self.pb
+		)
+		self.pbsm.save()
+
 	def test_no_pending_bargain_with_yourself(self):
 		"""
 		Can't bargain with yourself.
@@ -90,15 +96,15 @@ class UnitTest(TestCase):
 		)
 		pm.save()
 
-		pbsm = PendingBargainSharedMission(
+		pbsm2 = PendingBargainSharedMission(
 			pending_mission=pm,
 			pending_bargain=self.pb
 		)
 		
 		# pm.kingdom != pbk.kingdom
-		self.assertRaises(IntegrityError, pbsm.save)
+		self.assertRaises(IntegrityError, pbsm2.save)
 
-	def test_sanity_pending_mission_affectation_in_kingdom(self):
+	def test_sanity_folk_in_kingdoms(self):
 		"""
 		The folk in PendingBargainSharedMissionAffectation must be owned by one of the sides of the negotiation.
 		"""
@@ -108,20 +114,34 @@ class UnitTest(TestCase):
 		f2 = Folk(kingdom=k3)
 		f2.save()
 
-		pbsm = PendingBargainSharedMission(
-			pending_mission=self.pm,
-			pending_bargain=self.pb
-		)
-		pbsm.save()
-
 		pbsma = PendingBargainSharedMissionAffectation(
-			pending_bargain_shared_mission=pbsm,
+			pending_bargain_shared_mission=self.pbsm,
 			mission_grid=self.mg,
 			folk=f2
 		)
 
 		# folk.kingdom != pbk.kingdom
 		self.assertRaises(IntegrityError, pbsma.save)
+
+	def test_sanity_folk_in_one_affectation(self):
+		"""
+		The folk in PendingBargainSharedMissionAffectation must be owned by one of the sides of the negotiation.
+		"""
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		pbsma2 = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		# Can't be affected twice
+		self.assertRaises(IntegrityError, pbsma2.save)
 
 	def test_cant_share_started_pending_mission(self):
 		"""
@@ -136,7 +156,7 @@ class UnitTest(TestCase):
 			pending_bargain=self.pb
 		)
 		
-		self.assertRaises(IntegrityError, pbsm.save)
+		self.assertRaises(ValidationError, pbsm.save)
 
 	def test_pending_mission_removed_on_start(self):
 		"""
@@ -153,4 +173,4 @@ class UnitTest(TestCase):
 		self.pm.save()
 
 		# PBSM must be deleted
-		self.assertRaises(PendingBargainSharedMission.DoesNotExists, (lambda: PendingBargainSharedMission.objects.get(pk=pbsm.pk)))
+		self.assertRaises(PendingBargainSharedMission.DoesNotExist, (lambda: PendingBargainSharedMission.objects.get(pk=pbsm.pk)))
