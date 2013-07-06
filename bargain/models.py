@@ -26,6 +26,9 @@ class PendingBargain(models.Model):
 		# Terminate the bargain successfully.
 		self.delete()
 
+	def __unicode__(self):
+		return self.started
+
 
 class PendingBargainKingdom(models.Model):
 	"""
