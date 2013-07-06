@@ -59,6 +59,8 @@ def check_affectation_condition(sender, instance, **kwargs):
 		pma = instance.to_pending_mission_affectation()
 		try:
 			pma.save()
+		except IntegrityError:
+			raise ValidationError("Cette personne participe déjà à une mission.")
 		except:
 			raise
 		else:

@@ -31,10 +31,21 @@ def serialize_pending_bargain(pending_bargain, kingdom):
 
 
 def serialize_shared_mission(pending_bargain_shared_mission, kingdom):
+
+	pending_mission = serialize_pending_mission(pending_bargain_shared_mission.pending_mission)
+
+	# Replace links and add virtual affectations
+	for grid in pending_mission['grids']:
+		grid['links'] = {
+			'affect': reverse('bargain.views.shared_mission_affect', args=(pending_bargain_shared_mission.pk, int(grid['id']))),
+		}
+
+		#grid['virtual_affectations'] = [serialize_mission_affectation(mission_affectation)]
+
 	r = {
 		'id': pending_bargain_shared_mission.id,
 		'shared_by_me': (pending_bargain_shared_mission.pending_mission.kingdom_id == kingdom.pk),
-		'pending_mission': serialize_pending_mission(pending_bargain_shared_mission.pending_mission),
+		'pending_mission': pending_mission,
 	}
 
 	return r
