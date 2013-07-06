@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from kingdom.models import Kingdom, Folk
-from mission.models import Mission, MissionGrid, PendingMission
+from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation
 from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
 
 
@@ -35,11 +35,11 @@ class UnitTest(TestCase):
 		self.pb = PendingBargain()
 		self.pb.save()
 
-		self.pbk = PendingBargainKingdom(
+		self.pbk1 = PendingBargainKingdom(
 			pending_bargain=self.pb,
 			kingdom=self.k1
 		)
-		self.pbk.save()
+		self.pbk1.save()
 
 		self.pbk2 = PendingBargainKingdom(
 			pending_bargain=self.pb,
@@ -162,15 +162,34 @@ class UnitTest(TestCase):
 		"""
 		PendingBargainSharedMission are deleted when the PendingMission is started.
 		"""
-
-		pbsm = PendingBargainSharedMission(
-			pending_mission=self.pm,
-			pending_bargain=self.pb
-		)
-		pbsm.save()
-
 		self.pm.started = datetime.now()
 		self.pm.save()
 
 		# PBSM must be deleted
-		self.assertRaises(PendingBargainSharedMission.DoesNotExist, (lambda: PendingBargainSharedMission.objects.get(pk=pbsm.pk)))
+		self.assertRaises(PendingBargainSharedMission.DoesNotExist, (lambda: PendingBargainSharedMission.objects.get(pk=self.pbsm.pk)))
+
+	def test_validation(self):
+		"""
+		PendingBargain are committed when everyone is OK.
+		"""
+
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		# Sanity check: folk is not in MissionGrid
+		self.assertEqual(0, PendingMissionAffectation.objects.filter(pending_mission=self.pm, mission_grid=self.mg).count())
+
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+		self.pbk2.state = PendingBargainKingdom.OK
+		self.pbk2.save()
+
+		self.assertEqual(1, PendingMissionAffectation.objects.filter(pending_mission=self.pm, mission_grid=self.mg).count())
+		self.assertEqual(self.f, PendingMissionAffectation.objects.filter(pending_mission=self.pm, mission_grid=self.mg)[0].folk)
+
+		# PendingBargain has been deleted
+		self.assertRaises(PendingBargain.DoesNotExist, (lambda: PendingBargain.objects.get(pk=self.pb.pk)))
