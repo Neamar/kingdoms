@@ -162,7 +162,6 @@ def start_pending_mission(sender, instance, **kwargs):
 
 	if instance.started is not None and not instance.is_started:
 		instance.start()
-		instance.is_started = True
 
 
 @receiver(pre_delete, sender=PendingMission)

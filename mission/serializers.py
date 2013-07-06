@@ -79,6 +79,8 @@ def serialize_mission_affectation(mission_affectation):
 	Serialize a mission affectation to JSON.
 	"""
 	r = serialize_folk_min(mission_affectation.folk)
+	r['id'] = mission_affectation.pk
+	
 	r.update({'links': {
 		'defect': reverse('mission.views.pending_mission_grid_defect', args=(mission_affectation.pk, ))
 	}})

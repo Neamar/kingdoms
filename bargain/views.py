@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from kingdom.decorators import json_view, force_post, status_view
 from bargain.models import PendingBargainSharedMission, PendingBargainSharedMissionAffectation
@@ -30,3 +31,18 @@ def shared_mission_affect(request, pk, grid_pk):
 	)
 
 	pbsma.save()
+
+
+@force_post
+@json_view
+@status_view
+def shared_mission_defect(request, pk):
+	"""
+	Defect the folk from the shared mission
+	"""
+
+	# Retrieve the objects
+	pending_bargain_shared_mission_affectation = get_object_or_404(PendingBargainSharedMissionAffectation, pk=pk, folk__kingdom=request.user.kingdom)
+
+	# Defect
+	pending_bargain_shared_mission_affectation.delete()

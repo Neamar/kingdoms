@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from mission.serializers import serialize_pending_mission
+from mission.serializers import serialize_pending_mission, serialize_mission_affectation
 
 
 def serialize_pending_bargain(pending_bargain, kingdom):
@@ -34,14 +34,22 @@ def serialize_shared_mission(pending_bargain_shared_mission, kingdom):
 
 	pending_mission = serialize_pending_mission(pending_bargain_shared_mission.pending_mission)
 
-	# Replace links and add virtual affectations
+	# Add virtual affectations
 	for grid in pending_mission['grids']:
+		# Replace links on grid to affect
 		grid['links'] = {
 			'affect': reverse('bargain.views.shared_mission_affect', args=(pending_bargain_shared_mission.pk, int(grid['id']))),
 		}
 
-		#grid['virtual_affectations'] = [serialize_mission_affectation(mission_affectation)]
+		grid['virtual_affectations'] = [serialize_mission_affectation(o) for o in pending_bargain_shared_mission.pendingbargainsharedmissionaffectation_set.all()]
 
+		# Replace links on affectation to defect.
+		for affectation in grid["virtual_affectations"]:
+			affectation['links'] = {
+				'defect': reverse('bargain.views.shared_mission_defect', args=(int(affectation['id']),)),
+			}
+
+	# Compute final results
 	r = {
 		'id': pending_bargain_shared_mission.id,
 		'shared_by_me': (pending_bargain_shared_mission.pending_mission.kingdom_id == kingdom.pk),

@@ -19,6 +19,13 @@
 					<span data-bind="text:first_name() + ' ' + last_name()"></span>
 				</div>
 			</div>
+			<div data-bind="foreach: virtual_affectations">
+				<div style="opacity:0.5">
+					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
+					<span data-bind="text:first_name() + ' ' + last_name()"></span>
+					<a href="#" data-bind="click: http_actions.pendingMissionGridDefect">Ouste !</a>
+				</div>
+			</div>
 
 			<div data-bind="ifnot:$parents[1].shared_by_me" id="ww">
 				<div data-bind="visible: affectations().length < length(), droppable: droppable_pending_mission_grid_affect_folk">
