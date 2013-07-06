@@ -30,6 +30,7 @@
 				<li class=""><a data-bind="page-href: 'title'">Titres</a></li>
 				<li class=""><a data-bind="page-href: 'mission'">Missions</a></li>
 				<li class=""><a data-bind="page-href: 'event'">Évènements</a></li>
+				<li class=""><a data-bind="page-href: 'bargain'">Négociations</a></li>
 				<li data-bind="visible: debug_info()"><a data-bind="page-href: 'debug'">Debug</a></li>
 				<li class=""><a data-bind="click: loadDatas" href="#">Rafraîchir</a></li>
 			</ul>
@@ -62,6 +63,11 @@
 		<div data-bind="page: {id: 'event'}" class="container-fluid" id="event">
 			<h1>Évènements</h1>
 			{% include "app/_event.html" %}
+		</div>
+
+		<div data-bind="page: {id: 'bargain'}" class="container-fluid" id="event">
+			<h1>Négociations</h1>
+			{% include "app/_bargain.html" %}
 		</div>
 
 		<div data-bind="page: {id: 'debug'}" class="container-fluid" id="debug">
