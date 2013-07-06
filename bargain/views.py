@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from kingdom.decorators import json_view, force_post, status_view
-from bargain.models import PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
+from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
 from mission.models import MissionGrid
 from kingdom.models import Folk
 
@@ -10,7 +10,22 @@ from kingdom.models import Folk
 @force_post
 @json_view
 @status_view
-def pending_bargain_state(request, pk):
+def pending_bargain_delete(request, pk):
+	"""
+	Delete the pending bargain
+	"""
+
+	# Retrieve the objects
+	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom)
+
+	# Delete
+	pending_bargain.delete()
+
+
+@force_post
+@json_view
+@status_view
+def pending_bargain_kingdom_state(request, pk):
 	"""
 	Update state for the pending bargain
 	"""
@@ -22,7 +37,6 @@ def pending_bargain_state(request, pk):
 	pending_bargain_kingdom = get_object_or_404(PendingBargainKingdom, pk=pk, kingdom=request.user.kingdom)
 
 	# Set state
-	print request.POST['state']
 	pending_bargain_kingdom.state = request.POST['state']
 	pending_bargain_kingdom.save()
 

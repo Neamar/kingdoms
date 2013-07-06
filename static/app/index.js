@@ -86,6 +86,13 @@ http_actions = {
 	},
 
 	/*
+	 * Cancel the bargain
+	 */
+	pendingBargainDelete: function(pending_bargain) {
+		http_actions._post(pending_bargain.links.delete());
+	},
+
+	/*
 	 * Affect folk_id to the specified title
 	 */
 	availableTitleAffect: function(title, folk_id) {
@@ -176,16 +183,6 @@ function change_pending_mission_update_target(context, event) {
 		http_actions.pendingMissionTarget(pending_mission, target_id)
 }
 
-/**
- * Update the target for the mission
- */
-function change_pending_bargain_update_state(context, event) {
-	state_id = $(event.currentTarget).data('state')
-	pending_bargain = context
-
-	if(state_id != pending_bargain.state())
-		http_actions.pendingBargainState(pending_bargain, state_id)
-}
 
 /**
  * Update the value for the mission
@@ -196,6 +193,27 @@ function change_pending_mission_update_value(context, event) {
 
 	if(value != '' && value != pending_mission.value())
 		http_actions.pendingMissionValue(pending_mission, value)
+}
+
+
+/**
+ * Update the state for the pending bargain
+ */
+function change_pending_bargain_update_state(context, event) {
+	state_id = $(event.currentTarget).data('state')
+	pending_bargain = context
+
+	if(state_id != pending_bargain.state())
+		http_actions.pendingBargainState(pending_bargain, state_id)
+}
+
+/**
+ * Update the target for the mission
+ */
+function change_pending_bargain_delete(context, event) {
+	pending_bargain = context
+
+	http_actions.pendingBargainDelete(pending_bargain)
 }
 
 
