@@ -3,7 +3,7 @@ from django.http import Http404
 
 from kingdom.decorators import json_view, force_post, status_view
 from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
-from mission.models import MissionGrid
+from mission.models import PendingMission, MissionGrid
 from kingdom.models import Kingdom, Folk
 
 
@@ -38,6 +38,28 @@ def pending_bargain_delete(request, pk):
 
 	# Delete
 	pending_bargain.delete()
+
+
+@force_post
+@json_view
+@status_view
+def pending_bargain_share_pending_mission(request, pk):
+	"""
+	Share a new mission into the bargain.
+	"""
+
+	if 'pending_mission' not in request.POST:
+		raise Http404("Specify pending_mission in POST")
+
+	# Retrieve the objects
+	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom)
+	pending_mission = get_object_or_404(PendingMission, pk=request.POST['pending_mission'], kingdom=request.user.kingdom)
+
+	# Share the mission
+	PendingBargainSharedMission(
+		pending_bargain=pending_bargain,
+		pending_mission=pending_mission
+	).save()
 
 
 @force_post

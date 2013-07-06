@@ -27,6 +27,7 @@ def serialize_pending_bargain(pending_bargain, kingdom):
 		'shared_missions': [serialize_shared_mission(o, kingdom) for o in pending_bargain.pendingbargainsharedmission_set.all()],
 		'links': {
 			'delete': reverse('bargain.views.pending_bargain_delete', args=(pending_bargain.pk,)),
+			'share': reverse('bargain.views.pending_bargain_share_pending_mission', args=(pending_bargain.pk,)),
 			'state': reverse('bargain.views.pending_bargain_kingdom_state', args=(me.pk,)),
 		}
 	}
