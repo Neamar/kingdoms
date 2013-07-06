@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from django.db.models.signals import pre_delete, pre_save, post_save, post_delete
+from django.db.models.signals import pre_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
-from mission.models import PendingMission, PendingMissionAffectation
+from bargain.models import PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
+from mission.models import PendingMission
+
 
 @receiver(pre_save, sender=PendingBargainSharedMission)
 def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
