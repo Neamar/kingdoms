@@ -7,8 +7,8 @@ Mon statut : <span data-bind="text: state"></span>
 <div class="row-fluid">
 	<div class="span3 well">
 		<p>Cliquez pour partager...</p>
-		<ul data-bind="foreach: $parent.unstarted_pending_missions">
-			<li><a href="#" data-bind="text: name, click: click_pending_bargain_share"></a></li>
+		<ul data-bind="foreach: $data.filter_pending_missions($parent.unstarted_pending_missions())">
+			<li><a href="#" data-bind="text: name(), click: click_pending_bargain_share"></a></li>
 		</ul>
 	</div>
 

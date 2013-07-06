@@ -291,6 +291,7 @@ var folkModel = function(data, qualities) {
 	});
 }
 
+
 var pendingMissionModel = function(data) {
 	var self = this;
 	ko.mapping.fromJS(data, {}, this);
@@ -303,6 +304,23 @@ var pendingMissionModel = function(data) {
 			return '∅'
 	});
 }
+
+
+var pendingBargainModel = function(data, parent) {
+	var self = this;
+
+	ko.mapping.fromJS(data, {}, this);
+
+	self.filter_pending_missions = function(pending_missions) {
+		a = ko.utils.arrayFilter(pending_missions, function(pending_mission) {
+			val = ko.utils.arrayFirst(self.shared_missions(), function(shared_mission) {
+				return pending_mission.id() == shared_mission.pending_mission.id()
+			});
+			return null == val
+		});
+		return a
+	};
+};
 
 
 function unwrapId(data) {
@@ -325,7 +343,13 @@ var mapping = {
 	'pending_missions': {
 		key: unwrapId,
 		create: function(options) {
-			return new pendingMissionModel(options.data, options.parent.qualities);
+			return new pendingMissionModel(options.data);
+		}
+	},
+	'pending_bargains': {
+		key: unwrapId,
+		create: function(options) {
+			return new pendingBargainModel(options.data, options.parent);
 		}
 	},
 	'messages': {
