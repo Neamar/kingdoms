@@ -65,10 +65,21 @@ class ScriptTest(TestCase):
 		"""
 		check if the available title is well created
 		"""
+
+		# Sanity check
+		self.assertRaises(AvailableTitle.DoesNotExist, (lambda: AvailableTitle.objects.get(kingdom=self.k, title=self.t)))
+
 		self.k.unlock_title("Dummy title")
 		
 		# AssertNoRaises
 		AvailableTitle.objects.get(kingdom=self.k, title=self.t)
+
+	def test_kingdom_unlock_title_twice(self):
+		"""
+		Check if unlock_title can be called more than once without exception.
+		"""
+		self.k.unlock_title("Dummy title")
+		self.k.unlock_title("Dummy title")
 
 	def test_kingdom_unlock_title_already_available(self):
 		"""
