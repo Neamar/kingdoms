@@ -168,6 +168,22 @@ class UnitTest(TestCase):
 		# PBSM must be deleted
 		self.assertRaises(PendingBargainSharedMission.DoesNotExist, (lambda: PendingBargainSharedMission.objects.get(pk=self.pbsm.pk)))
 
+	def test_affectation_is_checked(self):
+		"""
+		The affectation must trigger the PendingMissionAffectation code (as a dry run of course, since the affectation is at this point purely virtual)
+		"""
+		self.mg.length = 0
+		self.mg.save()
+		
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
+		# This gris is full
+		self.assertRaises(ValidationError, pbsma.save)
+
 	def test_validation(self):
 		"""
 		PendingBargain are committed when everyone is OK.
