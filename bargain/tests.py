@@ -209,3 +209,49 @@ class UnitTest(TestCase):
 
 		# PendingBargain has been deleted
 		self.assertRaises(PendingBargain.DoesNotExist, (lambda: PendingBargain.objects.get(pk=self.pb.pk)))
+
+	def test_validation_failing(self):
+		"""
+		PendingBargain can raise ValidationError, and forbid saving last state to OK.
+		"""
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		# Fake case.
+		# In reality, the Exception may be triggered by some code on the grid depending on various contexts.
+		self.mg.length = 0
+		self.mg.save()
+
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+		self.pbk2.state = PendingBargainKingdom.OK
+
+		# This grid is full
+		self.assertRaises(ValidationError, self.pbk2.save)
+
+		# Assert exists (has not been deleted)
+		PendingBargain.objects.get(pk=self.pb.pk)
+
+	def test_state_reverted_on_affectation_delete(self):
+		"""
+		PendingBargainKingdom states are reverted if an affectation is deleted.
+		"""
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		# Kingdom1 is OK.
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+
+		# Deal breaker
+		pbsma.delete()
+
+		self.assertEqual(PendingBargainKingdom.PENDING, PendingBargainKingdom.objects.get(pk=self.pbk1.pk).state)

@@ -85,3 +85,17 @@ def commit_when_all_ok(sender, instance, **kwargs):
 	if instance.state >= PendingBargainKingdom.OK and not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, state=PendingBargainKingdom.PENDING).exists():
 		# Let's commit this!
 		instance.pending_bargain.fire()
+
+
+@receiver(pre_delete, sender=PendingBargainSharedMissionAffectation)
+def revert_on_affectation_delete(sender, instance, **kwargs):
+	"""
+	Revert state from OK to PENDING after a delete.
+	"""
+
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_mission)
+
+	# This loop should only contains at most one item.
+	for kingdom_ok in kingdoms_oks:
+		kingdom_ok.state = PendingBargainKingdom.PENDING
+		kingdom_ok.save()
