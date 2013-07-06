@@ -84,6 +84,21 @@ def pending_bargain_kingdom_state(request, pk):
 @force_post
 @json_view
 @status_view
+def shared_pending_mission_delete(request, pk):
+	"""
+	Delete the specified shared pending mission.
+	"""
+
+	# Retrieve the objects
+	pending_bargain_shared_mission = get_object_or_404(PendingBargainSharedMission, pk=pk, pending_bargain__pendingbargainkingdom__kingdom=request.user.kingdom)
+
+	# Delete
+	pending_bargain_shared_mission.delete()
+
+
+@force_post
+@json_view
+@status_view
 def shared_mission_affect(request, pk, grid_pk):
 	"""
 	Affect the folk to the shared mission

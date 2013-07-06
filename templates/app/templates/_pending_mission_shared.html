@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<div data-bind="ifnot:$parents[1].shared_by_me" id="ww">
+			<div data-bind="ifnot:$parents[1].shared_by_me">
 				<div data-bind="visible: affectations().length < length(), droppable: droppable_pending_mission_grid_affect_folk">
 					<img src="http://placehold.it/50x60" alt="Affectation" style="margin:10px;" />
 				</div>
@@ -36,4 +36,6 @@
 	</div>
 
 	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
+
+	<a class="btn" href="#" data-bind="visible: $parent.shared_by_me, click: click_shared_pending_mission_delete">Annuler le partage</a>
 </div>

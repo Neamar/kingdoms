@@ -107,6 +107,14 @@ http_actions = {
 	},
 
 	/*
+	 * Cancel the bargain
+	 */
+	sharedPendingMissionDelete: function(shared_pending_mission) {
+		http_actions._post(shared_pending_mission.links.delete());
+	},
+
+
+	/*
 	 * Affect folk_id to the specified title
 	 */
 	availableTitleAffect: function(title, folk_id) {
@@ -232,7 +240,7 @@ function click_pending_bargain_update_state(context, event) {
 }
 
 /**
- * Update the target for the mission
+ * Delete the pending bargain
  */
 function click_pending_bargain_delete(context, event) {
 	pending_bargain = context
@@ -241,7 +249,7 @@ function click_pending_bargain_delete(context, event) {
 }
 
 /**
- * Update the target for the mission
+ * Share a mission into the bargain
  */
 function click_pending_bargain_share(context, event) {
 	pending_bargain = ko.dataFor($(event.currentTarget).parents('div')[0]);
@@ -249,6 +257,16 @@ function click_pending_bargain_share(context, event) {
 
 	http_actions.pendingBargainShare(pending_bargain, pending_mission_id)
 }
+
+/**
+ * Remove a shared mission from the bargain
+ */
+function click_shared_pending_mission_delete(context, event) {
+	shared_pending_mission = context
+
+	http_actions.sharedPendingMissionDelete(shared_pending_mission)
+}
+
 
 /**
  * Update the target for the mission

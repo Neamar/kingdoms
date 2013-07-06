@@ -39,6 +39,11 @@ def serialize_shared_mission(pending_bargain_shared_mission, kingdom):
 
 	pending_mission = serialize_pending_mission(pending_bargain_shared_mission.pending_mission)
 
+	# Replace links on grids to delete
+	pending_mission['links'] = {
+		'delete': reverse('bargain.views.shared_pending_mission_delete', args=(pending_bargain_shared_mission.pk,)),
+	}
+
 	# Add virtual affectations
 	for grid in pending_mission['grids']:
 		# Replace links on grid to affect
