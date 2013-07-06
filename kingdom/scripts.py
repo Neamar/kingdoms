@@ -115,13 +115,6 @@ def folk_has_quality(self, quality):
 Folk.has_quality = folk_has_quality
 
 
-def sum_folks(folks, attribute):
-	"""
-	Returns the sum of the choosen attribute
-	"""
-	return sum([getattr(folk, attribute) for folk in folks])
-
-
 def folk_remove_quality(self, name):
 	"""
 	Add a new quality.
@@ -134,3 +127,20 @@ def folk_remove_quality(self, name):
 		pass
 	return quality
 Folk.remove_quality = folk_remove_quality
+
+
+def sum_folks(folks, attribute):
+	"""
+	Returns the sum of the chosen attribute
+	"""
+	return sum([getattr(folk, attribute) for folk in folks])
+
+
+def avg_folks(folks, attribute):
+	"""
+	Returns the average of the chosen attribute
+	"""
+	if len(folks) == 0:
+		return 0
+	else:
+		return sum_folks(folks, attribute) / len(folks)

@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 
 from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory, Message, ModalMessage
-from kingdom.scripts import sum_folks
+from kingdom.scripts import sum_folks, avg_folks
 
 
 class ScriptTest(TestCase):
@@ -134,6 +134,19 @@ class ScriptTest(TestCase):
 		self.f.add_quality("moche")
 		self.assertEqual(True, self.f.has_quality("moche"))
 
+	def test_has_claim(self):
+		"""
+		Checks if the has_claim works
+		"""
+		self.k2 = Kingdom()
+		self.k2.save()
+
+		self.assertFalse(self.k.offended_set.filter(offender=self.k2).exists())
+
+		self.k.add_claim(self.k2)
+		
+		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
+
 	def test_sum_folks(self):
 		"""
 		Verify if sum is correct
@@ -150,18 +163,25 @@ class ScriptTest(TestCase):
 
 		self.assertEqual(15, sum_folks([self.f, self.f2], "fight"))
 
-	def test_has_claim(self):
+	def test_avg_folks(self):
 		"""
-		Checks if the has_claim works
+		Verify if avg is correct
 		"""
-		self.k2 = Kingdom()
-		self.k2.save()
+		self.f2 = Folk(
+			kingdom=self.k,
+			fight=10,
+			first_name="aa",
+			last_name="bb"
+		)
+		self.f2.save()
+		self.f.fight = 6
+		self.f.save()
 
-		self.assertFalse(self.k.offended_set.filter(offender=self.k2).exists())
+		# Average code
+		self.assertEqual(8, avg_folks([self.f, self.f2], "fight"))
 
-		self.k.add_claim(self.k2)
-		
-		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
+		# Empty list
+		self.assertEqual(0, avg_folks([], "fight"))
 
 	def test_kingdom_value_store_string(self):
 		"""
