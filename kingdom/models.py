@@ -33,7 +33,7 @@ class Folk(models.Model):
 		(MALE, '♂'),
 		(FEMALE, '♀')
 	)
-	kingdom = models.ForeignKey(Kingdom)
+	kingdom = models.ForeignKey(Kingdom, null=True)
 
 	avatar = models.ForeignKey("internal.Avatar", blank=True, null=True, default=None)
 
