@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
-from mission.models import PendingMission
+from mission.models import PendingMission, PendingMissionAffectation
 
 @receiver(pre_save, sender=PendingBargainSharedMission)
 def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
@@ -45,6 +45,24 @@ def check_no_started_pending_mission(sender, instance, **kwargs):
 
 	if not instance.pk and instance.pending_mission.started:
 		raise ValidationError("Can't share started pending mission.")
+
+
+@receiver(pre_save, sender=PendingBargainSharedMissionAffectation)
+def check_affectation_condition(sender, instance, **kwargs):
+	"""
+	You can't affect someone if the MissionGrid forbids it.
+	Note this is a dry run, as the condition can also be changed in the future and will be tested again (for real this time) in PendingBargain.commit
+	"""
+
+	if not instance.pk:
+		# Create a fake PendingMissionAffectation
+		pma = PendingMissionAffectation(pending_mission_id=instance.pending_bargain_shared_mission.pending_mission_id, mission_grid_id=instance.mission_grid_id, folk=instance.folk)
+		try:
+			pma.save()
+		except:
+			raise
+		else:
+			pma.delete()
 
 
 @receiver(post_save, sender=PendingMission)
