@@ -60,7 +60,7 @@ class PendingBargainSharedMission(models.Model):
 
 	pending_bargain = models.ForeignKey(PendingBargain)
 
-	pending_mission = models.ForeignKey(PendingMission)
+	pending_mission = models.ForeignKey(PendingMission, limit_choices_to={"is_started": False})
 
 
 class PendingBargainSharedMissionAffectation(models.Model):
