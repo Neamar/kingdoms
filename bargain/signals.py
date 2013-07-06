@@ -56,12 +56,13 @@ def check_affectation_condition(sender, instance, **kwargs):
 
 	if not instance.pk:
 		# Create a fake PendingMissionAffectation
-		pma = PendingMissionAffectation(pending_mission_id=instance.pending_bargain_shared_mission.pending_mission_id, mission_grid_id=instance.mission_grid_id, folk=instance.folk)
+		pma = instance.to_pending_mission_affectation()
 		try:
 			pma.save()
 		except:
 			raise
 		else:
+			# Do not forget to immediately delete it if it was successful
 			pma.delete()
 
 

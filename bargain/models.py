@@ -21,7 +21,7 @@ class PendingBargain(models.Model):
 		for affectation in pending_bargain_affectations:
 			# Create affectation.
 			# Validation error might happen, in which case they'll bubble up.
-			PendingMissionAffectation(pending_mission_id=affectation.pending_bargain_shared_mission.pending_mission_id, mission_grid_id=affectation.mission_grid_id, folk=affectation.folk).save()
+			affectation.to_pending_mission_affectation().save()
 
 		# Terminate the bargain successfully.
 		self.delete()
@@ -69,5 +69,16 @@ class PendingBargainSharedMissionAffectation(models.Model):
 
 	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.OneToOneField(Folk, related_name="bargain_mission")
+
+	def to_pending_mission_affectation(self):
+		"""
+		Returns an unsaved pending mission affectation matching this virtual affectation.
+		"""
+		pma = PendingMissionAffectation()
+		pma.pending_mission_id = self.pending_bargain_shared_mission.pending_mission_id
+		pma.mission_grid_id = self.mission_grid_id
+		pma.folk = self.folk
+
+		return pma
 
 from bargain.signals import *
