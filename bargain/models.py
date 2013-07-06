@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 from kingdom.models import Kingdom, Folk
@@ -23,8 +24,8 @@ class PendingBargainKingdom(models.Model):
 
 	STATE_CHOICES = (
 		(PENDING, 'Négociation en cours'),
-		(OK, 'Négociation validée')
-		(OK_NO_MATTER_WHAT, 'Négociation validée sans condition')
+		(OK, 'Négociation validée'),
+		(OK_NO_MATTER_WHAT, 'Négociation validée sans condition'),
 	)
 
 	pending_bargain = models.ForeignKey(PendingBargain)
