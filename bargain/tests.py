@@ -255,3 +255,45 @@ class UnitTest(TestCase):
 		pbsma.delete()
 
 		self.assertEqual(PendingBargainKingdom.PENDING, PendingBargainKingdom.objects.get(pk=self.pbk1.pk).state)
+
+	def test_state_reverted_on_affectation_changed(self):
+		"""
+		PendingBargainKingdom states are reverted if an affectation is deleted.
+		"""
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		# Kingdom1 is OK.
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+
+		# Deal breaker
+		f2 = Folk(kingdom=self.k2)
+		f2.save()
+		
+		pbsma.folk = f2
+		pbsma.save()
+
+		self.assertEqual(PendingBargainKingdom.PENDING, PendingBargainKingdom.objects.get(pk=self.pbk1.pk).state)
+
+	def test_state_reverted_on_affectation_created(self):
+		"""
+		PendingBargainKingdom states are reverted if an affectation is deleted.
+		"""
+		# Kingdom1 is OK.
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+
+		# Deal breaker
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+		pbsma.save()
+
+		self.assertEqual(PendingBargainKingdom.PENDING, PendingBargainKingdom.objects.get(pk=self.pbk1.pk).state)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db.models.signals import pre_delete, pre_save, post_save
+from django.db.models.signals import pre_delete, pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -89,6 +89,19 @@ def commit_when_all_ok(sender, instance, **kwargs):
 
 @receiver(pre_delete, sender=PendingBargainSharedMissionAffectation)
 def revert_on_affectation_delete(sender, instance, **kwargs):
+	"""
+	Revert state from OK to PENDING after a delete.
+	"""
+
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_mission)
+
+	# This loop should only contains at most one item.
+	for kingdom_ok in kingdoms_oks:
+		kingdom_ok.state = PendingBargainKingdom.PENDING
+		kingdom_ok.save()
+
+@receiver(post_save, sender=PendingBargainSharedMissionAffectation)
+def revert_on_affectation_change(sender, instance, created, **kwargs):
 	"""
 	Revert state from OK to PENDING after a delete.
 	"""
