@@ -508,7 +508,7 @@ pe2.start()
 		pe2 = PendingEvent.objects.get(kingdom=self.k, event=e2)
 		self.assertEqual(10, pe2.get_value("valeur"))
 
-	def text_delete(self):
+	def test_delete(self):
 		"""
 		Tests if the event is deleted
 		"""
@@ -519,16 +519,16 @@ pe2.start()
 			text="Event 3",
 		)
 		e3.on_fire = """
-pe2.start()
+status="stop"
 """
-		e3.start()
+		e3.save()
 
 		pe2 = PendingEvent(
-			event=self.e3,
+			event=e3,
 			kingdom=self.k,
 			started=None
 		)
 		pe2.save()
 		pe2.start()
 
-		self.assertRaises(PendingEvent.DoesNotExist, PendingEvent.objects.get(kingdom=self.k, event=self.e3))
+		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(kingdom=self.k, event=e3)))

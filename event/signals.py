@@ -26,6 +26,11 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		status, param = instance.fire()
 
+		if status != 'ok':
+			# The event asks not to be displayed.
+			instance.delete()
+			return
+
 		import django.template.loader
 		from django.template import add_to_builtins
 		add_to_builtins("kingdom.templatetags.folks_list")
