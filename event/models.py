@@ -64,9 +64,6 @@ class PendingEvent(models.Model):
 	An event, started for a given kingdom.
 	"""
 
-	class Meta:
-		unique_together = ('event', 'kingdom')
-
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
 
