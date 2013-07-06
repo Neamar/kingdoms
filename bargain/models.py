@@ -55,3 +55,5 @@ class PendingBargainSharedMissionAffectation(models.Model):
 
 	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.OneToOneField(Folk, related_name="bargain_mission")
+
+from bargain.signals import *

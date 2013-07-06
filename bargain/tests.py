@@ -57,10 +57,9 @@ class UnitTest(TestCase):
 		"""
 		Can't bargain with yourself.
 		"""
-		self.pbk2.kingdom = self.k
-		self.pbk2.save()
+		self.pbk2.kingdom = self.k1
 		
-		self.assertRaises(ValidationError, self.pbk2.save)
+		self.assertRaises(IntegrityError, self.pbk2.save)
 
 	def test_only_two_kingdoms_per_pending_bargain(self):
 		"""
