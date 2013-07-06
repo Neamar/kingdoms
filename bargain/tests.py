@@ -116,9 +116,10 @@ class UnitTest(TestCase):
 
 		pbsma = PendingBargainSharedMissionAffectation(
 			pending_bargain_shared_mission=pbsm,
+			mission_grid=self.mg,
 			folk=f2
 		)
-		
+
 		# folk.kingdom != pbk.kingdom
 		self.assertRaises(IntegrityError, pbsma.save)
 

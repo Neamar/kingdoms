@@ -14,7 +14,17 @@ def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
 	"""
 
 	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, kingdom=instance.pending_mission.kingdom).exists():
-		raise IntegrityError("This pending mission is now owned by a side of the negotaition.")
+		raise IntegrityError("This pending mission is not owned by a side of the negotiation.")
+
+
+@receiver(pre_save, sender=PendingBargainSharedMissionAffectation)
+def check_sanity_folk_in_kingdoms(sender, instance, **kwargs):
+	"""
+	The folk affected must be owned by one of the sides of the negotiation.
+	"""
+
+	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_shared_mission.pending_bargain, kingdom=instance.folk.kingdom).exists():
+		raise IntegrityError("This folk mission is not owned by a side of the negotiation.")
 
 
 @receiver(pre_save, sender=PendingBargainKingdom)
