@@ -96,7 +96,7 @@ def revert_on_affectation_delete(sender, instance, **kwargs):
 	Revert state from OK to PENDING after a delete.
 	"""
 
-	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_mission)
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain)
 
 	# This loop should only contains at most one item.
 	for kingdom_ok in kingdoms_oks:
@@ -110,7 +110,7 @@ def revert_on_affectation_change(sender, instance, created, **kwargs):
 	Revert state from OK to PENDING after a delete.
 	"""
 
-	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_mission)
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain)
 
 	# This loop should only contains at most one item.
 	for kingdom_ok in kingdoms_oks:
