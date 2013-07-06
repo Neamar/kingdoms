@@ -100,6 +100,7 @@ def revert_on_affectation_delete(sender, instance, **kwargs):
 		kingdom_ok.state = PendingBargainKingdom.PENDING
 		kingdom_ok.save()
 
+
 @receiver(post_save, sender=PendingBargainSharedMissionAffectation)
 def revert_on_affectation_change(sender, instance, created, **kwargs):
 	"""
