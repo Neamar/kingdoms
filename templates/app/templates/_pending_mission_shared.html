@@ -28,7 +28,7 @@
 			</div>
 
 			<div data-bind="ifnot:$parents[1].shared_by_me">
-				<div data-bind="visible: affectations().length < length(), droppable: droppable_pending_mission_grid_affect_folk">
+				<div data-bind="visible: affectations().length + virtual_affectations().length < length(), droppable: droppable_pending_mission_grid_affect_folk">
 					<img src="http://placehold.it/50x60" alt="Affectation" style="margin:10px;" />
 				</div>
 			</div>

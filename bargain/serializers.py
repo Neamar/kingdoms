@@ -51,7 +51,7 @@ def serialize_shared_mission(pending_bargain_shared_mission, kingdom):
 			'affect': reverse('bargain.views.shared_mission_affect', args=(pending_bargain_shared_mission.pk, int(grid['id']))),
 		}
 
-		grid['virtual_affectations'] = [serialize_mission_affectation(o) for o in pending_bargain_shared_mission.pendingbargainsharedmissionaffectation_set.all()]
+		grid['virtual_affectations'] = [serialize_mission_affectation(o) for o in pending_bargain_shared_mission.pendingbargainsharedmissionaffectation_set.filter(mission_grid=grid['id'])]
 
 		# Replace links on affectation to defect.
 		for affectation in grid["virtual_affectations"]:
