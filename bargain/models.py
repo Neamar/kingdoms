@@ -34,6 +34,7 @@ class PendingBargainKingdom(models.Model):
 	"""
 	The kingdoms part of the negotiation
 	"""
+
 	class Meta:
 		unique_together = ('pending_bargain', 'kingdom')
 
@@ -57,6 +58,7 @@ class PendingBargainSharedMission(models.Model):
 	"""
 	A shared mission between the two parts of the bargain.
 	"""
+
 	class Meta:
 		unique_together = ('pending_bargain', 'pending_mission')
 
@@ -67,11 +69,17 @@ class PendingBargainSharedMission(models.Model):
 	def __unicode__(self):
 		return "%s [%s]" % (self.pending_bargain, self.pending_mission)
 
+
 class PendingBargainSharedMissionAffectation(models.Model):
 	"""
 	Proposition of affectation to the pending mission.
 	While the bargaining is running, those affectations are purely virtual.
 	"""
+
+	class Meta:
+		# Workaround for some Django bug: the contenttype framework (required by the admin) has a max_length value of 50, which is blown by this model. Therefore we need to rename the verbose name.
+		verbose_name = 'shared mission affectation'
+
 	pending_bargain_shared_mission = models.ForeignKey(PendingBargainSharedMission)
 
 	mission_grid = models.ForeignKey(MissionGrid)
