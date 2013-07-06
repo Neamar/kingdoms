@@ -61,6 +61,9 @@ class Command(BaseCommand):
 		"""
 		Read code, looking for dependencies in regexp.
 		"""
+		if code is None:
+			return []
+
 		deps = []
 
 		for regexp in self.event_regexps:
