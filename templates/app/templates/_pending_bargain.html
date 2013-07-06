@@ -4,9 +4,18 @@
 Statut du partenaire : <span data-bind="text: partner_state"></span><br />
 Mon statut : <span data-bind="text: state"></span>
 
-<div data-bind="foreach: shared_missions">
-	<div data-bind="with: pending_mission">
-		{% include "app/templates/_pending_mission_shared.html" %}
+<div class="row-fluid">
+	<div class="span3 well">
+		<p>Cliquez pour partager...</p>
+		<ul data-bind="foreach: $parent.unstarted_pending_missions">
+			<li><a href="#" data-bind="text: name"></a></li>
+		</ul>
+	</div>
+
+	<div data-bind="foreach: shared_missions" class="span9">
+		<div data-bind="with: pending_mission">
+			{% include "app/templates/_pending_mission_shared.html" %}
+		</div>
 	</div>
 </div>
 
