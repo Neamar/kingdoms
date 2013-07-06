@@ -12,7 +12,7 @@ def serialize_pending_mission(pending_mission):
 
 	r = {
 		'id': pending_mission.id,
-		'timeout': pending_mission.created,
+		'created': pending_mission.created,
 		'started': pending_mission.started,
 		'name': pending_mission.mission.name,
 		'text': markdown(pending_mission.mission.text),

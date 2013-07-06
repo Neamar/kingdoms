@@ -27,7 +27,7 @@ class PendingBargain(models.Model):
 		self.delete()
 
 	def __unicode__(self):
-		return self.started
+		return str(self.started)
 
 
 class PendingBargainKingdom(models.Model):
