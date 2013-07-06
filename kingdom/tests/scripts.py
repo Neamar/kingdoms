@@ -48,8 +48,8 @@ class ScriptTest(TestCase):
 		"""
 		self.k2 = Kingdom()
 		self.k2.save()
-		self.k.add_claim(self.k2)
-		self.assertEqual(self.k, Claim.objects.get(offender=self.k2).offended)
+		self.k.add_claim(self.k2, Claim.REACHABLE)
+		self.assertEqual(self.k, Claim.objects.get(offender=self.k2, level=Claim.REACHABLE).offended)
 
 	def test_folk_die(self):
 		"""
@@ -134,19 +134,6 @@ class ScriptTest(TestCase):
 		self.f.add_quality("moche")
 		self.assertEqual(True, self.f.has_quality("moche"))
 
-	def test_has_claim(self):
-		"""
-		Checks if the has_claim works
-		"""
-		self.k2 = Kingdom()
-		self.k2.save()
-
-		self.assertFalse(self.k.offended_set.filter(offender=self.k2).exists())
-
-		self.k.add_claim(self.k2)
-		
-		self.assertTrue(self.k.offended_set.filter(offender=self.k2).exists())
-
 	def test_sum_folks(self):
 		"""
 		Verify if sum is correct
@@ -167,6 +154,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if avg is correct
 		"""
+
 		self.f2 = Folk(
 			kingdom=self.k,
 			fight=10,
@@ -182,6 +170,19 @@ class ScriptTest(TestCase):
 
 		# Empty list
 		self.assertEqual(0, avg_folks([], "fight"))
+
+	def test_has_claim(self):
+		"""
+		Checks if the has_claim works
+		"""
+		self.k3 = Kingdom()
+		self.k3.save()
+
+		self.assertIsNone(self.k.has_claim(self.k3))
+
+		self.k.add_claim(self.k3, Claim.REACHABLE)
+		
+		self.assertEqual(Claim.REACHABLE, self.k.has_claim(self.k3))
 
 	def test_kingdom_value_store_string(self):
 		"""

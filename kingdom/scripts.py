@@ -37,7 +37,7 @@ def kingdom_modal_message(self, name, description):
 Kingdom.modal_message = kingdom_modal_message
 
 
-def kingdom_add_claim(self, kingdom):
+def kingdom_add_claim(self, kingdom, level):
 	"""
 	Add a claim on specified kingdom.
 	"""
@@ -45,8 +45,22 @@ def kingdom_add_claim(self, kingdom):
 	Claim(
 		offender=kingdom,
 		offended=self,
+		level=level
 	).save()
 Kingdom.add_claim = kingdom_add_claim
+
+
+def kingdom_has_claim(self, kingdom):
+	"""
+	Returns None if there is no claim, or returns the level of the claim
+	"""
+
+	try:
+		claim = self.offended_set.get(offender=kingdom)
+		return claim.level
+	except Claim.DoesNotExist:
+		return None
+Kingdom.has_claim = kingdom_has_claim
 
 
 def kingdom_set_value(self, name, value):
