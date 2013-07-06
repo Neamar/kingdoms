@@ -86,6 +86,13 @@ http_actions = {
 	},
 
 	/*
+	 * Share a mission into the bargain
+	 */
+	pendingBargainShare: function(pending_bargain, pending_mission_id) {
+		http_actions._post(pending_bargain.links.share(), {'pending_mission': pending_mission_id});
+	},
+
+	/*
 	 * Set state for pending bargain
 	 */
 	pendingBargainState: function(pending_bargain, state_id) {
@@ -233,7 +240,15 @@ function click_pending_bargain_delete(context, event) {
 	http_actions.pendingBargainDelete(pending_bargain)
 }
 
+/**
+ * Update the target for the mission
+ */
+function click_pending_bargain_share(context, event) {
+	pending_bargain = ko.dataFor($(event.currentTarget).parents('div')[0]);
+	pending_mission_id = context.id()
 
+	http_actions.pendingBargainShare(pending_bargain, pending_mission_id)
+}
 
 /**
  * Update the target for the mission
