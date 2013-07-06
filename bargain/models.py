@@ -2,7 +2,7 @@
 from django.db import models
 
 from kingdom.models import Kingdom, Folk
-from mission.models import PendingMission, MissionGrid
+from mission.models import PendingMission, MissionGrid, PendingMissionAffectation
 
 
 class PendingBargain(models.Model):
@@ -11,6 +11,20 @@ class PendingBargain(models.Model):
 	"""
 
 	started = models.DateTimeField(auto_now_add=True)
+
+	def fire(self):
+		"""
+		Commit this bargain and resolves it.
+		"""
+		# Retrieve all the affectation
+		pending_bargain_affectations = PendingBargainSharedMissionAffectation.objects.filter(pending_bargain_shared_mission__pending_bargain=self).select_related("pending_bargain_shared_mission")
+		for affectation in pending_bargain_affectations:
+			# Create affectation.
+			# Validation error might happen, in which case they'll bubble up.
+			PendingMissionAffectation(pending_mission_id=affectation.pending_bargain_shared_mission.pending_mission_id, mission_grid_id=affectation.mission_grid_id, folk=affectation.folk).save()
+
+		# Terminate the bargain successfully.
+		self.delete()
 
 
 class PendingBargainKingdom(models.Model):

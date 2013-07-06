@@ -55,3 +55,14 @@ def delete_shared_pending_mission_on_start(sender, instance, **kwargs):
 
 	if instance.started and instance.started is not None:
 		PendingBargainSharedMission.objects.filter(pending_mission=instance).delete()
+
+
+@receiver(post_save, sender=PendingBargainKingdom)
+def commit_when_all_ok(sender, instance, **kwargs):
+	"""
+	When everyone is in state OK, resolve the negotiation.
+	"""
+
+	if instance.state >= PendingBargainKingdom.OK and not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, state=PendingBargainKingdom.PENDING).exists():
+		# Let's commit this!
+		instance.pending_bargain.fire()
