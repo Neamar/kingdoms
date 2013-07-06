@@ -17,7 +17,7 @@ def execute(code, param=None, context=None):
 
 	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
 	#call_function could be moved later
-	from internal.models import Constant
+	from internal.models import Constant, FirstName, LastName
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
 	from title.models import Title, AvailableTitle
