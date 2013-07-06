@@ -2,9 +2,29 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from kingdom.decorators import json_view, force_post, status_view
-from bargain.models import PendingBargainSharedMission, PendingBargainSharedMissionAffectation
+from bargain.models import PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
 from mission.models import MissionGrid
 from kingdom.models import Folk
+
+
+@force_post
+@json_view
+@status_view
+def pending_bargain_state(request, pk):
+	"""
+	Update state for the pending bargain
+	"""
+
+	if 'state' not in request.POST:
+		raise Http404("Specify state in POST")
+
+	# Retrieve the objects
+	pending_bargain_kingdom = get_object_or_404(PendingBargainKingdom, pk=pk, kingdom=request.user.kingdom)
+
+	# Set state
+	print request.POST['state']
+	pending_bargain_kingdom.state = request.POST['state']
+	pending_bargain_kingdom.save()
 
 
 @force_post

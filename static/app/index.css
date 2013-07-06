@@ -1,3 +1,8 @@
+body
+{
+	padding-bottom:50px;
+}
+
 #messages
 {
 	border-left:1px solid black;

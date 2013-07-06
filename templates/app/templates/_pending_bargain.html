@@ -1,5 +1,6 @@
-<small data-bind="text: new Date(started())"></small>
 <h3>Négociations avec <span data-bind="text: partner"></span></h3>
+
+<small data-bind="text: new Date(started())"></small>
 Statut du partenaire : <span data-bind="text: partner_state"></span><br />
 Mon statut : <span data-bind="text: state"></span>
 
@@ -8,3 +9,9 @@ Mon statut : <span data-bind="text: state"></span>
 		{% include "app/templates/_pending_mission_shared.html" %}
 	</div>
 </div>
+
+<a class="btn" href="#" data-bind="visible: state() == 0, click: change_pending_bargain_update_state" data-state="1">C'est tout bon pour moi !</a>
+<a class="btn" href="#" data-bind="visible: state() >= 1, click: change_pending_bargain_update_state" data-state="0">Annuler mon accord.</a>
+<a class="btn" href="#" data-bind="visible: state() == 1, click: change_pending_bargain_update_state" data-state="2">Je valide définitivement.</a>
+<a class="btn" href="#" data-bind="visible: state() == 2, click: change_pending_bargain_update_state" data-state="1">Annuler mon accord définitif.</a>
+
