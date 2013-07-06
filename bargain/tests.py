@@ -181,7 +181,25 @@ class UnitTest(TestCase):
 			folk=self.f
 		)
 
-		# This gris is full
+		# This grid is full
+		self.assertRaises(ValidationError, pbsma.save)
+
+	def test_cant_affect_if_in_mission(self):
+		"""
+		The affectation must check you're not already in a mission.
+		"""
+		# Create a pending mission, not shared
+		pm2 = PendingMission(kingdom=self.k1, mission=self.m)
+		pm2.save()
+		pma = PendingMissionAffectation(pending_mission=pm2, mission_grid=self.mg, folk=self.f)
+		pma.save()
+		
+		pbsma = PendingBargainSharedMissionAffectation(
+			pending_bargain_shared_mission=self.pbsm,
+			mission_grid=self.mg,
+			folk=self.f
+		)
+
 		self.assertRaises(ValidationError, pbsma.save)
 
 	def test_validation(self):
