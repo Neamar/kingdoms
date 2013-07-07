@@ -39,7 +39,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		raw_context = {}
 		raw_context['kingdom'] = instance.kingdom
 		raw_context['folks'] = instance.kingdom.folk_set.filter(death=None)
-		raw_context['dynastie'] = lambda: instance.kingdom.user.username
+		raw_context['dynasty'] = lambda: instance.kingdom.user.username
 
 		# Ugly, but necessary: give access to titles in event context.
 		from title.models import AvailableTitle
