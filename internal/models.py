@@ -134,7 +134,7 @@ class Avatar(models.Model):
 	image = models.ImageField(upload_to="avatars/")
 
 	def __unicode__(self):
-		return self.image.name
+		return "%s [%s]" % (self.image.name, self.category.slug)
 
 
 class Function(models.Model):
