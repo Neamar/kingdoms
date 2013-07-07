@@ -48,7 +48,7 @@ class Command(BaseCommand):
 			'regexps': event_regexps,
 		},
 		'mission': {
-			'items': Mission.objects.all(),
+			'items': Mission.objects,
 			'code': ['on_init', 'on_start', 'on_resolution'],
 			'node':
 			{
@@ -61,7 +61,7 @@ class Command(BaseCommand):
 			'regexps': mission_regexps,
 		},
 		'title': {
-			'items': Title.objects.all(),
+			'items': Title.objects,
 			'code': ['on_unlock', 'on_affect', 'on_defect'],
 			'node':
 			{
@@ -74,7 +74,7 @@ class Command(BaseCommand):
 			'regexps': title_regexps,
 		},
 		'trigger': {
-			'items': Trigger.objects.all(),
+			'items': Trigger.objects,
 			'code': ['on_fire'],
 			'node':
 			{
@@ -110,7 +110,7 @@ class Command(BaseCommand):
 			if k not in args:
 				continue
 
-			for o in model['items']:
+			for o in model['items'].all():
 				# Node name is modelname_namevalue
 				self.graph.add_node(k + '_' + model['node']['name'](o), **model['node']['params'])
 
@@ -119,7 +119,7 @@ class Command(BaseCommand):
 			if k not in args:
 				continue
 
-			for o in model['items']:
+			for o in model['items'].all():
 				# List dependencies from this model instance
 				dependencies = []
 				for attr in model['code']:
