@@ -102,11 +102,11 @@ class PendingEvent(models.Model):
 		status, param = execute(self.event.on_fire, self, context)
 		return status, param
 
-	def get_value(self, value_name):
+	def get_value(self, name):
 		"""
 		Gets a value
 		"""
-		pev = _PendingEventVariable.objects.get(pending_event=self, name=value_name)
+		pev = _PendingEventVariable.objects.get(pending_event=self, name=name)
 		return pev.value
 
 	def set_value(self, name, value):
@@ -179,6 +179,24 @@ class PendingEventAction(models.Model):
 
 		self.pending_event.delete()
 		return status
+
+	def get_value(self, name):
+		"""
+		Gets a value
+		"""
+		pev = _PendingEventVariable.objects.get(pending_event_id=self.pending_event_id, name=name)
+		return pev.value
+
+	def set_value(self, name, value):
+		"""
+		Sets a value
+		"""
+		pev = _PendingEventVariable(
+			pending_event_id=self.pending_event_id,
+			name=name,
+			value=value
+		)
+		pev.save()
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.text, self.pending_event.event.slug)

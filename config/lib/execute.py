@@ -18,12 +18,12 @@ def execute(code, param=None, context=None):
 	from datetime import datetime, timedelta
 
 	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
-	from internal.models import Constant, FirstName, LastName
+	from internal.models import Constant, FirstName, LastName, Avatar, AvatarCategory
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
 	from title.models import Title, AvailableTitle
-	from config.scripts.random_scripts import random_in, random_value
 
+	from config.scripts.random_scripts import random_in, random_value
 	from kingdom.scripts import *
 	from internal.scripts import *
 	from title.scripts import *

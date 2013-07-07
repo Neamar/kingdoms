@@ -407,6 +407,27 @@ if param.get_value('beastnum') != 666:
 		# No exception should be raised.
 		pea.fire()
 
+	def test_context_action_setter(self):
+		"""
+		Check the pendingeventaction can set values too
+		"""
+
+		self.a.on_fire = """
+param.set_value('angelnum', 666)
+"""
+		self.a.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		pea = pe.pendingeventaction_set.all()[0]
+
+		# No exception should be raised.
+		pea.fire()
+
 	def test_pendingevent_delayed_add_context_postsave(self):
 		"""
 		Test you can create a pending event, store values on it and condition is fired after with this context.
