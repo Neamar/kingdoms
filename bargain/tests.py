@@ -202,6 +202,23 @@ class UnitTest(TestCase):
 
 		self.assertRaises(ValidationError, pbsma.save)
 
+	def test_kingdom_state(self):
+		"""
+		PendingBargainKingdom states values are constrained.
+		"""
+
+		self.pbk1.state = PendingBargainKingdom.PENDING
+		self.pbk1.save()
+
+		self.pbk1.state = PendingBargainKingdom.OK
+		self.pbk1.save()
+
+		self.pbk1.state = PendingBargainKingdom.OK_NO_MATTER_WHAT
+		self.pbk1.save()
+
+		self.pbk1.state = 15
+		self.assertRaises(ValidationError, self.pbk1.save)
+
 	def test_validation(self):
 		"""
 		PendingBargain are committed when everyone is OK.

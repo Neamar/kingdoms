@@ -8,6 +8,16 @@ from bargain.models import PendingBargainKingdom, PendingBargainSharedMission, P
 from mission.models import PendingMission
 
 
+@receiver(pre_save, sender=PendingBargainKingdom)
+def pending_bargain_kingdom_validate_state(sender, instance, **kwargs):
+	"""
+	Can't affect non existing state.
+	"""
+
+	if instance.state not in zip(*PendingBargainKingdom.STATE_CHOICES)[0]:
+		raise ValidationError("This state does not exists : %s." % instance.state)
+
+
 @receiver(pre_save, sender=PendingBargainSharedMission)
 def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
 	"""
