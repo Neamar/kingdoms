@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.core.exceptions import ValidationError
+from django.db import transaction
 
 from kingdom.utils import to_json
 
@@ -30,6 +31,11 @@ def status_view(func):
 		try:
 			func(request, *a, **kw)
 		except ValidationError as ve:
+			# We'll handle this nicely.
+			# We do require however to cancel the transaction.
+			# Since we're not raising any exception, the TransactionMiddleware will commit so we need to do the rollback manually.
+			transaction.rollback()
+
 			status = unicode(ve.messages[0])
 
 		return {'status': status}
