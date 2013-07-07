@@ -28,4 +28,4 @@ def folks_list(folks, arg=''):
 	elif len(folks) == 2:
 		return _folk_name(folks[0], first_name_only) + " et " + _folk_name(folks[1], _folk_name)
 	elif len(folks) > 2:
-		return ', '.join([_folk_name(p, first_name_only) for p in folks[0:-1]]) + ' et ' + folks[-1].first_name
+		return ', '.join([_folk_name(p, first_name_only) for p in folks[0:-1]]) + ' et ' + _folk_name(folks[-1], first_name_only)
