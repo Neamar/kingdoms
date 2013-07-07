@@ -2,7 +2,7 @@ from django.db.models.signals import pre_save, m2m_changed
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
-from kingdom.models import Kingdom, Folk, Quality
+from kingdom.models import Kingdom, Folk, Quality, Claim
 from config.lib.execute import execute
 
 
@@ -109,3 +109,13 @@ def on_quality_affection_defection(sender, instance, action, reverse, pk_set, **
 		}
 
 		status, param = execute(quality.on_defect, quality, context)
+
+
+@receiver(pre_save, sender=Claim)
+def claim_validate_level(sender, instance, **kwargs):
+	"""
+	Can't affect non existing claim level
+	"""
+
+	if instance.level not in zip(*Claim.LEVEL_CHOICES)[0]:
+		raise ValidationError("This claim level does not exists : %s." % instance.level)

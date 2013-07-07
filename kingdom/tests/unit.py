@@ -197,6 +197,28 @@ class UnitTest(TestCase):
 		self.f.save()
 		self.assertEqual(self.f.loyalty, 0)
 
+	def test_claim_level(self):
+		"""
+		Claim level should be REACHABLE, CLAIM or VENDETTA.
+		"""
+		k2 = Kingdom()
+		k2.save()
+
+		c = Claim(offender=self.k, offended=k2)
+		c.save()
+
+		c.level = c.REACHABLE
+		c.save()
+
+		c.level = c.CLAIM
+		c.save()
+
+		c.level = c.VENDETTA
+		c.save()
+
+		c.level = 10
+		self.assertRaises(ValidationError, c.save)
+
 	def test_claim_unicity(self):
 		"""
 		You can't have two claims on the same kingdom.
