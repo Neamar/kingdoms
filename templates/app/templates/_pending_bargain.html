@@ -1,0 +1,29 @@
+<h3>Négociations avec <span data-bind="text: partner"></span></h3>
+
+<small data-bind="text: new Date(started())"></small>
+Statut du partenaire : <span data-bind="text: partner_state"></span><br />
+Mon statut : <span data-bind="text: state"></span>
+
+<div class="row-fluid">
+	<div class="span3 well">
+		<p>Cliquez pour partager...</p>
+		<ul data-bind="foreach: $data.filter_pending_missions($parent.unstarted_pending_missions())">
+			<li><a href="#" data-bind="text: name(), click: click_pending_bargain_share"></a></li>
+		</ul>
+	</div>
+
+	<div class="span9">
+		<div data-bind="foreach: shared_missions">
+			<div data-bind="with: pending_mission">
+				{% include "app/templates/_pending_mission_shared.html" %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<a class="btn" href="#" data-bind="visible: state() == 0, click: click_pending_bargain_update_state" data-state="1">C'est tout bon pour moi !</a>
+<a class="btn" href="#" data-bind="visible: state() >= 1, click: click_pending_bargain_update_state" data-state="0">Annuler mon accord.</a>
+<a class="btn" href="#" data-bind="visible: state() == 1, click: click_pending_bargain_update_state" data-state="2">Je valide définitivement.</a>
+<a class="btn" href="#" data-bind="visible: state() == 2, click: click_pending_bargain_update_state" data-state="1">Annuler mon accord définitif.</a>
+
+<a class="btn btn-warning" href="#" data-bind="click: click_pending_bargain_delete">Abandonner cette négociation.</a>

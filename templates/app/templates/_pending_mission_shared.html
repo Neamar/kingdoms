@@ -1,0 +1,41 @@
+<div class="well row-fluid">
+	<h2 data-bind="text : name"></h2>
+	<p data-bind="html : text"></p>
+
+	<div data-bind="if: has_target">
+		<span data-bind="text: target"></span>
+	</div>
+
+	<div data-bind="if: has_value">
+		<span data-bind="text: value_description() + ' : ' + value()"></span>
+	</div>
+
+	<div data-bind="foreach: grids">
+		<div>
+			<p data-bind="text: name"></p>
+			<div data-bind="foreach: affectations">
+				<div>
+					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
+					<span data-bind="text:first_name() + ' ' + last_name()"></span>
+				</div>
+			</div>
+			<div data-bind="foreach: virtual_affectations">
+				<div>
+					<img data-bind="attr: {src:avatar, alt: name}" alt="Affectation" style="margin:10px;" />
+					<span data-bind="text:first_name() + ' ' + last_name()" id="lol"></span>
+					<a href="#" data-bind="ifnot:$parents[2].shared_by_me, click: http_actions.pendingMissionGridDefect">Ouste !</a>
+				</div>
+			</div>
+
+			<div data-bind="ifnot:$parents[1].shared_by_me">
+				<div data-bind="visible: affectations().length + virtual_affectations().length < length(), droppable: droppable_pending_mission_grid_affect_folk">
+					<img src="http://placehold.it/50x60" alt="Affectation" style="margin:10px;" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<small data-bind="visible: timeout() != null, text: new Date(timeout())"></small><br />
+
+	<a class="btn" href="#" data-bind="visible: $parent.shared_by_me, click: click_shared_pending_mission_delete">Annuler le partage</a>
+</div>

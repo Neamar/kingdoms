@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'internal',
     'mission',
     'event',
+    'bargain',
 )
 
 # A sample logging configuration. The only tangible logging
