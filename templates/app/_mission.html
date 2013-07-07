@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
-	<li><a data-bind="page-href: 'available'">Missions disponibles</a></li>
-	<li><a class="active" data-bind="page-href: '../mission'">Missions en attente</a></li>
-	<li><a data-bind="page-href: 'running'">Missions en cours</a></li>
+	<li data-bind="css: {active: $page.child('available')().isVisible}"><a data-bind="page-href: 'available'">Missions disponibles</a></li>
+	<li data-bind="css: {active: $page.child('start')().isVisible}"><a class="active" data-bind="page-href: '../mission'">Missions en attente</a></li>
+	<li data-bind="css: {active: $page.child('running')().isVisible}"><a data-bind="page-href: 'running'">Missions en cours</a></li>
 </ul>
 
 <div data-bind="page: {id: 'available'}">

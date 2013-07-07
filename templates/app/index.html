@@ -30,13 +30,27 @@
 				Prestige : <span data-bind="text: kingdom.prestige"></span> Argent : <span data-bind="text: kingdom.money"></span> Population : <span data-bind="text: kingdom.population"></span>
 			</p>
 			<ul class="nav">
-				<li class="active"><a href="#">Accueil</a></li>
-				<li class=""><a data-bind="page-href: 'title'">Titres</a></li>
-				<li class=""><a data-bind="page-href: 'mission'">Missions</a></li>
-				<li class=""><a data-bind="page-href: 'event'">Évènements</a></li>
-				<li class=""><a data-bind="page-href: 'bargain'">Négociations</a></li>
-				<li data-bind="visible: debug_info()"><a data-bind="page-href: 'debug'">Debug</a></li>
-				<li class=""><a data-bind="click: loadDatas" href="#">Rafraîchir</a></li>
+				<li data-bind="css: {active: $__page__.child('start')().isVisible}">
+					<a href="#">Accueil</a>
+				</li>
+				<li data-bind="css: {active: $__page__.child('title')().isVisible}">
+					<a data-bind="page-href: 'title'">Titres</a>
+				</li>
+				<li data-bind="css: {active: $__page__.child('mission')().isVisible}">
+					<a data-bind="page-href: 'mission'">Missions</a>
+				</li>
+				<li data-bind="css: {active: $__page__.child('event')().isVisible}">
+					<a data-bind="page-href: 'event'">Évènements</a>
+				</li>
+				<li data-bind="css: {active: $__page__.child('bargain')().isVisible}">
+					<a data-bind="page-href: 'bargain'">Négociations</a>
+				</li>
+				<li data-bind="visible: debug_info(), css: {active: $__page__.child('debug')().isVisible}">
+					<a data-bind="page-href: 'debug'">Debug</a>
+				</li>
+				<li class="">
+					<a data-bind="click: loadDatas" href="#"><i class="icon-refresh"></i></a>
+				</li>
 			</ul>
 		</div><!--/.nav-collapse -->
 		</div>
