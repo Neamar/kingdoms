@@ -272,7 +272,7 @@ param.set_value("kingdom", kingdom)
 		u.save()
 		self.k.user = u
 		self.k.save()
-		self.e.text = "{{ dynastie }}"
+		self.e.text = "{{ dynasty }}"
 		self.e.save()
 
 		pe = PendingEvent(
