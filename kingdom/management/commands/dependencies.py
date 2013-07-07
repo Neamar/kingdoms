@@ -4,7 +4,6 @@ Generate a dot file for dependencies between Event and Mission.
 import re
 import pygraphviz as pgv
 
-from collections import defaultdict
 from django.core.management.base import BaseCommand
 
 from event.models import Event
@@ -26,35 +25,66 @@ class Command(BaseCommand):
 	unlock_mission = re.compile("unlock_mission\(\"(\w+)\"\)")
 	mission_regexps = [pending_mission_slug, unlock_mission]
 
+	params = {
+		'event': {
+			'items': Event.objects.all(),
+			'code': ['condition', 'on_fire'],
+			'node':
+			{
+				"name": lambda e: e.slug,
+				"params": {
+					"color": "lightblue2",
+					"style": "filled",
+				}
+			},
+			'regexps': event_regexps,
+		},
+		'mission': {
+			'items': Mission.objects.all(),
+			'code': ['on_init', 'on_start', 'on_resolution'],
+			'node':
+			{
+				"name": lambda m: m.slug,
+				"params": {
+					"color": "lightyellow2",
+					"style": "filled",
+				}
+			},
+			'regexps': mission_regexps,
+		},
+	}
+
 	def handle(self, *args, **options):
+		# Init graph
 		self.graph = pgv.AGraph(strict=False, directed=True)
 
-		events = Event.objects.all().prefetch_related('eventaction_set')
+		# Build regexps dict
+		all_regexps = {k: m['regexps'] for k, m in self.params.items()}
 
-		for event in events:
-			self.graph.add_node("event_" + event.slug, color="lightblue2", style="filled")
-			
-		missions = Mission.objects.all()
-		for mission in missions:
-			self.graph.add_node("mission_" + mission.slug, color="lightyellow2", style="filled")
+		# Read all objects
+		for k, model in self.params.items():
+			for o in model['items']:
+				# Node name is modelname_namevalue
+				self.graph.add_node(k + '_' + model['node']['name'](o), **model['node']['params'])
 
-		for event in events:
-			deps = []
-			deps += self._read_script(event.on_fire)
-			for event_action in event.eventaction_set.all():
-				deps += self._read_script(event_action.on_fire)
+		# Read dependencies
+		for k, model in self.params.items():
+			for o in model['items']:
+				# List dependencies from this model instance
+				dependencies = []
+				for attr in model['code']:
+					code = getattr(o, attr)
+					if code is None:
+						continue
 
-			for dep in set(deps):
-				self.graph.add_edge('event_' + event.slug, dep)
-		
-		for mission in missions:
-			deps = []
-			deps += self._read_script(mission.on_init)
-			deps += self._read_script(mission.on_start)
-			deps += self._read_script(mission.on_resolution)
-
-			for dep in set(deps):
-				self.graph.add_edge('mission_' + mission.slug, dep)
+					# Apply all regexps
+					for k2, regexps in all_regexps.items():
+						for regexp in regexps:
+							dependencies += [k2 + "_" + m for m in regexp.findall(code)]
+				
+				# Apply dependencies (with unique values)
+				for dependency in set(dependencies):
+					self.graph.add_edge(k + '_' + model['node']['name'](o), dependency)
 
 		# Output results
 		out = self.graph.string()
