@@ -16,11 +16,11 @@ def kingdom_get_folk_in_title(self, title_slug):
 Kingdom.get_folk_in_title = kingdom_get_folk_in_title
 
 
-def kingdom_unlock_title(self, title_slug):
+def kingdom_unlock_title(self, slug):
 	"""
 	Unlock the title.
 	"""
-	title = Title.objects.get(slug=title_slug)
+	title = Title.objects.get(slug=slug)
 	try:
 		available_title = AvailableTitle(
 			title=title,

@@ -29,7 +29,7 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_get_folk_in_title(self):
 		"""
-		check if the folk is well returned
+		Check folk is returned
 		"""
 		at2 = AvailableTitle(
 			title=self.t,
@@ -41,7 +41,7 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_get_folk_in_title_fail(self):
 		"""
-		check if None is well returned
+		Check None is returned
 		"""
 		at2 = AvailableTitle(
 			title=self.t,
@@ -53,7 +53,7 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_get_folk_in_title_empty(self):
 		"""
-		check if None is well returned
+		Check None is returned
 		"""
 		at2 = AvailableTitle(
 			title=self.t,
@@ -64,7 +64,7 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_unlock_title(self):
 		"""
-		check if the available title is well created
+		Check available title is created
 		"""
 
 		# Sanity check
@@ -77,16 +77,15 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_unlock_title_already_available(self):
 		"""
-		check if the available title is well returned
+		Check you can unlock twice
 		"""
 
 		self.k.unlock_title("dummy_title")
-
 		self.k.unlock_title("dummy_title")
 
 	def test_folk_add_title(self):
 		"""
-		Check is the title is added
+		Check the title is added
 		"""
 		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("dummy_title"))
 
@@ -102,7 +101,7 @@ class ScriptTest(TestCase):
 
 	def test_folk_remove_title(self):
 		"""
-		Check is the title is removed
+		Check the title is removed
 		"""
 		self.assertRaises(AvailableTitle.DoesNotExist, self.k.get_folk_in_title("dummy_title"))
 

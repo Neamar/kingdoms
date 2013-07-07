@@ -1,3 +1,3 @@
-from unit import *
-from code import *
-from script import *
+from title.tests.unit import *
+from title.tests.code import *
+from title.tests.script import *
