@@ -31,10 +31,10 @@ class Mission(models.Model):
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", default=None)
-	target_description = models.CharField(max_length=255, null=True, default=None)
+	target_description = models.CharField(max_length=255, null=True, default=None, blank=True)
 
 	has_value = models.BooleanField(default=False, help_text="Does this missions asks for a value?")
-	value_description = models.CharField(max_length=255, default="Valeur :")
+	value_description = models.CharField(max_length=255, null=True, default=None, blank=True)
 
 	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
