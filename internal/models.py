@@ -60,15 +60,7 @@ class Value(models.Model):
 
 
 class Recurring(DescribedModel):
-	HOURLY = 'hourly'
-	DAILY = 'daily'
-	MINUTELY = 'minutely'
-	FREQUENCY_CHOICES = (
-		(DAILY, 'Tous les jours'),
-		(HOURLY, 'Toutes les heures'),
-		(MINUTELY, 'Toutes les minutes'),
-	)
-	frequency = models.CharField(max_length=8, choices=FREQUENCY_CHOICES, default=HOURLY)
+	delay = models.PositiveIntegerField(help_text="Delay (in minutes) between two executions of this recurring.", default=60*24)
 
 	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)

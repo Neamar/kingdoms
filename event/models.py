@@ -15,7 +15,7 @@ class EventCategory(DescribedModel):
 	class Meta:
 		verbose_name_plural = "Event categories"
 
-	frequency = models.PositiveIntegerField()
+	frequency = models.PositiveIntegerField(help_text="Every ten minutes, one chance out of `frequency` to create an event in this category.")
 	timeout = models.PositiveIntegerField()
 	available_kingdoms = models.ManyToManyField(Kingdom, blank=True)
 

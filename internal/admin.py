@@ -27,7 +27,7 @@ admin.site.register(Function, FunctionAdmin)
 
 
 class RecurringAdmin(admin.ModelAdmin):
-	list_display = ('name', 'description', 'frequency')
+	list_display = ('name', 'description', 'delay')
 	search_fields = ('name', 'description')
 	actions = ['resolve']
 
