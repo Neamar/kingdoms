@@ -2,8 +2,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
+
 from config.lib.models import DescribedModel
 from config.fields.script_field import ScriptField
+from kingdom.managers import FolkManager
 
 
 class Kingdom(models.Model):
@@ -26,6 +28,9 @@ class Folk(models.Model):
 	"""
 	The folk are the people in your kingdom.
 	"""
+	objects = FolkManager()
+	objects_and_dead = models.Manager()
+
 	MALE = 'm'
 	FEMALE = 'f'
 

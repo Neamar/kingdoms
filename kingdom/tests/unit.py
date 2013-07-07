@@ -197,6 +197,20 @@ class UnitTest(TestCase):
 		self.f.save()
 		self.assertEqual(self.f.loyalty, 0)
 
+	def test_dead_people(self):
+		"""
+		Dead people are not returned by default.
+		"""
+
+		# Sanity check
+		self.assertEqual(1, Folk.objects.count())
+
+		self.f.death = datetime.now()
+		self.f.save()
+
+		self.assertEqual(0, Folk.objects.count())
+		self.assertEqual(1, Folk.objects_and_dead.count())
+
 	def test_claim_level(self):
 		"""
 		Claim level should be REACHABLE, CLAIM or VENDETTA.
