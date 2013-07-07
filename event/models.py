@@ -174,7 +174,7 @@ class PendingEventAction(models.Model):
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
 
-		if self.message:
+		if self.message is not None:
 			self.pending_event.kingdom.message_set.create(content=self.message)
 
 		self.pending_event.delete()
