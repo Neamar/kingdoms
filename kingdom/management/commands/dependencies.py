@@ -89,20 +89,36 @@ class Command(BaseCommand):
 	}
 
 	def handle(self, *args, **options):
+		if len(args) == 0:
+			args = self.params.keys()
+
+		# Check for invalid arguments
+		invalid_args = [arg for arg in args if arg not in self.params.keys()]
+		if len(invalid_args) > 0:
+			self.stderr.write("This app does not exists: %s" % invalid_args)
+			return
+
 		# Init graph
 		self.graph = pgv.AGraph(strict=False, directed=True)
 
 		# Build regexps dict
-		all_regexps = {k: m['regexps'] for k, m in self.params.items()}
+		all_regexps = {k: m['regexps'] for k, m in self.params.items() if k in args}
 
-		# Read all objects
+		# Read all objects and generate node list
 		for k, model in self.params.items():
+			# Skip if not asked
+			if k not in args:
+				continue
+
 			for o in model['items']:
 				# Node name is modelname_namevalue
 				self.graph.add_node(k + '_' + model['node']['name'](o), **model['node']['params'])
 
 		# Read dependencies
 		for k, model in self.params.items():
+			if k not in args:
+				continue
+
 			for o in model['items']:
 				# List dependencies from this model instance
 				dependencies = []
