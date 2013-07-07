@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def serialize_kingdom(kingdom):
 	"""
 	Serialize a kingdom object to JSON.
@@ -49,6 +52,7 @@ def serialize_folk(folk):
 		'plot': folk.plot,
 		'scholarship': folk.scholarship,
 		'loyalty': folk.loyalty,
+		'age': (datetime.now() - folk.birth).days,
 		'raw_qualities': [q.pk for q in folk.quality_set.all()]
 	}
 
