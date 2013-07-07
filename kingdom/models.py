@@ -92,6 +92,7 @@ class Quality(models.Model):
 	female_name = models.CharField(max_length=255)
 
 	description = models.TextField()
+	female_description = models.TextField()
 	
 	category = models.ForeignKey(QualityCategory)
 	
