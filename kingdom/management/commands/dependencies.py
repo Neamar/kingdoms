@@ -8,6 +8,8 @@ from django.core.management.base import BaseCommand
 
 from event.models import Event
 from mission.models import Mission
+from title.models import Title
+from internal.models import Trigger
 
 
 class Command(BaseCommand):
@@ -25,9 +27,15 @@ class Command(BaseCommand):
 	unlock_mission = re.compile("unlock_mission\(\"(\w+)\"\)")
 	mission_regexps = [pending_mission_slug, unlock_mission]
 
+	unlock_title = re.compile("unlock_title\(\"(\w+)\"\)")
+	title_regexps = [unlock_title]
+
 	params = {
 		'event': {
-			'items': Event.objects.all(),
+			'items': Event.objects.all().prefetch_related('eventaction_set'),
+			'related': {
+				'eventaction_set': ['on_fire']
+			},
 			'code': ['condition', 'on_fire'],
 			'node':
 			{
@@ -51,6 +59,32 @@ class Command(BaseCommand):
 				}
 			},
 			'regexps': mission_regexps,
+		},
+		'title': {
+			'items': Title.objects.all(),
+			'code': ['on_unlock', 'on_affect', 'on_defect'],
+			'node':
+			{
+				"name": lambda t: t.slug,
+				"params": {
+					"color": "green",
+					"style": "filled",
+				}
+			},
+			'regexps': title_regexps,
+		},
+		'trigger': {
+			'items': Trigger.objects.all(),
+			'code': ['on_fire'],
+			'node':
+			{
+				"name": lambda t: t.slug,
+				"params": {
+					"color": "red",
+					"style": "filled",
+				}
+			},
+			'regexps': [],
 		},
 	}
 
@@ -82,6 +116,22 @@ class Command(BaseCommand):
 						for regexp in regexps:
 							dependencies += [k2 + "_" + m for m in regexp.findall(code)]
 				
+				if 'related' in model:
+					# This items has subobjects,
+					# e.g. eventaction_set
+					for related, attrs in model['related'].items():
+						related_objects = getattr(o, related).all()
+						for related_object in related_objects:
+							for attr in attrs:
+								code = getattr(related_object, attr)
+								if code is None:
+									continue
+
+								# Apply all regexps
+								for k2, regexps in all_regexps.items():
+									for regexp in regexps:
+										dependencies += [k2 + "_" + m for m in regexp.findall(code)]
+
 				# Apply dependencies (with unique values)
 				for dependency in set(dependencies):
 					self.graph.add_edge(k + '_' + model['node']['name'](o), dependency)
