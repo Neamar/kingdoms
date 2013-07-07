@@ -64,50 +64,58 @@ class ScriptTest(TestCase):
 		Verify if the quality is added
 		"""
 		self.qc = QualityCategory(
-			name="trait",
+			name="Inherent qualities",
 			description="haha"
 		)
 		self.qc.save()
 		self.q = Quality(
 			category=self.qc,
-			name="moche"
+			slug="smart",
+			name="Smart",
+			description="Just like me."
 		)
 		self.q.save()
-		self.f.add_quality("moche")
+
+		self.f.add_quality("smart")
 		self.f.save()
 		self.assertEqual(1, Folk.objects.get(kingdom=self.k).quality_set.count())
 
 	def test_folk_add_quality_fail(self):
 		self.qc = QualityCategory(
-			name="trait",
+			name="Inherent qualities",
 			description="haha"
 		)
 		self.qc.save()
 		self.q = Quality(
 			category=self.qc,
-			name="moche"
+			slug="smart",
+			name="Smart",
+			description="Just like me."
 		)
 		self.q.save()
-		self.assertRaises(Quality.DoesNotExist, (lambda: self.f.add_quality("lol")))
+		self.assertRaises(Quality.DoesNotExist, (lambda: self.f.add_quality("poor")))
 
 	def test_folk_remove_quality(self):
 		"""
 		Verify if the quality is removed
 		"""
 		self.qc = QualityCategory(
-			name="trait",
+			name="Inherent qualities",
 			description="haha"
 		)
 		self.qc.save()
 		self.q = Quality(
 			category=self.qc,
-			name="moche"
+			slug="smart",
+			name="Smart",
+			description="Just like me."
 		)
 		self.q.save()
-		self.f.add_quality("moche")
+
+		self.f.add_quality("smart")
 		self.f.save()
-		self.f.remove_quality("moche")
-		self.assertEqual(0, Folk.objects.get(kingdom=self.k).quality_set.count())
+		self.f.remove_quality("smart")
+		self.assertEqual(0, Folk.objects.get(pk=self.f.pk).quality_set.count())
 
 	def test_folk_age(self):
 		"""
@@ -121,18 +129,20 @@ class ScriptTest(TestCase):
 		Verify if the folk has the quality
 		"""
 		self.qc = QualityCategory(
-			name="trait",
+			name="Inherent qualities",
 			description="haha"
 		)
 		self.qc.save()
 		self.q = Quality(
 			category=self.qc,
-			name="moche"
+			slug="smart",
+			name="Smart",
+			description="Just like me."
 		)
 		self.q.save()
 
-		self.f.add_quality("moche")
-		self.assertEqual(True, self.f.has_quality("moche"))
+		self.f.add_quality("smart")
+		self.assertEqual(True, self.f.has_quality("smart"))
 
 	def test_sum_folks(self):
 		"""

@@ -6,7 +6,6 @@ Documentation for this lies in readme.md
 from datetime import datetime
 
 from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
-from django.core.exceptions import ValidationError
 
 
 ######
@@ -95,12 +94,12 @@ def folk_die(self):
 Folk.die = folk_die
 
 
-def folk_add_quality(self, name):
+def folk_add_quality(self, slug):
 	"""
 	Add a new quality.
 	"""
 
-	quality = Quality.objects.get(name__iexact=name)
+	quality = Quality.objects.get(slug=slug)
 	try:
 		self.quality_set.add(quality)
 	except:
@@ -120,21 +119,21 @@ def folk_age(self):
 Folk.age = folk_age
 
 
-def folk_has_quality(self, quality):
+def folk_has_quality(self, slug):
 	"""
 	Returns True is the folk has the quality
 	"""
 
-	return self.quality_set.filter(name__iexact=quality).exists()
+	return self.quality_set.filter(slug=slug).exists()
 Folk.has_quality = folk_has_quality
 
 
-def folk_remove_quality(self, name):
+def folk_remove_quality(self, slug):
 	"""
 	Add a new quality.
 	"""
 
-	quality = Quality.objects.get(name__iexact=name)
+	quality = Quality.objects.get(slug=slug)
 	try:
 		self.quality_set.remove(quality)
 	except:

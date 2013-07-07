@@ -300,12 +300,14 @@ class UnitTest(TestCase):
 		q = Quality(
 			category=self.qc,
 			name="Avare",
+			slug="avare",
 			description="Jamais donner argent !")
 		q.save()
 
 		q2 = Quality(
 			category=self.qc,
 			name="Généreux",
+			slug="genereux",
 			description="Toujours donner argent !")
 		q2.save()
 
@@ -323,6 +325,7 @@ class UnitTest(TestCase):
 		q = Quality(
 			category=self.qc,
 			name="Avare",
+			slug="avare",
 			description="Jamais donner argent !")
 		q.on_affect = """
 folk.kingdom.money = 15
@@ -344,6 +347,7 @@ folk.kingdom.save()
 		q = Quality(
 			category=self.qc,
 			name="Avare",
+			slug="avare",
 			description="Jamais donner argent !")
 		q.on_defect = """
 folk.kingdom.money = 15
