@@ -36,7 +36,7 @@ class Trigger(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
-			'folks': kingdom.folk_set.filter(death=None),
+			'folks': kingdom.folk_set.all(),
 		}
 		# Register it has been fired.
 		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
@@ -80,7 +80,7 @@ class Recurring(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
-			'folks': kingdom.folk_set.filter(death=None),
+			'folks': kingdom.folk_set.all(),
 		}
 
 		status, param = execute(self.condition, kingdom, context)
@@ -92,7 +92,7 @@ class Recurring(DescribedModel):
 		"""
 		context = {
 			'kingdom': kingdom,
-			'folks': kingdom.folk_set.filter(death=None),
+			'folks': kingdom.folk_set.all(),
 		}
 
 		status, param = execute(self.on_fire, kingdom, context)

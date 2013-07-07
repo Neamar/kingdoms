@@ -84,7 +84,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.filter(death=None),
+			'folks': self.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event.condition, self, context)
 
@@ -97,7 +97,7 @@ class PendingEvent(models.Model):
 		"""
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.filter(death=None),
+			'folks': self.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event.on_fire, self, context)
 		return status, param
@@ -157,7 +157,7 @@ class PendingEventAction(models.Model):
 		"""
 		context = {
 			'kingdom': self.pending_event.kingdom,
-			'folks': self.pending_event.kingdom.folk_set.filter(death=None),
+			'folks': self.pending_event.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event_action.condition, self.pending_event, context)
 
@@ -170,7 +170,7 @@ class PendingEventAction(models.Model):
 		
 		context = {
 			'kingdom': self.pending_event.kingdom,
-			'folks': self.pending_event.kingdom.folk_set.filter(death=None),
+			'folks': self.pending_event.kingdom.folk_set.all(),
 		}
 		status, param = execute(self.event_action.on_fire, self, context)
 

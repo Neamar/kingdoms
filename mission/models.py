@@ -161,7 +161,7 @@ class PendingMission(models.Model):
 
 		context = {
 			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.filter(death=None),
+			'folks': self.kingdom.folk_set.all(),
 			'target': self.target
 		}
 		context.update(self._get_context())

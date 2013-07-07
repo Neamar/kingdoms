@@ -1,26 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
 from kingdom.models import Kingdom, Folk, Quality, QualityCategory, ModalMessage, Message, Claim
-
-
-class AliveFilter(admin.SimpleListFilter):
-	title = _('vivant')
-	parameter_name = 'vivant'
-
-	def lookups(self, request, model_admin):
-		return (
-			('yes', _('Oui')),
-			('no', _('Non'))
-		)
-
-	def queryset(self, request, queryset):
-		if self.value() == 'no':
-			return queryset.exclude(death=None)
-		elif self.value() == 'yes':
-			return queryset.filter(death=None)
-		else:
-			return queryset.all()
 
 
 class KingdomAdmin(admin.ModelAdmin):
@@ -37,7 +17,7 @@ class EventActionAdminInline(admin.StackedInline):
 class FolkAdmin(admin.ModelAdmin):
 	list_display = ('first_name', 'last_name', 'kingdom', 'sex', 'birth')
 	search_fields = ('first_name', 'last_name')
-	list_filter = ('sex', AliveFilter)
+	list_filter = ('sex', 'kingdom')
 admin.site.register(Folk, FolkAdmin)
 
 
