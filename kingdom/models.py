@@ -82,10 +82,17 @@ class QualityCategory(DescribedModel):
 	pass
 
 
-class Quality(DescribedModel):
+class Quality(models.Model):
 	"""
 	A quality a folk might have, with its description
 	"""
+	slug = models.SlugField(editable=True, unique=True)
+
+	name = models.CharField(max_length=255)
+	female_name = models.CharField(max_length=255)
+
+	description = models.TextField()
+	
 	category = models.ForeignKey(QualityCategory)
 	
 	on_affect = ScriptField(blank=True, null=True, help_text="Called after folk affectation. `param` is the quality to be affected, `folk` is the folk to be affected.", default=None)
