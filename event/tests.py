@@ -529,6 +529,31 @@ pe2.start()
 		pe2 = PendingEvent.objects.get(kingdom=self.k, event=e2)
 		self.assertEqual(10, pe2.get_value("valeur"))
 
+	def test_next_event_slug(self):
+		"""
+		Tests we can create from event slug too.
+		"""
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+		pe.set_value("valeur", 10)
+
+		e2 = Event(
+			name="Event 2",
+			slug="event_2",
+			category=self.c,
+			text="Event 2",
+		)
+		e2.save()
+
+		pe.next_event("event_2").start()
+
+		pe2 = PendingEvent.objects.get(kingdom=self.k, event=e2)
+		self.assertEqual(10, pe2.get_value("valeur"))
+
 	def test_delete(self):
 		"""
 		Tests if the event is deleted

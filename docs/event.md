@@ -36,7 +36,7 @@ Attention, la variable doit forcément exister.
 #### Créer un nouvel PendingEventAction en gardant les variables
 Depuis un penging_event
 ```python
-param.pending_event.next_event(Event.objects.get(slug="slug du pending_event à créer")).start()
+param.pending_event.next_event("slug_new_event").start()
 ```
 
 Exemples

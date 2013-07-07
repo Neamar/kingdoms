@@ -128,6 +128,9 @@ class PendingEvent(models.Model):
 		"""
 		Creates a new pending event with the context of the previous (current) one.
 		"""
+		if isinstance(event, basestring):
+			event = Event.objects.get(slug=event)
+
 		pending_event2 = PendingEvent(
 			kingdom=self.kingdom,
 			event=event,
