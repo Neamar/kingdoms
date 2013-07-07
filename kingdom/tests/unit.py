@@ -211,6 +211,35 @@ class UnitTest(TestCase):
 		self.assertEqual(0, Folk.objects.count())
 		self.assertEqual(1, Folk.objects_and_dead.count())
 
+	def test_folk_deletion(self):
+		"""
+		Deleted people do not CASCADE on their family, only set to None.
+		"""
+		son = Folk(kingdom=self.k)
+		son.father = self.f
+		son.save()
+
+		pupil = Folk(kingdom=self.k)
+		pupil.mentor = self.f
+		pupil.save()
+
+		wife = Folk(kingdom=self.k)
+		wife.spouse = self.f
+		wife.save()
+
+		# Sanity check
+		self.assertEqual(4, Folk.objects.count())
+		self.assertEqual(son.father, self.f)
+		self.assertEqual(pupil.mentor, self.f)
+		self.assertEqual(wife.spouse, self.f)
+
+		self.f.delete()
+		
+		self.assertEqual(3, Folk.objects.count())
+		self.assertIsNone(Folk.objects.get(pk=son.pk).father)
+		self.assertIsNone(Folk.objects.get(pk=pupil.pk).mentor)
+		self.assertIsNone(Folk.objects.get(pk=wife.pk).spouse)
+
 	def test_claim_level(self):
 		"""
 		Claim level should be REACHABLE, CLAIM or VENDETTA.
