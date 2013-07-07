@@ -112,7 +112,7 @@ class Command(BaseCommand):
 
 			for o in model['items'].all():
 				# Node name is modelname_namevalue
-				self.graph.add_node(k + '_' + model['node']['name'](o), **model['node']['params'])
+				self.graph.add_node(k + '_' + model['node']['name'](o), label=model['node']['name'](o), **model['node']['params'])
 
 		# Read dependencies
 		for k, model in self.params.items():
