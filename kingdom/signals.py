@@ -36,6 +36,16 @@ def folk_attributes_constraints(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Folk)
+def folk_validate_sex(sender, instance, **kwargs):
+	"""
+	Can't die before being born !
+	"""
+
+	if instance.sex not in zip(*Folk.SEX_CHOICES)[0]:
+		raise ValidationError("Can't die before being born.")
+
+
+@receiver(pre_save, sender=Folk)
 def folk_validate_death_after_birth(sender, instance, **kwargs):
 	"""
 	Can't die before being born !

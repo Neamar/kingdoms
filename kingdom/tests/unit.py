@@ -71,6 +71,19 @@ class UnitTest(TestCase):
 
 		self.assertRaises(ValidationError, self.f.save)
 
+	def test_folk_sex(self):
+		"""
+		Sex should be MALE or FEMALE
+		"""
+		self.f.sex = Folk.MALE
+		self.f.save()
+
+		self.f.sex = Folk.FEMALE
+		self.f.save()
+
+		self.f.sex = 't'
+		self.assertRaises(ValidationError, self.f.save)
+
 	def test_mother_sex(self):
 		"""
 		Mother should be a woman
