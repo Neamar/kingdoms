@@ -38,9 +38,17 @@ def dependencies(request):
 	dependencies_file_dot = '/tmp/dependencies.dot'
 	dependencies_file_image = '/tmp/dependencies.png'
 
+	params = request.GET.keys()
+
 	content = StringIO()
-	call_command('dependencies', stdout=content)
+	error = StringIO()
+	call_command('dependencies', *params, stdout=content, stderr=error)
 	content.seek(0)
+	error.seek(0)
+	error = error.read()
+	if error != '':
+		return HttpResponse(error)
+
 	dot_file = content.read()
 	with open(dependencies_file_dot, 'wb+') as temp_file:
 		temp_file.write(dot_file)
