@@ -325,6 +325,16 @@ status="not_allowed"
 		self.pm.value = 100
 		self.assertRaises(ValidationError, self.pm.save)
 
+	def test_mission_target_provided(self):
+		"""
+		Check target is not None if missio has_target
+		"""
+		self.m.has_target = True
+		self.m.save()
+
+		self.pm.started = datetime.now()
+		self.assertRaises(ValidationError, self.pm.save)
+
 	def test_mission_on_init(self):
 		"""
 		Check the on_init code can cancel the mission before it is launched.

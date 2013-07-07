@@ -153,6 +153,16 @@ def check_pending_mission_value_allowed(sender, instance, **kwargs):
 			raise ValidationError("Cette mission ne permet pas de définir de valeur.")
 
 
+@receiver(pre_save, sender=PendingMission)
+def check_pending_misison_cant_start_without_target(sender, instance, **kwargs):
+	"""
+	Forbids the launch of the mission if target is None and has_target is True
+	"""
+
+	if instance.started is not None and not instance.is_started and instance.target is None and instance.mission.has_target:
+		raise ValidationError("Impossible de lancer une mission sans définir sa cible !")
+
+
 @receiver(post_save, sender=PendingMission)
 def start_pending_mission(sender, instance, **kwargs):
 	"""
