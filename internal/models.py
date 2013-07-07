@@ -123,7 +123,7 @@ class AvatarCategory(NamedModel):
 	"""
 	class Meta:
 		verbose_name_plural = "Avatar categories"
-	pass
+	slug = models.SlugField(unique=True, editable=True)
 
 
 class Avatar(models.Model):
