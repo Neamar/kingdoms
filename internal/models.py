@@ -123,7 +123,22 @@ class Avatar(models.Model):
 		(FORBIDDEN, 'Incompatible')
 	)
 
-	sex = Folk.SEX_CHOICES
+	AUBURN = 0
+	BLOND = 1
+	GINGER = 2
+	BLACK = 3
+	DONT_CARE = 4
+
+	HAIR_CHOICES = (
+		(AUBURN, 'Brun'),
+		(BLOND, 'Brun'),
+		(AUBURN, 'Brun'),
+	)
+
+	SEX_CHOICES = Folk.SEX_CHOICES
+
+	sex = models.BooleanField(choices=SEX_CHOICES, default=SEX_CHOICES[0][0])
+	hair = models.IntegerField(choices=HAIR_CHOICES, default=AUBURN)
 
 	fight = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
 	diplomacy = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
@@ -132,13 +147,13 @@ class Avatar(models.Model):
 
 	child = models.ImageField(upload_to="avatars/child/", blank=True, default=None)
 	teenager = models.ImageField(upload_to="avatars/teenager/", blank=True, default=None)
-	adult = models.ImageField(upload_to="avatars/adult/")
-	old = models.ImageField(upload_to="avatars/old/")
+	adult = models.ImageField(upload_to="avatars/adult/", blank=True, default=None)
+	old = models.ImageField(upload_to="avatars/old/", blank=True, default=None)
 
 	qualities = models.ManyToManyField(Quality)
 
 	def __unicode__(self):
-		return "%s [%s]" % (self.adult.name, self.pk)
+		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child is not None else 'adult')
 
 
 class Function(models.Model):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar, AvatarCategory
+from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar
 from kingdom.models import Kingdom
 
 
@@ -52,13 +52,22 @@ admin.site.register(FirstName, FirstNameAdmin)
 admin.site.register(LastName)
 
 
-admin.site.register(AvatarCategory)
-
-
 class AvatarAdmin(admin.ModelAdmin):
-	list_display = ('thumb_image', 'category')
+	list_display = ('sex', 'hair', 'thumb_child', 'thumb_teenager', 'thumb_adult', 'thumb_old')
 
-	def thumb_image(self, obj):
-		return '<img src="%s" />' % obj.image.url
-	thumb_image.allow_tags = True
+	def thumb_child(self, obj):
+		return '<img src="%s" />' % obj.child.url
+	thumb_child.allow_tags = True
+
+	def thumb_teenager(self, obj):
+		return '<img src="%s" />' % obj.teenager.url
+	thumb_teenager.allow_tags = True
+
+	def thumb_adult(self, obj):
+		return '<img src="%s" />' % obj.adult.url
+	thumb_adult.allow_tags = True
+
+	def thumb_old(self, obj):
+		return '<img src="%s" />' % obj.old.url
+	thumb_old.allow_tags = True
 admin.site.register(Avatar, AvatarAdmin)

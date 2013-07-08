@@ -101,6 +101,9 @@ class Quality(models.Model):
 
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
 
+	def __unicode__(self):
+		return self.name
+
 
 class Message(models.Model):
 	"""
