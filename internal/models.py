@@ -5,7 +5,7 @@ from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel
 from config.fields.stored_value import StoredValueField
 
-from kingdom.models import Kingdom, Folk
+from kingdom.models import Kingdom, Folk, Quality
 from config.lib.execute import execute
 
 
@@ -109,24 +109,36 @@ class LastName(NamedModel):
 	pass
 
 
-class AvatarCategory(NamedModel):
-	"""
-	Dictionary for avatar categories.
-	"""
-	class Meta:
-		verbose_name_plural = "Avatar categories"
-	slug = models.SlugField(unique=True, editable=True)
-
-
 class Avatar(models.Model):
 	"""
 	Dictionary for avatar.
 	"""
-	category = models.ForeignKey(AvatarCategory)
-	image = models.ImageField(upload_to="avatars/")
+	DONT_CARE = 0
+	SUITABLE = 1
+	FORBIDDEN = 2
+
+	STATE_CHOICES = (
+		(DONT_CARE, 'Sans opinion'),
+		(SUITABLE, 'Tolérable'),
+		(FORBIDDEN, 'Incompatible')
+	)
+
+	sex = Folk.SEX_CHOICES
+
+	fight = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
+	diplomacy = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
+	plot = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
+	scholarship = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
+
+	child = models.ImageField(upload_to="avatars/child/", blank=True, default=None)
+	teenager = models.ImageField(upload_to="avatars/teenager/", blank=True, default=None)
+	adult = models.ImageField(upload_to="avatars/adult/")
+	old = models.ImageField(upload_to="avatars/old/")
+
+	qualities = models.ManyToManyField(Quality)
 
 	def __unicode__(self):
-		return "%s [%s]" % (self.image.name, self.category.slug)
+		return "%s [%s]" % (self.adult.name, self.pk)
 
 
 class Function(models.Model):
