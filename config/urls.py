@@ -11,20 +11,21 @@ admin.autodiscover()
 api.autodiscover()
 
 urlpatterns = patterns('',
+	# Administration
 	url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	url(r'^admin/', include(admin.site.urls)),
-
-	url(r'^login', 'kingdom.views.index.login'),
 	url(r'^dependencies/$', 'kingdom.views.index.dependencies'),
-	
+
+	# App views
+	url(r'^app/$', 'kingdom.views.index.app'),
+	url(r'^login', 'kingdom.views.index.login'),
+
+	# Api root and actions
 	url(r'^api/title/', include('title.urls')),
 	url(r'^api/event/', include('event.urls')),
 	url(r'^api/mission/', include('mission.urls')),
 	url(r'^api/bargain/', include('bargain.urls')),
 	url(r'^api/$', 'kingdom.views.api.api'),
-
-	url(r'^app/$', 'kingdom.views.index.app'),
-
 )
 
 if settings.DEBUG:
