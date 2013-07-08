@@ -18,7 +18,7 @@ def execute(code, param=None, context=None):
 	from datetime import datetime, timedelta
 
 	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
-	from internal.models import Constant, FirstName, LastName, Avatar, AvatarCategory
+	from internal.models import Constant, FirstName, LastName, Avatar
 	from event.models import Event, PendingEvent
 	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
 	from title.models import Title, AvailableTitle
