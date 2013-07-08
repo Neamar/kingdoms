@@ -1,5 +1,6 @@
 import importlib
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 from kingdom.decorators import json_view
 from kingdom.utils import *
@@ -23,6 +24,7 @@ def autodiscover():
 
 
 @json_view
+@login_required
 def api(request):
 	"""
 	Build huge responses from registered app,

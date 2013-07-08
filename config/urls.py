@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 
 from django.contrib import admin
-from django.views.generic import TemplateView
 from django.conf.urls.static import static
 
 from kingdom.views import api
@@ -18,7 +17,7 @@ urlpatterns = patterns('',
 
 	# App views
 	url(r'^app/$', 'kingdom.views.index.app'),
-	url(r'^login', 'kingdom.views.index.login'),
+	url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
 
 	# Api root and actions
 	url(r'^api/title/', include('title.urls')),
