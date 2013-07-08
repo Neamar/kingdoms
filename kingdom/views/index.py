@@ -1,6 +1,13 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.contrib.auth import authenticate, login as login_user
 from django.http import HttpResponse, Http404
+
+
+def app(request):
+	"""
+	Display main app
+	"""
+	return render(request, 'app/index.html')
 
 
 def login(request):

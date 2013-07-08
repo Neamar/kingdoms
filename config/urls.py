@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 	url(r'^api/bargain/', include('bargain.urls')),
 	url(r'^api/$', 'kingdom.views.api.api'),
 
-	url(r'^app/$', TemplateView.as_view(template_name="app/index.html")),
+	url(r'^app/$', 'kingdom.views.index.app'),
 
 )
 
