@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from kingdom.models import Kingdom, Folk
-from title.models import Title
+from title.models import Title, AvailableTitle
 from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation
 
 
@@ -24,6 +24,13 @@ class UnitTest(TestCase):
 			name="Stub title",
 			description="My description.")
 		self.t.save()
+
+		self.at = AvailableTitle(
+			title=self.t,
+			kingdom=self.k,
+			folk=self.f
+		)
+		self.at.save()
 
 		self.m = Mission(
 			name="Stub mission",
@@ -354,6 +361,17 @@ status="not_allowed"
 		)
 
 		self.assertRaises(ValidationError, pm2.save)
+
+	def test_mission_on_start_title(self):
+		"""
+		Check you can't start without a folk in associated title.
+		"""
+
+		self.at.folk = None
+		self.at.save()
+
+		self.pm.started = datetime.now()
+		self.assertRaises(ValidationError, self.pm.save)
 
 	def test_mission_on_start(self):
 		"""

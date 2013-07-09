@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from mission.models import PendingMission, PendingMissionAffectation
+from title.models import AvailableTitle
 
 
 @receiver(pre_delete, sender=PendingMissionAffectation)
@@ -151,6 +152,18 @@ def check_pending_mission_value_allowed(sender, instance, **kwargs):
 	"""
 	if instance.value != 0 and not instance.mission.has_value:
 			raise ValidationError("Cette mission ne permet pas de définir de valeur.")
+
+
+@receiver(pre_save, sender=PendingMission)
+def check_pending_misison_cant_start_without_title(sender, instance, **kwargs):
+	"""
+	Forbids the launch of the mission if the AvailableTitle.folk is not defined.
+	"""
+
+	if instance.started is not None and not instance.is_started:
+		at = AvailableTitle.objects.get(kingdom=instance.kingdom, title=instance.mission.title_id)
+		if at.folk is None:
+			raise ValidationError("Impossible de lancer une mission sans définir sa cible !")
 
 
 @receiver(pre_save, sender=PendingMission)
