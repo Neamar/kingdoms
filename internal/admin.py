@@ -83,10 +83,16 @@ class ScriptLogAdmin(admin.ModelAdmin):
 	def slug(self, obj):
 		from event.models import Event, EventAction
 		from mission.models import Mission
+		from title.models import Title
+		from kingdom.models import Quality
+
 		classes = {
 			'Event': lambda pk: Event.objects.get(pk=pk).slug,
 			'EventAction': lambda pk: EventAction.objects.get(pk=pk).event.slug,
 			'Mission': lambda pk: Mission.objects.get(pk=pk).slug,
+			'Function': lambda pk: Function.objects.get(pk=pk).slug,
+			'Title': lambda pk: Title.objects.get(pk=pk).slug,
+			'Quality': lambda pk: Quality.objects.get(pk=pk).slug
 		}
 
 		if obj.object_type in classes.keys():
