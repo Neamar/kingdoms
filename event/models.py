@@ -4,10 +4,9 @@ from datetime import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from config.lib.execute import execute
 from config.fields.stored_value import StoredValueField
 from config.fields.script_field import ScriptField
-from config.lib.models import DescribedModel
+from config.lib.models import DescribedModel, ScriptedModel
 from kingdom.models import Kingdom, Folk
 
 
@@ -86,7 +85,7 @@ class PendingEvent(models.Model):
 			'kingdom': self.kingdom,
 			'folks': self.kingdom.folk_set.all(),
 		}
-		status, param = execute(self.event.condition, self, context)
+		status, param = self.execute(self.event.condition, self, context)
 
 		return status
 

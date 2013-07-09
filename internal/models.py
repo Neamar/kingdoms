@@ -2,14 +2,14 @@
 from django.db import models
 
 from config.fields.script_field import ScriptField
-from config.lib.models import NamedModel, DescribedModel
+from config.lib.models import NamedModel, DescribedModel, ScriptedModel
 from config.fields.stored_value import StoredValueField
 
 from kingdom.models import Kingdom, Folk, Quality
 from config.lib.execute import execute
 
 
-class Trigger(DescribedModel):
+class Trigger(DescribedModel, ScriptedModel):
 	slug = models.SlugField(max_length=255, unique=True)
 	prestige_threshold = models.PositiveIntegerField(default=0)
 	population_threshold = models.PositiveIntegerField(default=0)
@@ -26,7 +26,7 @@ class Trigger(DescribedModel):
 		It is assumed check on threshold and fired have already been made by the ORM.
 		See :signals: doc.
 		"""
-		status, param = execute(self.condition, kingdom)
+		status, param = self.execute(self, 'condition', kingdom)
 		return status
 
 	def fire(self, kingdom):
@@ -34,14 +34,11 @@ class Trigger(DescribedModel):
 		Fire the trigger.
 		Register it has been fired.
 		"""
-		context = {
-			'kingdom': kingdom,
-			'folks': kingdom.folk_set.all(),
-		}
+
 		# Register it has been fired.
-		# 'fired' must be set before execute to prevent infinite recursion if trigger code sets the trigger
+		# 'fired' must be set before execute to prevent infinite recursion if trigger code updates the kingdom.
 		self.fired.add(kingdom)
-		status, param = execute(self.on_fire, self, context)
+		status, param = self.execute(self, 'on_fire', kingdom)
 		
 		return status
 
@@ -59,7 +56,7 @@ class Value(models.Model):
 	value = StoredValueField()
 
 
-class Recurring(DescribedModel):
+class Recurring(DescribedModel, ScriptedModel):
 	delay = models.PositiveIntegerField(help_text="Delay (in minutes) between two executions of this recurring.", default=60*24)
 
 	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=None)
@@ -70,28 +67,39 @@ class Recurring(DescribedModel):
 		Check if the recurring should be fired for the specified kingdom.
 		See :signals: doc.
 		"""
-		context = {
-			'kingdom': kingdom,
-			'folks': kingdom.folk_set.all(),
-		}
 
-		status, param = execute(self.condition, kingdom, context)
+		status, param = self.execute(self, 'condition', kingdom)
+
 		return status
 
 	def fire(self, kingdom):
 		"""
 		Fire the recurring.
 		"""
-		context = {
-			'kingdom': kingdom,
-			'folks': kingdom.folk_set.all(),
-		}
 
-		status, param = execute(self.on_fire, kingdom, context)
+		status, param = self.execute(self, 'on_fire', kingdom)
 
 		return status
 
 	def __unicode(self):
+		return self.slug + "()"
+
+
+class Function(ScriptedModel):
+	"""
+	Class Function accessible from scripts to be reused.
+	"""
+
+	slug = models.SlugField(max_length=255, unique=True)
+	description = models.TextField(blank=True, default="")
+
+	on_fire = ScriptField(help_text="Body of the function. Returns data with `param`.", default="")
+
+	def fire(self, **kwargs):
+		status, param = self.execute(self, 'on_fire', None, kwargs)
+		return param
+
+	def __unicode__(self):
 		return self.slug + "()"
 
 
@@ -154,24 +162,6 @@ class Avatar(models.Model):
 
 	def __unicode__(self):
 		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child is not None else 'adult')
-
-
-class Function(models.Model):
-	"""
-	Class Function accessible from scripts to be reused
-	"""
-
-	slug = models.SlugField(max_length=255, unique=True)
-	description = models.TextField(blank=True, default="")
-
-	on_fire = ScriptField(help_text="Body of the function. Returns data with `param`.", default="")
-
-	def fire(self, **kwargs):
-		status, param = execute(self.on_fire, self, kwargs)
-		return param
-
-	def __unicode__(self):
-		return self.slug + "()"
 
 
 class ScriptLog(models.Model):

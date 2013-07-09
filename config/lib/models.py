@@ -41,10 +41,12 @@ class ScriptedModel(models.Model):
 		from config.lib.execute import execute
 
 		# Build context object
-		context = {
-			'kingdom': kingdom,
-			'folks': kingdom.folk_set.all(),
-		}
+		context = {}
+		if kingdom is not None:
+			context = {
+				'kingdom': kingdom,
+				'folks': kingdom.folk_set.all(),
+			}
 
 		if raw_context is not None:
 			context.update(raw_context)
