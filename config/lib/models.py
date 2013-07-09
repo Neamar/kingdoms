@@ -1,4 +1,6 @@
+from datetime import datetime
 from django.db import models
+from django.db import connection
 
 
 class NamedModel(models.Model):
@@ -39,6 +41,7 @@ class ScriptedModel(models.Model):
 		"""
 
 		from config.lib.execute import execute
+		from internal.models import ScriptLog
 
 		# Build context object
 		context = {}
@@ -51,7 +54,23 @@ class ScriptedModel(models.Model):
 		if raw_context is not None:
 			context.update(raw_context)
 
+		_started_at = datetime.now()
+		_started_query_count = len(connection.queries)
+
 		# Execute code
 		status, param = execute(getattr(model, attr), self, context)
+
+		delay = (datetime.now() - _started_at).total_seconds() * 1000
+		queries = len(connection.queries) - _started_query_count
+
+		# Store log
+		ScriptLog(
+			kingdom=kingdom,
+			object_type=model.__class__.__name__,
+			object_pk=model.pk,
+			objects_attr=attr,
+			time=delay,
+			queries=queries
+		).save()
 
 		return status, param
