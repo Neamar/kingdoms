@@ -79,6 +79,9 @@ var mapping = {
 	},
 	'messages': {
 		key: unwrapId
+	},
+	'available_titles': {
+		key: unwrapId
 	}
 }
 
