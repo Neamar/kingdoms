@@ -17,7 +17,7 @@ class CodeTest(TestCase):
 # No real code here.
 		"""
 
-		status = execute(code)
+		status, param = execute(code)
 
 		self.assertEqual(status, 'ok')
 
@@ -29,7 +29,7 @@ class CodeTest(TestCase):
 status="fine"
 		"""
 
-		status = execute(code)
+		status, param = execute(code)
 
 		self.assertEqual(status, 'fine')
 

@@ -30,8 +30,6 @@ def execute(code, param=None, context=None):
 	from event.scripts import *
 	from mission.scripts import *
 
-	_param_specified = param is not None
-
 	status = 'ok'
 
 	# Import context
@@ -78,7 +76,4 @@ def execute(code, param=None, context=None):
 		# And reraise!
 		raise
 
-	if _param_specified:
-		return status, param
-	else:
-		return status
+	return status, param
