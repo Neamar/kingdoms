@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar
+from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar, ScriptLog
 from kingdom.models import Kingdom
 
 
@@ -71,3 +71,12 @@ class AvatarAdmin(admin.ModelAdmin):
 		return '<img src="%s" />' % obj.old.url
 	thumb_old.allow_tags = True
 admin.site.register(Avatar, AvatarAdmin)
+
+
+class ScriptLogAdmin(admin.ModelAdmin):
+	list_display = ('object_type', 'object_pk', 'slug', 'object_attr', 'kingdom', 'time', 'query')
+	list_filter = ('object_type', 'object_attr')
+
+	def slug(self, obj):
+		return '--'
+admin.site.register(ScriptLog, ScriptLogAdmin)
