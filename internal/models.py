@@ -172,4 +172,19 @@ class Function(models.Model):
 
 	def __unicode__(self):
 		return self.slug + "()"
+
+
+class ScriptLog(models.Model):
+	"""
+	Store execution time for each code.
+	"""
+	kingdom = models.ForeignKey(Kingdom, null=True, default=None, on_delete=models.SET_NULL)
+
+	object_type = models.CharField(max_length=100)
+	object_pk = models.PositiveIntegerField()
+	object_attr = models.CharField(max_length=100)
+
+	time = models.PositiveIntegerField(help_text="Time to run, in milliseconds.")
+	queries = models.PositiveIntegerField(help_text="Number of queries or None.", default=None, null=True)
+
 from internal.signals import *
