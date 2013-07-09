@@ -47,6 +47,11 @@ def execute(code, param=None, context=None):
 		# Retrieve the traceback.
 		trace = traceback.format_exc().split("\n")
 
+		print "(((((((((((((((((("
+		print code
+		print "))))))))))))))))))"
+		print "\n".join(trace)
+
 		# In trace[]
 		# -1 is an empty line
 		# -2 is the exception
