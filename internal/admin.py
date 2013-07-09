@@ -74,9 +74,21 @@ admin.site.register(Avatar, AvatarAdmin)
 
 
 class ScriptLogAdmin(admin.ModelAdmin):
-	list_display = ('object_type', 'object_pk', 'slug', 'object_attr', 'kingdom', 'time', 'query')
+	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries')
 	list_filter = ('object_type', 'object_attr')
 
 	def slug(self, obj):
+		from event.models import Event, EventAction
+		from mission.models import Mission
+		classes = {
+			'Event': lambda pk: Event.objects.get(pk=pk).slug,
+			'EventAction': lambda pk: EventAction.objects.get(pk=pk).event.slug,
+			'Mission': lambda pk: Mission.objects.get(pk=pk).slug,
+		}
+
+		if obj.object_type in classes.keys():
+			slug = classes[obj.object_type](obj.object_pk)
+			return slug
+
 		return '--'
 admin.site.register(ScriptLog, ScriptLogAdmin)

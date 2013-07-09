@@ -68,7 +68,7 @@ class ScriptedModel(models.Model):
 			kingdom=kingdom,
 			object_type=model.__class__.__name__,
 			object_pk=model.pk,
-			objects_attr=attr,
+			object_attr=attr,
 			time=delay,
 			queries=queries
 		).save()
