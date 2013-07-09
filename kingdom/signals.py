@@ -3,7 +3,6 @@ from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
 from kingdom.models import Kingdom, Folk, Quality, Claim
-from config.lib.execute import execute
 
 
 @receiver(pre_save, sender=Kingdom)
@@ -91,24 +90,12 @@ def on_quality_affection_defection(sender, instance, action, reverse, pk_set, **
 	if action == "post_add" and len(pk_set) == 1:
 		folk = instance
 		quality = Quality.objects.get(id__in=pk_set)
-		
-		context = {
-			'folk': folk,
-			'quality': quality
-		}
-
-		status, param = execute(quality.on_affect, quality, context)
+		quality.affect(folk)
 
 	elif action == "post_remove" and len(pk_set) == 1:
 		folk = instance
 		quality = Quality.objects.get(id__in=pk_set)
-		
-		context = {
-			'folk': folk,
-			'quality': quality
-		}
-
-		status, param = execute(quality.on_defect, quality, context)
+		quality.defect(folk)
 
 
 @receiver(pre_save, sender=Claim)

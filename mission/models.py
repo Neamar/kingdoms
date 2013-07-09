@@ -2,7 +2,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from config.lib.execute import execute
 from config.lib.models import NamedModel, ScriptedModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField

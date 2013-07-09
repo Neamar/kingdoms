@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 
-from config.lib.models import DescribedModel
+from config.lib.models import DescribedModel, ScriptedModel
 from config.fields.script_field import ScriptField
 from kingdom.managers import FolkManager
 
@@ -82,7 +82,7 @@ class QualityCategory(DescribedModel):
 	pass
 
 
-class Quality(models.Model):
+class Quality(ScriptedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
@@ -100,6 +100,34 @@ class Quality(models.Model):
 	on_defect = ScriptField(blank=True, null=True, help_text="Called after folk defection.`param` is the quality to be defected, `folk` is the folk to be affected.", default=None)
 
 	incompatible_qualities = models.ManyToManyField('self', blank=True)
+
+	def affect(self, folk):
+		"""
+		Affect this quality to the folk.
+		"""
+
+		raw_context = {
+			'folk': folk,
+			'quality': self
+		}
+
+		status, param = self.execute(self, 'on_affect', folk.kingdom, raw_context)
+
+		return status
+
+	def defect(self, folk):
+		"""
+		Defect this quality from the folk.
+		"""
+
+		raw_context = {
+			'folk': folk,
+			'quality': self
+		}
+
+		status, param = self.execute(self, 'on_defect', folk.kingdom, raw_context)
+
+		return status
 
 	def __unicode__(self):
 		return self.name

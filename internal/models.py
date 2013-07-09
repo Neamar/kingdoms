@@ -6,7 +6,6 @@ from config.lib.models import NamedModel, DescribedModel, ScriptedModel
 from config.fields.stored_value import StoredValueField
 
 from kingdom.models import Kingdom, Folk, Quality
-from config.lib.execute import execute
 
 
 class Trigger(DescribedModel, ScriptedModel):

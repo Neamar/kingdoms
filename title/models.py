@@ -2,7 +2,6 @@
 from django.db import models
 from config.fields.script_field import ScriptField
 
-from config.lib.execute import execute
 from config.lib.models import DescribedModel, ScriptedModel
 from kingdom.models import Kingdom, Folk
 
