@@ -160,9 +160,15 @@ def check_pending_misison_cant_start_without_title(sender, instance, **kwargs):
 	Forbids the launch of the mission if the AvailableTitle.folk is not defined.
 	"""
 
-	if instance.started is not None and not instance.is_started:
-		at = AvailableTitle.objects.get(kingdom=instance.kingdom, title=instance.mission.title_id)
-		if at.folk is None:
+	if instance.started is not None and not instance.is_started and instance.mission.title_id is not None:
+		folk = None
+		try:
+			at = AvailableTitle.objects.get(kingdom=instance.kingdom, title=instance.mission.title_id)
+			folk = at.folk
+		except AvailableTitle.DoesNotExist:
+			pass
+
+		if folk is None:
 			raise ValidationError("Impossible de lancer une mission sans définir sa cible !")
 
 
