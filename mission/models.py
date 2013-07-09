@@ -208,7 +208,11 @@ class PendingMissionAffectation(ScriptedModel):
 		signals will check the validity.
 		"""
 
-		status, param = self.execute(self.mission_grid, 'condition', self.pending_mission.kingdom)
+		raw_context = {
+			'folk': self.folk
+		}
+
+		status, param = self.execute(self.mission_grid, 'condition', self.pending_mission.kingdom, raw_context)
 		return status
 
 
