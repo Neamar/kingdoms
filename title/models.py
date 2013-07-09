@@ -3,7 +3,7 @@ from django.db import models
 from config.fields.script_field import ScriptField
 
 from config.lib.execute import execute
-from config.lib.models import DescribedModel
+from config.lib.models import DescribedModel, ScriptedModel
 from kingdom.models import Kingdom, Folk
 
 
@@ -21,7 +21,7 @@ class Title(DescribedModel):
 	on_defect = ScriptField(blank=True, null=True, help_text="Called after folk defection. `param` is the current `AvailableTitle`, `folk` is the folk to be affected.", default=None)
 
 
-class AvailableTitle(models.Model):
+class AvailableTitle(ScriptedModel):
 	"""
 	Titles availables for a given player.
 	"""
@@ -40,11 +40,8 @@ class AvailableTitle(models.Model):
 		"""
 		Unlock the title for the kingdom.
 		"""
-		context = {
-			'kingdom': self.kingdom,
-		}
 
-		status, param = execute(self.title.on_unlock, self, context)
+		status, param = self.execute(self.title, "on_unlock", self.kingdom)
 
 		return status
 
@@ -53,11 +50,11 @@ class AvailableTitle(models.Model):
 		Check if this available title allows the folk to be nominated to this title.
 		Signals will check the validity.
 		"""
-		context = {
-			'kingdom': self.kingdom,
+		raw_context = {
 			'folk': self.folk
 		}
-		status, param = execute(self.title.condition, self, context)
+
+		status, param = self.execute(self.title, "condition", self.kingdom, raw_context)
 
 		return status
 
@@ -65,11 +62,11 @@ class AvailableTitle(models.Model):
 		"""
 		Affect folk to the title.
 		"""
-		context = {
-			'kingdom': self.kingdom,
+		raw_context = {
 			'folk': folk
 		}
-		status, param = execute(self.title.on_affect, self, context)
+
+		status, param = self.execute(self.title, "on_affect", self.kingdom, raw_context)
 
 		return status
 
@@ -77,11 +74,11 @@ class AvailableTitle(models.Model):
 		"""
 		Defect folk from the title
 		"""
-		context = {
-			'kingdom': self.kingdom,
+		raw_context = {
 			'folk': folk
 		}
-		status, param = execute(self.title.on_defect, self, context)
+
+		status, param = self.execute(self.title, "on_defect", self.kingdom, raw_context)
 
 		return status
 
