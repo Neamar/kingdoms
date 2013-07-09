@@ -145,7 +145,7 @@ class PendingEventAction(ScriptedModel):
 	pending_event = models.ForeignKey(PendingEvent)
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(editable=False, max_length=512)
-	message = models.TextField(blank=True, null=True, default="")
+	message = models.TextField(blank=True, null=True, default=None)
 	folk = models.ForeignKey(Folk, blank=True, null=True)
 
 	def check_condition(self):
