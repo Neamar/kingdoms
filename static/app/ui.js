@@ -49,9 +49,10 @@ function change_pending_mission_update_value(context, event) {
  */
 function change_pending_bargain_create(context, event) {
 	partner = $(event.currentTarget).val()
-	bargains_partners = context.bargains_partners
+	bargain_partner = ko.utils.arrayFirst(context.bargains_partners(), function(b) { return b.id() == partner });
+
 	if(partner != '')
-		http_actions.pendingBargainCreate(bargains_partners, partner)
+		http_actions.pendingBargainCreate(bargain_partner)
 }
 
 /**

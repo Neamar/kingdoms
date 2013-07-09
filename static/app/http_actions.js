@@ -81,8 +81,8 @@ http_actions = {
 	/*
 	 * Cancel the bargain
 	 */
-	pendingBargainCreate: function(bargains_partners, partner) {
-		http_actions._post(bargains_partners.links.create(), {'partner': partner});
+	pendingBargainCreate: function(bargain_partner) {
+		http_actions._post(bargain_partner.links.create());
 	},
 
 	/*
