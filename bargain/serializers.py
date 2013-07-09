@@ -1,6 +1,20 @@
 from django.core.urlresolvers import reverse
 
 from mission.serializers import serialize_pending_mission, serialize_mission_affectation
+from kingdom.serializers import serialize_kingdom
+
+
+def serialize_partner(kingdom):
+	"""
+	Serialize a potential partner to JSON.
+	"""
+
+	r = serialize_kingdom(kingdom)
+	r['links'] = {
+		'create': reverse('bargain.views.pending_bargain_create', args=(kingdom.id,))
+	}
+
+	return r
 
 
 def serialize_pending_bargain(pending_bargain, kingdom):

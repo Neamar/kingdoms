@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('bargain.views',
-	url(r'^create$', 'pending_bargain_create'),
+	url(r'^create/(?P<pk>[0-9]+)$', 'pending_bargain_create'),
 
 	url(r'^pending/(?P<pk>[0-9]+)/delete$', 'pending_bargain_delete'),
 	url(r'^pending/(?P<pk>[0-9]+)/share_pending_mission$', 'pending_bargain_share_pending_mission'),

@@ -1,7 +1,4 @@
-from django.core.urlresolvers import reverse
-
-from kingdom.serializers import serialize_kingdom
-from bargain.serializers import serialize_pending_bargain
+from bargain.serializers import serialize_pending_bargain, serialize_partner
 from kingdom.models import Kingdom
 from bargain.models import PendingBargain
 
@@ -18,11 +15,6 @@ def api(request):
 
 	resp['pending_bargains'] = [serialize_pending_bargain(o, kingdom) for o in pending_bargains]
 
-	resp['bargains_partners'] = {
-		'partners': [serialize_kingdom(o) for o in Kingdom.objects.exclude(id=kingdom.pk).select_related('user')],
-		'links': {
-			'create': reverse('bargain.views.pending_bargain_create')
-		}
-	}
+	resp['bargains_partners'] = [serialize_partner(o) for o in Kingdom.objects.exclude(id=kingdom.pk).select_related('user')]
 
 	return resp

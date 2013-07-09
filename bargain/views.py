@@ -10,18 +10,15 @@ from kingdom.models import Kingdom, Folk
 @force_post
 @json_view
 @status_view
-def pending_bargain_create(request):
+def pending_bargain_create(request, pk):
 	"""
 	Create a new pending bargain
 	"""
 
-	if 'partner' not in request.POST:
-		raise Http404("Specify partner in POST")
-
 	pending_bargain = PendingBargain()
 	pending_bargain.save()
 
-	pending_bargain.pendingbargainkingdom_set.create(kingdom=Kingdom.objects.get(pk=request.POST['partner']))
+	pending_bargain.pendingbargainkingdom_set.create(kingdom=Kingdom.objects.get(pk=pk))
 	pending_bargain.pendingbargainkingdom_set.create(kingdom=request.user.kingdom)
 
 
