@@ -1,6 +1,13 @@
 //##################################
 // MAPPINGS & MODELS
 //##################################
+
+// Function used for mapping, to avoid updating DOM when no changes.
+// See documentation for Knockout mapping plugin.
+function unwrapId(data) {
+	return ko.utils.unwrapObservable(data.id);
+}
+
 var folkModel = function(data, qualities) {
 	var self = this;
 	ko.mapping.fromJS(data, {}, this);
@@ -18,8 +25,14 @@ var folkModel = function(data, qualities) {
 
 
 var pendingMissionModel = function(data) {
+	mapping = {
+		'grids': {
+			key: unwrapId
+		}
+	}
+
 	var self = this;
-	ko.mapping.fromJS(data, {}, this);
+	ko.mapping.fromJS(data, mapping, this);
 
 	self.target_name = ko.computed(function() {
 		target = ko.utils.arrayFirst(self.targets(), function(t) { return t.id() == self.target()})
@@ -47,10 +60,6 @@ var pendingBargainModel = function(data, parent) {
 	};
 };
 
-
-function unwrapId(data) {
-	return ko.utils.unwrapObservable(data.id);
-}
 
 var mapping = {
 	'pending_events': {
