@@ -58,19 +58,21 @@ class ScriptedModel(models.Model):
 		_started_query_count = len(connection.queries)
 
 		# Execute code
-		status, param = execute(getattr(model, attr), self, context)
+		code = getattr(model, attr)
+		status, param = execute(code, self, context)
 
 		delay = (datetime.now() - _started_at).total_seconds() * 1000
 		queries = len(connection.queries) - _started_query_count
 
 		# Store log
-		ScriptLog(
-			kingdom=kingdom,
-			object_type=model.__class__.__name__,
-			object_pk=model.pk,
-			object_attr=attr,
-			time=delay,
-			queries=queries
-		).save()
+		if code is not None and code != "":
+			ScriptLog(
+				kingdom=kingdom,
+				object_type=model.__class__.__name__,
+				object_pk=model.pk,
+				object_attr=attr,
+				time=delay,
+				queries=queries
+			).save()
 
 		return status, param

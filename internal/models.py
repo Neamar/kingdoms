@@ -177,4 +177,6 @@ class ScriptLog(models.Model):
 	time = models.PositiveIntegerField(help_text="Time to run, in milliseconds.")
 	queries = models.PositiveIntegerField(help_text="Number of queries or None.", default=None, null=True)
 
+	def __unicode__(self):
+		return "%s(%s).%s" % (self.object_type, self.object_pk, self.object_attr)
 from internal.signals import *
