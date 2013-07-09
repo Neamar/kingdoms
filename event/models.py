@@ -58,7 +58,7 @@ class EventAction(models.Model):
 		return "%s [%s]" % (self.text[0:50], self.event.slug)
 
 
-class PendingEvent(models.Model):
+class PendingEvent(ScriptedModel):
 	"""
 	An event, started for a given kingdom.
 	"""
@@ -81,11 +81,8 @@ class PendingEvent(models.Model):
 		Check if this pending event associated event allows to be created.
 		Signals will check the validity.
 		"""
-		context = {
-			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.all(),
-		}
-		status, param = self.execute(self.event.condition, self, context)
+
+		status, param = self.execute(self.event, 'condition', self.kingdom)
 
 		return status
 
@@ -94,11 +91,9 @@ class PendingEvent(models.Model):
 		Execute the code when the event happen.
 		Signals will check the validity.
 		"""
-		context = {
-			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.all(),
-		}
-		status, param = execute(self.event.on_fire, self, context)
+
+		status, param = self.execute(self.event, 'on_fire', self.kingdom)
+
 		return status, param
 
 	def get_value(self, name):
@@ -142,7 +137,7 @@ class PendingEvent(models.Model):
 		return pending_event2
 
 
-class PendingEventAction(models.Model):
+class PendingEventAction(ScriptedModel):
 	"""
 	Actions available for the current PendingEvent.
 	"""
@@ -157,11 +152,8 @@ class PendingEventAction(models.Model):
 		"""
 		Check if this pending event action associated action allows to be created.
 		"""
-		context = {
-			'kingdom': self.pending_event.kingdom,
-			'folks': self.pending_event.kingdom.folk_set.all(),
-		}
-		status, param = execute(self.event_action.condition, self.pending_event, context)
+
+		status, param = self.execute(self.event_action, 'condition', self.pending_event.kingdom)
 
 		return status
 
@@ -170,11 +162,7 @@ class PendingEventAction(models.Model):
 		Execute the code of the action
 		"""
 		
-		context = {
-			'kingdom': self.pending_event.kingdom,
-			'folks': self.pending_event.kingdom.folk_set.all(),
-		}
-		status, param = execute(self.event_action.on_fire, self, context)
+		status, param = self.execute(self.event_action, 'on_fire', self.pending_event.kingdom)
 
 		if self.message is not None:
 			self.pending_event.kingdom.message_set.create(content=self.message)
