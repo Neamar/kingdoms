@@ -43,13 +43,15 @@ class Mission(models.Model):
 		return self.slug
 
 
-class MissionGrid(NamedModel):
+class MissionGrid(models.Model):
 	"""
 	A grid to store folk affectation on a mission.
 	"""
 
 	class Meta:
 		ordering = ['mission__name']
+
+	name = models.CharField(max_length=255)
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)

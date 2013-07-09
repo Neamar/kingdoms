@@ -19,7 +19,7 @@ function loadDatas()
 			ko.mapping.fromJS(result, viewModel);
 		}
 
-		setTimeout(loadDatas, 1000)
+		//setTimeout(loadDatas, 1000)
 	});
 
 }
