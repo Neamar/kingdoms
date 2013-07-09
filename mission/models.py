@@ -3,7 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from config.lib.execute import execute
-from config.lib.models import NamedModel
+from config.lib.models import NamedModel, ScriptedModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField
 from title.models import Title
@@ -60,7 +60,7 @@ class MissionGrid(NamedModel):
 		return '%s [%s (%s)]' % (self.mission.slug, self.name, self.length)
 
 
-class PendingMission(models.Model):
+class PendingMission(ScriptedModel):
 	"""
 	A mission started for the specified kingdom.
 	"""
@@ -90,10 +90,11 @@ class PendingMission(models.Model):
 		Retrieve a list of available targets for this PendingMission.
 		"""
 
-		context = {
-			'kingdom': self.kingdom,
-		}
-		status, targets = execute(self.mission.target_list, Kingdom.objects.exclude(id=self.kingdom.id), context)
+		status, targets = self.execute(self.mission, 'target_list', self.kingdom)
+
+		# Nothing specified : default is everyone but me.
+		if targets == self:
+			targets = Kingdom.objects.exclude(id=self.kingdom_id)
 		
 		return targets
 
@@ -103,16 +104,15 @@ class PendingMission(models.Model):
 		Called by a signal, if status != ok the mission will probably be aborted.
 		"""
 
-		context = {
-			'kingdom': self.kingdom,
-		}
-		status, param = execute(self.mission.on_init, self, context)
+		status, param = self.execute(self.mission, 'on_init', self.kingdom)
+
 		return status
 
 	def _get_context(self):
 		"""
 		Return context for scripts on_start and on_resolution
 		"""
+
 		affecteds = self.folk_set.all().select_related('folk')
 		grids = {}
 		for affected in affecteds:
@@ -121,12 +121,9 @@ class PendingMission(models.Model):
 			else:
 				grids[affected.mission_grid_id] = [affected.folk]
 
-		folks = [affected.folk for affected in affecteds]
 		grids = [v for k, v in grids.items()]
 
 		context = {
-			'kingdom': self.kingdom,
-			'folks': folks,
 			'grids': grids,
 			'value': self.value,
 			'target': self.target
@@ -142,7 +139,8 @@ class PendingMission(models.Model):
 		if self.is_started:
 			raise ValidationError("Mission already started.")
 
-		status, param = execute(self.mission.on_start, self, context=self._get_context())
+		raw_context = self._get_context()
+		status, param = self.execute(self.mission, 'on_start', self.kingdom, raw_context)
 
 		if status != 'ok':
 			raise ValidationError(status)
@@ -156,17 +154,12 @@ class PendingMission(models.Model):
 		"""
 		Resolve this mission.
 		"""
+
 		if not self.is_started:
 			raise ValidationError("Unable to resolve unstarted mission.")
 
-		context = {
-			'kingdom': self.kingdom,
-			'folks': self.kingdom.folk_set.all(),
-			'target': self.target
-		}
-		context.update(self._get_context())
-		
-		status, param = execute(self.mission.on_resolution, self, context)
+		raw_context = self._get_context()
+		status, param = self.execute(self.mission, 'on_resolution', self.kingdom, raw_context)
 
 		self.is_finished = True
 		self.save()
@@ -178,6 +171,7 @@ class PendingMission(models.Model):
 		"""
 		Gets a value
 		"""
+
 		pmv = _PendingMissionVariable.objects.get(pending_mission=self, name=name)
 		return pmv.value
 		
@@ -185,6 +179,7 @@ class PendingMission(models.Model):
 		"""
 		Sets a value
 		"""
+
 		if self.pk is None:
 			raise ValidationError("Save before storing value.")
 
@@ -197,10 +192,11 @@ class PendingMission(models.Model):
 		pmv.save()
 
 
-class PendingMissionAffectation(models.Model):
+class PendingMissionAffectation(ScriptedModel):
 	"""
 	Folk affectation on a mission currently running.
 	"""
+
 	pending_mission = models.ForeignKey(PendingMission, related_name="folk_set")
 	mission_grid = models.ForeignKey(MissionGrid)
 	folk = models.OneToOneField(Folk, related_name="mission")
@@ -210,11 +206,8 @@ class PendingMissionAffectation(models.Model):
 		Affect someone to the pending mission.
 		signals will check the validity.
 		"""
-		context = {
-			'kingdom': self.pending_mission.kingdom,
-			'folk': self.folk,
-		}
-		status, param = execute(self.mission_grid.condition, self, context)
+
+		status, param = self.execute(self.mission_grid, 'condition', self.pending_mission.kingdom)
 		return status
 
 
@@ -222,6 +215,7 @@ class AvailableMission(models.Model):
 	"""
 	List all missions the user can choose to start.
 	"""
+
 	class Meta:
 		unique_together = ('mission', 'kingdom')
 
