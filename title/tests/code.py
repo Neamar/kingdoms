@@ -70,6 +70,30 @@ param=Kingdom.objects.count()
 		status, param = execute(code, param=False)
 		self.assertEqual(param, 1)
 
+	def test_access_to_app_scripts(self):
+		"""
+		Check execute() has access to the function defined in scripts.
+		"""
+		code = """
+k = Kingdom()
+k.save()
+k.set_value("foo", "bar")
+		"""
+
+		status, param = execute(code, param=False)
+		self.assertEqual(Kingdom.objects.get().value_set.get(name="foo").value, "bar")
+
+	def test_access_to_global_scripts(self):
+		"""
+		Check execute() has access to the function defined in scripts.
+		"""
+		code = """
+param = fuzzy(10)
+		"""
+
+		status, param = execute(code, param=False)
+		self.assertTrue(param > -9 and param < 9)
+
 	def test_advanced_code(self):
 		"""
 		Check execute() can execute complex scripts.

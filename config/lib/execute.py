@@ -5,6 +5,21 @@ Execute some code in a sandboxed environnment
 import traceback
 import re
 
+from datetime import datetime, timedelta
+
+from kingdom.models import *
+from internal.models import *
+from event.models import *
+from mission.models import *
+from title.models import *
+
+from config.scripts.random_scripts import *
+from kingdom.scripts import *
+from internal.scripts import *
+from title.scripts import *
+from event.scripts import *
+from mission.scripts import *
+
 
 def execute(code, param=None, context=None):
 	"""
@@ -14,21 +29,6 @@ def execute(code, param=None, context=None):
 
 	context indicates additional contexts you want to give to the scripter.
 	"""
-
-	from datetime import datetime, timedelta
-
-	from kingdom.models import Kingdom, Folk, Message, Claim, ModalMessage
-	from internal.models import Constant, FirstName, LastName, Avatar
-	from event.models import Event, PendingEvent
-	from mission.models import Mission, PendingMission, PendingMissionAffectation, AvailableMission
-	from title.models import Title, AvailableTitle
-
-	from config.scripts.random_scripts import random_in, random_value
-	from kingdom.scripts import *
-	from internal.scripts import *
-	from title.scripts import *
-	from event.scripts import *
-	from mission.scripts import *
 
 	status = 'ok'
 
