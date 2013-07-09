@@ -77,6 +77,9 @@ class ScriptLogAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries')
 	list_filter = ('object_type', 'object_attr')
 
+	def has_add_permission(self, request, obj=None):
+		return False
+
 	def slug(self, obj):
 		from event.models import Event, EventAction
 		from mission.models import Mission
