@@ -22,7 +22,7 @@ def random_die(max):
 	Returns the results of a die.
 	"""
 
-	return randint(0, max)
+	return randint(1, max)
 
 
 def fuzzy(max):
