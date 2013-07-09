@@ -169,7 +169,7 @@ def check_pending_misison_cant_start_without_title(sender, instance, **kwargs):
 			pass
 
 		if folk is None:
-			raise ValidationError("Impossible de lancer une mission sans définir sa cible !")
+			raise ValidationError("Impossible de lancer une mission sans affecter le titre associé !")
 
 
 @receiver(pre_save, sender=PendingMission)
