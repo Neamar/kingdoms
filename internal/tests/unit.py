@@ -314,3 +314,42 @@ param = foo * bar
 
 		self.assertEqual(f2.first_name, "Gendry")
 		self.assertEqual(f2.last_name, "Baratheon")
+
+	def test_scriptlog(self):
+		"""
+		Scriptlog store all datas
+		"""
+
+		f = Function(
+			slug="create_lastname",
+		)
+		f.on_fire = """
+# Does one direct query
+LastName(name="la veuve des sept lieux").save()
+"""
+		f.save()
+
+		f2 = Function(
+			slug="count_and_create_lastname",
+		)
+		f2.on_fire = """
+# Does 2 direct queries, 1 indirect
+LastName.objects.count()
+call_function("create_lastname")
+LastName.objects.count()
+"""
+		f2.save()
+
+		# Sanity check
+		self.assertEqual(0, ScriptLog.objects.count())
+
+		# Do 3 queries
+		f2.fire()
+
+		self.assertEqual(2, ScriptLog.objects.count())
+
+		self.assertEqual(2, ScriptLog.objects.all()[0].direct_queries)
+		self.assertEqual(3, ScriptLog.objects.all()[0].queries)
+
+		self.assertEqual(1, ScriptLog.objects.all()[0].direct_queries)
+		self.assertEqual(1, ScriptLog.objects.all()[0].queries)
