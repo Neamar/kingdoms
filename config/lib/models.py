@@ -38,12 +38,18 @@ The final number of queries will be X + 2 + 1.
 Since all script code run within a ScriptedModel (see below), we can easily track the nested number of queries : juste store in the current context the total number of queries before launching the script, run the script, then compute number of queries - initial number of queries.
 
 It is not that easy to compute direct queries number, however this is the real metric we want to see.
-For that, we're simulating a computer stack with the variable below. 
+For that, we're simulating a computer stack with the variable below.
 Every script will add a new item at the end of the array with a value of 0.
 Every "child" will update his parents (__stack[-1]) to indicate how many queries must be substracted for being indirect.
 The the initial caller will compute total number of queries minus indirect queries to get his own direct number.
 """
 _stack = [0]
+
+"""
+Global private variable, holding all logs for the current stack.
+This will be saved once the outer-most item is reached, to avoid side-effect of counting INSERT INTO of the script logs itself.
+"""
+_scriptlogs = []
 
 
 class ScriptedModel(models.Model):
@@ -87,13 +93,13 @@ class ScriptedModel(models.Model):
 		child_queries = _stack.pop()
 		direct_queries = queries - child_queries
 		parent_nested_queries = _stack[-1]
-		_stack[-1] = parent_nested_queries + queries + 1  # The +1 accounts for the INSERT INTO of the ScriptLog
+		_stack[-1] = parent_nested_queries + queries
 
-		print {"queries": queries, "child_queries": child_queries, "direct_queries": direct_queries, "parent_nested_queries": parent_nested_queries, "stack": _stack}
+		#print {"queries": queries, "child_queries": child_queries, "direct_queries": direct_queries, "parent_nested_queries": parent_nested_queries, "stack": _stack}
 
 		# Store log
 		if code is not None and code.strip() != "":
-			ScriptLog(
+			sl = ScriptLog(
 				kingdom=kingdom,
 				object_type=model.__class__.__name__,
 				object_pk=model.pk,
@@ -101,6 +107,12 @@ class ScriptedModel(models.Model):
 				time=delay,
 				queries=queries,
 				direct_queries=direct_queries
-			).save()
+			)
+			_scriptlogs.append(sl)
+
+		if len(_stack) == 1:
+			# We are at the root of a call-trace, let's save all script log
+			ScriptLog.objects.bulk_create(_scriptlogs)
+			del _scriptlogs[:]
 
 		return status, param

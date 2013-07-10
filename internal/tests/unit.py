@@ -319,7 +319,9 @@ param = foo * bar
 	@override_settings(DEBUG=True)
 	def test_scriptlog(self):
 		"""
-		Scriptlog store all datas
+		Scriptlog store all relevant datas.
+
+		We need to override_settings with DEBUG=True as the test runner automatically deactivate this option.
 		"""
 
 		f = Function(
@@ -350,8 +352,6 @@ LastName.objects.count()
 
 		self.assertEqual(2, ScriptLog.objects.count())
 
-		from django.db import connection
-		print "HELLO", connection.queries
 		# First log is the innermost function
 		self.assertEqual(1, ScriptLog.objects.all()[0].direct_queries)
 		self.assertEqual(1, ScriptLog.objects.all()[0].queries)
