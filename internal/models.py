@@ -175,7 +175,8 @@ class ScriptLog(models.Model):
 	object_attr = models.CharField(max_length=100)
 
 	time = models.PositiveIntegerField(help_text="Time to run, in milliseconds.")
-	queries = models.PositiveIntegerField(help_text="Number of queries or None.", default=None, null=True)
+	queries = models.PositiveIntegerField(help_text="Number of direct queries or None.", default=None, null=True)
+	nested_queries = models.PositiveIntegerField(help_text="Total number of queries, including stack or None.", default=None, null=True)
 
 	def __unicode__(self):
 		return "%s(%s).%s" % (self.object_type, self.object_pk, self.object_attr)
