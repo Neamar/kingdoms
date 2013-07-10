@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from kingdom.models import Kingdom, Folk
 from internal.models import Trigger, Function, Recurring, FirstName, LastName, ScriptLog
@@ -315,6 +316,7 @@ param = foo * bar
 		self.assertEqual(f2.first_name, "Gendry")
 		self.assertEqual(f2.last_name, "Baratheon")
 
+	@override_settings(DEBUG=True)
 	def test_scriptlog(self):
 		"""
 		Scriptlog store all datas
@@ -335,7 +337,7 @@ LastName(name="la veuve des sept lieux").save()
 		f2.on_fire = """
 # Does 2 direct queries, 1 indirect
 LastName.objects.count()
-call_function("create_lastname")
+create_lastname.fire()
 LastName.objects.count()
 """
 		f2.save()
@@ -344,12 +346,15 @@ LastName.objects.count()
 		self.assertEqual(0, ScriptLog.objects.count())
 
 		# Do 3 queries
-		f2.fire()
+		f2.fire(create_lastname=f)
 
 		self.assertEqual(2, ScriptLog.objects.count())
 
-		self.assertEqual(2, ScriptLog.objects.all()[0].direct_queries)
-		self.assertEqual(3, ScriptLog.objects.all()[0].queries)
-
+		from django.db import connection
+		print "HELLO", connection.queries
+		# First log is the innermost function
 		self.assertEqual(1, ScriptLog.objects.all()[0].direct_queries)
 		self.assertEqual(1, ScriptLog.objects.all()[0].queries)
+
+		self.assertEqual(2, ScriptLog.objects.all()[1].direct_queries)
+		self.assertEqual(3, ScriptLog.objects.all()[1].queries)
