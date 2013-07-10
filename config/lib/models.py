@@ -28,6 +28,9 @@ class DescribedModel(NamedModel):
 	description = models.TextField()
 
 
+__stack = []
+
+
 class ScriptedModel(models.Model):
 	"""
 	Model with the ability to run some code.
@@ -56,12 +59,13 @@ class ScriptedModel(models.Model):
 
 		_started_at = datetime.now()
 		_started_query_count = len(connection.queries)
-
+		__stack.append(_started_query_count)
 		# Execute code
 		code = getattr(model, attr)
 		status, param = execute(code, self, context)
 
 		delay = (datetime.now() - _started_at).total_seconds() * 1000
+		nested_queries = len(connection.queries) - _started_query_count
 		queries = len(connection.queries) - _started_query_count
 
 		# Store log
@@ -72,6 +76,7 @@ class ScriptedModel(models.Model):
 				object_pk=model.pk,
 				object_attr=attr,
 				time=delay,
+				nested_queries=nested_queries,
 				queries=queries
 			).save()
 

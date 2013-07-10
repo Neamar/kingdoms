@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, FirstName, LastName
+from internal.models import Trigger, Function, Recurring, FirstName, LastName, ScriptLog
 
 
 class UnitTest(TestCase):
