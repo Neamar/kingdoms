@@ -141,7 +141,7 @@ def check_pending_mission_target_in_list(sender, instance, **kwargs):
 	Check the target is in the allowed list.
 	"""
 
-	if instance.target is not None and not instance.is_started and not instance.target in instance.targets():
+	if instance.target is not None and not instance.is_started and instance.target not in instance.targets():
 			raise ValidationError("Ce royaume ne fait pas partie des cibles autorisées.")
 
 

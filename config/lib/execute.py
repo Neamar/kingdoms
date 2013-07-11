@@ -59,7 +59,7 @@ def execute(code, param=None, context=None):
 
 		# Check the exception was in the script.
 		# If not, we'll re raise it, since it is another failure.
-		if len(trace) < 3 or not "File \"<string>\"," in trace[-3]:
+		if len(trace) < 3 or "File \"<string>\"," not in trace[-3]:
 			# Can't handle that.
 			raise
 
