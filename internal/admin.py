@@ -74,7 +74,7 @@ admin.site.register(Avatar, AvatarAdmin)
 
 
 class ScriptLogAdmin(admin.ModelAdmin):
-	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries')
+	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries', 'direct_queries')
 	list_filter = ('object_type', 'object_attr')
 
 	def has_add_permission(self, request, obj=None):
