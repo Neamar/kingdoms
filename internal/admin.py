@@ -97,8 +97,9 @@ class ScriptLogAdmin(admin.ModelAdmin):
 		}
 
 		if obj.object_type in classes.keys():
+			indentation = '&nbsp;&nbsp;&nbsp;' * (obj.stack_level - 1)
 			slug = classes[obj.object_type](obj.object_pk)
-			return slug
-
+			return indentation + slug
 		return '--'
+	slug.allow_tags = True
 admin.site.register(ScriptLog, ScriptLogAdmin)
