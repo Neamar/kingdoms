@@ -104,6 +104,7 @@ class ScriptedModel(models.Model):
 				object_type=model.__class__.__name__,
 				object_pk=model.pk,
 				object_attr=attr,
+				stack_level=len(ScriptedModel._stack),
 				time=delay,
 				queries=queries,
 				direct_queries=direct_queries
