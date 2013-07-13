@@ -174,6 +174,7 @@ class ScriptLog(models.Model):
 	object_pk = models.PositiveIntegerField()
 	object_attr = models.CharField(max_length=100)
 
+	stack_level = models.PositiveIntegerField(help_text="Number of calls before this one in the stack.")
 	time = models.PositiveIntegerField(help_text="Time to run, in milliseconds.")
 	direct_queries = models.PositiveIntegerField(help_text="Number of direct queries or None.", default=None, null=True)
 	queries = models.PositiveIntegerField(help_text="Total number of queries, including stack or None.", default=None, null=True)
