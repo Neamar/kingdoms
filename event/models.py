@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 from config.fields.stored_value import StoredValueField
 from config.fields.script_field import ScriptField
-from config.lib.models import DescribedModel, ScriptedModel
+from config.lib.models import DescribedModel, ScriptedModel, ContextModel
 from kingdom.models import Kingdom, Folk
 
 
@@ -58,10 +58,13 @@ class EventAction(models.Model):
 		return "%s [%s]" % (self.text[0:50], self.event.slug)
 
 
-class PendingEvent(ScriptedModel):
+class PendingEvent(ScriptedModel, ContextModel):
 	"""
 	An event, started for a given kingdom.
 	"""
+	context_app = 'event'
+	context_holder = '_PendingEventVariable'
+	context_model = 'pending_event'
 
 	event = models.ForeignKey(Event)
 	kingdom = models.ForeignKey(Kingdom)
@@ -95,28 +98,6 @@ class PendingEvent(ScriptedModel):
 		status, param = self.execute(self.event, 'on_fire', self.kingdom)
 
 		return status, param
-
-	def get_value(self, name):
-		"""
-		Gets a value
-		"""
-		pev = _PendingEventVariable.objects.get(pending_event=self, name=name)
-		return pev.value
-
-	def set_value(self, name, value):
-		"""
-		Sets a value
-		"""
-		if self.pk is None:
-			raise ValidationError("Save before storing value.")
-
-		pev = _PendingEventVariable(
-			pending_event=self,
-			name=name,
-			value=value
-		)
-
-		pev.save()
 
 	def next_event(self, event):
 		"""
@@ -172,21 +153,15 @@ class PendingEventAction(ScriptedModel):
 
 	def get_value(self, name):
 		"""
-		Gets a value
+		Gets a value.
 		"""
-		pev = _PendingEventVariable.objects.get(pending_event_id=self.pending_event_id, name=name)
-		return pev.value
+		return self.pending_event.get_value(name)
 
 	def set_value(self, name, value):
 		"""
-		Sets a value
+		Sets a value.
 		"""
-		pev = _PendingEventVariable(
-			pending_event_id=self.pending_event_id,
-			name=name,
-			value=value
-		)
-		pev.save()
+		return self.pending_event.set_value(name, value)
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.text, self.pending_event.event.slug)
@@ -196,6 +171,7 @@ class _PendingEventVariable(models.Model):
 	"""
 	A variable, stored to give some context to the event.
 	"""
+
 	class Meta:
 		db_table = "event_pendingeventvariable"
 		unique_together = ('pending_event', 'name')
