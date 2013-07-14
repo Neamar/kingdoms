@@ -159,7 +159,7 @@ class Avatar(models.Model):
 
 	adult_threshold = models.PositiveIntegerField(default=16, help_text="À partir de quel âge cet avatar peut être sélectionné.")
 
-	qualities = models.ManyToManyField(Quality)
+	qualities = models.ManyToManyField(Quality, blank=True)
 
 	def __unicode__(self):
 		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child is not None else 'adult')
