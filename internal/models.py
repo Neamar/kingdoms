@@ -130,16 +130,17 @@ class Avatar(models.Model):
 		(FORBIDDEN, 'Incompatible')
 	)
 
-	AUBURN = 0
-	BLOND = 1
-	GINGER = 2
-	BLACK = 3
-	DONT_CARE = 4
+	AUBURN = 1
+	BLOND = 2
+	GINGER = 3
+	BLACK = 4
 
 	HAIR_CHOICES = (
+		(DONT_CARE, 'Sans opinion'),
 		(AUBURN, 'Brun'),
-		(BLOND, 'Brun'),
-		(AUBURN, 'Brun'),
+		(BLOND, 'Blond'),
+		(BLACK, 'Noir'),
+		(GINGER, 'Roux'),
 	)
 
 	SEX_CHOICES = Folk.SEX_CHOICES
@@ -153,9 +154,10 @@ class Avatar(models.Model):
 	scholarship = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
 
 	child = models.ImageField(upload_to="avatars/child/", blank=True, default=None)
-	teenager = models.ImageField(upload_to="avatars/teenager/", blank=True, default=None)
 	adult = models.ImageField(upload_to="avatars/adult/", blank=True, default=None)
 	old = models.ImageField(upload_to="avatars/old/", blank=True, default=None)
+
+	adult_threshold = models.PositiveIntegerField(default=16, help_text="À partir de quel âge cet avatar peut être sélectionné.")
 
 	qualities = models.ManyToManyField(Quality)
 
