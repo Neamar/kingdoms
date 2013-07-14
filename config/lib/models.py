@@ -145,6 +145,7 @@ class ScriptedModel(models.Model):
 		except Exception as e:
 			# Let's try to display something useful for the scripter team.
 			import traceback
+			import string
 
 			# Retrieve the traceback.
 			trace = traceback.format_exc().split("\n")
@@ -152,7 +153,7 @@ class ScriptedModel(models.Model):
 			print "@@@@@@@@@@@@@@@@@@@@@"
 			print "@@ERROR in %s.%s(%s)" % (model.__class__.__name__, attr, model.pk)
 			print "---------------------"
-			print code
+			print filter(lambda x: x in string.printable, code)
 			print "@@@@@@@@@@@@@@@@@@@@@"
 
 			raise
