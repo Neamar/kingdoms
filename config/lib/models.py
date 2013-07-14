@@ -73,6 +73,15 @@ class ContextModel:
 
 		v.save()
 	
+	def get_values(self):
+		kwargs = {
+			self.context_model: self,
+		}
+
+		vs = get_model(self.context_app, self.context_holder)(**kwargs)
+
+		return {v.name: v.value for v in vs}
+
 
 class ScriptedModel(models.Model):
 	"""
