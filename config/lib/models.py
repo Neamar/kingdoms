@@ -144,6 +144,7 @@ class ScriptedModel(models.Model):
 			status, param = execute(code, self, context)
 		except Exception as e:
 			# Let's try to display something useful for the scripter team.
+			import traceback
 
 			# Retrieve the traceback.
 			trace = traceback.format_exc().split("\n")
