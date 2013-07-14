@@ -46,7 +46,7 @@ class Constant(DescribedModel):
 
 
 class Recurring(DescribedModel, ScriptedModel):
-	delay = models.PositiveIntegerField(help_text="Delay (in minutes) between two executions of this recurring.", default=60*24)
+	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=60*24)
 
 	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)

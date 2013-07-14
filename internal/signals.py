@@ -5,11 +5,16 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, FirstName, LastName
+from internal.models import Trigger, FirstName, LastName, Recurring
+from kingdom.management.commands.cron import cron_ten_minutes
 
 
 @receiver(post_save, sender=Kingdom)
 def fire_trigger(sender, instance, **kwargs):
+	"""
+	Launch trigger after kingdom changes.
+	"""
+
 	triggers = Trigger.objects.filter(
 		prestige_threshold__lte=instance.prestige,
 		population_threshold__lte=instance.population,
@@ -26,6 +31,10 @@ def fire_trigger(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Folk)
 def fill_name(sender, instance, **kwargs):
+	"""
+	Auto fill first name / last name for folks.
+	"""
+
 	if instance.first_name == '':
 		try:
 			instance.first_name = FirstName.objects.filter(sex=instance.sex).order_by('?')[0].name
@@ -38,3 +47,19 @@ def fill_name(sender, instance, **kwargs):
 		except IndexError:
 			# Empty LastName table
 			instance.last_name = ''.join(random.choice(string.lowercase) for i in range(10))
+
+
+@receiver(cron_ten_minutes)
+def fire_recurring(sender, counter, **kwargs):
+	"""
+	Fire recurring on a delay basis.
+	"""
+
+	recurrings = Recurring.objects.extra(where=[str(int(counter)) + ' %% delay = 0'])
+
+	if recurrings:
+		kingdoms = Kingdom.objects.all()
+		for recurring in recurrings:
+			for kingdom in kingdoms:
+				if recurring.check_condition(kingdom) == "ok":
+					recurring.fire(kingdom)
