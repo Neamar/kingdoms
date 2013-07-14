@@ -1,6 +1,10 @@
+import re
+
 from datetime import datetime
 from django.db import models
 from django.db import connection
+from django.db.models.loading import get_model
+from django.core.exceptions import ValidationError
 
 
 class NamedModel(models.Model):
@@ -27,6 +31,42 @@ class DescribedModel(NamedModel):
 
 	description = models.TextField()
 
+
+class ContextModel:
+	"""
+	An object with the ability to store some context in it.
+	"""
+	def get_value(self, name):
+		"""
+		Gets a value
+		"""
+		kwargs = {
+			'name': name,
+			self.context_model: self
+		}
+
+		v = get_model(self.context_app, self.context_holder).objects.get(**kwargs)
+
+		return v.value
+		
+	def set_value(self, name, value):
+		"""
+		Sets a value
+		"""
+
+		if self.pk is None:
+			raise ValidationError("Save before storing value.")
+
+		kwargs = {
+			self.context_model: self,
+			'name': name,
+			'value': value
+		}
+
+		v = get_model(self.context_app, self.context_holder)(**kwargs)
+
+		v.save()
+	
 
 class ScriptedModel(models.Model):
 	"""
