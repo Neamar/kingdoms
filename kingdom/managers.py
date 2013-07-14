@@ -7,4 +7,4 @@ class FolkManager(models.Manager):
 	"""
 
 	def get_query_set(self):
-		return super(FolkManager, self).get_query_set().filter(death=None)
+		return super(FolkManager, self).get_query_set().filter(death=None).order_by('id')

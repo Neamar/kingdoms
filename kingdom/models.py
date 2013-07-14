@@ -14,6 +14,7 @@ class Kingdom(models.Model):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.
 	"""
+
 	user = models.OneToOneField(User, null=True)
 
 	prestige = models.PositiveIntegerField(default=0)
@@ -27,6 +28,10 @@ class Kingdom(models.Model):
 
 
 class Value(models.Model):
+	"""
+	A value stored on the kingdom.
+	"""
+	
 	class Meta:
 		unique_together = ('name', 'kingdom')
 
@@ -39,6 +44,7 @@ class Folk(models.Model):
 	"""
 	The folk are the people in your kingdom.
 	"""
+
 	objects = FolkManager()
 	objects_and_dead = models.Manager()
 
