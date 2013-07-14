@@ -2,7 +2,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from config.lib.models import NamedModel, ScriptedModel
+from config.lib.models import ScriptedModel, ContextModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField
 from title.models import Title
@@ -61,10 +61,15 @@ class MissionGrid(models.Model):
 		return '%s [%s (%s)]' % (self.mission.slug, self.name, self.length)
 
 
-class PendingMission(ScriptedModel):
+class PendingMission(ScriptedModel, ContextModel):
 	"""
 	A mission started for the specified kingdom.
 	"""
+
+	context_app = 'mission'
+	context_holder = '_PendingMissionVariable'
+	context_model = 'pending_mission'
+
 	mission = models.ForeignKey(Mission)
 	kingdom = models.ForeignKey(Kingdom)
 
@@ -167,30 +172,6 @@ class PendingMission(ScriptedModel):
 		self.delete()
 
 		return status
-
-	def get_value(self, name):
-		"""
-		Gets a value
-		"""
-
-		pmv = _PendingMissionVariable.objects.get(pending_mission=self, name=name)
-		return pmv.value
-		
-	def set_value(self, name, value):
-		"""
-		Sets a value
-		"""
-
-		if self.pk is None:
-			raise ValidationError("Save before storing value.")
-
-		pmv = _PendingMissionVariable(
-			pending_mission=self,
-			name=name,
-			value=value
-		)
-
-		pmv.save()
 
 
 class PendingMissionAffectation(ScriptedModel):
