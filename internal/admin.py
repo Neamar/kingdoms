@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Value, Recurring, FirstName, LastName, Function, Avatar, ScriptLog
+from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar, ScriptLog
 from kingdom.models import Kingdom
 
 
@@ -14,11 +14,6 @@ class ConstantAdmin (admin.ModelAdmin):
 	list_display = ('name', 'description', 'value')
 	search_fields = ('name', 'description')
 admin.site.register(Constant, ConstantAdmin)
-
-
-class ValueAdmin(admin.ModelAdmin):
-	list_display = ('name', 'kingdom', 'value')
-admin.site.register(Value, ValueAdmin)
 
 
 class FunctionAdmin(admin.ModelAdmin):
