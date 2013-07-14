@@ -53,22 +53,21 @@ admin.site.register(LastName)
 
 
 class AvatarAdmin(admin.ModelAdmin):
-	list_display = ('sex', 'hair', 'thumb_child', 'thumb_teenager', 'thumb_adult', 'thumb_old')
+	list_display = ('sex', 'hair', 'thumb_child', 'thumb_adult', 'thumb_old')
 
 	def thumb_child(self, obj):
-		return '<img src="%s" />' % obj.child.url
+		if obj.child:
+			return '<img src="%s" />' % obj.child.url
 	thumb_child.allow_tags = True
 
-	def thumb_teenager(self, obj):
-		return '<img src="%s" />' % obj.teenager.url
-	thumb_teenager.allow_tags = True
-
 	def thumb_adult(self, obj):
-		return '<img src="%s" />' % obj.adult.url
+		if obj.adult:
+			return '<img src="%s" />' % obj.adult.url
 	thumb_adult.allow_tags = True
 
 	def thumb_old(self, obj):
-		return '<img src="%s" />' % obj.old.url
+		if obj.old:
+			return '<img src="%s" />' % obj.old.url
 	thumb_old.allow_tags = True
 admin.site.register(Avatar, AvatarAdmin)
 
