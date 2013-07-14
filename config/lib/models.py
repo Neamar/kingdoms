@@ -38,14 +38,20 @@ class ContextModel:
 	"""
 	def get_value(self, name):
 		"""
-		Gets a value
+		Gets a value.
+		Returns None if the value does not exists.
 		"""
 		kwargs = {
 			'name': name,
 			self.context_model: self
 		}
 
-		v = get_model(self.context_app, self.context_holder).objects.get(**kwargs)
+		store = get_model(self.context_app, self.context_holder)
+
+		try:
+			v = store.objects.get(**kwargs)
+		except store.DoesNotExist:
+			return None
 
 		return v.value
 		

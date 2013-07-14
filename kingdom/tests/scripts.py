@@ -292,3 +292,10 @@ class ScriptTest(TestCase):
 		stored_datas = self.k.get_value("foo")
 		for r, s in zip(datas, stored_datas):
 			self.assertEqual(r, s)
+
+	def test_kingdom_value_retrieve_undefined(self):
+		"""
+		Non existing values returns None
+		"""
+
+		self.assertEqual(self.k.get_value("foo"), None)
