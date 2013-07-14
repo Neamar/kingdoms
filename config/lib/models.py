@@ -78,7 +78,7 @@ class ContextModel:
 			self.context_model: self,
 		}
 
-		vs = get_model(self.context_app, self.context_holder)(**kwargs)
+		vs = get_model(self.context_app, self.context_holder).objects.filter(**kwargs)
 
 		return {v.name: v.value for v in vs}
 

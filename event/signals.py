@@ -46,8 +46,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		titles = lambda: {at.title.slug: at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
 		raw_context['title'] = titles
 
-		for var in instance._pendingeventvariable_set.all():
-			raw_context[var.name] = var.value
+		raw_context.update(instance.get_values())
 
 		context = Context(raw_context)
 
