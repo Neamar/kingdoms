@@ -48,7 +48,7 @@ admin.site.register(LastName)
 
 
 class AvatarAdmin(admin.ModelAdmin):
-	list_display = ('sex', 'hair', 'thumb_child', 'thumb_adult', 'thumb_old')
+	list_display = ('sex', 'hair', 'thumb_child', 'thumb_adult', 'thumb_old', 'fight')
 
 	def thumb_child(self, obj):
 		if obj.child:

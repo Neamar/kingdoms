@@ -62,25 +62,6 @@ def kingdom_has_claim(self, kingdom):
 Kingdom.has_claim = kingdom_has_claim
 
 
-def kingdom_set_value(self, name, value):
-	"""
-	Store a value.
-	"""
-
-	self.value_set.create(name=name, value=value)
-Kingdom.set_value = kingdom_set_value
-
-
-def kingdom_get_value(self, name):
-	"""
-	Retrieve a value.
-	"""
-
-	v = self.value_set.get(name=name)
-	return v.value
-Kingdom.get_value = kingdom_get_value
-
-
 ######
 # Folks scripts
 ######

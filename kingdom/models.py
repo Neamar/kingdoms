@@ -3,17 +3,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 
-from config.lib.models import DescribedModel, ScriptedModel
+from config.lib.models import DescribedModel, ScriptedModel, ContextModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField
 
 from kingdom.managers import FolkManager
 
 
-class Kingdom(models.Model):
+class Kingdom(models.Model, ContextModel):
 	"""
 	The kingdom represents and aggregates everything the player owns in game.
 	"""
+	context_app = 'kingdom'
+	context_holder = '_KingdomVariable'
+	context_model = 'kingdom'
 
 	user = models.OneToOneField(User, null=True)
 
@@ -27,12 +30,13 @@ class Kingdom(models.Model):
 		return '%s kingdom' % self.user
 
 
-class Value(models.Model):
+class _KingdomVariable(models.Model):
 	"""
 	A value stored on the kingdom.
 	"""
-	
+
 	class Meta:
+		db_table = "kingdom_kingdomvariable"
 		unique_together = ('name', 'kingdom')
 
 	name = models.CharField(max_length=255)

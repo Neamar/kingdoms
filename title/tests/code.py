@@ -77,11 +77,11 @@ param=Kingdom.objects.count()
 		code = """
 k = Kingdom()
 k.save()
-k.set_value("foo", "bar")
+k.message("foo")
 		"""
 
 		status, param = execute(code, param=False)
-		self.assertEqual(Kingdom.objects.get().value_set.get(name="foo").value, "bar")
+		self.assertEqual(Kingdom.objects.get().message_set.get().content, "foo")
 
 	def test_access_to_global_scripts(self):
 		"""
