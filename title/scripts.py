@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.db import IntegrityError
+from django.db import transaction
+
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
-from django.db import IntegrityError
-
 
 def kingdom_get_folk_in_title(self, title_slug):
 	"""
@@ -22,12 +23,17 @@ def kingdom_unlock_title(self, slug):
 	"""
 	title = Title.objects.get(slug=slug)
 	try:
+		sid = transaction.savepoint()
+
 		available_title = AvailableTitle(
 			title=title,
 			kingdom=self
 		)
 		available_title.save()
+
+		transaction.savepoint_commit(sid)
 	except IntegrityError:
+		transaction.savepoint_rollback(sid)
 		pass
 Kingdom.unlock_title = kingdom_unlock_title
 

@@ -1,8 +1,7 @@
 import re
 
 from datetime import datetime
-from django.db import models
-from django.db import connection
+from django.db import models, connection, transaction, IntegrityError
 from django.db.models.loading import get_model
 from django.core.exceptions import ValidationError
 
@@ -69,9 +68,18 @@ class ContextModel:
 			'value': value
 		}
 
-		v = get_model(self.context_app, self.context_holder)(**kwargs)
+		# Run within a savepoint
+		# Else, IntegrityError in Postgres are not recoverable.
+		try:
+			sid = transaction.savepoint()
 
-		v.save()
+			v = get_model(self.context_app, self.context_holder)(**kwargs)
+			v.save()
+
+			transaction.savepoint_commit(sid)
+		except IntegrityError:
+			transaction.savepoint_rollback(sid)
+			raise
 	
 	def get_values(self):
 		kwargs = {
@@ -103,7 +111,7 @@ class ScriptedModel(models.Model):
 	For that, we're simulating a computer stack with the variable below.
 	Every script will add a new item at the end of the array with a value of 0.
 	Every "child" will update his parents (__stack[-1]) to indicate how many queries must be substracted for being indirect.
-	The the initial caller will compute total number of queries minus indirect queries to get his own direct number.
+	The initial caller will compute total number of queries minus indirect queries to get his own direct number.
 	"""
 	_stack = [0]
 
