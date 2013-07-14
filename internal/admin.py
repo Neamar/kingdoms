@@ -79,6 +79,7 @@ class ScriptLogAdmin(admin.ModelAdmin):
 		from mission.models import Mission, MissionGrid
 		from title.models import Title
 		from kingdom.models import Quality
+		from internal.models import Trigger
 
 		classes = {
 			'Event': lambda pk: Event.objects.get(pk=pk).slug,
@@ -87,7 +88,8 @@ class ScriptLogAdmin(admin.ModelAdmin):
 			'MissionGrid': lambda pk: MissionGrid.objects.get(pk=pk).mission.slug + MissionGrid.objects.get(pk=pk).name,
 			'Function': lambda pk: Function.objects.get(pk=pk).slug,
 			'Title': lambda pk: Title.objects.get(pk=pk).slug,
-			'Quality': lambda pk: Quality.objects.get(pk=pk).slug
+			'Quality': lambda pk: Quality.objects.get(pk=pk).slug,
+			'Trigger': lambda pk: Trigger.objects.get(pk=pk).slug
 		}
 
 		if obj.object_type in classes.keys():
