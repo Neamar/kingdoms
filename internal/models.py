@@ -3,7 +3,6 @@ from django.db import models
 
 from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel, ScriptedModel
-from config.fields.stored_value import StoredValueField
 
 from kingdom.models import Kingdom, Folk, Quality
 
@@ -44,15 +43,6 @@ class Trigger(DescribedModel, ScriptedModel):
 
 class Constant(DescribedModel):
 	value = models.IntegerField()
-
-
-class Value(models.Model):
-	class Meta:
-		unique_together = ('name', 'kingdom')
-
-	name = models.CharField(max_length=255)
-	kingdom = models.ForeignKey(Kingdom)
-	value = StoredValueField()
 
 
 class Recurring(DescribedModel, ScriptedModel):

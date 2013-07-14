@@ -5,6 +5,8 @@ from django.core.validators import MaxValueValidator
 
 from config.lib.models import DescribedModel, ScriptedModel
 from config.fields.script_field import ScriptField
+from config.fields.stored_value import StoredValueField
+
 from kingdom.managers import FolkManager
 
 
@@ -22,6 +24,15 @@ class Kingdom(models.Model):
 
 	def __unicode__(self):
 		return '%s kingdom' % self.user
+
+
+class Value(models.Model):
+	class Meta:
+		unique_together = ('name', 'kingdom')
+
+	name = models.CharField(max_length=255)
+	kingdom = models.ForeignKey(Kingdom)
+	value = StoredValueField()
 
 
 class Folk(models.Model):
