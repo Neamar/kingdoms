@@ -123,13 +123,11 @@ class Avatar(models.Model):
 	AUBURN = 1
 	BLOND = 2
 	GINGER = 3
-	BLACK = 4
 
 	HAIR_CHOICES = (
 		(DONT_CARE, 'Sans opinion'),
 		(AUBURN, 'Brun'),
 		(BLOND, 'Blond'),
-		(BLACK, 'Noir'),
 		(GINGER, 'Roux'),
 	)
 
