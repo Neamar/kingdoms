@@ -299,3 +299,19 @@ class ScriptTest(TestCase):
 		"""
 
 		self.assertEqual(self.k.get_value("foo"), None)
+
+	def test_kingdom_value_retrieve_all(self):
+		"""
+		get_values retrieve all values.
+		"""
+		obj = {
+			'val1': 1,
+			'val2': "Hello",
+			'val3': True,
+			'val4': self.k
+		}
+
+		for k, v in obj.items():
+			self.k.set_value(k, v)
+
+		self.assertEqual(self.k.get_values(), obj)
