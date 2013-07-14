@@ -139,7 +139,22 @@ class ScriptedModel(models.Model):
 
 		# Execute code
 		code = getattr(model, attr)
-		status, param = execute(code, self, context)
+
+		try:
+			status, param = execute(code, self, context)
+		except Exception as e:
+			# Let's try to display something useful for the scripter team.
+
+			# Retrieve the traceback.
+			trace = traceback.format_exc().split("\n")
+
+			print "@@@@@@@@@@@@@@@@@@@@@"
+			print "@@ERROR in %s.%s(%s)" % (model.__class__.__name__, attr, model.pk)
+			print "---------------------"
+			print code
+			print "@@@@@@@@@@@@@@@@@@@@@"
+
+			raise
 
 		# Retrieve metrics
 		delay = (datetime.now() - _started_at).total_seconds() * 1000
