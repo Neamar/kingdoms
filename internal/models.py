@@ -145,7 +145,7 @@ class Avatar(models.Model):
 
 	SEX_CHOICES = Folk.SEX_CHOICES
 
-	sex = models.BooleanField(choices=SEX_CHOICES, default=SEX_CHOICES[0][0])
+	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=SEX_CHOICES[0][0])
 	hair = models.IntegerField(choices=HAIR_CHOICES, default=AUBURN)
 
 	fight = models.IntegerField(choices=STATE_CHOICES, default=DONT_CARE)
