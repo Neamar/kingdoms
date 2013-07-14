@@ -122,13 +122,11 @@ class Avatar(models.Model):
 
 	AUBURN = 1
 	BLOND = 2
-	GINGER = 3
 
 	HAIR_CHOICES = (
 		(DONT_CARE, 'Sans opinion'),
-		(AUBURN, 'Brun'),
-		(BLOND, 'Blond'),
-		(GINGER, 'Roux'),
+		(AUBURN, 'Sombre'),
+		(BLOND, 'Clair'),
 	)
 
 	SEX_CHOICES = Folk.SEX_CHOICES
