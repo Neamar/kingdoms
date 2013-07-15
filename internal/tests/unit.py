@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from kingdom.management.commands.cron import cron_ten_minutes
 from kingdom.models import Kingdom, Folk
 from internal.models import Trigger, Function, Recurring, FirstName, LastName, ScriptLog
 
@@ -228,6 +229,29 @@ status = "foo"
 
 		status = r.fire(self.k)
 		self.assertEqual(status, "foo")
+
+	def test_recurring_cron(self):
+		"""
+		Test recurring runs within the cron signal
+		"""
+
+		r = Recurring(
+			delay=10,
+			on_fire="""
+kingdom.money = 500
+kingdom.save()
+"""
+		)
+		r.save()
+
+		# Sanity check
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).money, 0)
+
+		cron_ten_minutes.send(self, counter=5)
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).money, 0)
+
+		cron_ten_minutes.send(self, counter=10)
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).money, 500)
 
 	def test_execution_order(self):
 		"""
