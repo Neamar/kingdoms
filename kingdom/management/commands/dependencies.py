@@ -155,23 +155,6 @@ class Command(BaseCommand):
 		out = str(self.graph)
 		self.stdout.write(out)
 
-	def _read_script(self, code):
-		"""
-		Read code, looking for dependencies in regexp.
-		"""
-		if code is None:
-			return []
-
-		deps = []
-
-		for regexp in self.event_regexps:
-			deps += ["event_" + m for m in regexp.findall(code)]
-
-		for regexp in self.mission_regexps:
-			deps += ["mission_" + m for m in regexp.findall(code)]
-
-		return deps
-
 
 class Node:
 	"""
@@ -197,7 +180,7 @@ class Edge:
 		self.kwargs = kwargs
 
 	def __str__(self):
-		return "%s -> %s" % (self.start, self.end)
+		return "%s -> %s [%s]" % (self.start, self.end, ', '.join(["%s=%s" % (k, v) for k, v in self.kwargs.items()]))
 
 
 class Graph:
