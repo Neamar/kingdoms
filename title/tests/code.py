@@ -92,7 +92,7 @@ param = fuzzy(10)
 		"""
 
 		status, param = execute(code, param=False)
-		self.assertTrue(param > -9 and param < 9)
+		self.assertTrue(param > -10 and param < 10)
 
 	def test_advanced_code(self):
 		"""

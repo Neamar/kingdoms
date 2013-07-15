@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
@@ -49,6 +50,9 @@ class Folk(models.Model):
 	The folk are the people in your kingdom.
 	"""
 
+	class Meta:
+		unique_together = ('first_name', 'last_name')
+
 	objects = FolkManager()
 	objects_and_dead = models.Manager()
 
@@ -65,9 +69,6 @@ class Folk(models.Model):
 
 	first_name = models.CharField(max_length=64, blank=True)
 	last_name = models.CharField(max_length=64, blank=True)
-	
-	class Meta:
-		unique_together = ('first_name', 'last_name')
 
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=MALE)
 
@@ -76,7 +77,7 @@ class Folk(models.Model):
 	spouse = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
 	mentor = models.ForeignKey('self', related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
 
-	birth = models.DateTimeField(auto_now_add=True)
+	birth = models.DateTimeField(default=datetime.now)
 	death = models.DateTimeField(blank=True, null=True)
 
 	fight = models.PositiveIntegerField(validators=[MaxValueValidator(20)], default=7)

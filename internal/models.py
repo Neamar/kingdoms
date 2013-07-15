@@ -143,7 +143,8 @@ class Avatar(models.Model):
 	adult = models.ImageField(upload_to="avatars/adult/", blank=True, default=None)
 	old = models.ImageField(upload_to="avatars/old/", blank=True, default=None)
 
-	adult_threshold = models.PositiveIntegerField(default=16, help_text="À partir de quel âge cet avatar peut être sélectionné.")
+	adult_threshold = models.PositiveIntegerField(default=16, help_text="À partir de quel âge l'avatar d'adulte peut être sélectionné.")
+	old_threshold = models.PositiveIntegerField(default=45, help_text="À partir de quel âge l'avatar de vieillard peut être sélectionné.")
 
 	qualities = models.ManyToManyField(Quality, blank=True)
 

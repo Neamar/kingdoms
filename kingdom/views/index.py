@@ -22,7 +22,6 @@ def dependencies(request):
 	from StringIO import StringIO
 
 	dependencies_file_dot = '/tmp/dependencies.dot'
-	dependencies_file_image = '/tmp/dependencies.png'
 
 	params = request.GET.keys()
 
@@ -42,17 +41,11 @@ def dependencies(request):
 	params = [
 		'dot',
 		'-T',
-		'png',
-		'-o',
-		dependencies_file_image,
+		'svg',
 		dependencies_file_dot
 	]
 
-	if subprocess.call(params) == 0:
-		contents = open(dependencies_file_image, 'rb').read()
-		response = HttpResponse(contents, mimetype='image/png')
-		response["Content-Length"] = len(contents)
+	svg_datas = subprocess.check_output(params)
+	response = HttpResponse(svg_datas)
 
-		return response
-	else:
-		raise Http404("Oups ! Merci de m'appeler ;)")
+	return response
