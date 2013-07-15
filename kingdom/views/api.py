@@ -1,5 +1,6 @@
 import importlib
 from django.conf import settings
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from kingdom.decorators import json_view
@@ -23,7 +24,6 @@ def autodiscover():
 			pass
 
 
-@json_view
 @login_required
 def api(request):
 	"""
@@ -36,4 +36,4 @@ def api(request):
 		# Add context from objects
 		resp.update(plugged_api(request))
 
-	return resp
+	return HttpResponse('<html><body></body></html>')

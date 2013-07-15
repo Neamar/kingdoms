@@ -103,6 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -127,6 +128,7 @@ FIXTURE_DIRS = (
 # To disable migrations and use syncdb instead
 SOUTH_TESTS_MIGRATE = False
 
+INTERNAL_IPS = ('127.0.0.1',)
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,6 +140,7 @@ INSTALLED_APPS = (
 
     # Pip Lib
     'south',
+    'debug-toolbar',
     #'django_extensions',
 
     # Kingdom apps
