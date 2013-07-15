@@ -2,7 +2,6 @@
 Generate a dot file for dependencies between Event and Mission.
 """
 import re
-from pygraphviz.agraph import AGraph
 
 from django.core.management.base import BaseCommand
 
@@ -99,7 +98,7 @@ class Command(BaseCommand):
 			return
 
 		# Init graph
-		self.graph = agraph.AGraph(strict=False, directed=True)
+		self.graph = Graph()
 
 		# Build regexps dict
 		all_regexps = {k: m['regexps'] for k, m in self.params.items() if k in args}
@@ -153,7 +152,7 @@ class Command(BaseCommand):
 					self.graph.add_edge(k + '_' + model['node']['name'](o), dependency)
 
 		# Output results
-		out = self.graph.string()
+		out = str(self.graph)
 		self.stdout.write(out)
 
 	def _read_script(self, code):
@@ -172,3 +171,58 @@ class Command(BaseCommand):
 			deps += ["mission_" + m for m in regexp.findall(code)]
 
 		return deps
+
+
+class Node:
+	"""
+	A node in DOT format.
+	"""
+
+	def __init__(self, slug, **kwargs):
+		self.slug = slug
+		self.kwargs = kwargs
+
+	def __str__(self):
+		return "%s [%s]" % (self.slug, ', '.join(["%s=%s" % (k, v) for k, v in self.kwargs.items()]))
+
+
+class Edge:
+	"""
+	An edge in DOT format
+	"""
+
+	def __init__(self, start, end, **kwargs):
+		self.start = start
+		self.end = end
+		self.kwargs = kwargs
+
+	def __str__(self):
+		return "%s -> %s" % (self.start, self.end)
+
+
+class Graph:
+	"""
+	A directed graph in DOT format
+	"""
+
+	_nodes = []
+	_edges = []
+
+	def add_node(self, slug, **kwargs):
+		self._nodes.append(Node(slug, **kwargs))
+
+	def add_edge(self, start, end):
+		self._edges.append(Edge(start, end))
+
+	def __str__(self):
+		return """
+// Dependencies graph for kingdoms
+// Build an image using the `dot` command on Unix, or any visualization tool for dot graphs.
+digraph {
+//NODE LIST
+%s
+
+//EDGE LIST
+%s
+}
+""" % ("\n".join(map(str, self._nodes)), "\n".join(map(str, self._edges)))
