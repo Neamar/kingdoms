@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Generate a dot file for dependencies between Event and Mission.
 """
@@ -205,7 +206,7 @@ class Graph:
 		return """
 // Dependencies graph for kingdoms
 // Build an image using the `dot` command on Unix, or any visualization tool for dot graphs.
-digraph {
+digraph "Dépendances Kingdoms" {
 
 node [color=red style="filled"];
 //NODE LIST
