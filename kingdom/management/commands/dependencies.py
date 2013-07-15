@@ -2,7 +2,7 @@
 Generate a dot file for dependencies between Event and Mission.
 """
 import re
-import pygraphviz as pgv
+from pygraphviz.agraph import AGraph
 
 from django.core.management.base import BaseCommand
 
@@ -99,7 +99,7 @@ class Command(BaseCommand):
 			return
 
 		# Init graph
-		self.graph = pgv.AGraph(strict=False, directed=True)
+		self.graph = agraph.AGraph(strict=False, directed=True)
 
 		# Build regexps dict
 		all_regexps = {k: m['regexps'] for k, m in self.params.items() if k in args}
