@@ -50,7 +50,7 @@ def fill_name(sender, instance, **kwargs):
 
 
 @receiver(cron_ten_minutes)
-def fire_recurring(sender, counter, **kwargs):
+def cron_fire_recurring(sender, counter, **kwargs):
 	"""
 	Fire recurring on a delay basis.
 	"""

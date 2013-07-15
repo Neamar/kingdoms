@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
+from kingdom.management.commands.cron import cron_minute
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
 from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation
@@ -620,3 +621,23 @@ if param.get_value('beastnum') != 666:
 		# Internal machinery works to delete.
 		self.pm.start()
 		self.pm.resolve()
+
+	def test_pendingmission_cron_timeout(self):
+		"""
+		Test the cron timeouts pendingmission.
+		"""
+
+		self.m.timeout = 10
+		self.m.save()
+
+		self.pm.created = datetime.now() - timedelta(minutes=15)
+		self.pm.save()
+
+		pm2 = PendingMission(kingdom=self.k, mission=self.m)
+		pm2.save()
+
+		cron_minute.send(self, counter=10)
+
+		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.id)))
+		# Assert no raises
+		PendingMission.objects.get(pk=pm2.id)
