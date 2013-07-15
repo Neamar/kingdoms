@@ -208,6 +208,10 @@ class Graph:
 	_nodes = []
 	_edges = []
 
+	def __init__(self):
+		self._nodes = []
+		self._edges = []
+
 	def add_node(self, slug, **kwargs):
 		self._nodes.append(Node(slug, **kwargs))
 
