@@ -10,7 +10,7 @@ def api(request):
 	resp = {}
 
 	# Pending missions
-	pending_missions = PendingMission.objects.filter(kingdom=request.user.kingdom).select_related("mission", "mission__mission_grid")
+	pending_missions = PendingMission.objects.filter(kingdom=request.user.kingdom).select_related("mission").prefetch_related("mission__missiongrid_set", "mission__missiongrid_set__pendingmissionaffectation_set")
 
 	resp['pending_missions'] = [serialize_pending_mission(o) for o in pending_missions]
 

@@ -10,7 +10,7 @@ def api(request):
 	resp = {}
 
 	# Available titles
-	available_titles = AvailableTitle.objects.filter(kingdom=request.user.kingdom).select_related("title")
+	available_titles = AvailableTitle.objects.filter(kingdom=request.user.kingdom).select_related("title", "folk")
 	resp['available_titles'] = [serialize_available_title(o) for o in available_titles]
 
 	return resp

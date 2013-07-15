@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError
 
 from config.lib.models import ScriptedModel, ContextModel
@@ -102,6 +103,9 @@ class PendingMission(ScriptedModel, ContextModel):
 		if targets == self:
 			targets = Kingdom.objects.exclude(id=self.kingdom_id)
 		
+		if isinstance(targets, QuerySet):
+			targets = targets.select_related('user')
+
 		return targets
 
 	def init(self):
