@@ -79,7 +79,7 @@ class Command(BaseCommand):
 			{
 				"name": lambda t: t.slug,
 				"params": {
-					"color": "red",
+					"color": "purple",
 					"style": "filled",
 				}
 			},
@@ -206,6 +206,8 @@ class Graph:
 // Dependencies graph for kingdoms
 // Build an image using the `dot` command on Unix, or any visualization tool for dot graphs.
 digraph {
+
+node [color=red style="filled"];
 //NODE LIST
 %s
 
