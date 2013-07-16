@@ -26,8 +26,9 @@ class Mission(models.Model):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = ScriptField(blank=True, null=True, help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", default=None)
-	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start. WARNING: do not set status for a mission with a timeout, unless you know exactly what you're doing.", default=None)
-	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", default=None)
+	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `affecteds` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start.", default=None)
+	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timer has expired. `param` is the pending mission, `affecteds` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", default=None)
+
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", default=None)
@@ -135,6 +136,7 @@ class PendingMission(ScriptedModel, ContextModel):
 
 		context = {
 			'grids': grids,
+			'affected': [a.folk for a in affecteds]
 			'value': self.value,
 			'target': self.target
 		}
