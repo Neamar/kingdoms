@@ -136,7 +136,7 @@ class PendingMission(ScriptedModel, ContextModel):
 
 		context = {
 			'grids': grids,
-			'affected': [a.folk for a in affecteds]
+			'affected': [a.folk for a in affecteds],
 			'value': self.value,
 			'target': self.target
 		}
