@@ -506,12 +506,22 @@ if value == 15:
 		self.assertTrue(self.pm.is_finished)
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.pk)))
 
-	def test_mission_not_cancellable(self):
+	def test_mission_on_cancel(self):
 		"""
 		Check the cancellable flag.
 		"""
+		self.m.on_cancel_or_timeout = """
+kingdom.prestige = 50
+kingdom.save()
+"""
 
-		self.assertRaises(ValidationError, self.pm.delete)
+		# Sanity check
+		self.assertEqual(0, Kingdom.objects.get(pk=self.k.pk).prestige)
+		
+		self.pm.delete()
+		
+		self.assertEqual(50, Kingdom.objects.get(pk=self.k.pk).prestige)
+
 
 	def test_mission_finished_not_cancellable(self):
 		"""

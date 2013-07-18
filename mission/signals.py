@@ -194,10 +194,10 @@ def start_pending_mission(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=PendingMission)
-def check_no_delete_if_not_cancellable_or_not_finished(sender, instance, **kwargs):
+def pending_mission_cancel_or_timeout(sender, instance, **kwargs):
 	"""
-	Forbids deletion while mission is running.
+	Runs on_cancel_or_timeout when the PendingMission is canceled or timeouted.
 	"""
 	
-	if not instance.is_finished and not instance.mission.cancellable:
-		raise ValidationError("Impossible d'annuler cette mission.'")
+	if not instance.is_started:
+		instance.cancel()

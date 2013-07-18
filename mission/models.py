@@ -37,8 +37,6 @@ class Mission(models.Model):
 	has_value = models.BooleanField(default=False, help_text="Does this missions asks for a value?")
 	value_description = models.CharField(max_length=255, null=True, default=None, blank=True)
 
-	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
-
 	title = models.ForeignKey(Title, blank=True, null=True)
 
 	def __unicode__(self):
@@ -178,6 +176,19 @@ class PendingMission(ScriptedModel, ContextModel):
 		self.delete()
 
 		return status
+
+	def cancel(self):
+		"""
+		Cancel this mission.
+		"""
+
+		if self.is_started:
+			raise ValidationError("Unable to cancel started mission")
+
+		raw_context = self._get_context()
+		status, param = self.execute(self.mission, 'on_cancel_or_timeout', self.kingdom, raw_context)
+
+		return status		
 
 
 class PendingMissionAffectation(ScriptedModel):
