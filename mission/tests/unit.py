@@ -510,7 +510,7 @@ if value == 15:
 		"""
 		Check the cancellable flag.
 		"""
-		self.m.on_cancel_or_timeout = """
+		self.m.on_cancel = """
 kingdom.prestige = 50
 kingdom.save()
 """

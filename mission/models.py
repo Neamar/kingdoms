@@ -28,7 +28,7 @@ class Mission(models.Model):
 	on_init = ScriptField(blank=True, null=True, help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", default=None)
 	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `affecteds` is the list of affected folks, `target` is the target, `value` the value and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start.", default=None)
 	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timer has expired. `param` is the pending mission, `affecteds` is the list of affected folks, `target` is the target, `value` is the value and `grids` is the affectation per grid.", default=None)
-	on_cancel_or_timeout = ScriptField(blank=True, null=True, help_text="Called after a timeout, or when the mission is cancelled by the user.", default=None)
+	on_cancel = ScriptField(blank=True, null=True, help_text="Called after a timeout, or when the mission is cancelled by the user.", default=None)
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", default=None)
@@ -186,7 +186,7 @@ class PendingMission(ScriptedModel, ContextModel):
 			raise ValidationError("Unable to cancel started mission")
 
 		raw_context = self._get_context()
-		status, param = self.execute(self.mission, 'on_cancel_or_timeout', self.kingdom, raw_context)
+		status, param = self.execute(self.mission, 'on_cancel', self.kingdom, raw_context)
 
 		return status		
 
