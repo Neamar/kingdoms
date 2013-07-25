@@ -29,6 +29,7 @@ class UnitTest(TestCase):
 
 		self.mg = MissionGrid(
 			mission=self.m,
+			allow_empty=True,
 		)
 		self.mg.save()
 
