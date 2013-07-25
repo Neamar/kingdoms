@@ -200,8 +200,6 @@ class ScriptedModel(models.Model):
 		parent_nested_queries = ScriptedModel._stack[-1]
 		ScriptedModel._stack[-1] = parent_nested_queries + queries
 
-		#print {"queries": queries, "child_queries": child_queries, "direct_queries": direct_queries, "parent_nested_queries": parent_nested_queries, "stack": ScriptedModel._stack}
-
 		# Store log
 		if code is not None and code.strip() != "":
 			sl = ScriptLog(
