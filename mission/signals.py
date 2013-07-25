@@ -208,7 +208,7 @@ def cancel_pending_mission(sender, instance, **kwargs):
 
 
 @receiver(cron_minute)
-def cron_cancel_timeout(sender, counter, **kwargs):
+def cron_cancel_pendingmission_after_timeout(sender, counter, **kwargs):
 	"""
 	Cancel unstarted pending missions whom created+timeout is in the past.
 	"""
@@ -218,3 +218,16 @@ def cron_cancel_timeout(sender, counter, **kwargs):
 	for pending_mission in pending_missions:
 		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) < datetime.now():
 			pending_mission.delete()
+
+
+@receiver(cron_minute)
+def cron_resolve_pendingmission(sender, counter, **kwargs):
+	"""
+	Resolve started pending missions whom started+duration is in the past.
+	"""
+
+	pending_missions = PendingMission.objects.filter(is_started=True).select_related('mission')
+
+	for pending_mission in pending_missions:
+		if pending_mission.started + timedelta(minutes=pending_mission.mission.duration) < datetime.now():
+			pending_mission.resolve()

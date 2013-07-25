@@ -679,7 +679,7 @@ if param.get_value('beastnum') != 666:
 
 		self.m.timeout = 10
 		self.m.on_cancel = """
-kingdom.set_value('pm_deleted', True)
+kingdom.set_value('pm_deleted', param.pk)
 """
 		self.m.save()
 
@@ -688,5 +688,43 @@ kingdom.set_value('pm_deleted', True)
 
 		cron_minute.send(self, counter=1000)
 
+		self.assertEqual(self.k.get_value('pm_deleted'), self.pm.id)
+
+	def test_pendingmission_cron_duration(self):
+		"""
+		Test the cron resolves pendingmission and deletes them.
+		"""
+
+		self.m.duration = 10
+		self.m.save()
+
+		self.pm.started = datetime.now() - timedelta(minutes=15)
+		self.pm.save()
+
+		pm2 = PendingMission(kingdom=self.k, mission=self.m)
+		pm2.started = datetime.now()
+		pm2.save()
+
+		cron_minute.send(self, counter=1000)
+
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.id)))
-		self.assertTrue(self.k.get_value('pm_deleted'))
+		# Assert no raises
+		PendingMission.objects.get(pk=pm2.id)
+
+	def test_pendingmission_cron_duration_resolution_code(self):
+		"""
+		Test the cron resolves pendingmission and execute the code.
+		"""
+
+		self.m.duration = 10
+		self.m.on_resolution = """
+kingdom.set_value('pm_resolved', param.pk)
+"""
+		self.m.save()
+
+		self.pm.started = datetime.now() - timedelta(minutes=15)
+		self.pm.save()
+
+		cron_minute.send(self, counter=1000)
+
+		self.assertEqual(self.k.get_value('pm_resolved'), self.pm.id)
