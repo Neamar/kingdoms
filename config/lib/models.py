@@ -98,7 +98,13 @@ class ContextModel:
 			transaction.savepoint_commit(sid)
 		except IntegrityError:
 			transaction.savepoint_rollback(sid)
-			raise
+
+			# Now here is some weird behavior in
+			# stored_value.py. Django does not seems to reexecute the get_prep_value code, so we can't overwrite an existing value with a new FK.
+			# Therefore we need to delete it...
+			del kwargs['value']
+			v = get_model(self.context_app, self.context_holder).objects.get(**kwargs).delete()
+			self.set_value(name, value)
 	
 	def get_values(self):
 		kwargs = {

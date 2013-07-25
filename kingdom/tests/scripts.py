@@ -325,3 +325,19 @@ class ScriptTest(TestCase):
 		self.k.set_value('foo', 'bar')
 
 		self.assertTrue(self.k.has_value("foo"))
+
+	def test_kingdom_value_overwrite(self):
+		"""
+		Test we can write to the same value multiple time.
+		"""
+		self.k.set_value('foo', 'bar')
+		self.assertEqual(self.k.get_value("foo"), 'bar')
+
+		self.k.set_value('foo', 223)
+		self.assertEqual(self.k.get_value("foo"), 223)
+
+		self.k.set_value('foo', self.k)
+		self.assertEqual(self.k.get_value("foo"), self.k)
+
+		self.k.set_value('foo', self.f)
+		self.assertEqual(self.k.get_value("foo"), self.f)
