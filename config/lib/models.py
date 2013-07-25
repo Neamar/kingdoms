@@ -35,6 +35,7 @@ class ContextModel:
 	"""
 	An object with the ability to store some context in it.
 	"""
+
 	def get_value(self, name):
 		"""
 		Gets a value.
@@ -53,7 +54,25 @@ class ContextModel:
 			return None
 
 		return v.value
-		
+
+	def has_value(self, name):
+		"""
+		Returns True if this value exists on the object.
+		"""
+
+		kwargs = {
+			'name': name,
+			self.context_model: self
+		}
+
+		store = get_model(self.context_app, self.context_holder)
+
+		try:
+			v = store.objects.get(**kwargs)
+			return True
+		except store.DoesNotExist:
+			return False
+
 	def set_value(self, name, value):
 		"""
 		Sets a value

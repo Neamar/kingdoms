@@ -230,7 +230,7 @@ class ScriptTest(TestCase):
 
 		self.assertEqual(self.k.get_value("foo"), self.f)
 
-	def test_kingdom_value_store_fk_unsavec(self):
+	def test_kingdom_value_store_fk_unsaved(self):
 		"""
 		Can't store unsaved models.
 		"""
@@ -315,3 +315,13 @@ class ScriptTest(TestCase):
 			self.k.set_value(k, v)
 
 		self.assertEqual(self.k.get_values(), obj)
+
+	def test_kingdom_has_value(self):
+		"""
+		Test has_value code
+		"""
+		self.assertFalse(self.k.has_value("foo"))
+
+		self.k.set_value('foo', 'bar')
+
+		self.assertTrue(self.k.has_value("foo"))
