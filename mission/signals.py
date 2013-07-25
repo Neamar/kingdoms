@@ -64,7 +64,7 @@ def check_folk_is_able(sender, instance, **kwargs):
 	Disabled people can't join.
 	"""
 
-	if instance.folk.disabled:
+	if instance.folk.disabled and not instance.mission_grid.accept_disabled:
 		raise ValidationError("Les personnes handicapées ne participent pas aux missions !")
 
 
@@ -198,13 +198,13 @@ def start_pending_mission(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=PendingMission)
-def check_no_delete_if_not_cancellable_or_not_finished(sender, instance, **kwargs):
+def cancel_pending_mission(sender, instance, **kwargs):
 	"""
-	Forbids deletion while mission is running.
+	Runs on_cancel when the PendingMission is canceled or timeouted.
 	"""
 	
-	if not instance.is_finished and not instance.mission.cancellable:
-		raise ValidationError("Impossible d'annuler cette mission.'")
+	if not instance.is_started:
+		instance.cancel()
 
 
 @receiver(cron_minute)
@@ -213,9 +213,8 @@ def cron_cancel_timeout(sender, counter, **kwargs):
 	Cancel unstarted pending missions whom created+timeout is in the past.
 	"""
 
-	pending_missions = PendingMission.objects.all().select_related('mission')
+	pending_missions = PendingMission.objects.filter(is_started=False).select_related('mission')
 
 	for pending_mission in pending_missions:
-		print pending_mission.created + timedelta(minutes=pending_mission.mission.timeout)
-		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) > datetime.now():
+		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) < datetime.now():
 			pending_mission.delete()

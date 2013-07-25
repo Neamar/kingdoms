@@ -11,7 +11,7 @@ def api(request):
 	resp = {}
 
 	kingdom = request.user.kingdom
-	pending_bargains = PendingBargain.objects.filter(pendingbargainkingdom__kingdom=kingdom)
+	pending_bargains = PendingBargain.objects.filter(pendingbargainkingdom__kingdom=kingdom).select_related('user')
 
 	resp['pending_bargains'] = [serialize_pending_bargain(o, kingdom) for o in pending_bargains]
 

@@ -74,7 +74,7 @@ class UnitTest(TestCase):
 
 	def test_cant_affect_disabled(self):
 		"""
-		A folk can't be affected when he is disabled.
+		By default, grids do not allow disabled to be affected.
 		"""
 		self.pma.delete()
 		self.f.disabled = True
@@ -87,6 +87,26 @@ class UnitTest(TestCase):
 		)
 
 		self.assertRaises(ValidationError, pma.save)
+
+	def test_grid_allow_disabled(self):
+		"""
+		Specific grids allows disabled folks.
+		"""
+
+		mg1 = MissionGrid(
+			mission=self.m,
+		)
+		mg1.save()
+
+		self.pma.delete()
+		self.f.disabled = True
+		self.f.save()
+
+		pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=mg1,
+			folk=self.f
+		)
 
 	def test_cant_affect_dead(self):
 		"""
@@ -507,12 +527,22 @@ if value == 15:
 		self.assertTrue(self.pm.is_finished)
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.pk)))
 
-	def test_mission_not_cancellable(self):
+	def test_mission_on_cancel(self):
 		"""
 		Check the cancellable flag.
 		"""
+		self.m.on_cancel = """
+kingdom.prestige = 50
+kingdom.save()
+"""
 
-		self.assertRaises(ValidationError, self.pm.delete)
+		# Sanity check
+		self.assertEqual(0, Kingdom.objects.get(pk=self.k.pk).prestige)
+		
+		self.pm.delete()
+		
+		self.assertEqual(50, Kingdom.objects.get(pk=self.k.pk).prestige)
+
 
 	def test_mission_finished_not_cancellable(self):
 		"""
@@ -636,7 +666,7 @@ if param.get_value('beastnum') != 666:
 		pm2 = PendingMission(kingdom=self.k, mission=self.m)
 		pm2.save()
 
-		cron_minute.send(self, counter=10)
+		cron_minute.send(self, counter=1000)
 
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.id)))
 		# Assert no raises

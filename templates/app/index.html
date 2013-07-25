@@ -64,7 +64,7 @@
 
 	<div class="span6" id="content">
 		<div data-bind="page: {id: 'start'}" class="container-fluid" id="kingdom">
-			<h1>Mon royaume</h1>
+			<h1 data-bind="text: kingdom.name"></h1>
 			{% include "app/_index.html" %}
 		</div>
 

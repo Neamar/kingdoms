@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError
 
 from config.lib.models import ScriptedModel, ContextModel
@@ -25,8 +26,9 @@ class Mission(models.Model):
 	timeout = models.PositiveIntegerField(help_text="Timeout duration", blank=True, null=True)
 
 	on_init = ScriptField(blank=True, null=True, help_text="Called after this mission is created. `param` is the pending mission, available without any context (you can't call `set_value`). Have the script set `status` to something other than 'ok' to abort the mission.", default=None)
-	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `folks` is the list of affected folks, `target` is the target and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start. WARNING: do not set status for a mission with a timeout, unless you know exactly what you're doing.", default=None)
-	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timeout has expired. `param` is the pending mission, `folks` is the list of affected folks and `target` is the target and `grids` is the affectation per grid.", default=None)
+	on_start = ScriptField(blank=True, null=True, help_text="Called when the user launches the mission. `param` is the pending mission, `affecteds` is the list of affected folks, `target` is the target, `value` the value and `grids` is the affectation per grid. Have the script set `status` to something other than 'ok' to cancel the start.", default=None)
+	on_resolution = ScriptField(blank=True, null=True, help_text="Called when the duration timer has expired. `param` is the pending mission, `affecteds` is the list of affected folks, `target` is the target, `value` is the value and `grids` is the affectation per grid.", default=None)
+	on_cancel = ScriptField(blank=True, null=True, help_text="Called after a timeout, or when the mission is cancelled by the user.", default=None)
 
 	has_target = models.BooleanField(default=False, help_text="Does this missions targets some kingdoms?")
 	target_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of potential targets in `param`, which must be a QuerySet. Defaults to all kingdoms except your own.", default=None)
@@ -34,8 +36,6 @@ class Mission(models.Model):
 
 	has_value = models.BooleanField(default=False, help_text="Does this missions asks for a value?")
 	value_description = models.CharField(max_length=255, null=True, default=None, blank=True)
-
-	cancellable = models.BooleanField(default=False, help_text="Can this mission be cancelled ?")
 
 	title = models.ForeignKey(Title, blank=True, null=True)
 
@@ -55,6 +55,8 @@ class MissionGrid(models.Model):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
+	accept_disabled = models.BooleanField(default=False)
+
 	condition = ScriptField(blank=True, null=True, help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", default=None)
 
 	def __unicode__(self):
@@ -102,6 +104,9 @@ class PendingMission(ScriptedModel, ContextModel):
 		if targets == self:
 			targets = Kingdom.objects.exclude(id=self.kingdom_id)
 		
+		if isinstance(targets, QuerySet):
+			targets = targets.select_related('user')
+
 		return targets
 
 	def init(self):
@@ -131,6 +136,7 @@ class PendingMission(ScriptedModel, ContextModel):
 
 		context = {
 			'grids': grids,
+			'affected': [a.folk for a in affecteds],
 			'value': self.value,
 			'target': self.target
 		}
@@ -170,6 +176,19 @@ class PendingMission(ScriptedModel, ContextModel):
 		self.is_finished = True
 		self.save()
 		self.delete()
+
+		return status
+
+	def cancel(self):
+		"""
+		Cancel this mission.
+		"""
+
+		if self.is_started:
+			raise ValidationError("Unable to cancel started mission")
+
+		raw_context = self._get_context()
+		status, param = self.execute(self.mission, 'on_cancel', self.kingdom, raw_context)
 
 		return status
 

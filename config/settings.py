@@ -59,7 +59,7 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-LOGIN_URL = 'kingdom.views.index.login'
+LOGIN_URL = 'django.contrib.auth.views.login'
 LOGIN_REDIRECT_URL = 'kingdom.views.index.app'
 
 # Absolute path to the directory static files should be collected to.

@@ -8,7 +8,7 @@ def api(request):
 
 	resp = {}
 
-	pending_events = request.user.kingdom.pendingevent_set.all()
+	pending_events = request.user.kingdom.pendingevent_set.all().select_related("event", "event__category").prefetch_related("pendingeventaction_set")
 	resp['pending_events'] = [serialize_pending_event(o) for o in pending_events]
 
 	return resp

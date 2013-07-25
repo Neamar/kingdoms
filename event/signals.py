@@ -48,7 +48,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		raw_context.update(instance.get_values())
 
-		context = Context(raw_context)
+		context = Context(raw_context, autoescape=False)
 
 		# Create text from templates
 		text_template = Template(instance.event.text)
