@@ -73,7 +73,7 @@ class UnitTest(TestCase):
 
 	def test_cant_affect_disabled(self):
 		"""
-		A folk can't be affected when he is disabled.
+		By default, grids do not allow disabled to be affected.
 		"""
 		self.pma.delete()
 		self.f.disabled = True
@@ -86,6 +86,26 @@ class UnitTest(TestCase):
 		)
 
 		self.assertRaises(ValidationError, pma.save)
+
+	def test_grid_allow_disabled(self):
+		"""
+		specific grids allow disabled folks.
+		"""
+
+		mg1 = MissionGrid(
+			mission=self.m,
+		)
+		mg1.save()
+
+		self.pma.delete()
+		self.f.disabled = True
+		self.f.save()
+
+		pma = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=mg1,
+			folk=self.f
+		)
 
 	def test_cant_affect_dead(self):
 		"""

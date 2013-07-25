@@ -60,7 +60,7 @@ def check_folk_is_able(sender, instance, **kwargs):
 	Disabled people can't join.
 	"""
 
-	if instance.folk.disabled:
+	if instance.folk.disabled and (not instance.mission_grid.accept_disabled):
 		raise ValidationError("Les personnes handicapées ne participent pas aux missions !")
 
 
