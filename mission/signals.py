@@ -159,7 +159,7 @@ def check_pending_mission_value_allowed(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMission)
-def check_pending_misison_cant_start_without_title(sender, instance, **kwargs):
+def check_pending_mission_cant_start_without_title(sender, instance, **kwargs):
 	"""
 	Forbids the launch of the mission if the AvailableTitle.folk is not defined.
 	"""
@@ -177,13 +177,25 @@ def check_pending_misison_cant_start_without_title(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMission)
-def check_pending_misison_cant_start_without_target(sender, instance, **kwargs):
+def check_pending_mission_cant_start_without_target(sender, instance, **kwargs):
 	"""
 	Forbids the launch of the mission if target is None and has_target is True
 	"""
 
 	if instance.started is not None and not instance.is_started and instance.target is None and instance.mission.has_target:
 		raise ValidationError("Impossible de lancer une mission sans définir sa cible !")
+
+
+@receiver(pre_save, sender=PendingMission)
+def check_pending_mission_cant_start_empty_unless_specified(sender, instance, **kwargs):
+	"""
+	Forbids the launch of the mission if Grid is empty unless the grid has attribute allow_empty
+	"""
+	if instance.started is not None and not instance.is_started:
+		noempty_grids = instance.mission.missiongrid_set.filter(allow_empty=False)
+		for grid in noempty_grids:
+			if grid.pendingmissionaffectation_set.all().count() == 0:
+				raise ValidationError("Impossible de lancer cette mission car certains groupes sont vides")
 
 
 @receiver(post_save, sender=PendingMission)
