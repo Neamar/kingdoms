@@ -257,23 +257,12 @@ status="not_allowed"
 
 	def test_emptygrids_not_allowed(self):
 		"""
-		Check that a grid with argument allow_empty to False raises an error if no one is in it
+		Check that a grid with argument allow_empty to False (default) raises an error if no one is in it
 		"""
-		
-		self.mg = MissionGrid(
-			mission=self.m,
-		)
-		self.mg.save()
-
-		self.pm = PendingMission(
-			mission=self.m,
-			kingdom=self.k
-		)
-		self.pm.save()
 
 		self.pm.started = datetime.now()
 		self.assertRaises(ValidationError, self.pm.save)
-		
+
 	def test_emptygrids_allowed(self):
 		"""
 		Check that a grid with argument allow_empty can have no one in it
