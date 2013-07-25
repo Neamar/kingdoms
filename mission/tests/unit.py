@@ -671,3 +671,22 @@ if param.get_value('beastnum') != 666:
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.id)))
 		# Assert no raises
 		PendingMission.objects.get(pk=pm2.id)
+
+	def test_pendingmission_cron_timeout_cancel_code(self):
+		"""
+		Test the cron timeouts pendingmission.
+		"""
+
+		self.m.timeout = 10
+		self.m.on_cancel = """
+kingdom.set_value('pm_deleted', True)
+"""
+		self.m.save()
+
+		self.pm.created = datetime.now() - timedelta(minutes=15)
+		self.pm.save()
+
+		cron_minute.send(self, counter=1000)
+
+		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.id)))
+		self.assertTrue(self.k.get_value('pm_deleted'))

@@ -185,7 +185,7 @@ class PendingMission(ScriptedModel, ContextModel):
 		"""
 
 		if self.is_started:
-			raise ValidationError("Unable to cancel started mission")
+			raise ValidationError("Unable to cancel started mission.")
 
 		raw_context = self._get_context()
 		status, param = self.execute(self.mission, 'on_cancel', self.kingdom, raw_context)
