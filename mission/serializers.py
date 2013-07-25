@@ -18,7 +18,6 @@ def serialize_pending_mission(pending_mission):
 		'text': markdown(pending_mission.mission.text),
 		'duration': pending_mission.mission.duration,
 		'timeout': None,
-		'cancellable': pending_mission.mission.cancellable,
 		'grids': [serialize_mission_grid(o, pending_mission) for o in pending_mission.mission.missiongrid_set.all()],
 		'has_target': pending_mission.mission.has_target,
 		'target': pending_mission.target_id,
