@@ -259,6 +259,7 @@ status="not_allowed"
 		"""
 		Check that a grid with argument allow_empty to False (default) raises an error if no one is in it
 		"""
+		self.pma.delete()
 
 		self.pm.started = datetime.now()
 		self.assertRaises(ValidationError, self.pm.save)
@@ -267,18 +268,11 @@ status="not_allowed"
 		"""
 		Check that a grid with argument allow_empty can have no one in it
 		"""
-
-		self.mg = MissionGrid(
-			mission=self.m,
-			allow_empty=True,
-		)
+		
+		self.mg.allow_empty = True
 		self.mg.save()
 
-		self.pm = PendingMission(
-			mission=self.m,
-			kingdom=self.k
-		)
-		self.pm.save()
+		self.pma.delete()
 
 		self.pm.started = datetime.now()
 		self.pm.save()
