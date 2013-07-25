@@ -2,7 +2,6 @@
 from datetime import datetime
 
 from django.db import models
-from django.core.exceptions import ValidationError
 
 from config.fields.stored_value import StoredValueField
 from config.fields.script_field import ScriptField
