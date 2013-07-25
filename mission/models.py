@@ -55,6 +55,7 @@ class MissionGrid(models.Model):
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
+	accept_disabled = False
 	condition = ScriptField(blank=True, null=True, help_text="Called before folk affectation. `param` is the current PendingMissionAffectation, `folk` is the folk being affected and `kingdom` the kingdom.", default=None)
 
 	def __unicode__(self):
