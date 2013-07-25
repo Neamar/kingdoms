@@ -89,7 +89,7 @@ class UnitTest(TestCase):
 
 	def test_grid_allow_disabled(self):
 		"""
-		specific grids allow disabled folks.
+		Specific grids allows disabled folks.
 		"""
 
 		mg1 = MissionGrid(
