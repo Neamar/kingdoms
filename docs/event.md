@@ -98,7 +98,7 @@ PendingMission(
 PendingEvent(
 	event=Event.objects.get(slug="le slug"),
 	kingdom=kingdom,
-	started= datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
+	started=datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
 	).save()
 
 # La condition sur l'évènement sera déclenchée au moment programmé.
@@ -109,7 +109,7 @@ PendingEvent(
 pe = PendingEvent(
 	event=Event.objects.get(slug="le slug"),
 	kingdom=kingdom,
-	started= None # la pending mission ne démarre pas maintenant
+	started=None # le pending event ne démarre pas maintenant
 	).save()
 
 # du code... par exemple, stocker une variable qui sera utile pour le futur évènement.
