@@ -25,6 +25,7 @@ function droppable_available_title_affect_folk(event, ui) {
  */
 function click_available_mission(context, event) {
 	http_actions.availableMissionStart(context);
+	document.location = "#mission";
 }
 
 /**
