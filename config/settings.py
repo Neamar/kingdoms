@@ -125,7 +125,7 @@ FIXTURE_DIRS = (
 )
 
 # Disable migrations and use syncdb for tests.
-SOUTH_TESTS_MIGRATE = True
+SOUTH_TESTS_MIGRATE = False
 
 INSTALLED_APPS = (
     'django.contrib.auth',
