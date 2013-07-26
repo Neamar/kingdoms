@@ -283,7 +283,7 @@ status="not_allowed"
 	def test_sanity_grid_is_from_mission(self):
 		"""
 		Check the grid is part of the current mission.
-		""
+		"""
 
 		m2 = Mission(
 			name="Stub mission2",
