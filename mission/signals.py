@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 
-from django.db.models import F
 from django.db.models.signals import pre_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -225,7 +224,7 @@ def cron_cancel_pendingmission_after_timeout(sender, counter, **kwargs):
 	Cancel unstarted pending missions whom created+timeout is in the past.
 	"""
 
-	pending_missions = PendingMission.objects.filter(is_started=False).select_related('mission')
+	pending_missions = PendingMission.objects.filter(is_started=False).exclude(mission__timeout=None).select_related('mission')
 
 	for pending_mission in pending_missions:
 		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) < datetime.now():
