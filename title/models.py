@@ -28,7 +28,7 @@ class AvailableTitle(ScriptedModel):
 		unique_together = ('title', 'kingdom')
 
 	title = models.ForeignKey(Title)
-	kingdom = models.ForeignKey(Kingdom, related_name="availabletitle")
+	kingdom = models.ForeignKey(Kingdom)
 	folk = models.OneToOneField(Folk, null=True, blank=True, default=None, related_name="title")
 	last_folk = models.ForeignKey(Folk, null=True, default=None, related_name="+", editable=False)
 
