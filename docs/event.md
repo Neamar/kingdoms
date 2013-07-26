@@ -33,10 +33,11 @@ param.get_value("variable_name")
 Attention, la variable doit forcément exister.
 
 
-#### Créer un nouvel PendingEventAction en gardant les variables
-Depuis un penging_event
+#### Créer un nouveau PendingEvent en gardant les variables
+Depuis un `pending_event` :
 ```python
-param.pending_event.next_event("slug_new_event").start()
+new_pe = param.next_event("slug_new_event")
+new_pe.start()
 ```
 
 Exemples
