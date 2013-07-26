@@ -76,6 +76,7 @@ class UnitTest(TestCase):
 		"""
 		By default, grids do not allow disabled to be affected.
 		"""
+
 		self.pma.delete()
 		self.f.disabled = True
 		self.f.save()
@@ -112,6 +113,7 @@ class UnitTest(TestCase):
 		"""
 		A folk can't be affected when he is dead.
 		"""
+
 		self.pma.delete()
 		self.f.die()
 
@@ -259,6 +261,7 @@ status="not_allowed"
 		"""
 		Check that a grid with argument allow_empty to False (default) raises an error if no one is in it
 		"""
+
 		self.pma.delete()
 
 		self.pm.started = datetime.now()
@@ -280,7 +283,8 @@ status="not_allowed"
 	def test_sanity_grid_is_from_mission(self):
 		"""
 		Check the grid is part of the current mission.
-		"""
+		""
+
 		m2 = Mission(
 			name="Stub mission2",
 			on_resolution="",
@@ -379,6 +383,7 @@ status="not_allowed"
 		"""
 		Check target is not None if mission has_target
 		"""
+
 		self.m.has_target = True
 		self.m.save()
 
@@ -389,6 +394,7 @@ status="not_allowed"
 		"""
 		Check the on_init code can cancel the mission before it is launched.
 		"""
+
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
@@ -420,6 +426,7 @@ status="not_allowed"
 		"""
 		Check the on_start code.
 		"""
+
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
@@ -447,6 +454,7 @@ Kingdom().save()
 		"""
 		Check the on_start code, aborting the mission.
 		"""
+
 		m2 = Mission(
 			name="Stub mission2",
 			slug="stub_2",
@@ -470,6 +478,7 @@ status='abort'
 		"""
 		Can't start twice the same mission.
 		"""
+
 		self.pm.started = datetime.now()
 		self.pm.save()
 
@@ -479,12 +488,14 @@ status='abort'
 		"""
 		Can't resolve unstarted mission
 		"""
+
 		self.assertRaises(ValidationError, self.pm.resolve)
 
 	def test_mission_resolution(self):
 		"""
 		Check the on_resolution code.
 		"""
+
 		self.m.on_resolution = """
 status='mission_solved'
 """
@@ -500,6 +511,7 @@ status='mission_solved'
 		"""
 		Check the on_resolution code works with a target.
 		"""
+
 		k2 = Kingdom()
 		k2.save()
 
@@ -541,7 +553,10 @@ if value == 15:
 		self.assertEqual(status, 'mission_solved')
 
 	def test_mission_resolution_delete_pending_mission(self):
-		# Pendingmission must be deleted
+		"""
+		Pendingmission must be deleted after resolution.
+		"""
+
 		self.pm.started = datetime.now()
 		self.pm.save()
 		self.pm.resolve()
@@ -551,8 +566,9 @@ if value == 15:
 
 	def test_mission_on_cancel(self):
 		"""
-		Check the cancellable flag.
+		Check the on_cancel code.
 		"""
+
 		self.m.on_cancel = """
 kingdom.prestige = 50
 kingdom.save()
