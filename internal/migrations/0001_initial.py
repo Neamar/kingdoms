@@ -13,11 +13,12 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=255)),
             ('prestige_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('population_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('money_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('condition', self.gf('config.fields.script_field.ScriptField')(default='', null=True, blank=True)),
-            ('on_fire', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(default=None, null=True, blank=True)),
+            ('on_fire', self.gf('config.fields.script_field.ScriptField')(default=None, null=True, blank=True)),
         ))
         db.send_create_signal(u'internal', ['Trigger'])
 
@@ -39,34 +40,31 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'internal', ['Constant'])
 
-        # Adding model 'Value'
-        db.create_table(u'internal_value', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
-            ('kingdom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kingdom.Kingdom'])),
-            ('value', self.gf('django.db.models.fields.IntegerField')()),
-            ('expiration', self.gf('django.db.models.fields.DateTimeField')()),
-        ))
-        db.send_create_signal(u'internal', ['Value'])
-
-        # Adding unique constraint on 'Value', fields ['name', 'kingdom']
-        db.create_unique(u'internal_value', ['name', 'kingdom_id'])
-
         # Adding model 'Recurring'
         db.create_table(u'internal_recurring', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('frequency', self.gf('django.db.models.fields.CharField')(default='hourly', max_length=8)),
-            ('condition', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
-            ('on_fire', self.gf('config.fields.script_field.ScriptField')(null=True, blank=True)),
+            ('delay', self.gf('django.db.models.fields.PositiveIntegerField')(default=144)),
+            ('condition', self.gf('config.fields.script_field.ScriptField')(default=None, null=True, blank=True)),
+            ('on_fire', self.gf('config.fields.script_field.ScriptField')(default=None, null=True, blank=True)),
         ))
         db.send_create_signal(u'internal', ['Recurring'])
+
+        # Adding model 'Function'
+        db.create_table(u'internal_function', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=255)),
+            ('description', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
+            ('on_fire', self.gf('config.fields.script_field.ScriptField')(default='')),
+        ))
+        db.send_create_signal(u'internal', ['Function'])
 
         # Adding model 'FirstName'
         db.create_table(u'internal_firstname', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
+            ('sex', self.gf('django.db.models.fields.CharField')(default='m', max_length=1)),
         ))
         db.send_create_signal(u'internal', ['FirstName'])
 
@@ -77,11 +75,48 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'internal', ['LastName'])
 
+        # Adding model 'Avatar'
+        db.create_table(u'internal_avatar', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('sex', self.gf('django.db.models.fields.CharField')(default='m', max_length=1)),
+            ('hair', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('fight', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('diplomacy', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('plot', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('scholarship', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('child', self.gf('django.db.models.fields.files.ImageField')(default=None, max_length=100, blank=True)),
+            ('adult', self.gf('django.db.models.fields.files.ImageField')(default=None, max_length=100, blank=True)),
+            ('old', self.gf('django.db.models.fields.files.ImageField')(default=None, max_length=100, blank=True)),
+            ('adult_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=16)),
+            ('old_threshold', self.gf('django.db.models.fields.PositiveIntegerField')(default=45)),
+        ))
+        db.send_create_signal(u'internal', ['Avatar'])
+
+        # Adding M2M table for field qualities on 'Avatar'
+        m2m_table_name = db.shorten_name(u'internal_avatar_qualities')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('avatar', models.ForeignKey(orm[u'internal.avatar'], null=False)),
+            ('quality', models.ForeignKey(orm[u'kingdom.quality'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['avatar_id', 'quality_id'])
+
+        # Adding model 'ScriptLog'
+        db.create_table(u'internal_scriptlog', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('kingdom', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['kingdom.Kingdom'], null=True, on_delete=models.SET_NULL)),
+            ('object_type', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('object_pk', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('object_attr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('stack_level', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('time', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('direct_queries', self.gf('django.db.models.fields.PositiveIntegerField')(default=None, null=True)),
+            ('queries', self.gf('django.db.models.fields.PositiveIntegerField')(default=None, null=True)),
+        ))
+        db.send_create_signal(u'internal', ['ScriptLog'])
+
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Value', fields ['name', 'kingdom']
-        db.delete_unique(u'internal_value', ['name', 'kingdom_id'])
-
         # Deleting model 'Trigger'
         db.delete_table(u'internal_trigger')
 
@@ -91,17 +126,26 @@ class Migration(SchemaMigration):
         # Deleting model 'Constant'
         db.delete_table(u'internal_constant')
 
-        # Deleting model 'Value'
-        db.delete_table(u'internal_value')
-
         # Deleting model 'Recurring'
         db.delete_table(u'internal_recurring')
+
+        # Deleting model 'Function'
+        db.delete_table(u'internal_function')
 
         # Deleting model 'FirstName'
         db.delete_table(u'internal_firstname')
 
         # Deleting model 'LastName'
         db.delete_table(u'internal_lastname')
+
+        # Deleting model 'Avatar'
+        db.delete_table(u'internal_avatar')
+
+        # Removing M2M table for field qualities on 'Avatar'
+        db.delete_table(db.shorten_name(u'internal_avatar_qualities'))
+
+        # Deleting model 'ScriptLog'
+        db.delete_table(u'internal_scriptlog')
 
 
     models = {
@@ -141,6 +185,22 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'internal.avatar': {
+            'Meta': {'object_name': 'Avatar'},
+            'adult': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
+            'adult_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '16'}),
+            'child': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
+            'diplomacy': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'fight': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'hair': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'old': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
+            'old_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '45'}),
+            'plot': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'qualities': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Quality']", 'symmetrical': 'False', 'blank': 'True'}),
+            'scholarship': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'sex': ('django.db.models.fields.CharField', [], {'default': "'m'", 'max_length': '1'})
+        },
         u'internal.constant': {
             'Meta': {'object_name': 'Constant'},
             'description': ('django.db.models.fields.TextField', [], {}),
@@ -151,7 +211,15 @@ class Migration(SchemaMigration):
         u'internal.firstname': {
             'Meta': {'object_name': 'FirstName'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
+            'sex': ('django.db.models.fields.CharField', [], {'default': "'m'", 'max_length': '1'})
+        },
+        u'internal.function': {
+            'Meta': {'object_name': 'Function'},
+            'description': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'default': "''"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
         },
         u'internal.lastname': {
             'Meta': {'object_name': 'LastName'},
@@ -160,37 +228,43 @@ class Migration(SchemaMigration):
         },
         u'internal.recurring': {
             'Meta': {'object_name': 'Recurring'},
-            'condition': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'delay': ('django.db.models.fields.PositiveIntegerField', [], {'default': '144'}),
             'description': ('django.db.models.fields.TextField', [], {}),
-            'frequency': ('django.db.models.fields.CharField', [], {'default': "'hourly'", 'max_length': '8'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'})
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'})
+        },
+        u'internal.scriptlog': {
+            'Meta': {'object_name': 'ScriptLog'},
+            'direct_queries': ('django.db.models.fields.PositiveIntegerField', [], {'default': 'None', 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': u"orm['kingdom.Kingdom']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'object_attr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'object_pk': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'object_type': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'queries': ('django.db.models.fields.PositiveIntegerField', [], {'default': 'None', 'null': 'True'}),
+            'stack_level': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'time': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'internal.trigger': {
             'Meta': {'object_name': 'Trigger'},
-            'condition': ('config.fields.script_field.ScriptField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'condition': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
-            'fired': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Kingdom']", 'symmetrical': 'False'}),
+            'fired': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['kingdom.Kingdom']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'money_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'on_fire': ('config.fields.script_field.ScriptField', [], {'null': 'True', 'blank': 'True'}),
+            'on_fire': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
-        },
-        u'internal.value': {
-            'Meta': {'unique_together': "(('name', 'kingdom'),)", 'object_name': 'Value'},
-            'expiration': ('django.db.models.fields.DateTimeField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'value': ('django.db.models.fields.IntegerField', [], {})
+            'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
         },
         u'kingdom.claim': {
             'Meta': {'unique_together': "(('offender', 'offended'),)", 'object_name': 'Claim'},
-            'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'level': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'offended': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'offended_set'", 'to': u"orm['kingdom.Kingdom']"}),
             'offender': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'offender_set'", 'to': u"orm['kingdom.Kingdom']"})
         },
@@ -201,7 +275,26 @@ class Migration(SchemaMigration):
             'money': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'population': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'})
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'null': 'True'})
+        },
+        u'kingdom.quality': {
+            'Meta': {'object_name': 'Quality'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.QualityCategory']"}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            'female_description': ('django.db.models.fields.TextField', [], {}),
+            'female_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'incompatible_qualities': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'incompatible_qualities_rel_+'", 'blank': 'True', 'to': u"orm['kingdom.Quality']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'on_affect': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'on_defect': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
+        },
+        u'kingdom.qualitycategory': {
+            'Meta': {'object_name': 'QualityCategory'},
+            'description': ('django.db.models.fields.TextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
         }
     }
 
