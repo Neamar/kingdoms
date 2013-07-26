@@ -8,14 +8,49 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'AvatarCategory'
-        db.delete_table(u'internal_avatarcategory')
+        # Removing unique constraint on 'Value', fields ['name', 'kingdom']
+        db.delete_unique(u'internal_value', ['name', 'kingdom_id'])
 
-        # Deleting field 'Avatar.category'
-        db.delete_column(u'internal_avatar', 'category_id')
+        # Deleting model 'Value'
+        db.delete_table(u'internal_value')
 
-        # Deleting field 'Avatar.image'
-        db.delete_column(u'internal_avatar', 'image')
+        # Adding model 'ScriptLog'
+        db.create_table(u'internal_scriptlog', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('kingdom', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['kingdom.Kingdom'], null=True, on_delete=models.SET_NULL)),
+            ('object_type', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('object_pk', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('object_attr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('stack_level', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('time', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('direct_queries', self.gf('django.db.models.fields.PositiveIntegerField')(default=None, null=True)),
+            ('queries', self.gf('django.db.models.fields.PositiveIntegerField')(default=None, null=True)),
+        ))
+        db.send_create_signal(u'internal', ['ScriptLog'])
+
+        # Deleting field 'Recurring.frequency'
+        db.delete_column(u'internal_recurring', 'frequency')
+
+        # Adding field 'Recurring.delay'
+        db.add_column(u'internal_recurring', 'delay',
+                      self.gf('django.db.models.fields.PositiveIntegerField')(default=144),
+                      keep_default=False)
+
+        # Deleting field 'Avatar.avatar'
+        db.delete_column(u'internal_avatar', 'avatar')
+
+        # Deleting field 'Avatar.name'
+        db.delete_column(u'internal_avatar', 'name')
+
+        # Adding field 'Avatar.sex'
+        db.add_column(u'internal_avatar', 'sex',
+                      self.gf('django.db.models.fields.CharField')(default='m', max_length=1),
+                      keep_default=False)
+
+        # Adding field 'Avatar.hair'
+        db.add_column(u'internal_avatar', 'hair',
+                      self.gf('django.db.models.fields.IntegerField')(default=1),
+                      keep_default=False)
 
         # Adding field 'Avatar.fight'
         db.add_column(u'internal_avatar', 'fight',
@@ -39,22 +74,27 @@ class Migration(SchemaMigration):
 
         # Adding field 'Avatar.child'
         db.add_column(u'internal_avatar', 'child',
-                      self.gf('django.db.models.fields.files.ImageField')(default=1, max_length=100, blank=True),
-                      keep_default=False)
-
-        # Adding field 'Avatar.teenager'
-        db.add_column(u'internal_avatar', 'teenager',
-                      self.gf('django.db.models.fields.files.ImageField')(default=1, max_length=100, blank=True),
+                      self.gf('django.db.models.fields.files.ImageField')(default='', max_length=100, blank=True),
                       keep_default=False)
 
         # Adding field 'Avatar.adult'
         db.add_column(u'internal_avatar', 'adult',
-                      self.gf('django.db.models.fields.files.ImageField')(default=1, max_length=100),
+                      self.gf('django.db.models.fields.files.ImageField')(default='', max_length=100, blank=True),
                       keep_default=False)
 
         # Adding field 'Avatar.old'
         db.add_column(u'internal_avatar', 'old',
-                      self.gf('django.db.models.fields.files.ImageField')(default=1, max_length=100),
+                      self.gf('django.db.models.fields.files.ImageField')(default='', max_length=100, blank=True),
+                      keep_default=False)
+
+        # Adding field 'Avatar.adult_threshold'
+        db.add_column(u'internal_avatar', 'adult_threshold',
+                      self.gf('django.db.models.fields.PositiveIntegerField')(default=16),
+                      keep_default=False)
+
+        # Adding field 'Avatar.old_threshold'
+        db.add_column(u'internal_avatar', 'old_threshold',
+                      self.gf('django.db.models.fields.PositiveIntegerField')(default=45),
                       keep_default=False)
 
         # Adding M2M table for field qualities on 'Avatar'
@@ -68,23 +108,40 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Adding model 'AvatarCategory'
-        db.create_table(u'internal_avatarcategory', (
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, unique=True)),
+        # Adding model 'Value'
+        db.create_table(u'internal_value', (
+            ('kingdom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['kingdom.Kingdom'])),
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('value', self.gf('config.fields.stored_value.StoredValueField')(max_length=512, null=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255, unique=True)),
         ))
-        db.send_create_signal(u'internal', ['AvatarCategory'])
+        db.send_create_signal(u'internal', ['Value'])
 
-        # Adding field 'Avatar.category'
-        db.add_column(u'internal_avatar', 'category',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['internal.AvatarCategory']),
+        # Adding unique constraint on 'Value', fields ['name', 'kingdom']
+        db.create_unique(u'internal_value', ['name', 'kingdom_id'])
+
+        # Deleting model 'ScriptLog'
+        db.delete_table(u'internal_scriptlog')
+
+        # Adding field 'Recurring.frequency'
+        db.add_column(u'internal_recurring', 'frequency',
+                      self.gf('django.db.models.fields.CharField')(default='hourly', max_length=8),
                       keep_default=False)
 
-        # Adding field 'Avatar.image'
-        db.add_column(u'internal_avatar', 'image',
-                      self.gf('django.db.models.fields.files.ImageField')(default=1, max_length=100),
-                      keep_default=False)
+        # Deleting field 'Recurring.delay'
+        db.delete_column(u'internal_recurring', 'delay')
+
+
+        # User chose to not deal with backwards NULL issues for 'Avatar.avatar'
+        raise RuntimeError("Cannot reverse this migration. 'Avatar.avatar' and its values cannot be restored.")
+
+        # User chose to not deal with backwards NULL issues for 'Avatar.name'
+        raise RuntimeError("Cannot reverse this migration. 'Avatar.name' and its values cannot be restored.")
+        # Deleting field 'Avatar.sex'
+        db.delete_column(u'internal_avatar', 'sex')
+
+        # Deleting field 'Avatar.hair'
+        db.delete_column(u'internal_avatar', 'hair')
 
         # Deleting field 'Avatar.fight'
         db.delete_column(u'internal_avatar', 'fight')
@@ -101,14 +158,17 @@ class Migration(SchemaMigration):
         # Deleting field 'Avatar.child'
         db.delete_column(u'internal_avatar', 'child')
 
-        # Deleting field 'Avatar.teenager'
-        db.delete_column(u'internal_avatar', 'teenager')
-
         # Deleting field 'Avatar.adult'
         db.delete_column(u'internal_avatar', 'adult')
 
         # Deleting field 'Avatar.old'
         db.delete_column(u'internal_avatar', 'old')
+
+        # Deleting field 'Avatar.adult_threshold'
+        db.delete_column(u'internal_avatar', 'adult_threshold')
+
+        # Deleting field 'Avatar.old_threshold'
+        db.delete_column(u'internal_avatar', 'old_threshold')
 
         # Removing M2M table for field qualities on 'Avatar'
         db.delete_table(db.shorten_name(u'internal_avatar_qualities'))
@@ -153,16 +213,19 @@ class Migration(SchemaMigration):
         },
         u'internal.avatar': {
             'Meta': {'object_name': 'Avatar'},
-            'adult': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
+            'adult': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
+            'adult_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '16'}),
             'child': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
             'diplomacy': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'fight': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'hair': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'old': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
+            'old': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'}),
+            'old_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '45'}),
             'plot': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'qualities': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Quality']", 'symmetrical': 'False'}),
+            'qualities': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['kingdom.Quality']", 'symmetrical': 'False', 'blank': 'True'}),
             'scholarship': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'teenager': ('django.db.models.fields.files.ImageField', [], {'default': 'None', 'max_length': '100', 'blank': 'True'})
+            'sex': ('django.db.models.fields.CharField', [], {'default': "'m'", 'max_length': '1'})
         },
         u'internal.constant': {
             'Meta': {'object_name': 'Constant'},
@@ -192,11 +255,23 @@ class Migration(SchemaMigration):
         u'internal.recurring': {
             'Meta': {'object_name': 'Recurring'},
             'condition': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'delay': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1440'}),
+            'delay': ('django.db.models.fields.PositiveIntegerField', [], {'default': '144'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'on_fire': ('config.fields.script_field.ScriptField', [], {'default': 'None', 'null': 'True', 'blank': 'True'})
+        },
+        u'internal.scriptlog': {
+            'Meta': {'object_name': 'ScriptLog'},
+            'direct_queries': ('django.db.models.fields.PositiveIntegerField', [], {'default': 'None', 'null': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': u"orm['kingdom.Kingdom']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'object_attr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'object_pk': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'object_type': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'queries': ('django.db.models.fields.PositiveIntegerField', [], {'default': 'None', 'null': 'True'}),
+            'stack_level': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'time': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'internal.trigger': {
             'Meta': {'object_name': 'Trigger'},
@@ -210,13 +285,6 @@ class Migration(SchemaMigration):
             'population_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'prestige_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        u'internal.value': {
-            'Meta': {'unique_together': "(('name', 'kingdom'),)", 'object_name': 'Value'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'kingdom': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['kingdom.Kingdom']"}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'value': ('config.fields.stored_value.StoredValueField', [], {'max_length': '1024', 'null': 'True'})
         },
         u'kingdom.claim': {
             'Meta': {'unique_together': "(('offender', 'offended'),)", 'object_name': 'Claim'},
