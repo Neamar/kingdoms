@@ -89,9 +89,6 @@ var mapping = {
 	'messages': {
 		key: unwrapId
 	},
-	'available_titles': {
-		key: unwrapId
-	}
 }
 
 var global_mapping = {
@@ -109,10 +106,6 @@ var global_mapping = {
 			return ko.utils.arrayFilter(self.pending_missions(), function(item) {
 				return item.started() == null;
 			})
-		});
-
-		datas.lol = ko.computed(function() {
-			//console.log(self.pending_missions(), datas.unstarted_pending_missions());
 		});
 
 		datas.debug_info = ko.observable("")
