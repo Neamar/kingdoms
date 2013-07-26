@@ -21,6 +21,13 @@ function droppable_available_title_affect_folk(event, ui) {
 }
 
 /**
+ * Create a new pending mission
+ */
+function click_available_mission(context, event) {
+	http_actions.availableMissionStart(context);
+}
+
+/**
  * Update the target for the mission
  */
 function change_pending_mission_update_target(context, event) {
@@ -111,7 +118,6 @@ function change_pending_mission_update_target(context, event) {
 //##################################
 
 function yellow_fade_in(element, index, data) {
-	console.log("ok")
 	$(element).filter("li")
 		.animate({ backgroundColor: 'yellow' }, 200)
 		.animate({ backgroundColor: 'white' }, 800);
