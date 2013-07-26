@@ -565,27 +565,9 @@ kingdom.save()
 		
 		self.assertEqual(50, Kingdom.objects.get(pk=self.k.pk).prestige)
 
-
-	def test_mission_finished_not_cancellable(self):
-		"""
-		Check the cancellable flag and the is_finished.
-		"""
-		# Fake resolution
-		self.pm.is_finished = True
-		self.pm.save()
-		
-		self.pm.delete()
-
-	def test_mission_cancellable(self):
-		"""
-		Check the cancellable flag.
-		"""
-		self.m.cancellable = True
-		self.pm.delete()
-
 	def test_grid_with_two_people(self):
 		"""
-		check if folks are well put in the grid
+		Check if folks are well put in the grid
 		"""
 		self.m.on_resolution = """
 status = grids[0][0].first_name + " " + grids[0][1].first_name
