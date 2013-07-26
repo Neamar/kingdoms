@@ -111,9 +111,9 @@ class PendingEvent(ScriptedModel, ContextModel):
 			started=None
 		)
 		pending_event2.save()
-		variables = self._pendingeventvariable_set.all()
-		for variable in variables:
-			pending_event2.set_value(variable.name, variable.value)
+		variables = self.get_values()
+		for name, value in variables.items():
+			pending_event2.set_value(name, value)
 		return pending_event2
 
 
