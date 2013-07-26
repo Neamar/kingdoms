@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.template import Template, Context
+from django.utils.functional import memoize
 
 from event.models import PendingEvent, PendingEventAction
 
@@ -42,9 +44,8 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		raw_context['dynasty'] = lambda: instance.kingdom.user.username
 
 		# Ugly, but necessary: give access to titles in event context.
-		from title.models import AvailableTitle
-		titles = lambda: {at.title.slug: at.folk for at in AvailableTitle.objects.filter(kingdom=instance.kingdom).select_related('title')}
-		raw_context['title'] = titles
+		titles = lambda: {at.title.slug: at.folk for at in instance.kingdom.availabletitle.all().select_related('title')}
+		raw_context['title'] = memoize(titles, {}, 0)
 
 		raw_context.update(instance.get_values())
 

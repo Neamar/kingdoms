@@ -120,6 +120,7 @@ class ScriptedModel(models.Model):
 	"""
 	Model with the ability to run some code.
 	"""
+
 	class Meta:
 		abstract = True
 
