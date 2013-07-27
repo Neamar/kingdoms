@@ -56,8 +56,8 @@ if param.sex != Folk.MALE:
 `on_resolution` :
 ```python
 if len(folks) == 2:
-	husband = folks[0].folk
-	wife = folks[1].folk
+	husband = grids['mari'][0]
+	wife = grids['femme'][0]
 
 	husband.spouse = wife
 	husband.save()
@@ -77,7 +77,7 @@ if param.sex != Folk.MALE:
 `condition` :
 ```python
 if param.sex != Folk.FEMALE:
-  status="Seul une femme peut être la mariée."
+  status="Seule une femme peut être la mariée."
 ```
 
 ### Le kamikaze
@@ -85,7 +85,7 @@ Utilise le système de `target`.
 
 `target_list` :
 ```python
-# Les kamikazes ne cibles que les pays riches et développés
+# Les kamikazes ne ciblent que les royaumes riches et développés
 param = Kingdom.objects.filter(population>100, money>1000)
 ```
 
