@@ -94,20 +94,18 @@ class UnitTest(TestCase):
 		Specific grids allows disabled folks.
 		"""
 
-		mg1 = MissionGrid(
-			mission=self.m,
-		)
-		mg1.save()
-
 		self.pma.delete()
 		self.f.disabled = True
 		self.f.save()
+		self.mg.allow_disabled = True
+		self.mg.save()
 
 		pma = PendingMissionAffectation(
 			pending_mission=self.pm,
-			mission_grid=mg1,
+			mission_grid=self.mg,
 			folk=self.f
 		)
+		pma.save()
 
 	def test_cant_affect_dead(self):
 		"""
