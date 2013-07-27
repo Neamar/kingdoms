@@ -8,6 +8,7 @@ from django.db import IntegrityError
 from django.template import Template, Context
 from django.utils.functional import memoize
 
+from kingdom.management.commands.cron import cron_minute
 from event.models import PendingEvent, PendingEventAction
 
 
@@ -81,3 +82,20 @@ def check_pending_event_action_sanity(sender, instance, **kwargs):
 	
 	if instance.event_action.event != instance.pending_event.event:
 		raise IntegrityError("The events in EventAction and PendingEventAction are different ")
+
+
+@receiver(cron_minute)
+def cron_start_future_pendingevent(sender, counter, **kwargs):
+	"""
+	"Wake" pending_event registered for the future when their times has come.
+	"""
+
+	pending_events = PendingEvent.objects.filter(is_started=False, started__lte=datetime.now())
+
+	for pending_event in pending_events:
+		# Will trigger the post-save signal set_event_actions_and_fire
+		try:
+			pending_event.save()
+		except ValidationError:
+			# The pending event asked not to be displayed and has been deleted.
+			pass

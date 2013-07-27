@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+import time
+
 from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
+from kingdom.management.commands.cron import cron_minute
 from kingdom.models import Kingdom, Folk
 from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
 
@@ -108,6 +111,58 @@ kingdom.save()
 		pe.save()
 		self.assertEqual(len(pe.pendingeventaction_set.all()), 1)
 		self.assertEqual(pe.pendingeventaction_set.all()[0].event_action, self.a)
+
+	def test_pendingevent_future_created(self):
+		"""
+		Test the cron launches PendingEvent in the future
+		"""
+
+		self.e.on_fire = "param.set_value('has_been_called', True)"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=datetime.now()+timedelta(milliseconds=5)
+		)
+		pe.save()
+
+		# Sanity check : not started yet
+		self.assertFalse(pe.is_started)
+		self.assertFalse(pe.has_value('has_been_called'))
+
+		# Wait until completion
+		time.sleep(0.005)
+		cron_minute.send(self, counter=1000)
+
+		# PE has been executed
+		self.assertTrue(pe.get_value('has_been_called'))
+		self.assertTrue(PendingEvent.objects.get(pk=pe.id).is_started)
+
+	def test_pendingevent_future_cancelled(self):
+		"""
+		Test the cron launches PendingEvent in the future, and gracefully handles cancellation if the event asks not to be displayed.
+		"""
+
+		self.e.condition = "status='no'"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=datetime.now()+timedelta(milliseconds=5)
+		)
+		pe.save()
+
+		# Sanity check : not started yet
+		self.assertFalse(pe.is_started)
+
+		# Wait until completion
+		time.sleep(0.005)
+		cron_minute.send(self, counter=1000)
+
+		# PE has been deleted (status=no)
+		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(pk=pe.id)))
 
 	def test_on_fire_event_action_condition(self):
 		"""

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from event.serializers import serialize_pending_event
 
 
@@ -10,7 +8,7 @@ def api(request):
 
 	resp = {}
 
-	pending_events = request.user.kingdom.pendingevent_set.filter(started__lte=datetime.now()).select_related("event", "event__category").prefetch_related("pendingeventaction_set")
+	pending_events = request.user.kingdom.pendingevent_set.filter(is_started=True).select_related("event", "event__category").prefetch_related("pendingeventaction_set")
 	resp['pending_events'] = [serialize_pending_event(o) for o in pending_events]
 
 	return resp
