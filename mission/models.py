@@ -50,8 +50,11 @@ class MissionGrid(models.Model):
 
 	class Meta:
 		ordering = ['mission__name']
+		unique_together = ('slug', 'mission')
 
 	name = models.CharField(max_length=255)
+	slug = models.SlugField(max_length=255)
+
 	mission = models.ForeignKey(Mission)
 
 	length = models.PositiveIntegerField(default=20)
