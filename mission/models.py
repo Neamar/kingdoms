@@ -128,15 +128,13 @@ class PendingMission(ScriptedModel, ContextModel):
 		Return context for scripts on_start and on_resolution
 		"""
 
-		affecteds = self.folk_set.all().select_related('folk')
+		affecteds = self.folk_set.all().select_related('folk', 'mission_grid')
 		grids = {}
 		for affected in affecteds:
-			if affected.mission_grid_id in grids:
-				grids[affected.mission_grid_id].append(affected.folk)
+			if affected.mission_grid.slug in grids:
+				grids[affected.mission_grid.slug].append(affected.folk)
 			else:
-				grids[affected.mission_grid_id] = [affected.folk]
-
-		grids = [v for k, v in grids.items()]
+				grids[affected.mission_grid.slug] = [affected.folk]
 
 		context = {
 			'grids': grids,

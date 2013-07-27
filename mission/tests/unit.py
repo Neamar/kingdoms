@@ -43,6 +43,7 @@ class UnitTest(TestCase):
 
 		self.mg = MissionGrid(
 			mission=self.m,
+			slug='stub_grid'
 		)
 		self.mg.save()
 
@@ -583,8 +584,9 @@ kingdom.save()
 		"""
 		Check if folks are well put in the grid
 		"""
+
 		self.m.on_resolution = """
-status = grids[0][0].first_name + " " + grids[0][1].first_name
+status = grids['stub_grid'][0].first_name + " " + grids['stub_grid'][1].first_name
 """
 		self.m.save()
 
@@ -593,7 +595,7 @@ status = grids[0][0].first_name + " " + grids[0][1].first_name
 
 		self.f2 = Folk(
 			kingdom=self.k,
-			first_name="aaa"
+			first_name="b"
 		)
 		self.f2.save()
 
@@ -608,7 +610,42 @@ status = grids[0][0].first_name + " " + grids[0][1].first_name
 		self.pma2.save()
 		self.pm.start()
 		status = self.pm.resolve()
-		self.assertEqual(status, 'a aaa')
+		self.assertEqual(status, 'a b')
+
+	def test_grid_with_two_grids(self):
+		"""
+		Check if folks are well put in the grid
+		"""
+		mg2 = MissionGrid(
+			mission=self.m,
+			slug='stub_grid2'
+		)
+		mg2.save()
+
+		self.m.on_resolution = """
+status = grids['stub_grid'][0].first_name + " " + grids['stub_grid2'][0].first_name
+"""
+		self.m.save()
+
+		self.f.first_name = "a"
+		self.f.save()
+
+		self.f2 = Folk(
+			kingdom=self.k,
+			first_name="b"
+		)
+		self.f2.save()
+
+		self.pma2 = PendingMissionAffectation(
+			pending_mission=self.pm,
+			mission_grid=mg2,
+			folk=self.f2
+		)
+		self.pma2.save()
+
+		self.pm.start()
+		status = self.pm.resolve()
+		self.assertEqual(status, 'a b')
 
 	def test_pendingmission_set_get_value(self):
 		"""
