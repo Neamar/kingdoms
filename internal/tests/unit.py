@@ -326,6 +326,43 @@ param = foo * bar
 		param = f.fire(foo=2, bar=3)
 		self.assertEqual(param, 6)
 
+	def test_function_params_check_provided(self):
+		"""
+		Test mandatory params are provided
+		"""
+
+		f = Function(
+			slug="test_function",
+		)
+		f.params = """
+foo:int
+bar:int
+"""
+
+		f.on_fire = """
+param = foo * bar
+"""
+		f.save()
+
+		# Missing bar parameter
+		self.assertRaises(NameError, lambda: f.fire(foo=2))
+
+	def test_function_params_check_provided_type(self):
+		"""
+		Test mandatory params are provided with good type
+		"""
+
+		f = Function(
+			slug="test_function",
+		)
+		f.params = """
+foo:int
+bar:int
+"""
+		f.save()
+		# Bar parameter must be int
+		self.assertRaises(TypeError, lambda: f.fire(foo=2, bar="3"))
+
 	def test_auto_name_for_folk(self):
 		"""
 		The name is automatically filled.

@@ -81,11 +81,26 @@ class Function(ScriptedModel):
 
 	slug = models.SlugField(max_length=255, unique=True)
 	description = models.TextField(blank=True, default="")
-	params = models.TextField(blank=True, default="", help_text="Line separated list of mandatory arguments, as \"name type\", for instance \"someone Folk\"")
+	params = models.TextField(blank=True, default="", help_text="Line separated list of mandatory arguments, as \"name:type description\", for instance \"someone:Folk folk to be affected\"")
 
 	on_fire = ScriptField(help_text="Body of the function. Returns data with `param`.", default="")
 
 	def fire(self, **kwargs):
+		# Do we have all the required params?
+		# And is the type correct?
+		for line_param in self.params.split("\n"):
+			if line_param.strip() == '':
+				continue
+
+			# Remove description and retrieve name and type
+			param_name, param_type = line_param.split(" ")[0].split(":")
+
+			if param_name not in kwargs:
+				raise NameError("Missing mandatory param in function `%s`: %s" % (self.slug, param_name))
+			elif type(kwargs[param_name]).__name__ != param_type:
+				raise TypeError("Param `%s` must be of type %s, %s provided" % (param_name, param_type, type(kwargs[param_name]).__name__))
+
+		# Run the function
 		status, param = self.execute(self, 'on_fire', None, kwargs)
 		return param
 
