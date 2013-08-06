@@ -1,7 +1,7 @@
 <tr>
 	<td rowspan="2">
 		<p data-bind="draggable: true">
-			<img data-bind="attr: {src:avatar()}" />
+			<img data-bind="attr: {src:avatar(), alt: name}" alt="Avatar" />
 			<span data-bind="text: name"></span>
 			<small data-bind="text: '(' + age() + ' ans)'"></small>
 		</p>

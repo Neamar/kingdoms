@@ -2,7 +2,7 @@
 	<div data-bind="if: folk">
 		<div class="span3">
 			<div class="l-box splash-image">
-				<img data-bind="attr: {src: folk.avatar()}" class="img-rounded">
+				<img data-bind="attr: {src: folk.avatar(), alt: name}" class="img-rounded" alt="">
 			</div>
 		</div>
 		<div class="span9">
@@ -19,7 +19,7 @@
 	<div data-bind="ifnot: folk, droppable: droppable_available_title_affect_folk" class="row-fluid">
 		<div class="span3">
 			<div class="l-box splash-image">
-				<img src="http://placehold.it/100x120" alt="" class="img-rounded">
+				<img src="http://placehold.it/100x120" alt="" class="img-rounded" />
 			</div>
 		</div>
 		<div class="span9">

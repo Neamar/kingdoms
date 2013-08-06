@@ -1,6 +1,7 @@
 <form>
 	<label for="partner">Lancer une négociation avec :</label>
 	<select name="partner" id="partner" data-bind="event: {change: change_pending_bargain_create }, options:bargains_partners, optionsText: 'name', optionsValue: 'id', optionsCaption: 'Sélectionnez...'"></select>
+</form>
 
 <div data-bind="foreach: pending_bargains">
 	{% include "app/templates/_pending_bargain.html" %}
