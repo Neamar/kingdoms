@@ -16,7 +16,14 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class EventAdmin(admin.ModelAdmin):
-	list_display = ('name', 'slug', 'text', 'weight', 'category',)
+	list_display = ('name', 'slug', 'text', 'weight', 'category', 'thumb',)
+	list_display_links = ('name', 'slug')
+
+	def thumb(self, obj):
+		if obj.image:
+			return '<img src="%s" style="width:30%%" />' % obj.image.url
+	thumb.allow_tags = True
+
 	search_fields = ('name', 'text', 'slug')
 	list_filter = ('category__name',)
 	inlines = [
