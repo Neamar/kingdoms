@@ -81,6 +81,7 @@ class Function(ScriptedModel):
 
 	slug = models.SlugField(max_length=255, unique=True)
 	description = models.TextField(blank=True, default="")
+	params = models.TextField(blank=True, default="", help_text="Line separated list of mandatory arguments, as \"name type\", for instance \"someone Folk\"")
 
 	on_fire = ScriptField(help_text="Body of the function. Returns data with `param`.", default="")
 
