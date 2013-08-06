@@ -21,7 +21,7 @@ class EventAdmin(admin.ModelAdmin):
 
 	def thumb(self, obj):
 		if obj.image:
-			return '<img src="%s" style="width:30%%" />' % obj.image.url
+			return '<img src="%s" style="width:150px" />' % obj.image.url
 	thumb.allow_tags = True
 
 	search_fields = ('name', 'text', 'slug')
