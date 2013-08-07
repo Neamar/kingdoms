@@ -54,18 +54,15 @@ def fill_name(sender, instance, **kwargs):
 @receiver(pre_save, sender=Freeze)
 def freeze_kingdom(sender, instance, **kwargs):
 	"""
-	Freeze the data on first save,
-	Forbid further save.
+	Freeze the datas
 	"""
-	if instance.pk is not None:
-		raise IntegrityError("A freeze can only be saved once.")
-
 	kingdom = instance.kingdom
 
 	# Retrieve all datas to be freezed		
 	objects = [kingdom]
 	objects += kingdom._kingdomvariable_set.all()
 	objects += kingdom.folk_set.all()
+	objects += kingdom.message_set.all()
 	objects += kingdom.availablemission_set.all()
 	objects += kingdom.availabletitle_set.all()
 

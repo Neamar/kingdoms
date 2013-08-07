@@ -121,9 +121,11 @@ class Freeze(models.Model):
 
 		# Remove old data, as new objects could have been created in-between.
 		# We need to rewrite the PK, else the Freeze creator will see his own Kingdom reference set to None.
+		# Same thing for the current Freeze.
 		kingdom_pk = self.kingdom.pk
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
+		self.save()
 
 		# Disconnect signal for trigger
 		from internal.signals import fire_trigger
@@ -136,9 +138,6 @@ class Freeze(models.Model):
 		# Reconnect trigger signal
 		post_save.connect(fire_trigger, sender=Kingdom)
 
-		# Save ourselves for future use, as this Freeze has been deleted with the kingdom.
-		self.pk = None
-		self.save()
 
 	def __unicode__(self):
 		return "Freeze: %s" % self.kingdom
