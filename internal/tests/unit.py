@@ -1,9 +1,8 @@
 from django.test import TestCase
-from django.test.utils import override_settings
 
 from kingdom.management.commands.cron import cron_ten_minutes
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, FirstName, LastName
+from internal.models import Trigger, Function, Recurring, FirstName, LastName, Freeze
 
 
 class UnitTest(TestCase):
@@ -379,6 +378,28 @@ bar:int
 
 	def test_simple_freeze(self):
 		"""
-		Test freeze restores kingdom and folk values
+		Test freeze mechanism : value restored and objects recreated.
+		If this test pass, the next one will check for exhaustivity in freezed values.
 		"""
-		pass
+		freezed_prestige = self.k.prestige
+		freezed_folk_first_name = self.f.first_name
+
+		# f2 = Folk(kingdom=self.k, first_name="Alive", last_name="Anddead")
+		# f2.save()
+
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		# Change stuff
+		self.k.prestige += 50
+		self.k.save()
+
+		self.f.first_name = "Raymondie"
+		self.f.save()
+
+		# Unfreeze
+		freeze.restore()
+
+		# Check
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).prestige, freezed_prestige)
+		self.assertEqual(Folk.objects.get(pk=self.f.pk).first_name, freezed_folk_first_name)

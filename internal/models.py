@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.core import serializers
 
 from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel, ScriptedModel
@@ -113,6 +114,12 @@ class Freeze(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	datas = models.TextField(help_text="Freezed datas for the kingdom.", blank=True)
 
+	def restore(self):
+		"""
+		Restore freezed datas
+		"""
+		for obj in serializers.deserialize("json", self.datas):
+			obj.save()
 
 class FirstName(NamedModel):
 	"""
