@@ -7,7 +7,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, FirstName, LastName, Recurring
+from internal.models import Trigger, FirstName, LastName, Recurring, Freeze
 from kingdom.management.commands.cron import cron_ten_minutes
 
 

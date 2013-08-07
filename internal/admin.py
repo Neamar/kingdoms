@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar
+from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar, Freeze
 from kingdom.models import Kingdom
 
 
@@ -8,6 +8,13 @@ class TriggerAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'prestige_threshold', 'population_threshold')
 	search_fields = ('name', 'description')
 admin.site.register(Trigger, TriggerAdmin)
+
+
+class FreezeAdmin(admin.ModelAdmin):
+	list_display = ('kingdom', 'created')
+	list_filter = ('kingdom',)
+	readonly_fields = ('datas',)
+admin.site.register(Freeze, FreezeAdmin)
 
 
 class ConstantAdmin (admin.ModelAdmin):
