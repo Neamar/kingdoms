@@ -30,7 +30,7 @@ class Event(models.Model):
 	slug = models.SlugField(max_length=255, unique=True)
 
 	image = models.ImageField(upload_to="events/", blank=True, null=True)
-	text = models.TextField()
+	text = models.TextField(help_text="Text to be displayed for this event. Can use templating.")
 	
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory, blank=True, null=True, default=None)
@@ -50,8 +50,8 @@ class EventAction(models.Model):
 	event = models.ForeignKey(Event)
 	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to hide this button.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=None)
-	text = models.CharField(max_length=255)
-	message = models.TextField(blank=True, null=True, default="")
+	text = models.CharField(max_length=255, help_text="Text to be displayed for this action. Can use templating.")
+	message = models.TextField(blank=True, null=True, default="", help_text="Text stored in the log if this action is selected. Can use templating.")
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.text[0:50], self.event.slug)
