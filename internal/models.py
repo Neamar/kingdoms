@@ -126,9 +126,9 @@ class Freeze(models.Model):
 		# We need to rewrite the PK, else the Freeze creator will see his own Kingdom reference set to None.
 		# Same thing for the current Freeze.
 		kingdom_pk = self.kingdom.pk
+		freezes = self.kingdom.freeze_set.all()
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
-		self.save()
 
 		# Disconnect signal for trigger
 		from internal.signals import fire_trigger
@@ -145,6 +145,8 @@ class Freeze(models.Model):
 		# Reconnect trigger signal
 		post_save.connect(fire_trigger, sender=Kingdom)
 
+		# Recreate all freezes
+		[f.save for f in freezes]
 
 	def __unicode__(self):
 		return "Freeze: %s" % self.kingdom
