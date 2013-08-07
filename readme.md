@@ -1,15 +1,18 @@
 Kingdoms
 ========
-`Kingdoms` is a browser game implemented in 8 days by a small core-team of 7 persons.
+`Kingdoms` is a massively multiplayer online browser game implemented in 8 days by a small team of 7 persons.
 The core code (this repo) is abstracted to allow the creation of many games on the same engine.
 
-Everything runs around the notion of Kingdom, your realm as a player. You need to increase your prestige by doing missions, nominating people to important positions and handling events happening in and out of your reach while interacting and fighting the other player.
+Everything revolves around the notion of Kingdom, your realm as a player. You need to increase your reputation by doing missions, nominating people to important positions and handling events happening in and out of your reach while interacting and fighting the other players.
 
-As you cann see, this mechanic is pretty abstract; Every deployment of this game is a story of it's own, whit great gameplay and roleplay immersion.
+This mechanic is pretty abstract; Every deployment of this game is a story of it's own, whith great gameplay and roleplay immersion.
+
+The core-team is currently using this code to create "Que mon règne vienne".
+Changes to this repo are not tied to "Que mon règne vienne".
 
 Documentation
 -------------
-For the docs, [see this link](docs/readme.md).
+For the docs, [see this link](docs/readme.md) [fr].
 
 Models
 ------
