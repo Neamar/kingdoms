@@ -144,7 +144,7 @@ class PendingEventAction(ScriptedModel):
 		
 		status, param = self.execute(self.event_action, 'on_fire', self.pending_event.kingdom)
 
-		if self.message is not None:
+		if self.message is not None and self.message.strip() != '':
 			self.pending_event.kingdom.message_set.create(content=self.message)
 
 		self.pending_event.delete()
