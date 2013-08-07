@@ -111,7 +111,7 @@ class Function(ScriptedModel):
 class Freeze(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	created = models.DateTimeField(auto_now_add=True)
-	datas = models.TextField(help_text="Freezed datas for the kingdom.")
+	datas = models.TextField(help_text="Freezed datas for the kingdom.", blank=True)
 
 
 class FirstName(NamedModel):

@@ -376,3 +376,9 @@ bar:int
 
 		self.assertEqual(f2.first_name, "Gendry")
 		self.assertEqual(f2.last_name, "Baratheon")
+
+	def test_simple_freeze(self):
+		"""
+		Test freeze restores kingdom and folk values
+		"""
+		pass

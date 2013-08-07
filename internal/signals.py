@@ -1,6 +1,8 @@
 import random
 import string
 
+from django.core import serializers
+from django.db import IntegrityError
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
@@ -47,6 +49,35 @@ def fill_name(sender, instance, **kwargs):
 		except IndexError:
 			# Empty LastName table
 			instance.last_name = ''.join(random.choice(string.lowercase) for i in range(10))
+
+
+@receiver(pre_save, sender=Freeze)
+def fill_name(sender, instance, **kwargs):
+	"""
+	Freeze the data on first save,
+	Forbid further save.
+	"""
+	if instance.pk is not None:
+		raise IntegrityError("A freeze can only be saved once.")
+
+	kingdom = instance.kingdom
+
+	# Retrieve all datas to be freezed		
+	objects = [kingdom]
+	objects += kingdom._kingdomvariable_set.all()
+	objects += kingdom.folk_set.all()
+	objects += kingdom.availablemission_set.all()
+	objects += kingdom.availabletitle_set.all()
+
+	for pending_event in kingdom.pendingevent_set.all():
+		objects.append(pending_event)
+		objects += pending_event._pendingeventvariable_set.all()
+
+	for pending_mission in kingdom.pendingmission_set.all():
+		objects.append(pending_mission)
+		objects += pending_mission._pendingmissionvariable_set.all()
+
+	instance.datas = serializers.serialize('json', objects, indent=2)
 
 
 @receiver(cron_ten_minutes)
