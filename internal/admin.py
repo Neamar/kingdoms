@@ -15,11 +15,11 @@ class FreezeAdmin(admin.ModelAdmin):
 	list_display = ('kingdom', 'created')
 	list_filter = ('kingdom',)
 	readonly_fields = ('created', 'datas_html')
-	exclude = ('datas',)
+	exclude = ('datas', 'm2m_datas')
 	actions = ['restore',]
 
 	def datas_html(self, obj):
-		return '<pre>\n%s</pre>' % obj.datas
+		return '<br /><pre><h3>Datas</h3>\n%s<h3>M2M datas</h3>\n%s</pre>' % (obj.datas, obj.m2m_datas)
 	datas_html.short_description = 'Datas'
 	datas_html.allow_tags = True
 

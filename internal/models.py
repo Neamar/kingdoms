@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 from django.db import models
 from django.core import serializers
 
@@ -113,6 +115,7 @@ class Freeze(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	created = models.DateTimeField(auto_now_add=True)
 	datas = models.TextField(help_text="Freezed datas for the kingdom.", blank=True)
+	m2m_datas = models.TextField(help_text="Freezed M2M datas for the kingdom")
 
 	def restore(self):
 		"""
@@ -134,6 +137,10 @@ class Freeze(models.Model):
 
 		for obj in serializers.deserialize("json", self.datas):
 			obj.save()
+
+		m2m_datas = json.loads(self.m2m_datas)
+		for related_name, values in m2m_datas.items():
+			setattr(self.kingdom, related_name, values)
 
 		# Reconnect trigger signal
 		post_save.connect(fire_trigger, sender=Kingdom)

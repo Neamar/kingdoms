@@ -1,8 +1,9 @@
 import random
 import string
 
+import json
+
 from django.core import serializers
-from django.db import IntegrityError
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
@@ -76,6 +77,14 @@ def freeze_kingdom(sender, instance, **kwargs):
 		objects += pending_mission._pendingmissionvariable_set.all()
 
 	instance.datas = serializers.serialize('json', objects, indent=2)
+
+	m2m_datas = {
+		'eventcategory_set': [ec.pk for ec in kingdom.eventcategory_set.all()],
+		'trigger_set': [t.pk for t in kingdom.trigger_set.all()],
+		'offended_set': [k.offender for k in kingdom.offended_set.all()],
+		'offender_set': [k.offended for k in kingdom.offender_set.all()],
+	}
+	instance.m2m_datas = json.dumps(m2m_datas)
 
 
 @receiver(cron_ten_minutes)
