@@ -82,6 +82,11 @@ class StoredValueField(models.CharField):
 		else:
 			raise ValidationError("Context must be int, string or DB object : %s" % value)
 
+	def value_to_string(self, obj):
+		value = self._get_val_from_obj(obj)
+		return self.get_prep_value(value)
+
+
 try:
 	from south.modelsinspector import add_introspection_rules
 	add_introspection_rules([], ['^config.fields.stored_value\.StoredValueField'])

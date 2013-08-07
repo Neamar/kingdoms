@@ -445,7 +445,7 @@ bar:int
 		Test advanced freeze mechanism : pending_event_variable are restored (this is "second level restoration" since this Variable has nothing to do with the kingdom)
 		"""
 
-		from event.models import Event, PendingEvent, _PendingEventVariable
+		from event.models import Event, PendingEvent
 		e = Event(
 			name="Event 1",
 			slug="event_1",
@@ -460,6 +460,8 @@ bar:int
 		)
 		pe.save()
 		pe.set_value('foo', 'bar')
+		pe.set_value('folk', self.f)
+
 
 		freezed_pe_pk = pe.pk
 
@@ -468,10 +470,11 @@ bar:int
 
 		# Terminate PendingEvent
 		pe.delete()
-		# Sanity check
-		self.assertEqual(0, _PendingEventVariable.objects.count())
 
 		# Unfreeze
 		freeze.restore()
 
-		self.assertEqual(PendingEvent.objects.get(pk=freezed_pe_pk).get_value('foo'), 'bar')
+		# Check variable has been restored
+		pe = PendingEvent.objects.get(pk=freezed_pe_pk)
+		self.assertEqual(pe.get_value('foo'), 'bar')
+		self.assertEqual(pe.get_value('folk'), self.f)
