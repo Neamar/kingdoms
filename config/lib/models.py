@@ -154,7 +154,7 @@ class ScriptedModel(models.Model):
 		"""
 
 		from config.lib.execute import execute
-		from internal.models import ScriptLog
+		from reporting.models import ScriptLog
 
 		# Build context object
 		context = {}
