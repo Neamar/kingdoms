@@ -71,6 +71,7 @@ def freeze_kingdom(sender, instance, **kwargs):
 
 	for pending_event in kingdom.pendingevent_set.all():
 		objects.append(pending_event)
+		objects += pending_event.pendingeventaction_set.all()
 		objects += pending_event._pendingeventvariable_set.all()
 
 	for pending_mission in kingdom.pendingmission_set.all():

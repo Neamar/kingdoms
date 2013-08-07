@@ -118,6 +118,13 @@ class Freeze(models.Model):
 		"""
 		Restore freezed datas
 		"""
+
+		# Remove old data, as new objects could have been created in-between.
+		# We need to rewrite the PK, else the Freeze creator will see his own Kingdom reference set to None.
+		kingdom_pk = self.kingdom.pk
+		self.kingdom.delete()
+		self.kingdom.pk = kingdom_pk
+
 		for obj in serializers.deserialize("json", self.datas):
 			obj.save()
 

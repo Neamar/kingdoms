@@ -387,7 +387,7 @@ bar:int
 		freeze = Freeze(kingdom=self.k)
 		freeze.save()
 
-		# Change stuff
+		# Change values
 		self.k.prestige += 50
 		self.k.save()
 
@@ -397,29 +397,81 @@ bar:int
 		# Unfreeze
 		freeze.restore()
 
-		# Check
+		# Check values are restored
 		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).prestige, freezed_prestige)
 		self.assertEqual(Folk.objects.get(pk=self.f.pk).first_name, freezed_folk_first_name)
 
 	def test_freeze_destroyed(self):
 		"""
-		Test freeze mechanism : objects recreated when deleted
+		Test freeze mechanism : objects deleted post-freeze are recreated
 		"""
-		freezed_prestige = self.k.prestige
+
 		freezed_folk_pk = self.f.pk
 
 		freeze = Freeze(kingdom=self.k)
 		freeze.save()
 
-		# Change stuff
-		self.k.prestige += 50
-		self.k.save()
-
+		# Delete folk
 		self.f.delete()
 
 		# Unfreeze
 		freeze.restore()
 
-		# Check
-		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).prestige, freezed_prestige)
+		# Check folk is restored
 		self.assertEqual(Folk.objects.get(pk=freezed_folk_pk).first_name, self.f.first_name)
+
+	def test_freeze_created(self):
+		"""
+		Test freeze mechanism : objects created post-freeze are deleted
+		"""
+		freezed_folk_pk = self.f.pk
+
+		self.f.delete()
+
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		# Create new folk
+		self.f.save()
+
+		# Unfreeze
+		freeze.restore()
+
+		# Check folk has been removed
+		self.assertRaises(Folk.DoesNotExist, lambda: Folk.objects.get(pk=freezed_folk_pk))
+
+	def test_freeze_advanced(self):
+		"""
+		Test advanced freeze mechanism : pending_event_variable are restored (this is "second level restoration" since this Variable has nothing to do with the kingdom)
+		"""
+
+		from event.models import Event, PendingEvent, _PendingEventVariable
+		e = Event(
+			name="Event 1",
+			slug="event_1",
+			category=None,
+			text="Event 1",
+			on_fire=""
+		)
+		e.save()
+		pe = PendingEvent(
+			event=e,
+			kingdom=self.k
+		)
+		pe.save()
+		pe.set_value('foo', 'bar')
+
+		freezed_pe_pk = pe.pk
+
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		# Terminate PendingEvent
+		pe.delete()
+		# Sanity check
+		self.assertEqual(0, _PendingEventVariable.objects.count())
+
+		# Unfreeze
+		freeze.restore()
+
+		self.assertEqual(PendingEvent.objects.get(pk=freezed_pe_pk).get_value('foo'), 'bar')
