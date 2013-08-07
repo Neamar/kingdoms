@@ -13,7 +13,14 @@ admin.site.register(Trigger, TriggerAdmin)
 class FreezeAdmin(admin.ModelAdmin):
 	list_display = ('kingdom', 'created')
 	list_filter = ('kingdom',)
-	readonly_fields = ('datas',)
+	readonly_fields = ('created', 'datas_html')
+	exclude = ('datas',)
+
+	def datas_html(self, obj):
+		return '<pre>\n%s</pre>' % obj.datas
+	datas_html.short_description = 'Datas'
+	datas_html.allow_tags = True
+
 admin.site.register(Freeze, FreezeAdmin)
 
 
