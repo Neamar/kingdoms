@@ -376,16 +376,13 @@ bar:int
 		self.assertEqual(f2.first_name, "Gendry")
 		self.assertEqual(f2.last_name, "Baratheon")
 
-	def test_simple_freeze(self):
+	def test_freeze_on_values(self):
 		"""
-		Test freeze mechanism : value restored and objects recreated.
-		If this test pass, the next one will check for exhaustivity in freezed values.
+		Test freeze mechanism : value restored.
 		"""
+
 		freezed_prestige = self.k.prestige
 		freezed_folk_first_name = self.f.first_name
-
-		# f2 = Folk(kingdom=self.k, first_name="Alive", last_name="Anddead")
-		# f2.save()
 
 		freeze = Freeze(kingdom=self.k)
 		freeze.save()
@@ -403,3 +400,26 @@ bar:int
 		# Check
 		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).prestige, freezed_prestige)
 		self.assertEqual(Folk.objects.get(pk=self.f.pk).first_name, freezed_folk_first_name)
+
+	def test_freeze_destroyed(self):
+		"""
+		Test freeze mechanism : objects recreated when deleted
+		"""
+		freezed_prestige = self.k.prestige
+		freezed_folk_pk = self.f.pk
+
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		# Change stuff
+		self.k.prestige += 50
+		self.k.save()
+
+		self.f.delete()
+
+		# Unfreeze
+		freeze.restore()
+
+		# Check
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).prestige, freezed_prestige)
+		self.assertEqual(Folk.objects.get(pk=freezed_folk_pk).first_name, self.f.first_name)

@@ -52,7 +52,7 @@ def fill_name(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Freeze)
-def fill_name(sender, instance, **kwargs):
+def freeze_kingdom(sender, instance, **kwargs):
 	"""
 	Freeze the data on first save,
 	Forbid further save.
