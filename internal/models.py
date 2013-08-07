@@ -108,6 +108,12 @@ class Function(ScriptedModel):
 		return self.slug + "()"
 
 
+class Freeze(models.Model):
+	kingdom = models.ForeignKey(Kingdom)
+	created = models.DateTimeField(auto_now_add=True)
+	datas = models.TextField(help_text="Freezed datas for the kingdom.")
+
+
 class FirstName(NamedModel):
 	"""
 	Dictionary for first name.
