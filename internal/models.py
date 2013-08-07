@@ -125,8 +125,16 @@ class Freeze(models.Model):
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
 
+		# Disconnect signal for trigger
+		from internal.signals import fire_trigger
+		from django.db.models.signals import post_save
+		post_save.disconnect(fire_trigger, sender=Kingdom)
+
 		for obj in serializers.deserialize("json", self.datas):
 			obj.save()
+
+		# Reconnect trigger signal
+		post_save.connect(fire_trigger, sender=Kingdom)
 
 		# Save ourselves for future use, as this Freeze has been deleted with the kingdom.
 		self.pk = None
