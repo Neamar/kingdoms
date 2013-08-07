@@ -40,7 +40,7 @@ Running
 Maintenance
 -----------
 ### Testing
-`./manage.py test kingdom mission title internal event bargain`
+`./manage.py test kingdom mission title internal event bargain reporting`
 
 ### Generating models
 Enable `django_extensions` in `config/settings.py`, then `./graph.sh`.
