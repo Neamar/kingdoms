@@ -128,6 +128,13 @@ class Freeze(models.Model):
 		for obj in serializers.deserialize("json", self.datas):
 			obj.save()
 
+		# Save ourselves for future use, as this Freeze has been deleted with the kingdom.
+		self.pk = None
+		self.save()
+
+	def __unicode__(self):
+		return "Freeze: %s" % self.kingdom
+
 class FirstName(NamedModel):
 	"""
 	Dictionary for first name.

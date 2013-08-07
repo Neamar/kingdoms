@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+
 from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar, Freeze
 from kingdom.models import Kingdom
 
@@ -15,11 +16,18 @@ class FreezeAdmin(admin.ModelAdmin):
 	list_filter = ('kingdom',)
 	readonly_fields = ('created', 'datas_html')
 	exclude = ('datas',)
+	actions = ['restore',]
 
 	def datas_html(self, obj):
 		return '<pre>\n%s</pre>' % obj.datas
 	datas_html.short_description = 'Datas'
 	datas_html.allow_tags = True
+
+	def restore(self, request, queryset):
+		for freeze in queryset:
+			freeze.restore()
+		self.message_user(request, "Défreezé !")
+	restore.short_description = "Défreezer maintenant"
 
 admin.site.register(Freeze, FreezeAdmin)
 
@@ -47,7 +55,7 @@ class RecurringAdmin(admin.ModelAdmin):
 				if recurring.check_condition(kingdom) == "ok":
 					recurring.fire(kingdom)
 		self.message_user(request, "Les recurrings ont été lancés")
-	resolve.short_description = "Do it now"
+	resolve.short_description = "Lancer maintenant"
 admin.site.register(Recurring, RecurringAdmin)
 
 
