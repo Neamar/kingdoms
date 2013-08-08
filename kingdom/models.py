@@ -159,6 +159,9 @@ class Message(models.Model):
 	"""
 	A log message.
 	"""
+
+	class Meta:
+		ordering = ['-id']
 	TRIVIAL = 0
 	INFORMATION = 1
 	WARNING = 2
