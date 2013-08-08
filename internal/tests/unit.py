@@ -478,3 +478,23 @@ bar:int
 		pe = PendingEvent.objects.get(pk=freezed_pe_pk)
 		self.assertEqual(pe.get_value('foo'), 'bar')
 		self.assertEqual(pe.get_value('folk'), self.f)
+
+	def test_freeze_m2m(self):
+		"""
+		Test freeze mechanism : m2m objects are restored
+		"""
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		# Launch trigger self.t
+		self.k.population = 15
+		self.k.prestige = 15
+		self.k.money = 15
+		self.k.save()
+		# Sanity check
+		self.assertEqual(1, self.k.trigger_set.count())
+
+		# Unfreeze
+		freeze.restore()
+
+		self.assertEqual(0, self.k.trigger_set.count())
