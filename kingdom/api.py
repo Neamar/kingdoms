@@ -12,10 +12,10 @@ def api(request):
 	kingdom = request.user.kingdom
 	resp['kingdom'] = serialize_kingdom(kingdom)
 
-	folks = Folk.objects.filter(kingdom=kingdom).prefetch_related("quality_set")
+	folks = kingdom.folk_set.all().prefetch_related("quality_set")
 	resp['folks'] = [serialize_folk(o) for o in folks]
 
-	messages = Message.objects.filter(kingdom=kingdom)
+	messages = kingdom.message_set.all().order_by('-id')
 	resp['messages'] = [serialize_message(o) for o in messages]
 
 	qualities = Quality.objects.all()

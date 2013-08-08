@@ -146,7 +146,7 @@ class Freeze(models.Model):
 		post_save.connect(fire_trigger, sender=Kingdom)
 
 		# Recreate all freezes
-		print freezes
+		#print freezes
 		[f.save() for f in freezes]
 
 	def __unicode__(self):
