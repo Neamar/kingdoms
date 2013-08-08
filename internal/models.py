@@ -122,31 +122,43 @@ class Freeze(models.Model):
 		Restore freezed datas
 		"""
 
-		# Remove old data, as new objects could have been created in-between.
-		# We need to rewrite the PK, else the Freeze creator will see his own Kingdom reference set to None.
-		# Same thing for the current Freeze.
+		# We will remove the kingdom, to ensure additional data created since the freeze was made will be deleted.
+		# By calling .delete(), kingdom.pk will be set to None.
+		# Calling .save() would create a new tuples in DB.
+		# We therefore need to temporarily store the pk, to restore it directly after deletion
+		# Else, the function caller will be left with a useless kingdom instance.
 		kingdom_pk = self.kingdom.pk
-		freezes = self.kingdom.freeze_set.all()
+
+		# When we will call .delete() on the kingdom, all associated Freezes will also be deleted.
+		# This is clearly not the desired behavior.
+		# So we'll store all freezes, to be restored post unfreeze.
+		# The list() forces direct evaluation of the QuerySet: it is lazy, so without it the query will only be made when we try to restore the item.
+		freezes = list(self.kingdom.freeze_set.all())
+
+		# Delete the kingdom and restore the pk.
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
 
-		# Disconnect signal for trigger
+		# Disconnect trigger signal
+		# The kingdom has been deleted.
+		# When it will be restored by the unfreeze, we don't want any trigger to run on this instance -- it is assumed all triggers have already been applied in time before the freeze.
 		from internal.signals import fire_trigger
 		from django.db.models.signals import post_save
 		post_save.disconnect(fire_trigger, sender=Kingdom)
 
+		# Now to the real deserialization.
+		# Ironically, it is the shortest part in term of code...
 		for obj in serializers.deserialize("json", self.datas):
 			obj.save()
-
 		m2m_datas = json.loads(self.m2m_datas)
 		for related_name, values in m2m_datas.items():
 			setattr(self.kingdom, related_name, values)
 
+
 		# Reconnect trigger signal
 		post_save.connect(fire_trigger, sender=Kingdom)
 
-		# Recreate all freezes
-		print freezes
+		# Recreate all freezes associated with this kingdom
 		[f.save() for f in freezes]
 
 	def __unicode__(self):
