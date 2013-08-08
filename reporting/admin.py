@@ -13,7 +13,7 @@ class ScriptLogAdmin(admin.ModelAdmin):
 		from mission.models import Mission, MissionGrid
 		from title.models import Title
 		from kingdom.models import Quality
-		from internal.models import Trigger, Function
+		from internal.models import Trigger, Function, Recurring
 
 		classes = {
 			'Event': lambda pk: Event.objects.get(pk=pk).slug,
@@ -23,7 +23,8 @@ class ScriptLogAdmin(admin.ModelAdmin):
 			'Function': lambda pk: Function.objects.get(pk=pk).slug,
 			'Title': lambda pk: Title.objects.get(pk=pk).slug,
 			'Quality': lambda pk: Quality.objects.get(pk=pk).slug,
-			'Trigger': lambda pk: Trigger.objects.get(pk=pk).slug
+			'Trigger': lambda pk: Trigger.objects.get(pk=pk).slug,
+			'Recurring': lambda pk: Recurring.objects.get(pk=pk).name,
 		}
 
 		if obj.object_type in classes.keys():

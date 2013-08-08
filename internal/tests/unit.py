@@ -483,6 +483,7 @@ bar:int
 		"""
 		Test freeze mechanism : m2m objects are restored
 		"""
+
 		freeze = Freeze(kingdom=self.k)
 		freeze.save()
 
