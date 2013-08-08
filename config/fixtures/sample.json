@@ -96,7 +96,6 @@
     "name": "Duel avec le chevalier noir", 
     "slug": "duel_chevalier_noir",
     "title": 1, 
-    "cancellable": false, 
     "text": "Le chevalier noir vous d\u00e9fie !", 
     "timeout": null, 
     "on_resolution": "if len(folks) == 0:\n  kingdom.money = kingdom.money / 2\nelse:\n  if folks[0].fight > 5:\n    kingdom.money += 500\n  else:\n    kingdom.money -= 50\n\nkingdom.save()", 
@@ -115,7 +114,6 @@
     "name": "Mariage", 
     "slug": "mariage",
     "title": null, 
-    "cancellable": false, 
     "text": "Le mariage pour tous !", 
     "timeout": null, 
     "on_resolution": "affected = param.folk_set.all()\n\nif len(affected) == 2:\n  husband = affected[0].folk\n  wife = affected[1].folk\n\n  print husband, wife\n\n  husband.spouse = wife\n  husband.save()\n\n  wife.spouse = husband\n  wife.save()\n", 
@@ -134,7 +132,6 @@
     "name": "Kamikaze", 
     "slug": "kamikaze",
     "title": null, 
-    "cancellable": false, 
     "text": "TUEZ LES TOUUUUUS", 
     "timeout": null, 
     "on_resolution": "folks[0].folk.die()\n\ntarget.population -= 20\ntarget.save()", 
@@ -152,6 +149,7 @@
   "fields": {
     "length": 20, 
     "name": "Mon h\u00e9ros", 
+    "slug": "heros", 
     "condition": "\n", 
     "mission": 1
   }
@@ -162,6 +160,7 @@
   "fields": {
     "length": 1, 
     "name": "Mari", 
+    "slug": "mari", 
     "condition": "if param.sex != Folk.MALE:\n  status=\"un homme !\"\n", 
     "mission": 2
   }
@@ -172,6 +171,7 @@
   "fields": {
     "length": 20, 
     "name": "Femme", 
+    "slug": "femme", 
     "condition": "if param.sex != Folk.FEMALE:\n  status=\"une femme !\"", 
     "mission": 2
   }
@@ -182,6 +182,7 @@
   "fields": {
     "length": 1, 
     "name": "Kamikaze", 
+    "slug": "kamikaze", 
     "condition": "\n", 
     "mission": 3
   }
