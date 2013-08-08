@@ -15,7 +15,8 @@ def api(request):
 	folks = kingdom.folk_set.all().prefetch_related("quality_set")
 	resp['folks'] = [serialize_folk(o) for o in folks]
 
-	messages = kingdom.message_set.all().order_by('-id')
+	# Ordering: last messages comes first.
+	messages = kingdom.message_set.all().order_by('id')
 	resp['messages'] = [serialize_message(o) for o in messages]
 
 	qualities = Quality.objects.all()

@@ -15,6 +15,7 @@ class ScriptLogAdmin(admin.ModelAdmin):
 		from kingdom.models import Quality
 		from internal.models import Trigger, Function, Recurring
 
+		# Extract meaningful name from object
 		classes = {
 			'Event': lambda pk: Event.objects.get(pk=pk).slug,
 			'EventAction': lambda pk: EventAction.objects.get(pk=pk).event.slug,
