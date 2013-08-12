@@ -136,6 +136,9 @@ class Freeze(models.Model):
 		freezes = list(self.kingdom.freeze_set.all())
 
 		# Delete the kingdom and restore the pk.
+		# TODO : no signals to be triggered.
+		# TODO : event is not working after. Need check!
+		# Kingdom.objects.filter(pk=self.kingdom.pk).delete()
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
 
