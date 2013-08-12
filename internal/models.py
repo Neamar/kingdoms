@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.core import serializers
+from django.dispatch import Signal
 
 from config.fields.script_field import ScriptField
 from config.lib.models import NamedModel, DescribedModel, ScriptedModel
@@ -135,19 +136,17 @@ class Freeze(models.Model):
 		# The list() forces direct evaluation of the QuerySet: it is lazy, so without it the query will only be made when we try to restore the item.
 		freezes = list(self.kingdom.freeze_set.all())
 
+		# Disconnect all signals to avoid interfering with the dataloading.
+		# For instance, when the kingdom will be restored by the unfreeze, we don't want any trigger to run on this instance -- it is assumed all triggers have already been applied in time before the freeze.
+		Signal.send_original = Signal.send
+		def monkeypatch_send(self, sender, **named):
+			return []
+		Signal.send = monkeypatch_send
+
+
 		# Delete the kingdom and restore the pk.
-		# TODO : no signals to be triggered.
-		# TODO : event is not working after. Need check!
-		# Kingdom.objects.filter(pk=self.kingdom.pk).delete()
 		self.kingdom.delete()
 		self.kingdom.pk = kingdom_pk
-
-		# Disconnect trigger signal
-		# The kingdom has been deleted.
-		# When it will be restored by the unfreeze, we don't want any trigger to run on this instance -- it is assumed all triggers have already been applied in time before the freeze.
-		from internal.signals import fire_trigger
-		from django.db.models.signals import post_save
-		post_save.disconnect(fire_trigger, sender=Kingdom)
 
 		# Now to the real deserialization.
 		# Ironically, it is the shortest part in term of code...
@@ -158,8 +157,9 @@ class Freeze(models.Model):
 			setattr(self.kingdom, related_name, values)
 
 
-		# Reconnect trigger signal
-		post_save.connect(fire_trigger, sender=Kingdom)
+		# Reconnect signals
+		Signal.send = Signal.send_original
+		del Signal.send_original
 
 		# Recreate all freezes associated with this kingdom
 		[f.save() for f in freezes]

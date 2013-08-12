@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 from kingdom.management.commands.cron import cron_ten_minutes
 from kingdom.models import Kingdom, Folk
@@ -478,6 +479,53 @@ bar:int
 		pe = PendingEvent.objects.get(pk=freezed_pe_pk)
 		self.assertEqual(pe.get_value('foo'), 'bar')
 		self.assertEqual(pe.get_value('folk'), self.f)
+
+	def test_freeze_nolock(self):
+		"""
+		Test freeze restoration is not bound to petty matter, such as "not leaving a mission before it ends".
+		"""
+
+		from mission.models import Mission, PendingMission, MissionGrid, PendingMissionAffectation
+		m = Mission(
+			name="Stub mission",
+			slug="stub",
+			title=None,
+		)
+		m.save()
+
+		mg = MissionGrid(
+			mission=m,
+			slug='stub_grid'
+		)
+		mg.save()
+
+		pm = PendingMission(
+			mission=m,
+			kingdom=self.k
+		)
+		pm.save()
+
+		pma = PendingMissionAffectation(
+			pending_mission=pm,
+			mission_grid=mg,
+			folk=self.f
+		)
+		pma.save()
+
+		# Create the freeze
+		freeze = Freeze(kingdom=self.k)
+		freeze.save()
+
+		pm.start()
+		# Sanity check
+		self.assertRaises(ValidationError, lambda: pm.delete())
+
+		# Unfreeze.
+		# No errors should be raised, even though the PendingMission is still deleted
+		freeze.restore()
+
+		self.assertFalse(PendingMission.objects.get(pk=pm.pk).is_started)
+
 
 	def test_freeze_m2m(self):
 		"""
