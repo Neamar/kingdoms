@@ -143,23 +143,22 @@ class Freeze(models.Model):
 			return []
 		Signal.send = monkeypatch_send
 
+		try:
+			# Delete the kingdom and restore the pk.
+			self.kingdom.delete()
+			self.kingdom.pk = kingdom_pk
 
-		# Delete the kingdom and restore the pk.
-		self.kingdom.delete()
-		self.kingdom.pk = kingdom_pk
-
-		# Now to the real deserialization.
-		# Ironically, it is the shortest part in term of code...
-		for obj in serializers.deserialize("json", self.datas):
-			obj.save()
-		m2m_datas = json.loads(self.m2m_datas)
-		for related_name, values in m2m_datas.items():
-			setattr(self.kingdom, related_name, values)
-
-
-		# Reconnect signals
-		Signal.send = Signal.send_original
-		del Signal.send_original
+			# Now to the real deserialization.
+			# Ironically, it is the shortest part in term of code...
+			for obj in serializers.deserialize("json", self.datas):
+				obj.save()
+			m2m_datas = json.loads(self.m2m_datas)
+			for related_name, values in m2m_datas.items():
+				setattr(self.kingdom, related_name, values)
+		finally:
+			# Reconnect signals
+			Signal.send = Signal.send_original
+			del Signal.send_original
 
 		# Recreate all freezes associated with this kingdom
 		[f.save() for f in freezes]
