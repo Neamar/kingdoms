@@ -91,27 +91,6 @@ class Folk(models.Model):
 
 	disabled = models.BooleanField(default=False, help_text="Is this folk unable to participate to missions?")
 
-	def age(self):
-		if self.death is not None:
-			raise ValidationError("Calling age() on a dead person is not allowed.")
-		return (datetime.now() - self.birth).days
-
-	def get_image(self):
-		if not folk.avatar:
-			colors = ("000", "F00", "0F0", "00F", "FF0", "0FF", "FFF", "AAA", "AF0", "A0F", "FA0", "F0A", "0AF", "0FA")
-			return "http://placehold.it/100x120/" + colors[folk.pk % len(colors)]
-
-
-		age = self.age();
-		if age > folk.avatar.old_threshold:
-			return folk.avatar.old.url
-		elif age > folk.avatar.adult_threshold:
-			return folk.avatar.adult.url
-		elif folk.avatar.child.url is not None:
-			return folk.avatar.child.url
-		else:
-			raise ValidationError("Invalid avatar values for Avatar %s." % folk.avatar_id)
-
 	def __unicode__(self):
 		return '%s %s' % (self.first_name, self.last_name)
 

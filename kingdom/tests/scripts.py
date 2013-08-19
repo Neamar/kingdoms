@@ -124,6 +124,13 @@ class ScriptTest(TestCase):
 		self.f.birth = datetime.now()-timedelta(days=10)
 		self.assertEqual(10, self.f.age())
 
+	def test_folk_age(self):
+		"""
+		Verify if the good age is returned
+		"""
+		self.f.birth = datetime.now()-timedelta(days=10)
+		self.assertEqual(10, self.f.age())
+
 	def test_folk_has_quality(self):
 		"""
 		Verify if the folk has the quality

@@ -1,4 +1,5 @@
 from datetime import datetime
+from kingdom.scripts import *
 
 
 def serialize_kingdom(kingdom):
@@ -24,7 +25,7 @@ def serialize_folk_min(folk):
 
 	r = {
 		'id': folk.pk,
-		'avatar': folk.get_image(),
+		'avatar': folk.image(),
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
 	}
