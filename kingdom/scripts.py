@@ -4,6 +4,7 @@ Documentation for this lies in readme.md
 """
 
 from datetime import datetime
+from django.core.validators import ValidationError
 
 from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
 
@@ -73,6 +74,41 @@ def folk_die(self):
 	self.death = datetime.now()
 	self.save()
 Folk.die = folk_die
+
+
+def folk_age(self):
+	"""
+	Return the age in year for this folk,
+	One real day is one year.
+	"""
+
+	if self.death is not None:
+		raise ValidationError("Calling age() on a dead person is not allowed.")
+	return (datetime.now() - self.birth).days
+Folk.age = folk_age
+
+
+def folk_image(self):
+	"""
+	Return the image currently associated with this folk,
+	might change with time.
+	"""
+
+	# Stubs
+	if not self.avatar:
+		colors = ("000", "F00", "0F0", "00F", "FF0", "0FF", "FFF", "AAA", "AF0", "A0F", "FA0", "F0A", "0AF", "0FA")
+		return "http://placehold.it/100x120/" + colors[self.pk % len(colors)]
+
+	age = self.age();
+	if age > self.avatar.old_threshold:
+		return self.avatar.old.url
+	elif age > self.avatar.adult_threshold:
+		return self.avatar.adult.url
+	elif self.avatar.child.url is not None:
+		return self.avatar.child.url
+	else:
+		raise ValidationError("Invalid avatar values for Avatar %s." % self.avatar_id)
+Folk.image = folk_image
 
 
 def folk_add_quality(self, slug):
