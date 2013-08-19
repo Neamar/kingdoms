@@ -89,17 +89,6 @@ def folk_add_quality(self, slug):
 Folk.add_quality = folk_add_quality
 
 
-def folk_age(self):
-	"""
-	Returns the age of the folk
-	"""
-
-	final_date = datetime.now() if self.death is None else self.death
-	delta = final_date - self.birth
-	return delta.days
-Folk.age = folk_age
-
-
 def folk_has_quality(self, slug):
 	"""
 	Returns True is the folk has the quality
