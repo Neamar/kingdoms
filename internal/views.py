@@ -4,12 +4,12 @@ from kingdom.decorators import json_view, force_post, status_view
 @force_post
 @json_view
 @status_view
-def freeze_create(request, pk):
+def freeze_create(request):
 	"""
 	Create a new freeze for this kingdom.
 	"""
 
-	pass
+	request.user.kingdom.freeze_set.create()
 
 
 @force_post
@@ -17,7 +17,9 @@ def freeze_create(request, pk):
 @status_view
 def freeze_restore(request):
 	"""
-	Restore the last freeze for this kingdom.
+	Restore the last freeze for this kingdom, and delete it.
 	"""
 
-	pass
+	freeze = request.user.kingdom.freeze_set.order_by('-created')[0]
+	freeze.restore()
+	freeze.delete()
