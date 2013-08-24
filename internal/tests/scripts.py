@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
+from internal.models import Function, Constant
 from internal.scripts import *
 
 
@@ -43,3 +44,17 @@ param = foo
 
 		param = call_function("first_function", foo=0)
 		self.assertEqual(param, 80)
+
+	def test_constant_magic(self):
+		"""
+		Test constant values can be directly accessed
+		"""
+		c = Constant(
+			name="MAJORITY",
+			description="Age to come of age",
+			value=18
+		)
+		c.save()
+
+		self.assertEqual(Constant.v('MAJORITY'), 18)
+		self.assertRaises(Constant.DoesNotExist, lambda: Constant.v('SOME_CONSTANT'))
