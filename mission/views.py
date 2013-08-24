@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from django.http import Http404
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.core.exceptions import ValidationError
 
 from django.shortcuts import get_object_or_404
@@ -45,8 +45,11 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 	)
 
 	try:
+		sid = transaction.savepoint()
 		pma.save()
+		transaction.savepoint_commit(sid)
 	except IntegrityError:
+		transaction.savepoint_rollback(sid)
 		raise ValidationError("Cette personne participe déjà à une mission (%s)" % str(pma.pending_mission.mission.name))
 
 

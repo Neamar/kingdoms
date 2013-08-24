@@ -27,6 +27,7 @@ Où scripter ?
 -------------
 ### Depuis une mission
 * `on_init` : ce code sera exécuté lorsqu'une mission sera créée pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours. Pour annuler cette mission, il faut renvoyer `status= "la raison de l'erreur"`.
+* `on_cancel` : ce code sera exécuté lorsque la mission est annulée, soit par timeout, soit par demande explicite de l'utilisateur.
 * `on_start` : ce code sera exécuté lorsque la mission démarre pour un joueur donné (au clic sur le bouton "débuter la mission"). Le paramètre `param` contiendra la `PendingMission` en cours. Pour annuler le démarrage d'une mission, il suffit de spécifier le paramètre `status="la raison de l'erreur"`.
 * `on_resolution` : ce code sera exécuté lorsque la mission esr résolue pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours.
 * `target_list` : définit la liste des kingdom ciblables
