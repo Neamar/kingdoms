@@ -4,12 +4,30 @@ Documentation pour le scripting par Mission
 
 Vocabulaire des missions
 ------------------------
+Une `mission` représente une tâche attribuée à un groupe de personne.
+Les missions peuvent contenir une ou plusieurs `grilles`, pouvant chacune contenir une ou plusieurs personnes.
+Une mission peut-être démarrée par le joueur, et avoir des effets.
+Une mission peut prendre en paramètre une cible (un `Kingdom`) ou une valeur.
+Certaines missions sont annulables, d'autres non.
+
+Le joueur peut créer autant de `PendingMission` qu'il le souhaite. Une `PendingMission` correspond à une instance d'une mission donnée : par exemple, on peut imaginer une mission mariage constituée de deux grilles (une pour l'homme à marier, une pour la femme en face). Le joueur peut lancer deux `PendingMission` de la mission mariage, ce qui lui permet de célebrer plusieurs mariages en même temps s'il le souhaite.
+
+Pour créer une `PendingMission` de lui-même (sans la subir automatiquement par un évènement donc), le joueur doit disposer d'un objet `AvailableMission` associé, qui agit comme un "générateur" de `PendingMission`
+
+Pour résumer : la `Mission` correspond à l'object contenant le script.
+L'`AvailableMission` permet de créer des `PendingMission`.
+Les `PendingMission` sont les missions visibles à l'instant t par l'utilisateur.
+
+Enfin, les `équipes` sont des missions un peu spéciales, qui ne peuvent pas être lancées. Il s'agit plutôt de "groupes de travail" autour d'un sujet donné.
+
+Les affectations d'une personnes dans une mission sont stockées dans des objets `PendingMissionAffectation`. Une même personne ne peut être que dans une seule mission à la fois !
+
 
 Où scripter ?
 -------------
 ### Depuis une mission
 * `on_init` : ce code sera exécuté lorsqu'une mission sera créée pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours. Pour annuler cette mission, il faut renvoyer `status= "la raison de l'erreur"`.
-* `on_start` : ce code sera exécuté lorsque la mission démarre pour un joueur donné (au clic sur le bouton "débuter la mission"). Le paramètre `param` contiendra la `PendingMission` en cours.
+* `on_start` : ce code sera exécuté lorsque la mission démarre pour un joueur donné (au clic sur le bouton "débuter la mission"). Le paramètre `param` contiendra la `PendingMission` en cours. Pour annuler le démarrage d'une mission, il suffit de spécifier le paramètre `status="la raison de l'erreur"`.
 * `on_resolution` : ce code sera exécuté lorsque la mission esr résolue pour un joueur donné. Le paramètre `param` contiendra la `PendingMission` en cours.
 * `target_list` : définit la liste des kingdom ciblables
 
@@ -19,7 +37,9 @@ Où scripter ?
 
 Que scripter ?
 ---------------
+Scriptez les objets missions !
 
+Les `PendingMission` sont des objets de contexte, au même titre que les `PendingEvent` ou les `Kingdoms`. Il est donc possible de stocker des valeurs *sur* un object `PendingMission`, pour les récupérer plus tard (par exemple au moment du `on_start` pour utilisation ultérieure dans `on_resolution`).
 
 Exemples
 -------------
