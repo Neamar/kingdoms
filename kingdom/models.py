@@ -183,14 +183,6 @@ class Message(models.Model):
 		return self.content[0:50]
 
 
-class ModalMessage(DescribedModel):
-	"""
-	A modal message.
-	"""
-	kingdom = models.ForeignKey(Kingdom)
-	created = models.DateTimeField(auto_now_add=True)
-
-
 class Claim(models.Model):
 	"""
 	A claim of war between two kingdoms.

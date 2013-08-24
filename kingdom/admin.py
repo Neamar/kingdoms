@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from kingdom.models import Kingdom, Folk, Quality, QualityCategory, ModalMessage, Message, Claim
+from kingdom.models import Kingdom, Folk, Quality, QualityCategory, Message, Claim
 
 
 class KingdomAdmin(admin.ModelAdmin):
@@ -37,11 +37,6 @@ admin.site.register(Quality, QualityAdmin)
 class MessageAdmin(admin.ModelAdmin):
 	list_display = ('kingdom', 'content', 'level', 'read')
 admin.site.register(Message, MessageAdmin)
-
-
-class ModalMessageAdmin(admin.ModelAdmin):
-	list_display = ('kingdom', 'name', 'description')
-admin.site.register(ModalMessage)
 
 
 class ClaimAdmin(admin.ModelAdmin):

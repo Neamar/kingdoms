@@ -5,7 +5,7 @@ Documentation for this lies in readme.md
 
 from datetime import datetime
 
-from kingdom.models import Kingdom, Folk, Message, ModalMessage, Quality, Claim
+from kingdom.models import Kingdom, Folk, Message, Quality, Claim
 
 
 ######
@@ -21,19 +21,6 @@ def kingdom_message(self, content, level=Message.INFORMATION):
 		content=content
 	).save()
 Kingdom.message = kingdom_message
-
-
-def kingdom_modal_message(self, name, description):
-	"""
-	Register a modal message.
-	"""
-
-	ModalMessage(
-		kingdom=self,
-		name=name,
-		description=description
-	).save()
-Kingdom.modal_message = kingdom_modal_message
 
 
 def kingdom_add_claim(self, kingdom, level):

@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 from datetime import datetime, timedelta
 
-from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory, Message, ModalMessage
+from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory, Message
 from kingdom.scripts import sum_folks, avg_folks
 
 
@@ -35,12 +35,6 @@ class ScriptTest(TestCase):
 		self.k.message("coucou")
 		self.assertEqual("coucou", Message.objects.get(kingdom=self.k).content)
 
-	def text_kingdom_modal_message(self):
-		"""
-		Verify if the modal message is created
-		"""
-		self.k.modal_message("a name", "a description")
-		self.assertEqual(("a name", "a description"), (ModalMessage.objects.get(kingdom=self.k).name, ModalMessage.objects.get(kingdom=self.k).description))
 
 	def test_kingdom_add_claim(self):
 		"""
