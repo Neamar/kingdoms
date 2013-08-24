@@ -51,10 +51,10 @@
 				<li class="">
 					<a data-bind="click: loadDatas" href="#" title="Mettre à jour"><i class="icon-refresh"></i></a>
 				</li>
-				<li class="" data-bind="visible: freezes.links.restore">
+				<li class="" data-bind="visible: freezes.can_restore">
 					<a data-bind="click: click_restore_freeze" href="#" title="Retourner au dernier freeze"><i class="icon-fast-backward"></i></a>
 				</li>
-				<li class="" data-bind="visible: freezes.links.create">
+				<li class="" data-bind="visible: freezes.can_create">
 					<a data-bind="click: click_create_freeze" href="#" title="Enregistrer un freeze maintenant"><i class="icon-check"></i></a>
 				</li>
 			</ul>

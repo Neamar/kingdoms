@@ -10,13 +10,13 @@ def api(request):
 
 	resp = {
 		'freezes': {
-			'links': {}
+			'can_create': Freeze.can_freeze(request.user.kingdom),
+			'can_restore': Freeze.can_freeze(request.user.kingdom) and request.user.kingdom.freeze_set.exists(),
+			'links': {
+				'create': reverse('internal.views.freeze_create'),
+				'restore': reverse('internal.views.freeze_restore')
+			}
 		}
 	}
 
-	if(Freeze.can_freeze(request.user.kingdom)):
-		resp['freezes']['links']['create'] = reverse('internal.views.freeze_create')
-		
-		if request.user.kingdom.freeze_set.exists():
-			resp['freezes']['links']['restore'] = reverse('internal.views.freeze_restore')
 	return resp
