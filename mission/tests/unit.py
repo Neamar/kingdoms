@@ -580,6 +580,23 @@ kingdom.save()
 		
 		self.assertEqual(50, Kingdom.objects.get(pk=self.k.pk).prestige)
 
+	def test_mission_on_cancel_status(self):
+		"""
+		Check the on_cancel code can stop deletion
+		"""
+
+		self.m.on_cancel = """
+kingdom.prestige = 50
+kingdom.save()
+"""
+
+		# Sanity check
+		self.assertEqual(0, Kingdom.objects.get(pk=self.k.pk).prestige)
+		
+		self.pm.delete()
+		
+		self.assertEqual(50, Kingdom.objects.get(pk=self.k.pk).prestige)
+
 	def test_grid_with_two_people(self):
 		"""
 		Check if folks are well put in the grid

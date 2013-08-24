@@ -211,7 +211,7 @@ def start_pending_mission(sender, instance, **kwargs):
 @receiver(pre_delete, sender=PendingMission)
 def cancel_pending_mission(sender, instance, **kwargs):
 	"""
-	Runs on_cancel when the PendingMission is canceled or timeouted.
+	Runs on_cancel when the PendingMission is cancelled or timeouted.
 	"""
 	
 	if not instance.is_started:
