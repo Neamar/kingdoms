@@ -238,6 +238,6 @@ class Avatar(models.Model):
 			return self.adult.url
 
 	def __unicode__(self):
-		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child is not None else 'adult')
+		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child != '' else 'adult')
 
 from internal.signals import *
