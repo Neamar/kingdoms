@@ -11,6 +11,7 @@ def serialize_kingdom(kingdom):
 		'id': kingdom.pk,
 		'name': kingdom.user.username,
 		'population': kingdom.population,
+		'soldiers': kingdom.soldiers,
 		'prestige': kingdom.prestige,
 		'money': kingdom.money
 	}
