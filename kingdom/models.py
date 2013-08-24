@@ -23,6 +23,7 @@ class Kingdom(models.Model, ContextModel):
 
 	prestige = models.PositiveIntegerField(default=0)
 	population = models.PositiveIntegerField(default=0)
+	soldiers = models.PositiveIntegerField(default=0)
 	money = models.PositiveIntegerField(default=0)
 
 	claims = models.ManyToManyField('self', through='Claim', blank=True, symmetrical=False)
