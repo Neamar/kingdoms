@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from kingdom.decorators import json_view, force_post, status_view
 from title.models import AvailableTitle
@@ -23,7 +26,11 @@ def available_title_affect(request, pk):
 
 	# Save
 	available_title.folk = folk
-	available_title.save()
+
+	try:
+		available_title.save()
+	except IntegrityError:
+		raise ValidationError("Cette personne est déjà affectée à un titre.")
 
 
 @force_post
