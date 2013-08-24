@@ -24,6 +24,7 @@ urlpatterns = patterns('',
 	url(r'^api/event/', include('event.urls')),
 	url(r'^api/mission/', include('mission.urls')),
 	url(r'^api/bargain/', include('bargain.urls')),
+	url(r'^api/internal/', include('internal.urls')),
 	url(r'^api/$', 'kingdom.views.api.api'),
 )
 
