@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.core import serializers
+from django.core.exceptions import ValidationError
 from django.dispatch import Signal
 
 from config.fields.script_field import ScriptField
@@ -118,10 +119,29 @@ class Freeze(models.Model):
 	datas = models.TextField(help_text="Freezed datas for the kingdom.", blank=True)
 	m2m_datas = models.TextField(help_text="Freezed M2M datas for the kingdom")
 
+	@staticmethod
+	def can_freeze(kingdom):
+		"""
+		Define if this kingdom can freeze
+		"""
+		return kingdom.user.is_staff if kingdom.user else True
+
+	def save(self, *args, **kwargs):
+		"""
+		Check user can freeze.
+		"""
+		if not self.can_freeze(self.kingdom):
+			raise ValidationError("You can't save a freeze unless you're an admin.")
+
+		super(Freeze, self).save(*args, **kwargs)
+
 	def restore(self):
 		"""
 		Restore freezed datas
 		"""
+		# Freeze are only available to admins.
+		if not self.can_freeze(self.kingdom):
+			raise ValidationError("You can't restore freeze unless you're admin.")
 
 		# We will remove the kingdom, to ensure additional data created since the freeze was made will be deleted.
 		# By calling .delete(), kingdom.pk will be set to None.
