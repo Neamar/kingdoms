@@ -39,6 +39,8 @@ class Mission(models.Model):
 
 	title = models.ForeignKey(Title, blank=True, null=True)
 
+	is_cancellable = models.BooleanField(default=True, help_text="Can this mission be cancelled before start?")
+
 	def __unicode__(self):
 		return self.slug
 
