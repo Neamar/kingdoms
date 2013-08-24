@@ -114,6 +114,21 @@ function change_pending_mission_update_target(context, event) {
 		http_actions.pendingMissionTarget(pending_mission, target_id)
 }
 
+/**
+ * Create a new freeze
+ */
+function click_create_freeze(context, event) {
+	http_actions.createFreeze(context.freezes);
+}
+
+/**
+ * Restore previous freeze
+ */
+function click_restore_freeze(context, event) {
+	http_actions.restoreFreeze(context.freezes);
+}
+
+
 //##################################
 // UI animation
 //##################################
