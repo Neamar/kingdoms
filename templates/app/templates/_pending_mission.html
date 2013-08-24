@@ -32,5 +32,5 @@
 
 	<a class="btn" href="#" data-bind="click: http_actions.pendingMissionStart">Démarrer la mission</a>
 
-	<a class="btn" href="#" data-bind="click: http_actions.pendingMissionCancel">Annuler la mission</a>
+	<a class="btn" href="#" data-bind="click: http_actions.pendingMissionCancel, visible: is_cancellable">Annuler la mission</a>
 </div>
