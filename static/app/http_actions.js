@@ -1,7 +1,9 @@
+'use strict';
+
 //##################################
 // HTTP ACTIONS
 //##################################
-http_actions = {
+var http_actions = {
 	_post: function(url, param)
 	{
 		var jqxhr = $.post(url, param, function(data) {
@@ -126,5 +128,19 @@ http_actions = {
 	 */
 	availableTitleDefect: function(title) {
 		http_actions._post(title.links.defect());
-	}
+	},
+
+	/*
+	 * Create a new freeze
+	 */
+	createFreeze: function(freezes) {
+		http_actions._post(freezes.links.create(), {});
+	},
+
+	/*
+	 * Restore previous freeze
+	 */
+	restoreFreeze: function(freezes) {
+		http_actions._post(freezes.links.restore(), {});
+	},
 }

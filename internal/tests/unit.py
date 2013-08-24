@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from django.contrib.auth.models import User
 
 from kingdom.management.commands.cron import cron_ten_minutes
 from kingdom.models import Kingdom, Folk
@@ -378,6 +379,28 @@ bar:int
 
 		self.assertEqual(f2.first_name, "Gendry")
 		self.assertEqual(f2.last_name, "Baratheon")
+
+	def test_freeze_no_access(self):
+		"""
+		Test freeze is only available to super user.
+		"""
+		u = User(username="someone")
+		u.save()
+		self.k.user = u
+		freeze = Freeze(kingdom=self.k)
+		self.assertRaises(ValidationError, freeze.save)
+
+	def test_freeze_access(self):
+		"""
+		Test freeze is only available to super user.
+		"""
+		u = User(username="someone", is_staff=True)
+		u.save()
+		self.k.user = u
+		freeze = Freeze(kingdom=self.k)
+
+		# AssertNoRaises
+		freeze.save()
 
 	def test_freeze_on_values(self):
 		"""
