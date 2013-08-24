@@ -563,6 +563,39 @@ if value == 15:
 		self.assertTrue(self.pm.is_finished)
 		self.assertRaises(PendingMission.DoesNotExist, (lambda: PendingMission.objects.get(pk=self.pm.pk)))
 
+	def test_mission_not_cancellable(self):
+		"""
+		Check the is_cancellable flag.
+		"""
+		
+		self.m.is_cancellable = False
+		self.m.save()
+
+		self.assertRaises(ValidationError, self.pm.delete)
+
+	def test_mission_finished_not_cancellable(self):
+		"""
+		Check the is_cancellable flag combined with is_finished.
+		"""
+		self.m.is_cancellable = False
+		self.m.save()
+
+		# Fake resolution
+		self.pm.is_started = True
+		self.pm.is_finished = True
+		self.pm.save()
+
+		# AssertNoRaise
+		self.pm.delete()
+
+	def test_mission_cancellable(self):
+		"""
+		Check the inactive is_cancellable flag.
+		"""
+
+		# AssertNoRaise
+		self.pm.delete()
+
 	def test_mission_on_cancel(self):
 		"""
 		Check the on_cancel code.

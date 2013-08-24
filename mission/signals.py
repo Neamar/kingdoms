@@ -209,6 +209,16 @@ def start_pending_mission(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=PendingMission)
+def check_pending_mission_can_be_cancelled(sender, instance, **kwargs):
+	"""
+	Forbids deletion if not cancellable.
+	"""
+	
+	if not instance.is_started and not instance.mission.is_cancellable:
+		raise ValidationError("Can't cancel this pending mission.")
+
+
+@receiver(pre_delete, sender=PendingMission)
 def cancel_pending_mission(sender, instance, **kwargs):
 	"""
 	Runs on_cancel when the PendingMission is cancelled or timeouted.
@@ -224,7 +234,7 @@ def cron_cancel_pendingmission_after_timeout(sender, counter, **kwargs):
 	Cancel unstarted pending missions whom created+timeout is in the past.
 	"""
 
-	pending_missions = PendingMission.objects.filter(is_started=False).exclude(mission__timeout=None).select_related('mission')
+	pending_missions = PendingMission.objects.filter(is_started=False).exclude(mission__timeout=None, mission__is_cancellable=False).select_related('mission')
 
 	for pending_mission in pending_missions:
 		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) < datetime.now():
