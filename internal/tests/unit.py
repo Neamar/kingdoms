@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.core.files import File
 
 from kingdom.management.commands.cron import cron_ten_minutes
 from kingdom.models import Kingdom, Folk
-from internal.models import Trigger, Function, Recurring, FirstName, LastName, Freeze
+from internal.models import Trigger, Function, Recurring, FirstName, LastName, Freeze, Avatar
 
 
 class UnitTest(TestCase):
@@ -526,7 +528,6 @@ bar:int
 
 		self.assertFalse(PendingMission.objects.get(pk=pm.pk).is_started)
 
-
 	def test_freeze_m2m(self):
 		"""
 		Test freeze mechanism : m2m objects are restored
@@ -547,3 +548,40 @@ bar:int
 		freeze.restore()
 
 		self.assertEqual(0, self.k.trigger_set.count())
+
+	def test_avatar_image_adult(self):
+		"""
+		Verify the good image is returned, depending on the age
+		"""
+
+		a = Avatar(
+			adult_threshold=20,
+			old_threshold=50,
+			adult=File(open(__file__), 'adult'),
+			old=File(open(__file__), 'old'),
+		)
+		a.save()
+
+		# Age between adult_threshold and old_threshold: adult
+		self.assertEqual(a.image(25), a.adult.url)
+		# Age after old_threshold
+		self.assertEqual(a.image(55), a.old.url)
+		# Age lower than adult_threshold: adult anyway
+		self.assertEqual(a.image(0), a.adult.url)
+
+	def test_avatar_image_child(self):
+		"""
+		Verify the good image is returned
+		"""
+
+		a = Avatar(
+			adult_threshold=20,
+			old_threshold=50,
+			child=File(open(__file__), 'child'),
+		)
+		a.save()
+
+		# Child image, no matter what.
+		self.assertEqual(a.image(1), a.child.url)
+		self.assertEqual(a.image(18), a.child.url)
+		self.assertEqual(a.image(100), a.child.url)

@@ -222,6 +222,21 @@ class Avatar(models.Model):
 
 	qualities = models.ManyToManyField(Quality, blank=True)
 
+	def image(self, age):
+		"""
+		Return the image associated with someone of this age.
+
+		Note: if the avatar in use is a child, the child image will be returned no matter what. It is the task of the scripters to update a Folk to a new avatar after childhood.
+		Note: if the avatar affected to a folk has a adul_threshold above the current folk age, adult will still be retrieved. This is to allow for rich behavior and ease of scripting.
+		"""
+
+		if self.child:
+			return self.child.url
+		elif age > self.old_threshold:
+			return self.old.url
+		else:
+			return self.adult.url
+
 	def __unicode__(self):
 		return "%s %s [%s]" % (self.get_sex_display(), self.hair, 'child' if self.child is not None else 'adult')
 

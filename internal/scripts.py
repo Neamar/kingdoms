@@ -1,6 +1,5 @@
 from internal.models import Function
 
-
 def call_function(name, **kwargs):
 	"""
 	Call the function name with kwargs arguments

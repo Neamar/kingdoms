@@ -23,9 +23,21 @@ def serialize_folk_min(folk):
 	Serialize a folk object to JSON, with minimal information.
 	"""
 
+	def image(folk):
+		"""
+		Retrieve the URL of an image to display the folk.
+		"""
+		# Stubs
+		if not folk.avatar:
+			colors = ("000", "F00", "0F0", "00F", "FF0", "0FF", "FFF", "AAA", "AF0", "A0F", "FA0", "F0A", "0AF", "0FA")
+			return "http://placehold.it/100x120/" + colors[folk.pk % len(colors)]
+
+		# Real avatar
+		return folk.avatar.image(folk.age())
+
 	r = {
 		'id': folk.pk,
-		'avatar': folk.image(),
+		'avatar': image(folk),
 		'first_name': folk.first_name,
 		'last_name': folk.last_name,
 	}
