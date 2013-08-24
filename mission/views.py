@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 
 from django.http import Http404
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
+
 from django.shortcuts import get_object_or_404
 
 from kingdom.decorators import json_view, force_post, status_view
+
 from kingdom.models import Kingdom, Folk
 from mission.models import PendingMission, PendingMissionAffectation, MissionGrid, AvailableMission
 
@@ -13,7 +18,8 @@ from mission.models import PendingMission, PendingMissionAffectation, MissionGri
 @status_view
 def pending_mission_grid_affect(request, pk, grid_pk):
 	"""
-	Affect the folk to the mission
+	Affect the folk to the mission.
+	This function has some additional complexity: it will automatically move someone from a team to a mission.
 	"""
 
 	if 'folk' not in request.POST:
@@ -24,6 +30,13 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 	mission_grid = get_object_or_404(MissionGrid, pk=grid_pk, mission=pending_mission.mission_id)
 	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
 
+	# If the folk is currently in a team, unaffect him
+	try:
+		if folk.mission.pending_mission.mission.is_team:
+			folk.mission.delete()
+	except PendingMissionAffectation.DoesNotExist:
+		pass
+
 	# Affect
 	pma = PendingMissionAffectation(
 		pending_mission=pending_mission,
@@ -31,7 +44,10 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 		folk=folk
 	)
 
-	pma.save()
+	try:
+		pma.save()
+	except IntegrityError:
+		raise ValidationError("Cette personne participe déjà à une mission (%s)" % str(pma.pending_mission.mission.name))
 
 
 @force_post

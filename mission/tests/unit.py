@@ -833,3 +833,14 @@ kingdom.set_value('pm_resolved', param.pk)
 		cron_minute.send(self, counter=1000)
 
 		self.assertEqual(self.k.get_value('pm_resolved'), self.pm.id)
+
+	def test_team_cant_start(self):
+		"""
+		Test teams can't be started
+		"""
+
+		self.m.is_team = True
+		self.m.save()
+
+		self.pm.started = datetime.now()
+		self.assertRaises(ValidationError, self.pm.save)
