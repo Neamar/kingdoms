@@ -37,10 +37,14 @@
 					<a data-bind="page-href: 'title'">Titres</a>
 				</li>
 				<li data-bind="css: {active: $__page__.child('mission')().isVisible}">
-					<a data-bind="page-href: 'mission'">Missions <span class="badge" data-bind="visible: unstarted_pending_missions().length > 0, text: unstarted_pending_missions().length"></span></a>
+					<a data-bind="page-href: 'mission'">Missions
+						<span class="badge" data-bind="visible: unstarted_pending_missions().length > 0, text: unstarted_pending_missions().length"></span>
+					</a>
 				</li>
 				<li data-bind="css: {active: $__page__.child('event')().isVisible}">
-					<a data-bind="page-href: 'event'">Évènements <span class="badge" data-bind="visible: pending_events().length > 0, text: pending_events().length"></span></a>
+					<a data-bind="page-href: 'event'">Évènements
+						<span class="badge" data-bind="visible: pending_events().length > 0, text: pending_events().length"></span>
+					</a>
 				</li>
 				<li data-bind="css: {active: $__page__.child('bargain')().isVisible}">
 					<a data-bind="page-href: 'bargain'">Négociations</a>
