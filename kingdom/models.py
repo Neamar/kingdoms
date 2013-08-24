@@ -49,10 +49,7 @@ class Folk(models.Model):
 	"""
 	The folk are the people in your kingdom.
 	"""
-
-	class Meta:
-		unique_together = ('first_name', 'last_name')
-
+	
 	objects = FolkManager()
 	objects_and_dead = models.Manager()
 
