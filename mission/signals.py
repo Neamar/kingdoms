@@ -176,6 +176,16 @@ def check_pending_mission_cant_start_without_title(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=PendingMission)
+def check_pending_mission_cant_start_if_team(sender, instance, **kwargs):
+	"""
+	Forbids the launch of teams
+	"""
+
+	if instance.started is not None and not instance.is_started and instance.mission.is_team:
+		raise ValidationError("Teams can't start")
+
+
+@receiver(pre_save, sender=PendingMission)
 def check_pending_mission_cant_start_without_target(sender, instance, **kwargs):
 	"""
 	Forbids the launch of the mission if target is None and has_target is True
