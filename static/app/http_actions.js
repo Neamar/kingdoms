@@ -126,5 +126,12 @@ http_actions = {
 	 */
 	availableTitleDefect: function(title) {
 		http_actions._post(title.links.defect());
-	}
+	},
+
+	/*
+	 * Unfreeze last save
+	 */
+	restoreFreeze: function(action) {
+		http_actions._post(action.links.fire(), {});
+	},
 }
