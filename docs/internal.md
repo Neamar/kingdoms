@@ -8,7 +8,7 @@ Vocabulaire des Internals
 
 * `trigger` : sera appelé (une seule fois par royaume !) lorsque certaines conditions sont remplies.
 
-* `constante` : définit une valeur utilisable dans n'importe quel environnement de script.
+* `constante` : définit une valeur utilisable dans n'importe quel environnement de script. Les constantes sont à utiliser plutôt que de marquer un chiffre "brut" dans le code.
 
 
 Où scripter ?
@@ -63,3 +63,12 @@ PendingEvent(
 ).save()
 ```
 
+### Constantes
+Pour accèder à une constante depuis un code :
+
+```python
+if folk.age() <= Constant.v("MAJORITY"):
+  status = "Tu es trop jeune pour participer !"
+```
+
+Bien que cela ne soit pas obligatoire, par convention, il est préférable de nommer la constante en majuscule.
