@@ -1,4 +1,8 @@
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry, DELETION
+from django.utils.html import escape
+from django.core.urlresolvers import reverse
+
 from reporting.models import ScriptLog
 
 class ScriptLogAdmin(admin.ModelAdmin):
@@ -36,28 +40,18 @@ class ScriptLogAdmin(admin.ModelAdmin):
 	slug.allow_tags = True
 admin.site.register(ScriptLog, ScriptLogAdmin)
 
-from django.contrib.admin.models import LogEntry, DELETION
-from django.utils.html import escape
-from django.core.urlresolvers import reverse
-
 
 class LogEntryAdmin(admin.ModelAdmin):
-
 	date_hierarchy = 'action_time'
-
 	readonly_fields = LogEntry._meta.get_all_field_names()
-
 	list_filter = [
 		'user',
 		'content_type',
 	]
-
 	search_fields = [
 		'object_repr',
 		'change_message'
 	]
-
-
 	list_display = [
 		'action_time',
 		'user',
@@ -85,7 +79,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 		return '<img src="%s" alt="" />' % images[obj.action_flag - 1]
 	action.allow_tags = True
-	
+
 	def object_link(self, obj):
 		if obj.action_flag == DELETION:
 			link = escape(obj.object_repr)
@@ -99,6 +93,4 @@ class LogEntryAdmin(admin.ModelAdmin):
 	object_link.allow_tags = True
 	object_link.admin_order_field = 'object_repr'
 	object_link.short_description = u'object'
-
-
 admin.site.register(LogEntry, LogEntryAdmin)
