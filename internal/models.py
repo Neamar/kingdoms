@@ -102,7 +102,7 @@ class Function(ScriptedModel):
 
 			if param_name not in kwargs:
 				raise NameError("Missing mandatory param in function `%s`: %s" % (self.slug, param_name))
-			elif type(kwargs[param_name]).__name__ != param_type:
+			elif type(kwargs[param_name]).__name__ != param_type and kwargs[param_name] != None:
 				raise TypeError("Param `%s` must be of type %s, %s provided" % (param_name, param_type, type(kwargs[param_name]).__name__))
 
 		# Run the function

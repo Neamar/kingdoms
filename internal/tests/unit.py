@@ -366,6 +366,22 @@ bar:int
 		# Bar parameter must be int
 		self.assertRaises(TypeError, lambda: f.fire(foo=2, bar="3"))
 
+	def test_function_params_check_none(self):
+		"""
+		Test mandatory params are provided with good type, or None is OK.
+		"""
+
+		f = Function(
+			slug="test_function",
+		)
+		f.params = """
+foo:int
+bar:int
+"""
+		f.save()
+		# assertNoRaise
+		f.fire(foo=2, bar=None)
+
 	def test_auto_name_for_folk(self):
 		"""
 		The name is automatically filled.
