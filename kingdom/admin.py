@@ -31,6 +31,7 @@ class QualityAdmin(admin.ModelAdmin):
 	list_display = ('name', 'female_name', 'slug', 'category', 'description')
 	search_fields = ('name', 'description')
 	list_filter = ('category__name',)
+	ordering=('name',)
 admin.site.register(Quality, QualityAdmin)
 
 

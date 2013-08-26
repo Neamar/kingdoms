@@ -97,8 +97,9 @@ class QualityCategory(DescribedModel):
 	"""
 	A category for some qualities.
 	"""
+
 	class Meta:
-		verbose_name_plural = "Quality categories"
+		verbose_name_plural = "quality categories"
 	pass
 
 
@@ -106,6 +107,10 @@ class Quality(ScriptedModel):
 	"""
 	A quality a folk might have, with its description
 	"""
+
+	class Meta:
+		verbose_name_plural = "qualities"
+
 	slug = models.SlugField(editable=True, unique=True)
 
 	name = models.CharField(max_length=255)
