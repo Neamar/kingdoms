@@ -36,10 +36,10 @@ class ContextModel:
 	An object with the ability to store some context in it.
 	"""
 
-	def get_value(self, name):
+	def get_value(self, name, default=None):
 		"""
 		Gets a value.
-		Returns None if the value does not exists.
+		Returns default if the value does not exists.
 		"""
 		kwargs = {
 			'name': name,
@@ -51,7 +51,7 @@ class ContextModel:
 		try:
 			v = store.objects.get(**kwargs)
 		except store.DoesNotExist:
-			return None
+			return default
 
 		return v.value
 

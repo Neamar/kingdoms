@@ -289,10 +289,11 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_value_retrieve_undefined(self):
 		"""
-		Non existing values returns None
+		Non existing values returns default value, or None
 		"""
 
 		self.assertEqual(self.k.get_value("foo"), None)
+		self.assertEqual(self.k.get_value("foo", "bar"), "bar")
 
 	def test_kingdom_value_retrieve_all(self):
 		"""
