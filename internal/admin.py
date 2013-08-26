@@ -41,6 +41,7 @@ admin.site.register(Constant, ConstantAdmin)
 
 class FunctionAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'description')
+	ordering = ('slug',)
 admin.site.register(Function, FunctionAdmin)
 
 
