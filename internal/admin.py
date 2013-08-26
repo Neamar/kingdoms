@@ -35,6 +35,7 @@ admin.site.register(Freeze, FreezeAdmin)
 class ConstantAdmin (admin.ModelAdmin):
 	list_display = ('name', 'description', 'value')
 	search_fields = ('name', 'description')
+	ordering = ('name',)
 admin.site.register(Constant, ConstantAdmin)
 
 
@@ -46,6 +47,7 @@ admin.site.register(Function, FunctionAdmin)
 class RecurringAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'delay')
 	search_fields = ('name', 'description')
+	ordering = ('name',)
 	actions = ['resolve']
 
 	def resolve(self, request, queryset):
