@@ -6,6 +6,13 @@ from kingdom.models import Kingdom, Folk, Quality, QualityCategory, Message, Cla
 class KingdomAdmin(admin.ModelAdmin):
 	list_display = ('user', 'prestige', 'population', 'money')
 	search_fields = ('user__username', )
+	readonly_fields = ('values', )
+
+	def values(self, obj):
+		values = ['%s=%s' % (o[0], o[1]) for o in obj.get_values().items()]
+		return '<br /><pre>%s</pre>' % "\n".join(values)
+	values.short_description = 'Variables'
+	values.allow_tags = True
 admin.site.register(Kingdom, KingdomAdmin)
 
 
