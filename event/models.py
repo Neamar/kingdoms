@@ -101,6 +101,8 @@ class PendingEvent(ScriptedModel, ContextModel):
 	def next_event(self, event):
 		"""
 		Creates a new pending event with the context of the previous (current) one.
+		Warning: the created pending_event is saved, but not started.
+		This way you can use set_value() on it.
 		"""
 		if isinstance(event, basestring):
 			event = Event.objects.get(slug=event)
@@ -153,14 +155,22 @@ class PendingEventAction(ScriptedModel):
 	def get_value(self, name):
 		"""
 		Gets a value.
+		Convenience method for quick access to the event
 		"""
 		return self.pending_event.get_value(name)
 
 	def set_value(self, name, value):
 		"""
 		Sets a value.
+		Convenience method for quick access to the event
 		"""
 		return self.pending_event.set_value(name, value)
+
+	def next_event(self, event):
+		"""
+		Creates a new pending event inheriting from this context.
+		"""
+		return self.pending_event.next_event(event)
 
 	def __unicode__(self):
 		return "%s [%s]" % (self.text, self.pending_event.event.slug)
