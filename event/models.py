@@ -104,6 +104,7 @@ class PendingEvent(ScriptedModel, ContextModel):
 		Warning: the created pending_event is saved, but not started.
 		This way you can use set_value() on it.
 		"""
+		
 		if isinstance(event, basestring):
 			event = Event.objects.get(slug=event)
 
@@ -190,7 +191,7 @@ class _PendingEventVariable(models.Model):
 	value = StoredValueField()
 
 	def __unicode__(self):
-		return "%s=%s" % (self.name, self.value)
+		return "PendingEvent variable %s=%s" % (self.name, self.value)
 
 
 from event.signals import *

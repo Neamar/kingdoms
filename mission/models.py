@@ -255,6 +255,6 @@ class _PendingMissionVariable(models.Model):
 	value = StoredValueField()
 
 	def __unicode__(self):
-		return "%s=%s" % (self.name, self.value)
+		return "PendingMission variable %s=%s" % (self.name, self.value)
 
 from mission.signals import *

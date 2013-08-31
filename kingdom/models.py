@@ -45,6 +45,9 @@ class _KingdomVariable(models.Model):
 	kingdom = models.ForeignKey(Kingdom)
 	value = StoredValueField()
 
+	def __unicode__(self):
+		return "Kingdom variable %s=%s" % (self.name, self.value)
+
 
 class Folk(models.Model):
 	"""
