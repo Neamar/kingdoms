@@ -29,10 +29,6 @@ Que scripter ?
 * `kingdom.message("message")` : ajoute un message pour le royaume spécifié.
 * `kingdom.message("message", level)` : ajoute un message pour le royaume spécifié, du niveau indiqué par `level` (peut être `Message.TRIVIAL`, `Message.INFORMATION`, `Message.WARNING`, `Message.IMPORTANT` ou `Message.NUCLEAR`).
 
-
-#### Ajouter un message modal
-* `kingdom.modal_message(name, description)` : ajoute un message "modal" pour le royaume spécifié
-
 #### Ajouter une claim
 * `kingdom.add_claim(kingdom, level)` : ajoute une claim avec le `kingdom` et le niveau défini.
 
@@ -48,6 +44,11 @@ Que scripter ?
 #### Savoir si un kingdom a une claim vers un autre kingdom
 * `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
 
+#### Créer un pending_event
+* `kingdom.create_pending_event("event_slug").start()`
+
+#### Créer une pending_mission
+* `kingdom.create_pending_mission("mission_slug").start()`
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
