@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 from kingdom.models import Kingdom, Folk
-from mission.models import Mission, AvailableMission, PendingMission
+from mission.models import Mission, AvailableMission
 from mission.scripts import *
 
 
 class ScriptTest(TestCase):
 	"""
-	Unit tests for title script
+	Unit tests for mission script
 	"""
 
 	def setUp(self):

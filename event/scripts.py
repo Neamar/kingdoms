@@ -1,7 +1,8 @@
 from datetime import datetime
 from django.core.exceptions import ValidationError
 
-from event.models import PendingEvent
+from kingdom.models import Kingdom
+from event.models import Event, PendingEvent
 
 
 def pendingevent_start(self):
@@ -13,3 +14,20 @@ def pendingevent_start(self):
 	self.started = datetime.now()
 	self.save()
 PendingEvent.start = pendingevent_start
+
+
+def kingdom_create_pending_event(self, slug):
+	"""
+	Create a pending event on this kingdom.
+	"""
+	event = Event.objects.get(slug=slug)
+	pe = PendingEvent(
+		kingdom=self,
+		event=event,
+		started=None
+	)
+
+	pe.save()
+
+	return pe
+Kingdom.create_pending_event = kingdom_create_pending_event
