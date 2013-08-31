@@ -18,14 +18,16 @@ class Command(BaseCommand):
 
 	graph = None
 
-	pending_event_slug = re.compile("PendingEvent.+slug=\"(\w+)\"")
+	pending_event_slug = re.compile("PendingEvent\(.+slug=\"(\w+)\"")
 	next_event_object = re.compile("next_event.+slug=\"(\w+)")
 	next_event_slug = re.compile("next_event\(\"(\w+)\"\)")
-	event_regexps = [pending_event_slug, next_event_object, next_event_slug]
+	create_pending_event = re.compile("create_pending_event\(\"(\w+)\"\)")
+	event_regexps = [pending_event_slug, next_event_object, next_event_slug, create_pending_event]
 
-	pending_mission_slug = re.compile("PendingMission.+slug=\"(\w+)\"")
+	pending_mission_slug = re.compile("PendingMission\(.+slug=\"(\w+)\"")
 	unlock_mission = re.compile("unlock_mission\(\"(\w+)\"\)")
-	mission_regexps = [pending_mission_slug, unlock_mission]
+	create_pending_mission = re.compile("create_pending_mission\(\"(\w+)\"\)")
+	mission_regexps = [pending_mission_slug, unlock_mission, create_pending_mission]
 
 	unlock_title = re.compile("unlock_title\(\"(\w+)\"\)")
 	title_regexps = [unlock_title]
