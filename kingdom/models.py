@@ -212,7 +212,7 @@ class Claim(models.Model):
 	offender = models.ForeignKey(Kingdom, related_name='offender_set')
 	offended = models.ForeignKey(Kingdom, related_name='offended_set')
 
-	created = models.DateTimeField(auto_now_add=True)
+	created = models.DateTimeField(auto_now=True)
 
 	level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES, default=REACHABLE)
 
