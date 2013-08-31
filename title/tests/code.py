@@ -94,6 +94,20 @@ param = fuzzy(10)
 		status, param = execute(code, param=False)
 		self.assertTrue(param > -10 and param < 10)
 
+	def test_code(self):
+		"""
+		Check you can stop code execution
+		"""
+		code = """
+status = "step1"
+stop()
+# Never called
+status = "step2"
+		"""
+
+		status, param = execute(code, param=False)
+		self.assertEqual(status, "step1")
+
 	def test_advanced_code(self):
 		"""
 		Check execute() can execute complex scripts.

@@ -11,7 +11,7 @@ def random_in(tab):
 
 def random_value(min, max):
 	"""
-	Return a value between min and max.
+	Return a value between min and max (inclusive).
 	"""
 
 	return randint(min, max)

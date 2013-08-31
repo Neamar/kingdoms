@@ -19,9 +19,22 @@ from event.scripts import *
 from mission.scripts import *
 
 
+class StopScript(Exception):
+	"""
+	Class to emulate a "return" in the eval'd code.
+	"""
+	pass
+
+def stop():
+	"""
+	Stop script execution right now.
+	"""
+	raise StopScript()
+
+
 def execute(code, param=None, context=None):
 	"""
-	Runs the specified code, with access to all models.
+	Runs the specified code, with access to specified context.
 
 	param is the param to be used in the script, it will be returned when specified.
 
@@ -37,6 +50,9 @@ def execute(code, param=None, context=None):
 			l[k] = v
 
 	if code is not None:
-		exec(code)
+		try:
+			exec(code)
+		except StopScript:
+			pass
 
 	return status, param
