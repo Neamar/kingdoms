@@ -4,7 +4,7 @@ from kingdom.models import Kingdom, Folk, Quality, QualityCategory, Message, Cla
 
 
 class KingdomAdmin(admin.ModelAdmin):
-	list_display = ('user', 'prestige', 'population', 'money')
+	list_display = ('user', 'prestige', 'population', 'money', 'soldiers')
 	search_fields = ('user__username', )
 	readonly_fields = ('values', )
 
