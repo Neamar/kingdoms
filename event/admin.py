@@ -18,6 +18,7 @@ class EventActionAdminInline(admin.StackedInline):
 class EventAdmin(admin.ModelAdmin):
 	list_display = ('name', 'slug', 'text', 'weight', 'category', 'thumb',)
 	list_display_links = ('name', 'slug')
+	list_per_page = 1000
 
 	def thumb(self, obj):
 		if obj.image:
