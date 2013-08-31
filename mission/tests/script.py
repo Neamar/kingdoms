@@ -48,8 +48,10 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_unlock_title_already_available(self):
 		"""
-		check if the available title is well returned
+		Check no error occurs if you unlock twice
 		"""
 
 		self.k.unlock_mission("stub")
+		
+		# AssertNoRaises
 		self.k.unlock_mission("stub")

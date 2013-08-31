@@ -118,4 +118,12 @@ folks[0].folk.die()
 # Le kingdom visé perd en population.
 target.population -= 20
 target.save()
+
+# Afficher un évènement pour expliquer les détails
+pe = kingdom.create_pending_event("event_post_kamikaze")
+pe.set_value("nb_morts", 20)
+pe.set_value("kamikaze", folks[0])
+
+pe.start()
+
 ```
