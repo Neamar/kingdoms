@@ -81,7 +81,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 	action.allow_tags = True
 
 	def object_link(self, obj):
-		if obj.action_flag == DELETION:
+		if obj.action_flag == DELETION or obj.object_id is None:
 			link = escape(obj.object_repr)
 		else:
 			ct = obj.content_type
