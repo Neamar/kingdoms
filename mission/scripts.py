@@ -44,3 +44,13 @@ def kingdom_create_pending_mission(self, slug):
 
 	return pm
 Kingdom.create_pending_mission = kingdom_create_pending_mission
+
+
+def kingdom_get_team(self, slug):
+	"""
+	Retrieve datas from the specified team.
+	"""
+
+	pm = self.pendingmission_set.get(mission__slug=slug, mission__is_team=True)
+	return pm._get_context()
+Kingdom.get_team = kingdom_get_team

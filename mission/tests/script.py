@@ -55,3 +55,25 @@ class ScriptTest(TestCase):
 		
 		# AssertNoRaises
 		self.k.unlock_mission("stub")
+
+	def test_kingdom_get_team(self):
+		"""
+		Check you can retrieve team datas
+		"""
+
+		# Sanity check
+		self.assertRaises(PendingMission.DoesNotExist, lambda: self.k.get_team('stub'))
+		
+		self.m.is_team = True
+		self.m.save()
+
+		pm = PendingMission(
+			kingdom=self.k,
+			mission=self.m
+		)
+		pm.save()
+
+		# AssertNoRaises
+		datas = self.k.get_team('stub')
+		self.assertEqual(datas['pendingmission'], pm)
+		self.assertEqual(len(datas['grids']), 0)
