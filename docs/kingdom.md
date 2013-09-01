@@ -50,6 +50,9 @@ Que scripter ?
 #### Créer une pending_mission
 * `kingdom.create_pending_mission("mission_slug").start()`
 
+#### Récupérer une équipe
+* `kingdom.get_team("team_slug")`
+
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
 * `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)
@@ -69,7 +72,7 @@ Que scripter ?
 #### Affecter une personne à un titre
 * `folk.add_title("available_title")`
 
-#### Deffecter une personne à un titre
+#### Retirer une personne d'un titre
 * `folk.remove_title()`
 
 ### Sur la liste des folks
