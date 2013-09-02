@@ -53,18 +53,17 @@ class Constant(DescribedModel):
 class Recurring(DescribedModel, ScriptedModel):
 	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6*24)
 
-	condition = ScriptField(blank=True, null=True, help_text="Condition for the recurring. Return `status='some_error' to abort. `param` is the current kingdom, `folks` the list of folks in the kingdom.", default=None)
+	kingdom_list = ScriptField(help_text="Called to retrieve a list of kingdoms in `param`. All this Kingdom will be applied the `on_fire` code. Defaults to all kingdoms.", default="")
 	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)
 
-	def check_condition(self, kingdom):
+	def kingdoms(self):
 		"""
-		Check if the recurring should be fired for the specified kingdom.
-		See :signals: doc.
+		Retrieve a list of kingdoms this recurring can be used on.
 		"""
 
-		status, param = self.execute(self, 'condition', kingdom)
+		status, param = self.execute(self, 'kingdoms_list')
 
-		return status
+		return param
 
 	def fire(self, kingdom):
 		"""
