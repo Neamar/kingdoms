@@ -111,6 +111,7 @@ class PendingMission(ScriptedModel, ContextModel):
 		if targets == self:
 			targets = Kingdom.objects.exclude(id=self.kingdom_id)
 		
+		# Pre-fetch user, for direct access to kingdom name.
 		if isinstance(targets, QuerySet):
 			targets = targets.select_related('user')
 

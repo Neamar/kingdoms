@@ -148,7 +148,7 @@ class ScriptedModel(models.Model):
 	"""
 	_scriptlogs = []
 
-	def execute(self, model, attr, kingdom, raw_context=None):
+	def execute(self, model, attr, kingdom=None, raw_context=None):
 		"""
 		Execute the code stored in :attr on :model object, with :self as param. Context is built by default with :kingdom key, additional values can be passed with raw_context.
 		"""

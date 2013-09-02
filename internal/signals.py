@@ -95,9 +95,6 @@ def cron_fire_recurring(sender, counter, **kwargs):
 
 	recurrings = Recurring.objects.extra(where=[str(int(counter)) + ' %% delay = 0'])
 
-	if recurrings:
-		kingdoms = Kingdom.objects.all()
-		for recurring in recurrings:
-			for kingdom in kingdoms:
-				if recurring.check_condition(kingdom) == "ok":
-					recurring.fire(kingdom)
+	for recurring in recurrings:
+		for kingdom in recurring.kingdoms():
+			recurring.fire(kingdom)

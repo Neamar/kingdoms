@@ -199,24 +199,23 @@ status = "NotPossible"
 
 	def test_recurring_condition(self):
 		"""
-		Test recurring conditions are executed.
+		Test recurring returns a list of kingdoms on which to run
 		"""
 
 		r = Recurring(
-			condition="""
-if kingdom.population > 10:
-	status = "foo"
+			kingdom_list="""
+param = Kingdom.objects.filter(prestige__lte=50)
 """
 		)
 		r.save()
 
-		status = r.check_condition(self.k)
-		self.assertEqual(status, "ok")
+		kingdoms = r.kingdoms()
+		self.assertEqual(len(kingdoms), 1)
 
-		self.k.population = 50
+		self.k.prestige = 500
 		self.k.save()
-		status = r.check_condition(self.k)
-		self.assertEqual(status, "foo")
+		kingdoms = r.kingdoms()
+		self.assertEqual(len(kingdoms), 0)
 
 	def test_recurring_code(self):
 		"""
