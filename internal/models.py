@@ -145,6 +145,9 @@ class Freeze(models.Model):
 		if not self.can_freeze(self.kingdom):
 			raise ValidationError("You can't restore freeze unless you're admin.")
 
+		if hasattr(Signal, 'is_rigged'):
+			raise ValidationError("We're already unfreezing. Something wrong happened.")
+
 		# We will remove the kingdom, to ensure additional data created since the freeze was made will be deleted.
 		# By calling .delete(), kingdom.pk will be set to None.
 		# Calling .save() would create a new tuples in DB.
@@ -161,6 +164,7 @@ class Freeze(models.Model):
 		# Disconnect all signals to avoid interfering with the dataloading.
 		# For instance, when the kingdom will be restored by the unfreeze, we don't want any trigger to run on this instance -- it is assumed all triggers have already been applied in time before the freeze.
 		Signal.send_original = Signal.send
+		Signal.is_rigged=True
 		def monkeypatch_send(self, sender, **named):
 			return []
 		Signal.send = monkeypatch_send
@@ -178,9 +182,10 @@ class Freeze(models.Model):
 			for related_name, values in m2m_datas.items():
 				setattr(self.kingdom, related_name, values)
 		finally:
-			# Reconnect signals
+			# Reconnect signals whatever happens
 			Signal.send = Signal.send_original
 			del Signal.send_original
+			del Signal.is_rigged
 
 		# Recreate all freezes associated with this kingdom
 		[f.save() for f in freezes]
