@@ -1,5 +1,9 @@
  Documentation des royaumes
 ===========================
+
+<p align="center"><img src="https://github.com/Neamar/kingdoms/blob/master/docs/kingdoms.jpg?raw=true" alt="Kingdoms." /></p>
+
+
 Le code de `Kingdoms` permet de générer une multitude de jeux dans des univers variés.
 
 > [Comment installer Kingdoms ?](../readme.md) La page d'accueil du projet sur Github contient un guide pour les techos qui veulent déployer Kingdoms sur leur serveur. Si vous rejoignez un projet existant, cela ne vous concerne pas.

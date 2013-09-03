@@ -1,5 +1,8 @@
 Kingdoms
 ========
+
+<p align="center"><img src="https://github.com/Neamar/kingdoms/blob/master/docs/kingdoms.jpg?raw=true" alt="Kingdoms." /></p>
+
 `Kingdoms` is a massively multiplayer online browser game implemented in 8 days by a small team of 7 persons.
 The core code (this repo) is abstracted to allow the creation of many games on the same engine.
 
