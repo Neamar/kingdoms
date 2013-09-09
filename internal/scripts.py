@@ -11,13 +11,20 @@ def call_function(name, **kwargs):
 	return ret
 
 
-def c(name, **kwargs):
+def f(name, **kwargs):
 	"""
 	Alias for call_function.
 	"""
 
 	return call_function(name, **kwargs)
 
+
+def C(name):
+	"""
+	Quick access to constant values
+	"""
+
+	return Constant.objects.get(name=name).value
 
 def constant_value(name):
 	return Constant.objects.get(name=name).value

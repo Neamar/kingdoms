@@ -58,3 +58,17 @@ param = foo
 
 		self.assertEqual(Constant.v('MAJORITY'), 18)
 		self.assertRaises(Constant.DoesNotExist, lambda: Constant.v('SOME_CONSTANT'))
+
+	def test_constant_shortcut(self):
+		"""
+		Test constant values can be directly accessed
+		"""
+		c = Constant(
+			name="MAJORITY",
+			description="Age to come of age",
+			value=18
+		)
+		c.save()
+
+		self.assertEqual(C('MAJORITY'), 18)
+		self.assertRaises(Constant.DoesNotExist, lambda: C('SOME_CONSTANT'))
