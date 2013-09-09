@@ -11,6 +11,14 @@ def call_function(name, **kwargs):
 	return ret
 
 
+def c(name, **kwargs):
+	"""
+	Alias for call_function.
+	"""
+
+	return call_function(name, **kwargs)
+
+
 def constant_value(name):
 	return Constant.objects.get(name=name).value
 Constant.v = staticmethod(constant_value)
