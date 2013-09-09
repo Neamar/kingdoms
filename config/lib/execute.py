@@ -2,6 +2,7 @@
 """
 Execute some code in a sandboxed environnment
 """
+from __future__ import division
 
 from datetime import datetime, timedelta
 

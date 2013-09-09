@@ -108,6 +108,18 @@ status = "step2"
 		status, param = execute(code, param=False)
 		self.assertEqual(status, "step1")
 
+	def test_float_division(self):
+		"""
+		Check division is done in float.
+		This is not the default Python behavior.
+		"""
+		code = """
+param = 1 / 2
+		"""
+
+		status, param = execute(code, param=False)
+		self.assertEqual(param, 0.5)
+
 	def test_advanced_code(self):
 		"""
 		Check execute() can execute complex scripts.
