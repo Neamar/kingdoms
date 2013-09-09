@@ -75,6 +75,7 @@ def freeze_kingdom(sender, instance, **kwargs):
 	for pending_mission in kingdom.pendingmission_set.all():
 		objects.append(pending_mission)
 		objects += pending_mission._pendingmissionvariable_set.all()
+		objects += pending_mission.folk_set.all()
 
 	instance.datas = serializers.serialize('json', objects, indent=2)
 
