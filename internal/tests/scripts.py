@@ -19,7 +19,7 @@ class ScriptTest(TestCase):
 
 	def test_function_calls(self):
 		"""
-		Test the call to a function from inside a script
+		Test calls to function from inside a script
 		"""
 		self.k.money = 0
 		self.k.save()
@@ -44,20 +44,6 @@ param = foo
 
 		param = call_function("first_function", foo=0)
 		self.assertEqual(param, 80)
-
-	def test_constant_magic(self):
-		"""
-		Test constant values can be directly accessed
-		"""
-		c = Constant(
-			name="MAJORITY",
-			description="Age to come of age",
-			value=18
-		)
-		c.save()
-
-		self.assertEqual(Constant.v('MAJORITY'), 18)
-		self.assertRaises(Constant.DoesNotExist, lambda: Constant.v('SOME_CONSTANT'))
 
 	def test_constant_shortcut(self):
 		"""
