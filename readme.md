@@ -8,7 +8,7 @@ The core code (this repo) is abstracted to allow the creation of many games on t
 
 Everything revolves around the notion of Kingdom, your realm as a player. You need to increase your reputation by doing missions, nominating people to important positions and handling events happening in and out of your reach while interacting and fighting the other players.
 
-This mechanic is pretty abstract; Every deployment of this game is a story of it's own, whith great gameplay and roleplay immersion.
+This mechanic is pretty abstract; Every deployment of this game is a story of his own, whith great gameplay and roleplay immersion.
 
 The core-team is currently using this code to create "Que mon règne vienne".
 Changes to this repo are not tied to "Que mon règne vienne".
