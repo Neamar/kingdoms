@@ -16,21 +16,27 @@ class Command(BaseCommand):
 		make_option('--dry',
 			action='store_true',
 			dest='dry',
-			default=False,
-			help='Do a dry run (no changes)'),
+			default=True,
+			help='Do a dry run (no changes, default)'),
+		make_option('--real',
+			action='store_false',
+			dest='dry',
+			default=True,
+			help='Real run (save changes)'),
 	)
 
 	def handle(self, *args, **options):
 		if options['dry']:
 			self.stdout.write("Starting dry run.")
-		elif raw_input("You're not using dry mode. This will update your DB. Continue? y/N") != "y":
-			return
 
 		r = re.compile(args[0])
 
 		for model in models.get_models():
 			for o in model.objects.all():
 				self.update_model(r, args[1], o, options['dry'])
+
+		if options['dry']:
+			self.stdout.write("--- Review the changes, then use --real to commit them.")
 
 	def update_model(self, regexp, replacement, obj, dry):
 		"""
