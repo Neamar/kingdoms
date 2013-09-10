@@ -59,11 +59,16 @@ class Command(BaseCommand):
 	def display_dry(self, obj, field, new_value, old_value, display_header):
 		if display_header:
 			self.stdout.write("--------------")
-			self.stdout.write("#    " + str(type(obj)) + "#" + str(obj.pk) + " : " + str(obj))
+			self.stdout.write('\033[95m' + "#    " + str(type(obj)) + "#" + str(obj.pk) + " : " + str(obj) + '\033[0m')
 
 		self.stdout.write('##    ' + field.name)
 		diff = unified_diff(old_value.split("\n"), new_value.split("\n"))
 		next(diff)
 		next(diff)
 		for line in diff:
-			self.stdout.write(line)
+			if line[0] == "+":
+				self.stdout.write('\033[92m' + line + '\033[0m')
+			elif line[0] == "-":
+				self.stdout.write('\033[91m' + line + '\033[0m')
+			else:
+				self.stdout.write(line)
