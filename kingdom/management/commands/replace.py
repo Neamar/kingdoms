@@ -53,7 +53,7 @@ class Command(BaseCommand):
 					is_dirty = True
 
 		if is_dirty and not dry:
-			#obj.save()
+			obj.save()
 			print "Updated", type(obj), obj.pk, " : " + str(obj)
 
 	def display_dry(self, obj, field, new_value, old_value, display_header):
