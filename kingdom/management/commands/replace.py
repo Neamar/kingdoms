@@ -57,6 +57,7 @@ class Command(BaseCommand):
 					if dry:
 						self.display_dry(obj, field, new_value, old_value, display_header=not is_dirty)
 					is_dirty = True
+					setattr(obj, field.name, new_value)
 
 		if is_dirty and not dry:
 			obj.save()
