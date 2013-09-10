@@ -23,6 +23,8 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		if options['dry']:
 			self.stdout.write("Starting dry run.")
+		elif raw_input("You're not using dry mode. This will update your DB. Continue? y/N") != "y":
+			return
 
 		r = re.compile(args[0])
 
@@ -52,7 +54,7 @@ class Command(BaseCommand):
 
 		if is_dirty and not dry:
 			#obj.save()
-			print "Updated", type(obj), obj.pk
+			print "Updated", type(obj), obj.pk, " : " + str(obj)
 
 	def display_dry(self, obj, field, new_value, old_value, display_header):
 		if display_header:
