@@ -63,9 +63,8 @@ kingdom.save()
 
 
 #### Les résolutions
-# On choisit de mettre en quarantaine tous les malades
+##### On choisit de mettre en quarantaine tous les malades
 
-#### Les solutions
 * `on_fire` :
 
 ```python
@@ -74,7 +73,7 @@ kingdom.population *= 1.5
 kingdom.save()
 ```
 
-# On choisit de les laisser mourir
+##### On choisit de les laisser mourir
 * `on_fire` :
 
 ```python
@@ -83,7 +82,7 @@ kingdom.population /= 2
 kingdom.save()
 ```
 
-# On choisit de faire appel à un medecin
+##### On choisit de faire appel à un medecin
 * `on_fire` : 
 
 ```python
@@ -143,6 +142,7 @@ pe.start()
 # Retourne un PendingEvent .save(), mais pas encore .start()
 # Exemple :
 kingdom.start_pending_event("slug")
+```
 
 ### Méthode 4 : À NE PAS UTILISER.
 
