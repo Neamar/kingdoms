@@ -26,22 +26,34 @@ class Command(BaseCommand):
 	)
 
 	def handle(self, *args, **options):
+		if len(args) != 2:
+			self.stderr.write("Please specify 2 args : regexp and replacement")
+			return
+
 		if options['dry']:
 			self.stdout.write("Starting dry run.")
+		elif raw_input("You're not using dry mode. This will update your DB. Continue? y/N") != "y":
+			self.stderr.write("Aborted.")
+			return 
 
 		r = re.compile(args[0])
+		count = 0
 
 		for model in models.get_models():
 			for o in model.objects.all():
-				self.update_model(r, args[1], o, options['dry'])
+				count += self.update_model(r, args[1], o, options['dry'])
 
-		if options['dry']:
-			self.stdout.write("--- Review the changes, then use --real to commit them.")
+		if count == 0:
+			self.stdout.write("Regexp does not match any items, or replacement does nothing.")
+		else:
+			self.stdout.write("--- %s objects matching." % count)
+			if options['dry']:
+				self.stdout.write("--- Review the changes, then use --real to commit them.")
 
 	def update_model(self, regexp, replacement, obj, dry):
 		"""
 		Update object obj, modifying all occurrences of regexp in a ScriptField with replacement pattern
-		Return True if obj has been modified.
+		Return 1 if obj has been modified, or 0.
 		"""
 
 		is_dirty = False
@@ -62,6 +74,8 @@ class Command(BaseCommand):
 		if is_dirty and not dry:
 			obj.save()
 			print "Updated", type(obj), obj.pk, " : " + str(obj)
+
+		return 1 if is_dirty else 0
 
 	def display_dry(self, obj, field, new_value, old_value, display_header):
 		if display_header:
