@@ -34,10 +34,10 @@ Attention, la variable doit forcément exister.
 
 
 #### Créer un nouveau PendingEvent en gardant les variables
-Depuis un `pending_event` :
+Depuis un `pendingEvent` ou un `pendingEventAction` :
 ```python
-new_pe = param.next_event("slug_new_event")
-new_pe.start()
+pe = param.next_event("slug_new_event")
+pe.start()
 ```
 
 Exemples
@@ -108,4 +108,47 @@ pe = kingdom.create_pending_event("event_slug")
 pe.set_value("foo", "bar")
 
 pe.start() # L'évènement démarre maintenant !
+```
+
+Récapitulatif des méthodes pour créer un `PendingEvent`
+-------------------------------------------------------
+
+### Méthode 1 : créer et faire suivre les paramètres.
+
+```python
+# Utilité : dupliquer des paramètres vers un nouveau PendingEvent.
+# Méthode uniquement accessible depuis un PendingEvent ou un PendingEventAction.
+# Retourne un PendingEvent .save(), avec les valeurs précédentes, mais pas encore .start()
+# Exemple :
+pe = param.next_event("slug")
+pe.start()
+```
+
+### Méthode 2 : créer pour ajouter des paramètres.
+
+```python
+# Utilité : créer un PendingEvent et y ajouter des paramètres.
+# Méthode accessible depuis n'importe quel objet Kingdom.
+# Retourne un PendingEvent .save(), mais pas encore .start()
+# Exemple :
+pe = kingdom.create_pending_event("slug")
+pe.set_value("foo", "bar")
+pe.start()
+```
+
+### Méthode 3 : créer directement.
+```python
+# Utilité : lancer directement un PendingEvent sans paramètres.
+# Méthode accessible depuis n'importe quel objet Kingdom.
+# Retourne un PendingEvent .save(), mais pas encore .start()
+# Exemple :
+kingdom.start_pending_event("slug")
+
+### Méthode 4 : À NE PAS UTILISER.
+
+```python
+# Cette méthode est lourde, trop longue à taper et utilise des APIs qui n'ont pas forcément de raisons d'être exposées (le started=None)
+# Utilité : aucune ! Si vous en voyez dans les scripts, n'hésitez pas à remplacer avec une forme plus moderne.
+# Exemple :
+PendingEvent(event=Event.objects.get(slug="slug"), kingdom=kingdom, started=None) # À NE PLUS UTILISER
 ```
