@@ -40,10 +40,23 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_create_pending_event(self):
 		"""
-		Check the pending event is created.
+		Check the pending event is created and not started
 		"""
 
 		pe = self.k.create_pending_event("event_1")
 
 		self.assertIsNone(pe.started)
+		self.assertEqual(pe.event_id, self.e.pk)
+		self.assertEqual(self.k.pendingevent_set.count(), 1)
+
+
+	def test_kingdom_start_pending_event(self):
+		"""
+		Check the pending event is created and started
+		"""
+
+		pe = self.k.start_pending_event("event_1")
+
+		self.assertIsNotNone(pe.started)
+		self.assertEqual(pe.event_id, self.e.pk)
 		self.assertEqual(self.k.pendingevent_set.count(), 1)

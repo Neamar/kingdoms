@@ -31,3 +31,19 @@ def kingdom_create_pending_event(self, slug):
 
 	return pe
 Kingdom.create_pending_event = kingdom_create_pending_event
+
+
+def kingdom_start_pending_event(self, slug):
+	"""
+	Start a pending event on this kingdom.
+	"""
+	event = Event.objects.get(slug=slug)
+	pe = PendingEvent(
+		kingdom=self,
+		event=event
+	)
+
+	pe.save()
+
+	return pe
+Kingdom.start_pending_event = kingdom_start_pending_event
