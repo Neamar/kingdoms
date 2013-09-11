@@ -364,6 +364,25 @@ bar:int
 		# Bar parameter must be int
 		self.assertRaises(TypeError, lambda: f.fire(foo=2, bar="3"))
 
+	def test_function_params_check_provided_types(self):
+		"""
+		Test mandatory params are provided with good type, and multiple types are allowed with a | separator.
+		"""
+
+		f = Function(
+			slug="test_function",
+		)
+		f.params = """
+foo:list|QuerySet
+"""
+		f.save()
+		# Foo parameter must be list or QuerySet
+		self.assertRaises(TypeError, lambda: f.fire(foo=2))
+		# assertNoRaises
+		f.fire(foo=[1,2,3])
+		f.fire(foo=Function.objects.all())
+
+
 	def test_function_params_check_none(self):
 		"""
 		Test mandatory params are provided with good type, or None is OK.
