@@ -15,13 +15,10 @@ Où scripter ?
 
 * `on_unlock` : ce code sera executé lorsqu'on débloque le titre à un kingdom.
 
-Que scripter ?
----------------
-
 
 Exemples
 -------------
-###Le chef de guerre
+### Le chef de guerre
 
 * `Condition` :
 ```python
@@ -35,6 +32,7 @@ if folk.sex == "f" :
 # La loyauté du promu augmente
 folk.loyalty += 20
 folk.save()
+
 # Le prestige augmente
 kingdom.prestige += 5
 kingdom.save()
@@ -42,9 +40,10 @@ kingdom.save()
 
 * `on deffect` : 
 ```pyhton
-# La loauté diminue
+# La loyauté diminue
 folk.loyalty -= 30
 folk.save()
+
 # Le prestige diminue
 kingdom.prestige -= 5
 kingdom.save()
@@ -53,5 +52,5 @@ kingdom.save()
 * `on_unlock` :
 ```python
 kingdom.message("Vous pouvez désormais nommer le chef de guerre.")
-kingdom.unlock_mission(slug="piller_des_villages_et_violer_les_femmes")
+kingdom.unlock_mission("piller_des_villages_et_violer_les_femmes")
 ```

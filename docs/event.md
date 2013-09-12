@@ -13,7 +13,7 @@ Où scripter ?
 
 ## Depuis un event action
 * `on_fire` : ce code est executé lorsque le joueur choisit cette action
-* `Condition` : ce code détermine les conditions pour que l'event action puisse apparaître
+* `condition` : ce code détermine les conditions pour que le bouton associé à l'event action puisse apparaître
 
 Que scripter ?
 ---------------
@@ -22,7 +22,7 @@ Depuis n'importe quel script du module (les deux `condition`, et les deux `on_fi
 ```python
 # On peut stocker un entier (0, 1, 50),
 # une chaîne de caractères (taille maximale de 500 caractères)
-# ou un object de la base, par exemple un Folk ou un Kingdom.
+# ou un objet de la base, par exemple un Folk ou un Kingdom.
 param.set_value("variable_name", "variable_value")
 ```
 
@@ -31,18 +31,22 @@ Depuis n'importe quel script du module (les deux `condition`, et les deux `on_fi
 ```python
 param.get_value("variable_name")
 ```
-Si la variable n'existe pas, get_value retourne None
+Si la variable n'existe pas, `get_value` retourne `None`. Il est possible de modifier cette valeur par défaut en passant un second argument, par exemple `param.get_value("variable_name", False)`.
 
 
 #### Créer un nouveau PendingEvent en gardant les variables
-Depuis un `pendingEvent` ou un `pendingEventAction` :
+Depuis un `PendingEvent` ou un `PendingEventAction` :
+
 ```python
 pe = param.next_event("slug_new_event")
 pe.start()
 ```
 
+Ce code transfère toutes les variables sur le `PendingEvent` actuel vers le nouveau `PendingEvent`.
+
 #### Créer un nouveau PendingEvent en ajoutant les variables
-Depuis un `pendingEvent` ou un `pendingEventAction` :
+Depuis n'importe quel script (y compris en dehors du module `event`) :
+
 ```python
 pe = kingdom.create_pending_event("slug_new_event")
 pe.set_value("variable_name", "variable_value")
@@ -50,34 +54,41 @@ pe.start()
 ```
 
 #### Créer un nouveau PendingEvent sans ajouter ni garder de variables
-Depuis un `pendingEvent` ou un `pendingEventAction` :
+Depuis n'importe quel script (y compris en dehors du module `event`) :
+
 ```python
 kingdom.start_pending_event("slug")
 ```
 
+Cette fonction lance directement un nouveau `PendingEvent`. Il n'y a pas besoin d'appeler `.start()`, cependant il n'est pas possible de définir des variables.
+
 Exemples
 -------------
 ### Épidemie
+Réalisons un évènement Épidémie, qui ne frappe que les royaumes pauvres et diminue la population.
+
 #### L'évènement
 * `condition` :
 
 ```python
-# Si le royaume est trop riche, il dispose des conditions sanitaires suffisantes pour en être exempté.
+# Si le royaume est trop riche, il dispose des conditions sanitaires suffisantes pour être épargné
 if kingdom.money > 100:
 	status="trop riche"
 ```
+Le fait de renvoyer un `status` (n'importe quelle valeur différente de `ok`) suffit à annuler l'évènement.
 
 * `on_fire` :
+Ce code est exécuté si la condition ne modifie pas le `status`.
 
 ```python
 kingdom.population /= 1.5
 # La population diminue
 kingdom.save()
-# On n'oublie pas de sauvegarder
+# On n'oublie pas de sauvegarder, sinon l'objet n'est pas enregistré en base de données.
 ```
 
-
-#### Les résolutions
+#### Les actions
+On définit autant d'actions que l'on souhaite afficher de boutons.
 ##### On choisit de mettre en quarantaine tous les malades
 
 * `on_fire` :
@@ -100,8 +111,8 @@ kingdom.save()
 ##### On choisit de faire appel à un medecin
 * `condition` : 
 ```python
-if kingdom.get_folk_in_title("cure") == None:
-	status = "il n'y pas a de medecin" #Cette option ne s'affichera alors pas
+if kingdom.get_folk_in_title("cure") is None:
+	status = "il n'y pas a de medecin" # Cette option ne s'affichera pas dans les choix
 ```
 
 * `on_fire` : 
@@ -114,7 +125,7 @@ kingdom.create_pending_mission("recherche_medecin")
 ### Lancer un évènement dans un futur programmé
 ```python
 pe = kingdom.create_pending_event("event_slug")
-pe.started=datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
+pe.started = datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months...
 pe.save()
 
 # La condition sur l'évènement sera déclenchée au moment programmé.
@@ -163,13 +174,4 @@ pe.start()
 # Retourne un PendingEvent .save() et .start()
 # Exemple :
 kingdom.start_pending_event("slug")
-```
-
-### Méthode 4 : À NE PAS UTILISER.
-
-```python
-# Cette méthode est lourde, trop longue à taper et utilise des APIs qui n'ont pas forcément de raisons d'être exposées (le started=None)
-# Utilité : aucune ! Si vous en voyez dans les scripts, n'hésitez pas à remplacer avec une forme plus moderne.
-# Exemple :
-PendingEvent(event=Event.objects.get(slug="slug"), kingdom=kingdom, started=None) # À NE PLUS UTILISER
 ```

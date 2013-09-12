@@ -8,16 +8,16 @@ Vocabulaire des Internals
 
 * `trigger` : sera appelé (une seule fois par royaume !) lorsque certaines conditions sont remplies.
 
-* `Constant` : définit une valeur utilisable dans n'importe quel environnement de script. Les constantes sont à utiliser plutôt que de marquer un chiffre "brut" dans le code.
+* `constant` : définit une valeur utilisable dans n'importe quel environnement de script. Les constantes sont à utiliser plutôt que de marquer un chiffre "brut" dans le code.
 
 * `function` : définit une fonction utilisable dans n'importe quel environnement de script.
 
 Où scripter ?
 -------------
 ### Recurring
-* `condition` : ce code définit si le `kingdom` doit se voir appliquer le `in_fire`. Pour annuler ce recurring, il faut renvoyer `param= None`.
+* `kingdoms` : ce code renvoie une liste d'objets `Kingdoms` sur lesquels le recurring devra s'appliquer.
 
-* `on_fire` : ce code sera executé à intervalle régulier, si la condition s'applique.
+* `on_fire` : ce code sera executé à intervalle régulier sur chacun des royaumes renvoyés par `kingdoms`.
 
 ### Trigger
 * `condition` : ce code permet d'ajouter une condition, en plus des seuils sur `prestige`, `population` et `money`.
@@ -28,20 +28,16 @@ Où scripter ?
 * `on_fire` : ce code sera executé a l'appel de la fonction.
 
 
-Que scripter ?
----------------
-
-
 Exemples
 -------------
 ### Recurring
 #### Augmentation continue de la population
-
+Réalisons un recurring qui augmente la population lorsqu'il y a plus de 10 personnes dans la cour.
 * `condition` : 
 
 ```python
 # S'il y a au total moins de 10 personnes dans ma cour
-if Folk.objects.filter(kingdom=kingdom).count() < 10:
+if folks.count() < 10:
 	# On renvoie un status car on ne veut pas que la population augmente s'il n'y a pas assez de folk
 	status = "not_enough_people"
 ```
@@ -62,10 +58,7 @@ kingdom.save()
 
 ```python
 # On affecte l'event Banquet au Kingdom
-PendingEvent(
-  event=Event.objects.get(slug="banquet"),
-  kingdom=param,
-).save()
+kingdom.start_pending_event("banquet")
 ```
 
 ### Constantes
@@ -82,13 +75,13 @@ Bien que cela ne soit pas obligatoire, par convention, il est préférable de no
 #### Fonction calculant la somme des statistiques d'un folk
 * `on_fire` :
 ```python
+# la valeur contenue dans param est la valeur que l'on souhaite retourner
 param = folk.fight + folk.plot + folk.scholarship + folk.diplomacy
-# la valeur contenue dans param est la valeur retournée
 ```
 
 Appel de la fonction :
 ```python
 somme = call_function("somme_stats_folk", folk=le_folk_a_calculer)
-#OU
+# OU, version plus courte :
 somme = f("somme_stats_folk", folk=le_folk_a_calculer)
 ```

@@ -16,8 +16,8 @@ Enfin, les `claims` permettent de définir des relations entre les royaumes pour
 Où scripter ?
 -------------
 ### Les traits (Qualities)
-* `on_affect` : ce code est executé lorsque le folk gagne ce trait
-* `on_deffect` : ce code est executé lorsque le folk perd ce trait
+* `on_affect` : ce code est executé lorsqu'un folk gagne ce trait
+* `on_defect` : ce code est executé lorsqu'un folk perd ce trait
 
 
 Que scripter ?
@@ -45,10 +45,13 @@ Que scripter ?
 * `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
 
 #### Créer un pending_event
-* `kingdom.create_pending_event("event_slug").start()`
+* `pe = kingdom.create_pending_event("event_slug")` permet ensuite de réaliser des `set_value` sur l'objet `pe`.
+
+#### Lancer directement un pending_event
+* `kingdom.start_pending_event("event_slug")`
 
 #### Créer une pending_mission
-* `kingdom.create_pending_mission("mission_slug").start()`
+* `kingdom.create_pending_mission("mission_slug")`
 
 #### Récupérer une équipe
 * `kingdom.get_team("team_slug")`
@@ -100,7 +103,7 @@ On dispose déjà d'un objet folk.
 
 ```python
 # Ajouter le trait avare, qu'on suppose créé auparavant.
-folk.add_quality("avare")      # /!\Le nom est sensible à la casse. "avare" =/= "Avare".
+folk.add_quality("avare")      # On utilise le slug du trait, et non pas son nom.
 # On diminue la loyauté de 15
 folk.loyalty -= 15 
 # On augmente la diplomatie de 2
@@ -108,7 +111,7 @@ folk.diplomacy += 2
 # On fixe l'érudition à 10
 folk.scholarship = 10
 
-# Ne surtout pas oublier d'appeler save(), sinon aucun enregistrement n'est effectué. 
+# Ne pas oublier d'appeler save(), sinon aucun enregistrement n'est effectué. 
 folk.save()
 ```
 
@@ -124,13 +127,13 @@ kingdom.add_claim(foe)    # Dorénavant, kingdom pourra attaquer foe.
 ```
 
 ### Création d'un trait
-* `on_affect` : 
+* `on_affect` :
 ```python
 folk.fight += 1 # Le folk qui gagne ce trait gagne 1 de combat
 folk.save()
 ```
 
-* `on_deffect` : 
+* `on_defect` :
 ```python
 folk.fight -= 1 # Le folk qui gagne ce trait perd le bonus de combat
 folk.save()
