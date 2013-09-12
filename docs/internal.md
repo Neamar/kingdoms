@@ -10,6 +10,7 @@ Vocabulaire des Internals
 
 * `Constant` : définit une valeur utilisable dans n'importe quel environnement de script. Les constantes sont à utiliser plutôt que de marquer un chiffre "brut" dans le code.
 
+* `function` : définit une fonction utilisable dans n'importe quel environnement de script.
 
 Où scripter ?
 -------------
@@ -22,6 +23,10 @@ Où scripter ?
 * `condition` : ce code permet d'ajouter une condition, en plus des seuils sur `prestige`, `population` et `money`.
 
 * `on_fire`: ce code sera executé au déclenchement du trigger.
+
+### Function
+* `on_fire` : ce code sera executé a l'appel de la fonction.
+
 
 Que scripter ?
 ---------------
@@ -72,3 +77,18 @@ if folk.age() <= C("MAJORITY"):
 ```
 
 Bien que cela ne soit pas obligatoire, par convention, il est préférable de nommer la constante en majuscule.
+
+### Functions
+#### Fonction calculant la somme des statistiques d'un folk
+* `on_fire` :
+```python
+param = folk.fight + folk.plot + folk.scholarship + folk.diplomacy
+# la valeur contenue dans param est la valeur retournée
+```
+
+Appel de la fonction :
+```python
+somme = call_function("somme_stats_folk", folk=le_folk_a_calculer)
+#OU
+somme = f("somme_stats_folk", folk=le_folk_a_calculer)
+```
