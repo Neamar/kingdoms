@@ -1,0 +1,254 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+body{
+  color:#444;
+  font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman',
+              "Hiragino Sans GB", "STXihei", "微软雅黑", serif;
+  font-size:12px;
+  line-height:1.5em;
+  background:#fefefe;
+  width: 45em;
+  margin: 10px auto;
+  padding: 1em;
+  outline: 1300px solid #FAFAFA;
+}
+
+a{ color: #0645ad; text-decoration:none;}
+a:visited{ color: #0b0080; }
+a:hover{ color: #06e; }
+a:active{ color:#faa700; }
+a:focus{ outline: thin dotted; }
+a:hover, a:active{ outline: 0; }
+
+span.backtick {
+  border:1px solid #EAEAEA;
+  border-radius:3px;
+  background:#F8F8F8;
+  padding:0 3px 0 3px;
+}
+
+::-moz-selection{background:rgba(255,255,0,0.3);color:#000}
+::selection{background:rgba(255,255,0,0.3);color:#000}
+
+a::-moz-selection{background:rgba(255,255,0,0.3);color:#0645ad}
+a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
+
+p{
+margin:1em 0;
+}
+
+img{
+max-width:100%;
+}
+
+h1,h2,h3,h4,h5,h6{
+font-weight:normal;
+color:#111;
+line-height:1em;
+}
+h4,h5,h6{ font-weight: bold; }
+h1{ font-size:2.5em; }
+h2{ font-size:2em; border-bottom:1px solid silver; padding-bottom: 5px; }
+h3{ font-size:1.5em; }
+h4{ font-size:1.2em; }
+h5{ font-size:1em; }
+h6{ font-size:0.9em; }
+
+blockquote{
+color:#666666;
+margin:0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
+
+
+pre , code, kbd, samp { 
+  color: #000; 
+  font-family: monospace; 
+  font-size: 0.88em; 
+  border-radius:3px;
+  background-color: #F8F8F8;
+  border: 1px solid #CCC; 
+}
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; padding: 5px 12px;}
+pre code { border: 0px !important; padding: 0;}
+code { padding: 0 3px 0 3px; }
+
+b, strong { font-weight: bold; }
+
+dfn { font-style: italic; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+ul, ol { margin: 1em 0; padding: 0 0 0 2em; }
+li p:last-child { margin:0 }
+dd { margin: 0 0 0 2em; }
+
+img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+
+@media only screen and (min-width: 480px) {
+body{font-size:14px;}
+}
+
+@media only screen and (min-width: 768px) {
+body{font-size:16px;}
+}
+
+@media print {
+  * { background: transparent !important; color: black !important; filter:none !important; -ms-filter: none !important; }
+  body{font-size:12pt; max-width:100%; outline:none;}
+  a, a:visited { text-decoration: underline; }
+  hr { height: 1px; border:0; border-bottom:1px solid black; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+  pre, blockquote { border: 1px solid #999; padding-right: 1em; page-break-inside: avoid; }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style><title>event</title></head><body><h1 id="documentation-pour-le-scripting-par-event">Documentation pour le scripting par Event</h1>
+<p><img alt="Event models" src="https://github.com/Neamar/kingdoms/blob/master/event/models.png?raw=true" /></p>
+<h2 id="vocabulaire-des-evenements">Vocabulaire des évènements</h2>
+<h2 id="ou-scripter">Où scripter ?</h2>
+<h3 id="depuis-un-event">Depuis un event</h3>
+<ul>
+<li><code>condition</code> : ce code détermine les conditions pour que l'event puisse apparaître</li>
+<li><code>on_fire</code> : ce code est executé lorque l'event est déclanché</li>
+</ul>
+<h2 id="depuis-un-event-action">Depuis un event action</h2>
+<ul>
+<li><code>on_fire</code> : ce code est executé lorsque le joueur choisit cette action</li>
+</ul>
+<h2 id="que-scripter">Que scripter ?</h2>
+<h4 id="definir-une-variable-pour-un-texte">Définir une variable pour un texte :</h4>
+<p>Depuis n'importe quel script du module (<code>condition</code>, et les deux <code>on_fire</code>) :</p>
+<pre><code class="python"># On peut stocker un entier (0, 1, 50),
+# une chaîne de caractères (taille maximale de 500 caractères)
+# ou un object de la base, par exemple un Folk ou un Kingdom.
+param.set_value(&quot;variable_name&quot;, &quot;variable_value&quot;)
+</code></pre>
+
+<h4 id="recuperer-une-variable">Récupérer une variable</h4>
+<p>Depuis n'importe quel script du module (<code>condition</code>, et les deux <code>on_fire</code>) :</p>
+<pre><code class="python">param.get_value(&quot;variable_name&quot;)
+</code></pre>
+
+<p>Attention, la variable doit forcément exister.</p>
+<h4 id="creer-un-nouveau-pendingevent-en-gardant-les-variables">Créer un nouveau PendingEvent en gardant les variables</h4>
+<p>Depuis un <code>pendingEvent</code> ou un <code>pendingEventAction</code> :</p>
+<pre><code class="python">pe = param.next_event(&quot;slug_new_event&quot;)
+pe.start()
+</code></pre>
+
+<h2 id="exemples">Exemples</h2>
+<h3 id="epidemie">Épidemie</h3>
+<h4 id="levenement">L'évènement</h4>
+<ul>
+<li><code>condition</code> :</li>
+</ul>
+<pre><code class="python"># Si le royaume est trop riche, il dispose des conditions sanitaires suffisantes pour en être exempté.
+if param.money &gt; 100:
+    status=&quot;trop riche&quot;
+</code></pre>
+
+<ul>
+<li><code>on_fire</code> :</li>
+</ul>
+<pre><code class="python">kingdom.population /= 1.5
+# La population diminue dès le début
+kingdom.save()
+# On n'oublie pas de sauvegarder
+</code></pre>
+
+<h4 id="les-resolutions">Les résolutions</h4>
+<h5 id="on-choisit-de-mettre-en-quarantaine-tous-les-malades">On choisit de mettre en quarantaine tous les malades</h5>
+<ul>
+<li><code>on_fire</code> :</li>
+</ul>
+<pre><code class="python"># On a quand même quelques pertes, mais on en a sauvé pas mal !
+kingdom.population *= 1.5
+kingdom.save()
+</code></pre>
+
+<h5 id="on-choisit-de-les-laisser-mourir">On choisit de les laisser mourir</h5>
+<ul>
+<li><code>on_fire</code> :</li>
+</ul>
+<pre><code class="python"># C'est assez dramatique !
+kingdom.population /= 2
+kingdom.save()
+</code></pre>
+
+<h5 id="on-choisit-de-faire-appel-a-un-medecin">On choisit de faire appel à un medecin</h5>
+<ul>
+<li><code>on_fire</code> : </li>
+</ul>
+<pre><code class="python"># On crée une nouvelle PendingMission
+kingdom.create_pending_mission(&quot;recherche_medecin&quot;)
+</code></pre>
+
+<h3 id="lancer-un-evenement-dans-un-futur-programme">Lancer un évènement dans un futur programmé</h3>
+<pre><code class="python">pe = kingdom.create_pending_event(&quot;event_slug&quot;)
+pe.started=datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
+pe.save()
+
+# La condition sur l'évènement sera déclenchée au moment programmé.
+</code></pre>
+
+<h3 id="stocker-des-valeurs-pour-le-nouvel-evenement">Stocker des valeurs pour le nouvel évènement</h3>
+<pre><code class="python">pe = kingdom.create_pending_event(&quot;event_slug&quot;)
+
+# du code... par exemple, stocker une variable qui sera utile pour le futur évènement.
+pe.set_value(&quot;foo&quot;, &quot;bar&quot;)
+
+pe.start() # L'évènement démarre maintenant !
+</code></pre>
+
+<h2 id="recapitulatif-des-methodes-pour-creer-un-pendingevent">Récapitulatif des méthodes pour créer un <code>PendingEvent</code></h2>
+<h3 id="methode-1-creer-et-faire-suivre-les-parametres">Méthode 1 : créer et faire suivre les paramètres.</h3>
+<pre><code class="python"># Utilité : dupliquer des paramètres vers un nouveau PendingEvent.
+# Méthode uniquement accessible depuis un PendingEvent ou un PendingEventAction.
+# Retourne un PendingEvent .save(), avec les valeurs précédentes, mais pas encore .start()
+# Exemple :
+pe = param.next_event(&quot;slug&quot;)
+pe.start()
+</code></pre>
+
+<h3 id="methode-2-creer-pour-ajouter-des-parametres">Méthode 2 : créer pour ajouter des paramètres.</h3>
+<pre><code class="python"># Utilité : créer un PendingEvent et y ajouter des paramètres.
+# Méthode accessible depuis n'importe quel objet Kingdom.
+# Retourne un PendingEvent .save(), mais pas encore .start()
+# Exemple :
+pe = kingdom.create_pending_event(&quot;slug&quot;)
+pe.set_value(&quot;foo&quot;, &quot;bar&quot;)
+pe.start()
+</code></pre>
+
+<h3 id="methode-3-creer-directement">Méthode 3 : créer directement.</h3>
+<pre><code class="python"># Utilité : lancer directement un PendingEvent sans paramètres.
+# Méthode accessible depuis n'importe quel objet Kingdom.
+# Retourne un PendingEvent .save(), mais pas encore .start()
+# Exemple :
+kingdom.start_pending_event(&quot;slug&quot;)
+</code></pre>
+
+<h3 id="methode-4-a-ne-pas-utiliser">Méthode 4 : À NE PAS UTILISER.</h3>
+<pre><code class="python"># Cette méthode est lourde, trop longue à taper et utilise des APIs qui n'ont pas forcément de raisons d'être exposées (le started=None)
+# Utilité : aucune ! Si vous en voyez dans les scripts, n'hésitez pas à remplacer avec une forme plus moderne.
+# Exemple :
+PendingEvent(event=Event.objects.get(slug=&quot;slug&quot;), kingdom=kingdom, started=None) # À NE PLUS UTILISER
+</code></pre></body></html>

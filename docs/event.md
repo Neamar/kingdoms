@@ -13,11 +13,12 @@ Où scripter ?
 
 ## Depuis un event action
 * `on_fire` : ce code est executé lorsque le joueur choisit cette action
+* `Condition` : ce code détermine les conditions pour que l'event action puisse apparaître
 
 Que scripter ?
 ---------------
 #### Définir une variable pour un texte :
-Depuis n'importe quel script du module (`condition`, et les deux `on_fire`) :
+Depuis n'importe quel script du module (les deux `condition`, et les deux `on_fire`) :
 ```python
 # On peut stocker un entier (0, 1, 50),
 # une chaîne de caractères (taille maximale de 500 caractères)
@@ -26,11 +27,11 @@ param.set_value("variable_name", "variable_value")
 ```
 
 #### Récupérer une variable
-Depuis n'importe quel script du module (`condition`, et les deux `on_fire`) :
+Depuis n'importe quel script du module (les deux `condition`, et les deux `on_fire`) :
 ```python
 param.get_value("variable_name")
 ```
-Attention, la variable doit forcément exister.
+Si la variable n'existe pas, get_value retourne None
 
 
 #### Créer un nouveau PendingEvent en gardant les variables
@@ -38,6 +39,20 @@ Depuis un `pendingEvent` ou un `pendingEventAction` :
 ```python
 pe = param.next_event("slug_new_event")
 pe.start()
+```
+
+#### Créer un nouveau PendingEvent en ajoutant les variables
+Depuis un `pendingEvent` ou un `pendingEventAction` :
+```python
+pe = kingdom.create_pending_event("slug_new_event")
+pe.set_value("variable_name", "variable_value")
+pe.start()
+```
+
+#### Créer un nouveau PendingEvent sans ajouter ni garder de variables
+Depuis un `pendingEvent` ou un `pendingEventAction` :
+```python
+kingdom.start_pending_event("slug")
 ```
 
 Exemples
@@ -48,7 +63,7 @@ Exemples
 
 ```python
 # Si le royaume est trop riche, il dispose des conditions sanitaires suffisantes pour en être exempté.
-if param.money > 100:
+if kingdom.money > 100:
 	status="trop riche"
 ```
 
@@ -56,7 +71,7 @@ if param.money > 100:
 
 ```python
 kingdom.population /= 1.5
-# La population diminue dès le début
+# La population diminue
 kingdom.save()
 # On n'oublie pas de sauvegarder
 ```
@@ -83,6 +98,12 @@ kingdom.save()
 ```
 
 ##### On choisit de faire appel à un medecin
+* `condition` : 
+```python
+if kingdom.get_folk_in_title("cure") == None:
+	status = "il n'y pas a de medecin" #Cette option ne s'affichera alors pas
+```
+
 * `on_fire` : 
 
 ```python
@@ -139,7 +160,7 @@ pe.start()
 ```python
 # Utilité : lancer directement un PendingEvent sans paramètres.
 # Méthode accessible depuis n'importe quel objet Kingdom.
-# Retourne un PendingEvent .save(), mais pas encore .start()
+# Retourne un PendingEvent .save() et .start()
 # Exemple :
 kingdom.start_pending_event("slug")
 ```
