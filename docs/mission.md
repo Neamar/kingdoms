@@ -113,7 +113,7 @@ param = Kingdom.objects.filter(population>100, money>1000)
 `on_resolution` :
 ```python
 # Le kamikaze meurt (probablement dans d'atroces souffrances)
-folks[0].folk.die()
+folks[0].die()
 
 # Le kingdom visé perd en population.
 target.population -= 20

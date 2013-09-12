@@ -15,7 +15,7 @@ Enfin, les `claims` permettent de définir des relations entre les royaumes pour
 
 Où scripter ?
 -------------
-### Les traits
+### Les traits (Qualities)
 * `on_affect` : ce code est executé lorsque le folk gagne ce trait
 * `on_deffect` : ce code est executé lorsque le folk perd ce trait
 

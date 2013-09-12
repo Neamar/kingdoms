@@ -13,6 +13,8 @@ Où scripter ?
 
 * `on defect` : ce code sera executé lorsqu'on enlève le titre à une personne.
 
+* `on_unlock` : ce code sera executé lorsqu'on débloque le titre à un kingdom.
+
 Que scripter ?
 ---------------
 
@@ -46,4 +48,10 @@ folk.save()
 # Le prestige diminue
 kingdom.prestige -= 5
 kingdom.save()
+```
+
+* `on_unlock` :
+```python
+kingdom.message("Vous pouvez désormais nommer le chef de guerre.")
+kingdom.unlock_mission(slug="piller_des_villages_et_violer_les_femmes")
 ```
