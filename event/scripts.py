@@ -9,6 +9,7 @@ def pendingevent_start(self):
 	"""
 	Start the event!
 	"""
+	
 	if self.is_started:
 		raise ValidationError("PendingEvent already started.")
 	self.started = datetime.now()
@@ -20,6 +21,7 @@ def kingdom_create_pending_event(self, slug):
 	"""
 	Create a pending event on this kingdom.
 	"""
+
 	event = Event.objects.get(slug=slug)
 	pe = PendingEvent(
 		kingdom=self,
@@ -37,6 +39,7 @@ def kingdom_start_pending_event(self, slug):
 	"""
 	Start a pending event on this kingdom.
 	"""
+
 	event = Event.objects.get(slug=slug)
 	pe = PendingEvent(
 		kingdom=self,
