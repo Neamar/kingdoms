@@ -80,31 +80,23 @@ kingdom.save()
 
 ```python
 #On crée une nouvelle PendingMission
-PendingMission(
-	mission=Mission.objects.get(slug="recherche_medecin"),
-	kingdom=kingdom,
-).save()
+kingdom.create_pending_mission('recherche_medecin')
 ```
 
 ### Lancer un évènement dans un futur programmé
 ```python
-PendingEvent(
-	event=Event.objects.get(slug="le slug"),
-	kingdom=kingdom,
-	started= datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
-	).save()
+pe = kingdom.create_pending_event("slug")
+pe.started = datetime.now() + timedelta(days=5) # On peut aussi utiliser hours, minutes, months
+pe.save()
 
 # La condition sur l'évènement sera déclenchée au moment programmé.
 ```
-### Lancer un évènement plus tard, à un moment indeterminé
+### Lancer un évènement en définissant ses variables
 ```python
-pe = PendingEvent(
-	event=Event.objects.get(slug="le slug"),
-	kingdom=kingdom,
-	started= None # la pending mission ne démarre pas maintenant
-	).save()
+pe = kingdom.create_pending_event("slug")
 
 # du code... par exemple, stocker une variable qui sera utile pour le futur évènement.
+pe.set_value("foo", "bar")
 
 pe.start() # La mission démarre maintenant !
 ```
