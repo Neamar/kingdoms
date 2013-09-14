@@ -52,11 +52,9 @@ class RecurringAdmin(admin.ModelAdmin):
 	actions = ['resolve']
 
 	def resolve(self, request, queryset):
-		kingdoms = Kingdom.objects.all()
 		for recurring in queryset:
-			for kingdom in kingdoms:
-				if recurring.check_condition(kingdom) == "ok":
-					recurring.fire(kingdom)
+			for kingdom in recurring.kingdoms():
+				recurring.fire(kingdom)
 		self.message_user(request, "Les recurrings ont été lancés")
 	resolve.short_description = "Lancer maintenant"
 admin.site.register(Recurring, RecurringAdmin)
