@@ -21,6 +21,10 @@ def dependencies(request, output_type="svg"):
 	from django.core.management import call_command
 	from StringIO import StringIO
 
+	print output_type
+	if output_type not in ['png', 'svg']:
+		raise Http404("Unknown output type.")
+
 	dependencies_file_dot = '/tmp/dependencies.dot'
 
 	params = request.GET.keys()
@@ -38,34 +42,21 @@ def dependencies(request, output_type="svg"):
 	with open(dependencies_file_dot, 'wb+') as temp_file:
 		temp_file.write(dot_file)
 
-	if output_type=="png":
-		dependencies_file_image = '/tmp/dependencies.png'
+	params = [
+		'dot',
+		'-T',
+		output_type,
+		dependencies_file_dot
+	]
 
-		# Export as PNG image
-		params = [
-			'dot',
-			'-T',
-			'png',
-			'-o',
-			dependencies_file_image,
-			dependencies_file_dot
-		]
-
-		if subprocess.call(params) == 0:
-			contents = open(dependencies_file_image, 'rb').read()
-			response = HttpResponse(contents, mimetype='image/png')
-			response["Content-Length"] = len(contents)
-			return response
-	else:
-		# Export as SVG
-		params = [
-			'dot',
-			'-T',
-			'svg',
-			dependencies_file_dot
-		]
-
+	if subprocess.call(params) == 0:
 		svg_datas = subprocess.check_output(params)
-		response = HttpResponse(svg_datas)
 
+		if output_type == 'svg':
+			response = HttpResponse(svg_datas)
+		else:
+			response = HttpResponse(svg_datas, mimetype='image/png')
+			response["Content-Length"] = len(svg_datas)
 		return response
+	else:
+		raise Http404("Unable to generate dependencies.")
