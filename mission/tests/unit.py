@@ -777,9 +777,25 @@ if param.get_value('beastnum') != 666:
 		# Assert no raises
 		PendingMission.objects.get(pk=pm2.id)
 
+	def test_pendingmission_cron_notimeout(self):
+		"""
+		Test the cron does not timeout pendingmission without timeout.
+		"""
+
+		self.m.timeout = None
+		self.m.save()
+
+		self.pm.created = datetime.now() - timedelta(minutes=15)
+		self.pm.save()
+
+		cron_minute.send(self, counter=1000)
+
+		# assertNoRaises
+		PendingMission.objects.get(pk=self.pm.id)
+
 	def test_pendingmission_cron_timeout_cancel_code(self):
 		"""
-		Test the cron timeouts pendingmission.
+		Test the cron triggers the on_cancel code.
 		"""
 
 		self.m.timeout = 10

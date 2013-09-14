@@ -196,7 +196,7 @@ status = "NotPossible"
 		self.k.save()
 		self.assertEqual(Folk.objects.count(), 1)
 
-	def test_recurring_condition(self):
+	def test_recurring_kingdoms(self):
 		"""
 		Test recurring returns a list of kingdoms on which to run
 		"""
@@ -224,12 +224,15 @@ param = Kingdom.objects.filter(prestige__lte=50)
 		r = Recurring(
 			on_fire="""
 status = "foo"
+kingdom.money = 15
+kingdom.save()
 """
 		)
 		r.save()
 
 		status = r.fire(self.k)
 		self.assertEqual(status, "foo")
+		self.assertEqual(Kingdom.objects.get(pk=self.k.pk).money, 15)
 
 	def test_recurring_cron(self):
 		"""

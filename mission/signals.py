@@ -244,7 +244,7 @@ def cron_cancel_pendingmission_after_timeout(sender, counter, **kwargs):
 	Cancel unstarted pending missions whom created+timeout is in the past.
 	"""
 
-	pending_missions = PendingMission.objects.filter(is_started=False).exclude(mission__timeout__isnull=True, mission__is_cancellable=False).select_related('mission')
+	pending_missions = PendingMission.objects.filter(is_started=False, mission__timeout__isnull=False, mission__is_cancellable=True).select_related('mission')
 
 	for pending_mission in pending_missions:
 		if pending_mission.created + timedelta(minutes=pending_mission.mission.timeout) < datetime.now():
