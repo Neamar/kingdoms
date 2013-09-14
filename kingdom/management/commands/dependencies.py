@@ -114,7 +114,10 @@ class Command(BaseCommand):
 
 			for o in model['items'].all():
 				# Node name is modelname_namevalue
-				self.graph.add_node(k + '_' + model['node']['name'](o), label=model['node']['name'](o), **model['node']['params'])
+				label = model['node']['name'](o)
+
+				if label[0] != '_':
+					self.graph.add_node(k + '_' + model['node']['name'](o), label=model['node']['name'](o), **model['node']['params'])
 
 		# Read dependencies
 		for k, model in self.params.items():
@@ -152,7 +155,9 @@ class Command(BaseCommand):
 
 				# Apply dependencies (with unique values)
 				for dependency in set(dependencies):
-					self.graph.add_edge(k + '_' + model['node']['name'](o), dependency)
+					label = model['node']['name'](o)
+					if '__' not in dependency and label[0] != '_':
+						self.graph.add_edge(k + '_' + label, dependency)
 
 		# Output results
 		out = str(self.graph)
