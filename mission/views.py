@@ -50,7 +50,7 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 		transaction.savepoint_commit(sid)
 	except IntegrityError:
 		transaction.savepoint_rollback(sid)
-		raise ValidationError("Cette personne participe déjà à une mission (%s)" % str(pma.pending_mission.mission.name))
+		raise ValidationError("Cette personne participe déjà à une mission")
 
 
 @force_post
