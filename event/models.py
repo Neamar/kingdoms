@@ -153,12 +153,12 @@ class PendingEventAction(ScriptedModel):
 		self.pending_event.delete()
 		return status
 
-	def get_value(self, name):
+	def get_value(self, name, default=None):
 		"""
 		Gets a value.
 		Convenience method for quick access to the event
 		"""
-		return self.pending_event.get_value(name)
+		return self.pending_event.get_value(name, default)
 
 	def set_value(self, name, value):
 		"""
