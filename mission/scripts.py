@@ -13,6 +13,7 @@ def kingdom_unlock_mission(self, slug):
 	"""
 	Unlock the title.
 	"""
+	
 	mission = Mission.objects.get(slug=slug)
 	try:
 		sid = transaction.savepoint()
@@ -34,6 +35,7 @@ def kingdom_create_pending_mission(self, slug):
 	"""
 	Create a pending mission on this kingdom.
 	"""
+
 	mission = Mission.objects.get(slug=slug)
 	pm = PendingMission(
 		kingdom=self,

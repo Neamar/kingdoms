@@ -12,7 +12,7 @@ def app(request):
 	return render(request, 'app/index.html')
 
 
-def dependencies(request):
+def dependencies(request, output_type="svg"):
 	"""
 	Display dependencies graph, automatically generated just for you.
 	"""
@@ -38,14 +38,34 @@ def dependencies(request):
 	with open(dependencies_file_dot, 'wb+') as temp_file:
 		temp_file.write(dot_file)
 
-	params = [
-		'dot',
-		'-T',
-		'svg',
-		dependencies_file_dot
-	]
+	if output_type=="png":
+		dependencies_file_image = '/tmp/dependencies.png'
 
-	svg_datas = subprocess.check_output(params)
-	response = HttpResponse(svg_datas)
+		# Export as PNG image
+		params = [
+			'dot',
+			'-T',
+			'png',
+			'-o',
+			dependencies_file_image,
+			dependencies_file_dot
+		]
 
-	return response
+		if subprocess.call(params) == 0:
+			contents = open(dependencies_file_image, 'rb').read()
+			response = HttpResponse(contents, mimetype='image/png')
+			response["Content-Length"] = len(contents)
+			return response
+	else:
+		# Export as SVG
+		params = [
+			'dot',
+			'-T',
+			'svg',
+			dependencies_file_dot
+		]
+
+		svg_datas = subprocess.check_output(params)
+		response = HttpResponse(svg_datas)
+
+		return response

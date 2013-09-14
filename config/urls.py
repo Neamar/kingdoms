@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 	# Administration
 	url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	url(r'^admin/', include(admin.site.urls)),
-	url(r'^dependencies/$', 'kingdom.views.index.dependencies'),
+	url(r'^dependencies/(?P<output_type>png)?$', 'kingdom.views.index.dependencies'),
 
 	# App views
 	url(r'^app/$', 'kingdom.views.index.app'),
