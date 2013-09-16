@@ -24,7 +24,7 @@ class StoredValueField(models.CharField):
 		super(StoredValueField, self).__init__(*args, **kwargs)
 
 	def to_python(self, value):
-		from kingdom.models import Kingdom, Folk, Message, Claim
+		from kingdom.models import Kingdom, Folk, Message, Claim, Quality
 		from internal.models import Constant
 		from event.models import Event, PendingEvent
 		from mission.models import Mission, PendingMission, PendingMissionAffectation
