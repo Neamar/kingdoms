@@ -15,4 +15,3 @@ def number(value):
 		return numbers[value]
 	else:
 		return value
-

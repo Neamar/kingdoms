@@ -340,7 +340,7 @@ param.set_value("kingdom", kingdom)
 
 	def test_templates_and_folks_list_templatetags(self):
 		"""
-		Check templating loads templatetags for folk display.
+		Check folks_list template_tags.
 		"""
 		f = Folk(first_name="septon", kingdom=self.k)
 		f.save()
@@ -365,7 +365,7 @@ param.set_value("kingdom", kingdom)
 
 	def test_templates_and_feminize_templatetags(self):
 		"""
-		Check templating loads templatetags for folk display.
+		Check feminize template_tags.
 		"""
 
 		f = Folk(first_name="septon", sex=Folk.MALE, kingdom=self.k)
@@ -392,7 +392,7 @@ param.set_value("kingdom", kingdom)
 
 	def test_templates_and_number_templatetags(self):
 		"""
-		Check templating loads templatetags for folk display.
+		Check number templatetags
 		"""
 
 		self.e.text = "{{ 5|number }}, {{ 15|number }}, {{ 50|number }}, {{ -2|number }}"
@@ -405,6 +405,22 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.text, 'cinq, quinze, 50, -2')
+
+	def test_templates_and_elide_templatetags(self):
+		"""
+		Check elide template_tags
+		"""
+
+		self.e.text = '{{"ambassadeur"|elide:"le,l\'"}}, {{"chatelain"|elide:"le,l\'"}}'
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		self.assertEqual(pe.text, "l'ambassadeur, le chatelain")
 
 	def test_pendingevent_set_get_value(self):
 		"""

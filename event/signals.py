@@ -39,6 +39,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		add_to_builtins("kingdom.templatetags.folks_list")
 		add_to_builtins("kingdom.templatetags.feminize")
 		add_to_builtins("kingdom.templatetags.number")
+		add_to_builtins("kingdom.templatetags.elide")
 
 		raw_context = {}
 		raw_context['kingdom'] = instance.kingdom

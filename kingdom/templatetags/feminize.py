@@ -5,15 +5,12 @@ register = template.Library()
 
 
 @register.filter(name='feminize')
-def feminize(folk, arg=None):
+def feminize(folk, arg=',e'):
 	"""
 	Feminize a name, according to the gender of the folk.
 	"""
 
-	if arg is None:
-		arg = ['', 'e']
-	else:
-		arg = arg.split(',')
+	arg = arg.split(',')
 
 	if folk.sex == Folk.MALE:
 		return arg[0]
