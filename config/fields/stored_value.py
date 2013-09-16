@@ -1,4 +1,5 @@
 import re
+import json
 
 from django.db import models
 from django.db.models.query import QuerySet
@@ -34,10 +35,7 @@ class StoredValueField(models.CharField):
 
 		# Foreign Key
 		if isinstance(value, basestring) and self.array_regexp.match(value):
-			if value == '[]':
-				return []
-			raw_values = value[1:-1].split('_|_')
-			return [self.to_python(raw) for raw in raw_values]
+			return [self.to_python(raw) for raw in json.loads(value)]
 		elif isinstance(value, basestring) and self.fk_regexp.match(value):
 			class_name, instance_id = value.split(':')
 			class_name = class_name[1:-1]
@@ -67,7 +65,7 @@ class StoredValueField(models.CharField):
 
 	def get_prep_value(self, value):
 		if isinstance(value, (list, tuple, QuerySet)):
-			return "[" + "_|_".join([str(self.get_prep_value(v)) for v in value]) + "]"
+			return json.dumps([self.get_prep_value(v) for v in value])
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)
 		if isinstance(value, (int, basestring)):

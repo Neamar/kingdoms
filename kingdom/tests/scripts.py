@@ -259,6 +259,15 @@ class ScriptTest(TestCase):
 
 		self.assertEqual(self.k.get_value("foo"), datas)
 
+	def test_kingdom_value_store_nested_list(self):
+		"""
+		Store nested array values on the kingdom
+		"""
+		datas = [[self.f, 1, 2], [self.k, 1, 2]]
+		self.k.set_value("foo", datas)
+
+		self.assertEqual(self.k.get_value("foo"), datas)
+
 	def test_kingdom_value_store_queryset_fk(self):
 		"""
 		Store queryset values on the kingdom
