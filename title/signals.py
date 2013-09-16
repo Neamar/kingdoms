@@ -70,7 +70,7 @@ def check_folk_kingdom(sender, instance, **kwargs):
 		raise ValidationError("Cette personne ne fait pas partie du bon royaume.")
 
 
-@receiver(pre_save, sender=AvailableTitle)
+@receiver(post_save, sender=AvailableTitle)
 def on_availabletitle_affection_defection(sender, instance, **kwargs):
 	"""
 	Run on_affect and on_defect code.
