@@ -11,7 +11,7 @@ def app(request):
 	return render(request, 'app/index.html')
 
 
-def dependencies(request, output_type="svg"):
+def dependencies(request, output_type):
 	"""
 	Display dependencies graph, automatically generated just for you.
 	"""
@@ -20,9 +20,6 @@ def dependencies(request, output_type="svg"):
 	from django.core.management import call_command
 	from StringIO import StringIO
 
-	print output_type
-	if output_type not in ['png', 'svg']:
-		raise Http404("Unknown output type.")
 
 	dependencies_file_dot = '/tmp/dependencies.dot'
 
@@ -40,6 +37,9 @@ def dependencies(request, output_type="svg"):
 	dot_file = content.read()
 	with open(dependencies_file_dot, 'wb+') as temp_file:
 		temp_file.write(dot_file)
+
+	if output_type not in ['png', 'svg']:
+		raise Http404("Unknown output type.")
 
 	params = [
 		'dot',
