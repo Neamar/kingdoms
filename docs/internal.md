@@ -65,7 +65,7 @@ kingdom.start_pending_event("banquet")
 Pour accèder à une constante depuis un code :
 
 ```python
-if folk.age() <= C("MAJORITY"):
+if folk.age() <= C.MAJORITY:
   status = "Tu es trop jeune pour participer !"
 ```
 
