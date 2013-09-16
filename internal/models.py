@@ -50,7 +50,9 @@ class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
-class Status(DescribedModel):
+class Status(NamedModel):
+	class Meta:
+		verbose_name_plural = "status"
 	value = models.CharField(max_length=1024)
 
 
