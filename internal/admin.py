@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar, Freeze
-from kingdom.models import Kingdom
+from internal.models import Trigger, Constant, Recurring, FirstName, LastName, Function, Avatar, Freeze, Status
 
 
 class TriggerAdmin(admin.ModelAdmin):
@@ -38,6 +37,12 @@ class ConstantAdmin (admin.ModelAdmin):
 	ordering = ('name',)
 admin.site.register(Constant, ConstantAdmin)
 
+
+class StatusAdmin (admin.ModelAdmin):
+	list_display = ('name', 'value')
+	search_fields = ('name', 'value')
+	ordering = ('name',)
+admin.site.register(Status, StatusAdmin)
 
 class FunctionAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'description')
