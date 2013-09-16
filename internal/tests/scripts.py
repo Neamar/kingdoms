@@ -58,8 +58,8 @@ param = foo
 		)
 		c.save()
 
-		self.assertEqual(C('MAJORITY'), 18)
-		self.assertRaises(Constant.DoesNotExist, lambda: C('SOME_CONSTANT'))
+		self.assertEqual(C.MAJORITY, 18)
+		self.assertRaises(Constant.DoesNotExist, lambda: C.SOME_CONSTANT)
 
 	def test_status_shortcut(self):
 		"""
@@ -72,5 +72,5 @@ param = foo
 		)
 		s.save()
 
-		self.assertEqual(S('TOO_YOUNG'), s.value)
-		self.assertRaises(Status.DoesNotExist, lambda: S('SOME_STATUS'))
+		self.assertEqual(S.TOO_YOUNG, s.value)
+		self.assertRaises(Status.DoesNotExist, lambda: S.SOME_STATUS)

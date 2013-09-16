@@ -19,20 +19,30 @@ def f(name, **kwargs):
 	return call_function(name, **kwargs)
 
 
-def C(name):
+class _MagicWrapper(type):
+	def __getattr__(cls, name):
+		return cls.get(name)
+		
+class C:
 	"""
 	Quick access to constant values
 	"""
+	__metaclass__ = _MagicWrapper
 
-	return Constant.objects.get(name=name).value
+	@staticmethod
+	def get(name):
+		return Constant.objects.get(name=name).value
 
 
-def S(name):
+class S:
 	"""
 	Quick access to status values
 	"""
+	__metaclass__ = _MagicWrapper
 
-	return Status.objects.get(name=name).value
+	@staticmethod
+	def get(name):
+		return Status.objects.get(name=name).value
 
 
 def constant_value(name):
