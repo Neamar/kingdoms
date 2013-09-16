@@ -19,7 +19,7 @@ class StoredValueField(models.CharField):
 	array_regexp = re.compile("^\[.*\]$")
 
 	def __init__(self, *args, **kwargs):
-		kwargs['max_length'] = 1024
+		kwargs['max_length'] = 4096
 		kwargs['null'] = True
 		super(StoredValueField, self).__init__(*args, **kwargs)
 
