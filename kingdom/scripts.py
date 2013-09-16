@@ -4,6 +4,7 @@ Documentation for this lies in readme.md
 """
 
 from datetime import datetime
+from django.core.exceptions import ValidationError
 
 from kingdom.models import Kingdom, Folk, Message, Quality, Claim
 
@@ -115,6 +116,7 @@ def sum_folks(folks, attribute):
 	"""
 	Returns the sum of the chosen attribute
 	"""
+
 	return sum([getattr(folk, attribute) for folk in folks])
 
 
@@ -122,6 +124,7 @@ def avg_folks(folks, attribute):
 	"""
 	Returns the average of the chosen attribute
 	"""
+	
 	if len(folks) == 0:
 		return 0
 	else:

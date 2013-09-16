@@ -50,6 +50,10 @@ class Constant(DescribedModel):
 	value = models.IntegerField()
 
 
+class Status(DescribedModel):
+	value = models.CharField(max_length=1024)
+
+
 class Recurring(DescribedModel, ScriptedModel):
 	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6*24)
 
