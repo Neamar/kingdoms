@@ -21,7 +21,7 @@ class ScriptTest(TestCase):
 		"""
 		Test calls to function from inside a script
 		"""
-		
+
 		self.k.money = 0
 		self.k.save()
 
@@ -68,7 +68,6 @@ param = foo
 
 		s = Status(
 			name="TOO_YOUNG",
-			description="My description",
 			value="You're too young for this, kiddo."
 		)
 		s.save()
