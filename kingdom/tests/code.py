@@ -13,6 +13,7 @@ class CodeTest(TestCase):
 		"""
 		Check status is 'ok' by default
 		"""
+
 		code = """
 # No real code here.
 		"""
@@ -25,6 +26,7 @@ class CodeTest(TestCase):
 		"""
 		Check status is correctly retrieved
 		"""
+
 		code = """
 status="fine"
 		"""
@@ -37,6 +39,7 @@ status="fine"
 		"""
 		Check params is correctly retrieved
 		"""
+
 		code = """
 # No real code here
 		"""
@@ -48,6 +51,7 @@ status="fine"
 		"""
 		Check params is correctly retrieved
 		"""
+
 		code = """
 param=2
 		"""
@@ -59,6 +63,7 @@ param=2
 		"""
 		Check execute() has access to the ORM
 		"""
+
 		code = """
 param=Kingdom.objects.count()
 		"""
@@ -74,6 +79,7 @@ param=Kingdom.objects.count()
 		"""
 		Check execute() has access to the function defined in scripts.
 		"""
+
 		code = """
 k = Kingdom()
 k.save()
@@ -87,6 +93,7 @@ k.message("foo")
 		"""
 		Check execute() has access to the function defined in scripts.
 		"""
+
 		code = """
 param = fuzzy(10)
 		"""
@@ -98,6 +105,7 @@ param = fuzzy(10)
 		"""
 		Check you can stop code execution
 		"""
+
 		code = """
 status = "step1"
 stop()
@@ -113,6 +121,7 @@ status = "step2"
 		Check division is done in float.
 		This is not the default Python behavior.
 		"""
+
 		code = """
 param = 1 / 2
 		"""
@@ -124,6 +133,7 @@ param = 1 / 2
 		"""
 		Check execute() can execute complex scripts.
 		"""
+		
 		code = """
 def returns_number(nb):
 	str = "%s_kingdom" % nb

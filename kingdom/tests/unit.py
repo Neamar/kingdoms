@@ -297,6 +297,7 @@ class UnitTest(TestCase):
 		"""
 		You can't have two incompatible qualities.
 		"""
+		
 		q = Quality(
 			category=self.qc,
 			name="Avare",

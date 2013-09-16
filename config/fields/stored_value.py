@@ -17,6 +17,8 @@ class StoredValueField(models.CharField):
 
 	fk_regexp = re.compile("`\w*`:\w*")
 	array_regexp = re.compile("^\[.*\]$")
+	object_regexp = re.compile("^\{.*\}$")
+
 
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 4096
@@ -30,13 +32,17 @@ class StoredValueField(models.CharField):
 		from mission.models import Mission, PendingMission, PendingMissionAffectation
 		from title.models import Title, AvailableTitle
 
-		if isinstance(value, (models.Model, list, tuple, QuerySet)):
+		if isinstance(value, (models.Model, list, tuple, dict, QuerySet)):
 			return value
 
-		# Foreign Key
 		if isinstance(value, basestring) and self.array_regexp.match(value):
+			# Array
 			return [self.to_python(raw) for raw in json.loads(value)]
+		elif isinstance(value, basestring) and self.object_regexp.match(value):
+			# Dict
+			return {key: self.to_python(v) for key, v in json.loads(value).items()}
 		elif isinstance(value, basestring) and self.fk_regexp.match(value):
+			# Foreign Key
 			class_name, instance_id = value.split(':')
 			class_name = class_name[1:-1]
 			instance_id = int(instance_id, 10)
@@ -66,6 +72,8 @@ class StoredValueField(models.CharField):
 	def get_prep_value(self, value):
 		if isinstance(value, (list, tuple, QuerySet)):
 			return json.dumps([self.get_prep_value(v) for v in value])
+		elif isinstance(value, dict):
+			return json.dumps({key: self.get_prep_value(v) for key, v in value.items()})
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)
 		if isinstance(value, (int, basestring)):

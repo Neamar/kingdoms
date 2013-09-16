@@ -29,8 +29,9 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_message(self):
 		"""
-		Verify if the message is created
+		Verify the message is created
 		"""
+
 		self.m.delete()
 		self.k.message("coucou")
 		self.assertEqual("coucou", Message.objects.get(kingdom=self.k).content)
@@ -40,6 +41,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if the claim is created
 		"""
+
 		self.k2 = Kingdom()
 		self.k2.save()
 		self.k.add_claim(self.k2, Claim.REACHABLE)
@@ -47,8 +49,9 @@ class ScriptTest(TestCase):
 
 	def test_folk_die(self):
 		"""
-		Verify if the folk die
+		Verify the folk die
 		"""
+
 		self.assertIsNone(self.f.death)
 		self.f.die()
 		self.assertIsNotNone(self.f.death)
@@ -57,6 +60,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if the quality is added
 		"""
+
 		self.qc = QualityCategory(
 			name="Inherent qualities",
 			description="haha"
@@ -75,24 +79,17 @@ class ScriptTest(TestCase):
 		self.assertEqual(1, Folk.objects.get(kingdom=self.k).quality_set.count())
 
 	def test_folk_add_quality_fail(self):
-		self.qc = QualityCategory(
-			name="Inherent qualities",
-			description="haha"
-		)
-		self.qc.save()
-		self.q = Quality(
-			category=self.qc,
-			slug="smart",
-			name="Smart",
-			description="Just like me."
-		)
-		self.q.save()
+		"""
+		Can't affect non existing quality
+		"""
+
 		self.assertRaises(Quality.DoesNotExist, (lambda: self.f.add_quality("poor")))
 
 	def test_folk_remove_quality(self):
 		"""
 		Verify if the quality is removed
 		"""
+
 		self.qc = QualityCategory(
 			name="Inherent qualities",
 			description="haha"
@@ -115,6 +112,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if the good age is returned
 		"""
+
 		self.f.birth = datetime.now()-timedelta(days=10)
 		self.assertEqual(10, self.f.age())
 
@@ -122,6 +120,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if the folk has the quality
 		"""
+
 		self.qc = QualityCategory(
 			name="Inherent qualities",
 			description="haha"
@@ -142,6 +141,7 @@ class ScriptTest(TestCase):
 		"""
 		Verify if sum is correct
 		"""
+
 		self.f2 = Folk(
 			kingdom=self.k,
 			fight=10,
@@ -179,6 +179,7 @@ class ScriptTest(TestCase):
 		"""
 		Checks if the has_claim works
 		"""
+
 		self.k3 = Kingdom()
 		self.k3.save()
 
@@ -192,6 +193,7 @@ class ScriptTest(TestCase):
 		"""
 		Store string values on the kingdom
 		"""
+
 		self.k.set_value("foo", "bar")
 
 		self.assertEqual(self.k.get_value("foo"), "bar")
@@ -220,6 +222,7 @@ class ScriptTest(TestCase):
 		"""
 		Store foreign keys values on the kingdom
 		"""
+
 		self.k.set_value("foo", self.f)
 
 		self.assertEqual(self.k.get_value("foo"), self.f)
@@ -228,6 +231,7 @@ class ScriptTest(TestCase):
 		"""
 		Can't store unsaved models.
 		"""
+
 		f2 = Folk(kingdom=self.k)
 
 		self.assertRaises(ValidationError, (lambda: self.k.set_value("foo", f2)))
@@ -236,6 +240,7 @@ class ScriptTest(TestCase):
 		"""
 		Store string values on the kingdom
 		"""
+
 		self.k.set_value("foo", self.f)
 
 		self.f.delete()
@@ -245,6 +250,7 @@ class ScriptTest(TestCase):
 		"""
 		Store empty array values on the kingdom
 		"""
+
 		datas = []
 		self.k.set_value("foo", datas)
 
@@ -254,6 +260,7 @@ class ScriptTest(TestCase):
 		"""
 		Store array values on the kingdom
 		"""
+
 		datas = [1, 2, "lol", True]
 		self.k.set_value("foo", datas)
 
@@ -263,15 +270,46 @@ class ScriptTest(TestCase):
 		"""
 		Store nested array values on the kingdom
 		"""
+
 		datas = [[self.f, 1, 2], [self.k, 1, 2]]
 		self.k.set_value("foo", datas)
 
 		self.assertEqual(self.k.get_value("foo"), datas)
 
+	def test_kingdom_value_store_dict(self):
+		"""
+		Store dict values on the kingdom
+		"""
+
+		datas = {
+			'man': "himself",
+			'woman': "herself",
+		}
+
+		self.k.set_value("foo", datas)
+
+		self.assertEqual(self.k.get_value("foo"), datas)
+
+	def test_kingdom_value_store_nested_dict(self):
+		"""
+		Store nested dict values on the kingdom
+		"""
+
+		datas = {
+			'man': "himself",
+			'woman': {
+				"lol": "herself"
+			}
+		}
+
+		self.k.set_value("foo", datas)
+
+		self.assertEqual(self.k.get_value("foo"), datas)
 	def test_kingdom_value_store_queryset_fk(self):
 		"""
 		Store queryset values on the kingdom
 		"""
+
 		Folk(kingdom=self.k).save()
 		Folk(kingdom=self.k).save()
 		Folk(kingdom=self.k).save()
@@ -287,6 +325,7 @@ class ScriptTest(TestCase):
 		"""
 		Store list of fk values on the kingdom
 		"""
+
 		f2 = Folk(kingdom=self.k)
 		f2.save()
 		datas = [self.f, f2, True, 0, "trololol"]
@@ -295,6 +334,28 @@ class ScriptTest(TestCase):
 		stored_datas = self.k.get_value("foo")
 		for r, s in zip(datas, stored_datas):
 			self.assertEqual(r, s)
+
+	def test_kingdom_value_store_mixin(self):
+		"""
+		Mixin values.
+		"""
+
+		datas = {
+			'string': "string",
+			'array': [1, 2, 3],
+			'fk': self.k,
+			'none': None,
+			'bool': True,
+			'mixed_array': [1, None, self.f],
+			'nested_arrays': [1, 2, [3, 4, [5, 6]]],
+			'nested_object': {
+				'outofidea': True
+			}
+		}
+
+		self.k.set_value("foo", datas)
+
+		self.assertEqual(self.k.get_value("foo"), datas)
 
 	def test_kingdom_value_retrieve_undefined(self):
 		"""
@@ -308,6 +369,7 @@ class ScriptTest(TestCase):
 		"""
 		get_values retrieve all values.
 		"""
+
 		obj = {
 			'val1': 1,
 			'val2': "Hello",
@@ -324,6 +386,7 @@ class ScriptTest(TestCase):
 		"""
 		Test has_value code
 		"""
+
 		self.assertFalse(self.k.has_value("foo"))
 
 		self.k.set_value('foo', 'bar')
@@ -334,6 +397,7 @@ class ScriptTest(TestCase):
 		"""
 		Test we can write to the same value multiple time.
 		"""
+
 		self.k.set_value('foo', 'bar')
 		self.assertEqual(self.k.get_value("foo"), 'bar')
 
