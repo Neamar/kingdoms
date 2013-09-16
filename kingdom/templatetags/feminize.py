@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import template
 from kingdom.models import Folk
 register = template.Library()

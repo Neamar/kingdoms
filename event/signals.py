@@ -38,6 +38,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		from django.template import add_to_builtins
 		add_to_builtins("kingdom.templatetags.folks_list")
 		add_to_builtins("kingdom.templatetags.feminize")
+		add_to_builtins("kingdom.templatetags.number")
 
 		raw_context = {}
 		raw_context['kingdom'] = instance.kingdom
