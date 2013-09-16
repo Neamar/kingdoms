@@ -15,7 +15,7 @@ class StoredValueField(models.CharField):
 	__metaclass__ = models.SubfieldBase
 
 	fk_regexp = re.compile("`\w*`:\w*")
-	array_regexp = re.compile("\[.*\]")
+	array_regexp = re.compile("^\[.*\]$")
 
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 1024
