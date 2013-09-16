@@ -1,4 +1,4 @@
-from internal.models import Function, Constant
+from internal.models import Function, Constant, Status
 
 
 def call_function(name, **kwargs):
@@ -25,6 +25,15 @@ def C(name):
 	"""
 
 	return Constant.objects.get(name=name).value
+
+
+def S(name):
+	"""
+	Quick access to status values
+	"""
+
+	return Status.objects.get(name=name).value
+
 
 def constant_value(name):
 	return Constant.objects.get(name=name).value

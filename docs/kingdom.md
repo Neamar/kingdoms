@@ -56,6 +56,12 @@ Que scripter ?
 #### Récupérer une équipe
 * `kingdom.get_team("team_slug")`
 
+#### Récupérer la somme des compétences d'un groupe
+* `sum_folks(folks, 'fight')`
+
+#### Récupérer la moyenne des compétences d'un groupe
+* `avg_folks(folks, 'fight')`
+
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
 * `folk.die()` : tue la personne (et enregistre sa mort, pas besoin de `.save()`)

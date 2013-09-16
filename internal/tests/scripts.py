@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from kingdom.models import Kingdom, Folk
-from internal.models import Function, Constant
+from internal.models import Function, Constant, Status
 from internal.scripts import *
 
 
@@ -21,6 +21,7 @@ class ScriptTest(TestCase):
 		"""
 		Test calls to function from inside a script
 		"""
+		
 		self.k.money = 0
 		self.k.save()
 
@@ -49,6 +50,7 @@ param = foo
 		"""
 		Test constant values can be directly accessed
 		"""
+
 		c = Constant(
 			name="MAJORITY",
 			description="Age to come of age",
@@ -58,3 +60,18 @@ param = foo
 
 		self.assertEqual(C('MAJORITY'), 18)
 		self.assertRaises(Constant.DoesNotExist, lambda: C('SOME_CONSTANT'))
+
+	def test_status_shortcut(self):
+		"""
+		Test status values can be directly accessed
+		"""
+
+		s = Status(
+			name="TOO_YOUNG",
+			description="My description",
+			value="You're too young for this, kiddo."
+		)
+		s.save()
+
+		self.assertEqual(S('TOO_YOUNG'), s.value)
+		self.assertRaises(Status.DoesNotExist, lambda: S('SOME_STATUS'))
