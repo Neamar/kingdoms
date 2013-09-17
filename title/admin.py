@@ -5,8 +5,8 @@ from title.models import Title, AvailableTitle
 
 
 class TitleAdmin(admin.ModelAdmin):
-	list_display = ('name', 'description')
-	search_fields = ('name', 'description')
+	list_display = ('name', 'slug', 'description')
+	search_fields = ('name', 'slug', 'description')
 admin.site.register(Title, TitleAdmin)
 
 
