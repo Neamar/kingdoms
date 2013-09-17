@@ -11,6 +11,6 @@ admin.site.register(Title, TitleAdmin)
 
 
 class AvailableTitleAdmin(admin.ModelAdmin):
-	list_display = ('title', 'kingdom', 'folk')
+	list_display = ('title', 'kingdom', 'folk', 'last_folk')
 	list_filter = ('title',)
 admin.site.register(AvailableTitle, AvailableTitleAdmin)

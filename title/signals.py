@@ -85,4 +85,7 @@ def on_availabletitle_affection_defection(sender, instance, **kwargs):
 		if instance.folk is not None:
 			instance.affect(instance.folk)
 		
+		# Save changes. This will run again all signals,
+		# However we can't do this on pre_save since it may trigger an infinite recursion loop in some cases
 		instance.last_folk = instance.folk
+		instance.save()

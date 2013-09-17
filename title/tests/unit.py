@@ -236,9 +236,6 @@ folk.save()
 """
 		self.t.save()
 
-		# Sanity check
-		self.assertNotEquals(self.f.loyalty, 50)
-
 		at = AvailableTitle(
 			title=self.t,
 			kingdom=self.k,
@@ -249,10 +246,11 @@ folk.save()
 		# Sanity check
 		self.assertNotEquals(self.f.loyalty, 50)
 
+		at = AvailableTitle.objects.get(pk=at.pk)
 		at.folk = None
 		at.save()
 
-		self.assertEqual(self.f.loyalty, 50)
+		self.assertEqual(Folk.objects.get(pk=self.f.pk).loyalty, 50)
 
 	def test_title_affect_defect(self):
 		"""
@@ -287,7 +285,6 @@ folk.save()
 		)
 		at.save()
 
-		# Assertion
 		self.assertEqual(self.f.loyalty, 80)
 
 		at.folk = f2
