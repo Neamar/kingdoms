@@ -1,4 +1,5 @@
-from random import randint
+# -*- coding: utf-8 -*-
+from random import randint, gauss
 
 
 def random_in(tab):
@@ -17,15 +18,24 @@ def random_value(min, max):
 	return randint(min, max)
 
 
-def random_gauss(min, max, mu, sigma): 
+def random_gauss(min, max, mu = None, sigma = None): 
 	"""
 	Return a random number from a truncated Gaussian distribution.
 	"""
-	
-	while 1: 
-		x = randint.gauss(mu, sigma) 
+
+	# Compute default μ and σ
+	if mu is None:
+		mu = (min + max) / 2
+	if sigma is None:
+		sigma = (min + max) / 6
+
+	for i in range(15):
+		x = gauss(mu, sigma) 
 		if min <= x <= max: 
-			return x 
+			return x
+	# With the default mu and sigma, we have 99.7% of chance to find the value in one iteration.
+	# Leaving the for loop means miscalculated mu and sigma.
+	raise Exception("Bad gaussian parameter values, won't terminate.")
 
 
 def random_die(max):
