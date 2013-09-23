@@ -207,6 +207,15 @@ class ScriptTest(TestCase):
 
 		self.assertEqual(self.k.get_value("foo"), 2)
 
+	def test_kingdom_value_store_float(self):
+		"""
+		Store float values on the kingdom
+		"""
+
+		self.k.set_value("foo",  1.25)
+
+		self.assertEqual(self.k.get_value("foo"),  1.25)
+
 	def test_kingdom_value_store_boolean(self):
 		"""
 		Store int values on the kingdom
@@ -305,6 +314,7 @@ class ScriptTest(TestCase):
 		self.k.set_value("foo", datas)
 
 		self.assertEqual(self.k.get_value("foo"), datas)
+
 	def test_kingdom_value_store_queryset_fk(self):
 		"""
 		Store queryset values on the kingdom

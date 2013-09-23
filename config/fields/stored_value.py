@@ -63,7 +63,7 @@ class StoredValueField(models.CharField):
 			return False
 		else:
 			try:
-				return int(value)
+				return float(value)
 			except ValueError:
 				return value
 			except TypeError:
@@ -76,7 +76,7 @@ class StoredValueField(models.CharField):
 			return json.dumps({key: self.get_prep_value(v) for key, v in value.items()})
 		elif isinstance(value, bool):
 			return "`%s`" % str(value)
-		if isinstance(value, (int, basestring)):
+		if isinstance(value, (int, basestring, float)):
 			return value
 		elif isinstance(value, models.Model):
 			if value.pk is None:
@@ -86,7 +86,7 @@ class StoredValueField(models.CharField):
 		elif value is None:
 			return None
 		else:
-			raise ValidationError("Context must be int, string or DB object : %s" % value)
+			raise ValidationError("Value must be int, string or DB object : %s" % value)
 
 	def value_to_string(self, obj):
 		value = self._get_val_from_obj(obj)
