@@ -144,6 +144,14 @@ class UnitTest(TestCase):
 		# Can't be affected twice
 		self.assertRaises(IntegrityError, pbsma2.save)
 
+	def test_autoremove_pending_bargain_on_kingdom_deletion(self):
+		"""
+		When a kingdom is removed, all PendingBargain it was part of are deleted
+		"""
+		self.pbk1.delete()
+
+		self.assertRaises(PendingBargain.DoesNotExist, lambda: PendingBargain.objects.get(pk=self.pb.pk))
+
 	def test_cant_share_started_pending_mission(self):
 		"""
 		A PendingBargainSharedMission must not be started
