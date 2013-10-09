@@ -40,6 +40,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		add_to_builtins("kingdom.templatetags.feminize")
 		add_to_builtins("kingdom.templatetags.number")
 		add_to_builtins("kingdom.templatetags.elide")
+		add_to_builtins("kingdom.templatetags.folk_details")
 
 		raw_context = {}
 		raw_context['kingdom'] = instance.kingdom
@@ -81,7 +82,7 @@ def check_pending_event_action_sanity(sender, instance, **kwargs):
 	"""
 	Check the actions refers to this event.
 	"""
-	
+
 	if instance.event_action.event != instance.pending_event.event:
 		raise IntegrityError("The events in EventAction and PendingEventAction are different ")
 

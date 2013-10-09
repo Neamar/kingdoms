@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from kingdom.management.commands.cron import cron_minute
-from kingdom.models import Kingdom, Folk
+from kingdom.models import Kingdom, Folk, QualityCategory, Quality
 from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
 
 
@@ -72,7 +72,7 @@ class UnitTest(TestCase):
 status="notAllowed"
 """
 		self.e.save()
-		
+
 		pe = PendingEvent(
 			event=self.e,
 			kingdom=self.k,
@@ -198,7 +198,7 @@ kingdom.save()
 		)
 		pe.save()
 		self.assertEqual(self.k.population, 10)
-		
+
 		# Save again : no action
 		pe.save()
 		self.assertEqual(self.k.population, 10)
@@ -264,7 +264,7 @@ kingdom.save()
 
 		self.assertEqual(1, len(self.k.message_set.all()))
 		self.assertEqual(self.a.message, self.k.message_set.all()[0].content)
-		
+
 	def test_templates_and_variables(self):
 		"""
 		Check templating works on event and EventAction.
@@ -389,6 +389,39 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.text, "batard, batarde")
+
+
+        def test_templates_and_folk_details_templatetags(self):
+            """
+            Check folk_details template_tags.
+            """
+            folk = Folk(first_name="septon", sex=Folk.MALE, kingdom=self.k)
+            cat  = QualityCategory(name="boa",description="so")
+            cat.save()
+            quality = Quality(slug="lol",name="sdf",category=cat)
+            quality.save()
+            folk.save()
+
+            folk.quality_set.add(quality)
+
+            self.e.text = "{{ septon|folk_details }}"
+            self.e.save()
+
+            pe = PendingEvent(
+                event=self.e,
+                kingdom=self.k,
+                started=None
+            )
+
+            pe.save()
+            pe.set_value("septon", folk)
+
+            pe.started = datetime.now()
+            pe.save()
+
+            self.assertTrue(quality.name in pe.text)
+            self.assertTrue(str(folk.fight) in pe.text)
+            self.assertTrue("<table>" in pe.text)
 
 	def test_templates_and_number_templatetags(self):
 		"""
@@ -589,7 +622,7 @@ pe2.start()
 		self.pe.save()
 
 		self.pe.start()
-		
+
 		self.assertRaises(ValidationError, (lambda: self.pe.start()))
 
 	def test_next_event(self):
