@@ -59,7 +59,7 @@ class Status(NamedModel):
 class Recurring(DescribedModel, ScriptedModel):
 	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6*24)
 
-	kingdom_list = ScriptField(blank=True, help_text="Called to retrieve a list of kingdoms in `param`. All this Kingdom will be applied the `on_fire` code. Defaults to all kingdoms.", default="")
+	kingdom_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of kingdoms in `param`. All this Kingdom will be applied the `on_fire` code. Defaults to all kingdoms.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)
 
 	def kingdoms(self):
