@@ -63,7 +63,11 @@ class StoredValueField(models.CharField):
 			return False
 		else:
 			try:
-				return float(value)
+				v = float(value)
+				if int(v) == v:
+					return int(v)
+				else:
+					return v
 			except ValueError:
 				return value
 			except TypeError:
