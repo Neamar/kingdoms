@@ -90,7 +90,7 @@ class StoredValueField(models.CharField):
 		elif value is None:
 			return None
 		else:
-			raise ValidationError("Value must be int, string or DB object : %s" % value)
+			raise ValidationError("Value must be int, string, bool, list or DB object : %s" % value)
 
 	def value_to_string(self, obj):
 		value = self._get_val_from_obj(obj)

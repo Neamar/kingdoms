@@ -391,37 +391,37 @@ param.set_value("kingdom", kingdom)
 		self.assertEqual(pe.text, "batard, batarde")
 
 
-        def test_templates_and_folk_details_templatetags(self):
-            """
-            Check folk_details template_tags.
-            """
-            folk = Folk(first_name="septon", sex=Folk.MALE, kingdom=self.k)
-            cat  = QualityCategory(name="boa",description="so")
-            cat.save()
-            quality = Quality(slug="lol",name="sdf",category=cat)
-            quality.save()
-            folk.save()
+	def test_templates_and_folk_details_templatetags(self):
+		"""
+		Check folk_details template_tags.
+		"""
+		folk = Folk(first_name="septon", sex=Folk.MALE, kingdom=self.k)
+		cat  = QualityCategory(name="boa",description="so")
+		cat.save()
+		quality = Quality(slug="lol",name="sdf",category=cat)
+		quality.save()
+		folk.save()
 
-            folk.quality_set.add(quality)
+		folk.quality_set.add(quality)
 
-            self.e.text = "{{ septon|folk_details }}"
-            self.e.save()
+		self.e.text = "{{ septon|folk_details }}"
+		self.e.save()
 
-            pe = PendingEvent(
-                event=self.e,
-                kingdom=self.k,
-                started=None
-            )
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
 
-            pe.save()
-            pe.set_value("septon", folk)
+		pe.save()
+		pe.set_value("septon", folk)
 
-            pe.started = datetime.now()
-            pe.save()
+		pe.started = datetime.now()
+		pe.save()
 
-            self.assertTrue(quality.name in pe.text)
-            self.assertTrue(str(folk.fight) in pe.text)
-            self.assertTrue("<table>" in pe.text)
+		self.assertTrue(quality.name in pe.text)
+		self.assertTrue(str(folk.fight) in pe.text)
+		self.assertTrue("<table>" in pe.text)
 
 	def test_templates_and_number_templatetags(self):
 		"""
