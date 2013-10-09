@@ -173,9 +173,9 @@ class ScriptedModel(models.Model):
 
 		# Execute code
 		code = getattr(model, attr)
-
+		filename = "%s(%s).%s" % (model.__class__.__name__, model.pk, attr)
 		try:
-			status, param = execute(code, self, context)
+			status, param = execute(code, param=self, context=context, filename=filename)
 		except Exception as e:
 			# Let's try to display something useful for the scripter team.
 			import traceback
@@ -183,12 +183,6 @@ class ScriptedModel(models.Model):
 
 			# Retrieve the traceback.
 			trace = traceback.format_exc().split("\n")
-
-			print "@@@@@@@@@@@@@@@@@@@@@"
-			print "@@ERROR in %s.%s(%s)" % (model.__class__.__name__, attr, model.pk)
-			print "---------------------"
-			print filter(lambda x: x in string.printable, code)
-			print "@@@@@@@@@@@@@@@@@@@@@"
 
 			raise
 

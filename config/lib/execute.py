@@ -33,13 +33,15 @@ def stop():
 	raise StopScript()
 
 
-def execute(code, param=None, context=None):
+def execute(code, param=None, context=None, filename='<string>'):
 	"""
 	Runs the specified code, with access to specified context.
 
 	param is the param to be used in the script, it will be returned when specified.
 
 	context indicates additional contexts you want to give to the scripter.
+
+	filename is the name that will be displayed in the stacktrace.
 	"""
 
 	status = 'ok'
@@ -52,7 +54,7 @@ def execute(code, param=None, context=None):
 
 	if code is not None:
 		try:
-			exec(code)
+			exec(compile(code, filename, 'exec'))
 		except StopScript:
 			pass
 
