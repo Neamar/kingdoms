@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.db.models.signals import pre_delete, pre_save, post_save
+from django.db.models.signals import pre_delete, post_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from bargain.models import PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
+from bargain.models import PendingBargain, PendingBargainKingdom, PendingBargainSharedMission, PendingBargainSharedMissionAffectation
 from mission.models import PendingMission
 
 
@@ -87,6 +87,20 @@ def delete_shared_pending_mission_on_start(sender, instance, **kwargs):
 
 	if instance.started and instance.started is not None:
 		PendingBargainSharedMission.objects.filter(pending_mission=instance).delete()
+
+
+@receiver(post_delete, sender=PendingBargainKingdom)
+def delete_pending_bargain_on_kingdom_deletion(sender, instance, **kwargs):
+	"""
+	When a PendingBargainKingdom is destroyed (e.g. when a kingdom is removed), we remove all the PendingBargain to avoid dangling bargains.
+	"""
+
+	try:
+		instance.pending_bargain.delete()
+	except PendingBargain.DoesNotExist:
+		# PendingBargain is already removed, nothing to do.
+		pass
+
 
 
 @receiver(post_save, sender=PendingBargainKingdom)
