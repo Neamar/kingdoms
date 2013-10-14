@@ -20,17 +20,20 @@ from event.scripts import *
 from mission.scripts import *
 
 
+DEFAULT_STATUS = "ok"
+
 class StopScript(Exception):
 	"""
 	Class to emulate a "return" in the eval'd code.
 	"""
 	pass
 
-def stop():
+
+def stop(status=""):
 	"""
 	Stop script execution right now.
 	"""
-	raise StopScript()
+	raise StopScript(status)
 
 
 def execute(code, param=None, context=None, filename='<string>'):
@@ -55,7 +58,9 @@ def execute(code, param=None, context=None, filename='<string>'):
 	if code is not None:
 		try:
 			exec(compile(code, filename, 'exec'))
-		except StopScript:
+		except StopScript, ss:
+			if str(ss) != "":
+				status = str(ss)
 			pass
 
 	return status, param

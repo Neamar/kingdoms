@@ -101,7 +101,7 @@ param = fuzzy(10)
 		status, param = execute(code, param=False)
 		self.assertTrue(param > -10 and param < 10)
 
-	def test_code(self):
+	def test_code_stop(self):
 		"""
 		Check you can stop code execution
 		"""
@@ -115,6 +115,19 @@ status = "step2"
 
 		status, param = execute(code, param=False)
 		self.assertEqual(status, "step1")
+
+	def test_code_stop_status(self):
+		"""
+		Check you can stop code execution
+		"""
+
+		code = """
+status = "step1"
+stop("step2")
+		"""
+
+		status, param = execute(code, param=False)
+		self.assertEqual(status, "step2")
 
 	def test_float_division(self):
 		"""
