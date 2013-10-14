@@ -36,7 +36,7 @@ class Command(BaseCommand):
 			self.stderr.write("Aborted.")
 			return 
 
-		r = re.compile(args[0])
+		r = re.compile(args[0], flags=re.UNICODE)
 		count = 0
 
 		for model in models.get_models():

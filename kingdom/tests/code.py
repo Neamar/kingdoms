@@ -118,7 +118,7 @@ status = "step2"
 
 	def test_code_stop_status(self):
 		"""
-		Check you can stop code execution
+		Check you can stop code execution and return a status
 		"""
 
 		code = """
