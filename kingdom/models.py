@@ -157,6 +157,12 @@ class Quality(ScriptedModel):
 
 		return status
 
+	def name_for(self, folk):
+		if folk.sex == Folk.MALE:
+			return self.name
+		else:
+			return self.female_name
+
 	def __unicode__(self):
 		return self.name
 

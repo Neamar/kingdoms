@@ -362,3 +362,17 @@ folk.kingdom.save()
 
 		self.f.quality_set.remove(q)
 		self.assertEqual(self.k.money, 15)
+
+	def test_quality_name_for(self):
+		q = Quality(
+			category=self.qc,
+			name="male",
+			female_name="female"
+		)
+		q.save()
+
+		self.f.sex = Folk.MALE
+		self.assertEqual("male", q.name_for(self.f))
+
+		self.f.sex = Folk.FEMALE
+		self.assertEqual("female", q.name_for(self.f))
