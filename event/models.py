@@ -119,6 +119,15 @@ class PendingEvent(ScriptedModel, ContextModel):
 			pending_event2.set_value(name, value)
 		return pending_event2
 
+	def regenerate(self):
+		"""
+		Regenerate template text
+		Note: PendingEventAction are not affected
+		"""
+
+		self.is_started = False
+		self.is_regenerating = True
+		self.save()
 
 class PendingEventAction(ScriptedModel):
 	"""

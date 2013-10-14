@@ -62,6 +62,12 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		instance.is_started = True
 		instance.save()
 
+		if hasattr(instance, 'is_regenerating'):
+			# We were only requiring to refresh the main text
+			# No exiting to avoid the creation of unrequired PEA
+			del instance.is_regenerating
+			return
+
 		for event_action in instance.event.eventaction_set.all():
 			text_template = Template(event_action.text)
 			message_template = Template(event_action.message)
