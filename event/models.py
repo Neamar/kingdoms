@@ -125,6 +125,9 @@ class PendingEventAction(ScriptedModel):
 	Actions available for the current PendingEvent.
 	"""
 
+	class Meta:
+		unique_together = ('pending_event', 'event_action')
+
 	pending_event = models.ForeignKey(PendingEvent)
 	event_action = models.ForeignKey(EventAction)
 	text = models.CharField(editable=False, max_length=512)
