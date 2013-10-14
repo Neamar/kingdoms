@@ -295,37 +295,6 @@ param.set_value("kingdom", kingdom)
 		self.assertEqual(pea.text, "ACTION:test-666")
 		self.assertEqual(pea.message, "ACTIONLOG:test-666")
 
-	def test_templates_and_variables_refresh(self):
-		"""
-		Check templating works on event and EventAction.
-		"""
-
-		self.e.text = "EVENT:{{ value }}-{{ kingdom.money}}"
-		self.e.save()
-
-		pe = PendingEvent(
-			event=self.e,
-			kingdom=self.k,
-			started=None
-		)
-		pe.save()
-		pe.set_value("value", "test")
-		pe.set_value("kingdom", self.k)
-		pe.start()
-
-		# Sanity check
-		self.assertEqual(pe.text, "EVENT:test-0")
-
-		# Now, we're changing some stuff
-		self.k.money = 200
-		self.k.save()
-		pe.set_value("value", "test2")
-
-		# And refresh
-		pe.regenerate()
-
-		self.assertEqual(pe.text, "EVENT:test2-200")
-
 	def test_templates_and_title_context(self):
 		"""
 		Check templating works on event and EventAction with default context title.
