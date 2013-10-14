@@ -112,7 +112,7 @@ def folk_remove_quality(self, slug):
 Folk.remove_quality = folk_remove_quality
 
 
-def sum_folks(folks, attribute):
+def sum_stats(folks, attribute):
 	"""
 	Returns the sum of the chosen attribute
 	"""
@@ -120,7 +120,7 @@ def sum_folks(folks, attribute):
 	return sum([getattr(folk, attribute) for folk in folks])
 
 
-def avg_folks(folks, attribute):
+def avg_stats(folks, attribute):
 	"""
 	Returns the average of the chosen attribute
 	"""
@@ -128,4 +128,4 @@ def avg_folks(folks, attribute):
 	if len(folks) == 0:
 		return 0
 	else:
-		return sum_folks(folks, attribute) / len(folks)
+		return sum_stats(folks, attribute) / len(folks)

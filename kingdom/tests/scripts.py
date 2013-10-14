@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 
 from kingdom.models import Kingdom, Folk, Claim, Quality, QualityCategory, Message
-from kingdom.scripts import sum_folks, avg_folks
+from kingdom.scripts import sum_stats, avg_stats
 
 
 class ScriptTest(TestCase):
@@ -137,7 +137,7 @@ class ScriptTest(TestCase):
 		self.f.add_quality("smart")
 		self.assertEqual(True, self.f.has_quality("smart"))
 
-	def test_sum_folks(self):
+	def test_sum_stats(self):
 		"""
 		Verify if sum is correct
 		"""
@@ -152,9 +152,9 @@ class ScriptTest(TestCase):
 		self.f.fight = 5
 		self.f.save()
 
-		self.assertEqual(15, sum_folks([self.f, self.f2], "fight"))
+		self.assertEqual(15, sum_stats([self.f, self.f2], "fight"))
 
-	def test_avg_folks(self):
+	def test_avg_stats(self):
 		"""
 		Verify if avg is correct
 		"""
@@ -170,10 +170,10 @@ class ScriptTest(TestCase):
 		self.f.save()
 
 		# Average code
-		self.assertEqual(8, avg_folks([self.f, self.f2], "fight"))
+		self.assertEqual(8, avg_stats([self.f, self.f2], "fight"))
 
 		# Empty list
-		self.assertEqual(0, avg_folks([], "fight"))
+		self.assertEqual(0, avg_stats([], "fight"))
 
 	def test_has_claim(self):
 		"""
