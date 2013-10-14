@@ -5,6 +5,7 @@ Execute some code in a sandboxed environnment
 from __future__ import division
 
 from datetime import datetime, timedelta
+from django.db.models import Q
 
 from kingdom.models import *
 from internal.models import *
