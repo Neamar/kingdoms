@@ -1,6 +1,8 @@
+import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
+from django.conf import settings
 
 
 @login_required
@@ -9,6 +11,21 @@ def app(request):
 	Display main app
 	"""
 	return render(request, 'app/index.html')
+
+
+def errors(request):
+	if settings.ERROR_FILE == '':
+		raise Http404("Error file not configured -- set up ERROR_FILE in settings.")
+
+	with open(settings.ERROR_FILE, 'r') as content_file:
+		content = content_file.read()
+
+	content = content.replace('<', '&lt;')
+	content = content.replace('>', '&gt;');
+	content = re.sub(r'\[(.+)(Internal Server Error.+)\n', r'<hr><span style="color:red;">\g<2></span>\n', content)
+	content = re.sub(r'\[error\]([^\n]+module&gt;)', r'<b>\g<0></b>', content)
+	content = re.sub(r'\[error\] (\S.*)\n', r'<b>\g<1></b>\n', content)
+	return HttpResponse('<pre>' + content + '</pre>', content_type="text/html")
 
 
 def dependencies(request, output_type):

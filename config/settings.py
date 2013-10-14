@@ -3,6 +3,7 @@ import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+ERROR_FILE = ''
 
 BASE_DIR = os.path.normpath(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
