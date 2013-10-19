@@ -2,4 +2,4 @@
 source = kingdom,mission,title,internal,event,bargain,reporting
 
 [report]
-omit = */migrations/*
+omit = */migrations/*,*/admin.py
