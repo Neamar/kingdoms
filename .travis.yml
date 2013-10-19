@@ -4,11 +4,10 @@ env:
   - DB=sqlite
   - DB=postgres
 install:
-  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'DROP DATABASE IF EXISTS kingdoms;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database kingdoms;' -U postgres; fi"
   - pip install -r requirements.txt --use-mirrors
   - pip install coveralls --use-mirrors
 script: 
-  coverage run --source=kingdom,mission,title,internal,event,bargain,reporting manage.py test kingdom mission title internal event bargain reporting"
+  coverage run --source=kingdom,mission,title,internal,event,bargain,reporting manage.py test kingdom mission title internal event bargain reporting
 after_success:
   coveralls
