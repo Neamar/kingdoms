@@ -67,5 +67,6 @@ Code Status
 -----------
 
 [![Travis Status](https://api.travis-ci.org/Neamar/kingdoms.png)](https://travis-ci.org/Neamar/kingdoms)
+[![Coverage Status](https://coveralls.io/repos/Neamar/kingdoms/badge.png?branch=master)](https://coveralls.io/r/Neamar/kingdoms?branch=master)
 
 For any questions, ask on contact@neamar.fr
