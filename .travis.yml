@@ -8,6 +8,6 @@ install:
   - pip install -r requirements.txt --use-mirrors
   - pip install coveralls --use-mirrors
 script: 
-  coverage run --source=kingdom,mission,title,internal,event,bargain,reporting --omit=*/migrations/* manage.py test kingdom mission title internal event bargain reporting
+  coverage run --source=kingdom,mission,title,internal,event,bargain,reporting --omit=\*/migrations/\* manage.py test kingdom mission title internal event bargain reporting
 after_success:
   coveralls
