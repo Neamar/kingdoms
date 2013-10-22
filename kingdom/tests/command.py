@@ -18,6 +18,18 @@ class CommandTest(TestCase):
 		)
 		self.t.save()
 
+	def test_replace_args(self):
+		"""
+		Check replacements occurs.
+		"""
+
+		content = StringIO()
+		management.call_command('replace', stderr=content)
+
+		content.seek(0)
+		out = content.read()
+		self.assertTrue('specify 2 args' in out)
+
 	def test_replace(self):
 		"""
 		Check replacements occurs.
