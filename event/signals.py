@@ -34,7 +34,6 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 			instance.delete()
 			return
 
-		import django.template.loader
 		from django.template import add_to_builtins
 		add_to_builtins("kingdom.templatetags.folks_list")
 		add_to_builtins("kingdom.templatetags.feminize")

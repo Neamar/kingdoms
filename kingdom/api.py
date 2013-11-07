@@ -1,4 +1,4 @@
-from kingdom.models import Folk, Message, Quality
+from kingdom.models import Quality
 from kingdom.serializers import serialize_folk, serialize_kingdom, serialize_message, serialize_quality
 
 

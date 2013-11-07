@@ -2,7 +2,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
-from django.template.defaultfilters import slugify
 
 from kingdom.models import Folk
 from title.models import AvailableTitle

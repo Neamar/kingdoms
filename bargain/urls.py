@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('bargain.views',
 	url(r'^create/(?P<pk>[0-9]+)$', 'pending_bargain_create'),

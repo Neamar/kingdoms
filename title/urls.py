@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('title.views',
 	url(r'^available/(?P<pk>[0-9]+)/affect', 'available_title_affect'),
