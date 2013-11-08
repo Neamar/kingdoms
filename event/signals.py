@@ -46,9 +46,12 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		raw_context['folks'] = instance.kingdom.folk_set.all()
 		raw_context['dynasty'] = lambda: instance.kingdom.user.username
 
-		# Ugly, but necessary: give access to titles in event context.
+		# Access to folk in titles using title.[title_name]
 		titles = lambda: {at.title.slug: at.folk for at in instance.kingdom.availabletitle_set.all().select_related('title')}
 		raw_context['title'] = memoize(titles, {}, 0)
+
+		# Access to kingdom values using kingdom.values.[name]
+		raw_context['kingdom'].values = memoize(instance.kingdom.get_values, {}, 0)
 
 		raw_context.update(instance.get_values())
 
