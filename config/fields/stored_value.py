@@ -15,6 +15,9 @@ class CustomEncoder(json.JSONEncoder):
 	def default(self, obj):
 		if isinstance(obj, models.Model):
 			return self.encode_model(obj)
+		elif isinstance(obj, QuerySet):
+			return self.encode_queryset(obj)
+
 		# Let the base class default method raise the TypeError
 		return json.JSONEncoder.default(self, obj)
 
@@ -23,10 +26,13 @@ class CustomEncoder(json.JSONEncoder):
 			raise ValidationError("ForeignKey must be saved before being stored.")
 
 		return {
-			'__type__': 'model',
+			'__t__': 'Model',
 			'class': item.__class__.__name__,
 			'pk': item.pk
 		}
+
+	def encode_queryset(self, item):
+		return list(item)
 
 
 class CustomDecoder:
@@ -36,10 +42,10 @@ class CustomDecoder:
 	See http://taketwoprogramming.blogspot.fr/2009/06/subclassing-jsonencoder-and-jsondecoder.html
 	"""
 	def decode(self, d):
-		if '__type__' not in d:
+		if '__t__' not in d:
 			return d
 
-		if d['__type__'] == 'model':
+		if d['__t__'] == 'Model':
 			return self.decode_model(d)
 
 	def decode_model(self, d):
