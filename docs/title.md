@@ -23,7 +23,7 @@ Exemples
 * `Condition` :
 ```python
 # Il faut que le chef soit un homme
-if folk.sex == "f" :
+if folk.sex == Folk.FEMALE :
   status = "le chef doit être un homme"
 ```
 
@@ -39,7 +39,7 @@ kingdom.save()
 ```
 
 * `on deffect` : 
-```pyhton
+```python
 # La loyauté diminue
 folk.loyalty -= 30
 folk.save()
