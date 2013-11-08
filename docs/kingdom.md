@@ -56,11 +56,6 @@ Que scripter ?
 #### Récupérer une équipe
 * `kingdom.get_team("team_slug")`
 
-#### Récupérer la somme des compétences d'un groupe
-* `sum_stats(folks, 'fight')`
-
-#### Récupérer la moyenne des compétences d'un groupe
-* `avg_stats(folks, 'fight')`
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
@@ -83,6 +78,14 @@ Que scripter ?
 
 #### Retirer une personne d'un titre
 * `folk.remove_title()`
+
+
+### Fonctions globales
+#### Récupérer la somme des compétences d'un groupe
+* `sum_stats(folks, 'fight')`
+
+#### Récupérer la moyenne des compétences d'un groupe
+* `avg_stats(folks, 'fight')`
 
 
 Exemples
