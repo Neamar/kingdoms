@@ -3,11 +3,13 @@ from django.test import TestCase
 from django.core import management
 from StringIO import StringIO 
 
+from event.models import Event, EventCategory
+from kingdom.models import Kingdom
 from internal.models import Trigger
 
-class CommandTest(TestCase):
+class ReplaceCommandTest(TestCase):
 	"""
-	Test commands
+	Test replace command
 	"""
 
 	def setUp(self):
@@ -42,3 +44,32 @@ class CommandTest(TestCase):
 		out = content.read()
 		self.assertTrue('1 object' in out)
 		self.assertTrue('Some REPLACED' in out)
+
+class DependenciesCommandTest(TestCase):
+	"""
+	Test commands
+	"""
+
+	def setUp(self):
+		self.k = Kingdom()
+		self.e = Event(
+			name="Event",
+			slug="first_event")
+		self.e.save()
+
+		self.ea = self.e.eventaction_set.create(
+			on_fire="""
+kingdom.next_event("second_event")
+""")
+		self.ea.save()
+
+	def test_dependencies(self):
+		content = StringIO()
+		management.call_command('dependencies', dry=True, interactive=False, stdout=content)
+
+		content.seek(0)
+		out = content.read()
+
+		# Check node list
+		self.assertTrue('event_first_event [' in out)
+		self.assertTrue('event_first_event -> event_second_event' in out)
