@@ -57,10 +57,10 @@ Que scripter ?
 * `kingdom.get_team("team_slug")`
 
 #### Récupérer la somme des compétences d'un groupe
-* `sum_folks(folks, 'fight')`
+* `sum_stats(folks, 'fight')`
 
 #### Récupérer la moyenne des compétences d'un groupe
-* `avg_folks(folks, 'fight')`
+* `avg_stats(folks, 'fight')`
 
 ### Depuis un objet `Folk`
 #### Faire mourir quelqu'un
