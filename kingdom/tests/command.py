@@ -4,6 +4,7 @@ from django.core import management
 from StringIO import StringIO 
 
 from event.models import Event, EventCategory
+from mission.models import Mission
 from kingdom.models import Kingdom
 from internal.models import Trigger
 
@@ -63,6 +64,14 @@ kingdom.next_event("second_event")
 """)
 		self.ea.save()
 
+		self.m = Mission(
+			name="Mission",
+			slug="mission",
+			on_resolution="""
+kingdom.create_pending_event("second_event")
+""")
+		self.m.save()
+
 	def test_dependencies(self):
 		content = StringIO()
 		management.call_command('dependencies', dry=True, interactive=False, stdout=content)
@@ -72,4 +81,25 @@ kingdom.next_event("second_event")
 
 		# Check node list
 		self.assertTrue('event_first_event [' in out)
+		self.assertTrue('mission_mission [' in out)
 		self.assertTrue('event_first_event -> event_second_event' in out)
+		self.assertTrue('mission_mission -> event_second_event' in out)
+
+	def test_dependencies_restrict_app(self):
+		content = StringIO()
+		management.call_command('dependencies', 'mission', dry=True, interactive=False, stdout=content)
+
+		content.seek(0)
+		out = content.read()
+
+		# Check node list does not include "event" model.
+		self.assertFalse('event_first_event [' in out)
+		self.assertTrue('mission_mission [' in out)
+
+	def test_dependencies_nonexisting_app(self):
+		content = StringIO()
+		management.call_command('dependencies', 'foo', dry=True, interactive=False, stderr=content)
+
+		content.seek(0)
+		out = content.read()
+		self.assertTrue('app does not exist', out)
