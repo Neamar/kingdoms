@@ -3,8 +3,8 @@ import json
 
 from django.db import models
 from django.db.models.query import QuerySet
+from django.db.models.loading import get_model
 from django.core.exceptions import ValidationError
-
 fk_regexp = re.compile("`\w*`:\w*")
 
 
@@ -27,7 +27,8 @@ class CustomEncoder(json.JSONEncoder):
 
 		return {
 			'__t__': 'Model',
-			'class': item.__class__.__name__,
+			'app': item._meta.app_label,
+			'model': item._meta.object_name,
 			'pk': item.pk
 		}
 
@@ -49,21 +50,10 @@ class CustomDecoder:
 			return self.decode_model(d)
 
 	def decode_model(self, d):
-		from kingdom.models import Kingdom, Folk, Message, Claim, Quality
-		from internal.models import Constant
-		from event.models import Event, PendingEvent
-		from mission.models import Mission, PendingMission, PendingMissionAffectation
-		from title.models import Title, AvailableTitle
-
-		class_name = d['class']
-		instance_id = d['pk']
-
-		# Instantiate the class from its name
-		value_class = locals()[class_name]
+		model = get_model(d['app'], d['model'])
 	
 		try:
-			instance = value_class.objects.get(id=instance_id)
-			return instance
+			return model.objects.get(id=d['pk'])
 		except:
 			return None
 customDecoder = CustomDecoder()
@@ -77,11 +67,6 @@ class StoredValueField(models.CharField):
 	description = "A value to be stored"
 
 	__metaclass__ = models.SubfieldBase
-
-	fk_regexp = re.compile("`\w*`:\w*")
-	array_regexp = re.compile("^\[.*\]$")
-	object_regexp = re.compile("^\{.*\}$")
-
 
 	def __init__(self, *args, **kwargs):
 		kwargs['max_length'] = 4096
