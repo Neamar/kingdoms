@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.core import management
 from StringIO import StringIO 
 
-from event.models import Event, EventCategory
+from event.models import Event
 from mission.models import Mission
 from kingdom.models import Kingdom
 from internal.models import Trigger

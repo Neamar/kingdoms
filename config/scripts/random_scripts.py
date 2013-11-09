@@ -2,12 +2,12 @@
 from random import randint, gauss
 
 
-def random_in(tab):
+def random_in(arr):
 	"""
 	Return a random value in the specified array.
 	"""
 
-	return tab[randint(0, len(tab)-1)]
+	return arr[randint(0, len(arr) - 1)]
 
 
 def random_value(min, max):
