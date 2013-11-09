@@ -2,7 +2,9 @@
 {% load i18n admin_urls %}
 {% block content %}
     {{ block.super}}
+    {% if original %}
     <div class="subgraph" style="text-align:center;">
         <img src="/dependencies/png?{{app_label}}_{{original.slug}}" style="max-width:90%;" />
     </div>
+    {% endif %}
 {% endblock %}
