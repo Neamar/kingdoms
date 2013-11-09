@@ -85,9 +85,9 @@ kingdom.create_pending_event("second_event")
 		self.assertTrue('event_first_event -> event_second_event' in out)
 		self.assertTrue('mission_mission -> event_second_event' in out)
 
-	def test_dependencies_restrict_app(self):
+	def test_dependencies_restrict_object(self):
 		content = StringIO()
-		management.call_command('dependencies', 'mission', dry=True, interactive=False, stdout=content)
+		management.call_command('dependencies', 'mission_mission', dry=True, interactive=False, stdout=content)
 
 		content.seek(0)
 		out = content.read()
@@ -95,11 +95,3 @@ kingdom.create_pending_event("second_event")
 		# Check node list does not include "event" model.
 		self.assertFalse('event_first_event [' in out)
 		self.assertTrue('mission_mission [' in out)
-
-	def test_dependencies_nonexisting_app(self):
-		content = StringIO()
-		management.call_command('dependencies', 'foo', dry=True, interactive=False, stderr=content)
-
-		content.seek(0)
-		out = content.read()
-		self.assertTrue('app does not exist', out)
