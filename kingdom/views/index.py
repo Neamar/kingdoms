@@ -65,14 +65,11 @@ def dependencies(request, output_type):
 		dependencies_file_dot
 	]
 
-	if subprocess.call(params) == 0:
-		svg_datas = subprocess.check_output(params)
+	datas = subprocess.check_output(params)
 
-		if output_type == 'svg':
-			response = HttpResponse(svg_datas)
-		else:
-			response = HttpResponse(svg_datas, mimetype='image/png')
-			response["Content-Length"] = len(svg_datas)
-		return response
+	if output_type == 'svg':
+		response = HttpResponse(datas)
 	else:
-		raise Http404("Unable to generate dependencies.")
+		response = HttpResponse(datas, mimetype='image/png')
+		response["Content-Length"] = len(datas)
+	return response
