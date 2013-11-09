@@ -119,6 +119,7 @@ class ContextModel:
 class ScriptedModel(models.Model):
 	"""
 	Model with the ability to run some code.
+	(and log it)
 	"""
 
 	class Meta:

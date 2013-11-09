@@ -31,10 +31,19 @@ class RandomTest(TestCase):
 		max = 5
 
 		for i in range(RANDOM_TESTS):
-			v = random_value(min, max)
+			v = random_gauss(min, max)
 			self.assertTrue(min <= v)
 			self.assertTrue(v <= max)
 
+	def test_random_gauss_mu_sigma(self):
+		min = 0
+		max = 5
+
+		for i in range(RANDOM_TESTS):
+			v = random_gauss(min, max, 1, 1)
+			self.assertTrue(min <= v)
+			self.assertTrue(v <= max)
+			
 	def test_random_die(self):
 		max = 6
 		for i in range(RANDOM_TESTS):
