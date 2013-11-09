@@ -3,6 +3,6 @@
 {% block content %}
     {{ block.super}}
     <div class="subgraph" style="text-align:center;">
-        <img src="/dependencies/png?event_{{original.slug}}" style="max-width:90%;" />
+        <img src="/dependencies/png?{{app_label}}_{{original.slug}}" style="max-width:90%;" />
     </div>
 {% endblock %}
