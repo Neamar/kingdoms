@@ -4,7 +4,7 @@ from config.lib.execute import execute
 from kingdom.models import Kingdom
 
 
-class CodeTest(TestCase):
+class ExecuteTest(TestCase):
 	"""
 	Test the execute() function
 	"""
