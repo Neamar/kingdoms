@@ -52,6 +52,12 @@ def dependencies(request, output_type):
 		return HttpResponse(error)
 
 	dot_file = content.read()
+
+	# Dot file: return everything right now
+	if output_type == 'dot':
+		return HttpResponse(dot_file, mimetype='text/plain')
+
+	# Else, store in temp file
 	with open(dependencies_file_dot, 'wb+') as temp_file:
 		temp_file.write(dot_file)
 

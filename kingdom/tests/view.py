@@ -52,7 +52,7 @@ class ViewTest(TestCase):
 		Check app returns with status 200
 		"""
 
-		r = self.c.get(reverse('kingdom.views.index.dependencies', args=('svg',)))
+		r = self.c.get(reverse('kingdom.views.index.dependencies', args=('dot',)))
 		self.assertEqual(200, r.status_code)
 
 	def test_admin_is_up(self):
