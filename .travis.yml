@@ -7,6 +7,7 @@ install:
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database kingdoms;' -U postgres; fi"
   - pip install -r requirements.txt --use-mirrors
   - pip install coveralls --use-mirrors
+  - sudo apt-get -qq install graphviz
 script: 
   coverage run manage.py test kingdom mission title internal event bargain reporting
 after_success:
