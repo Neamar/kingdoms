@@ -1,0 +1,8 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% block content %}
+    {{ block.super}}
+    <div class="subgraph" style="text-align:center;">
+        <img src="/dependencies/png?event_{{original.slug}}" style="max-width:90%;" />
+    </div>
+{% endblock %}
