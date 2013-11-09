@@ -4,6 +4,7 @@ import time
 from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.db import IntegrityError
 
 from kingdom.management.commands.cron import cron_minute
@@ -537,6 +538,22 @@ class TemplateTest(TestCase):
 			on_fire="",
 		)
 		self.a.save()
+
+	def test_templates_missing_var(self):
+		"""
+		Display missing values
+		"""
+
+		self.e.text = "{{undefined}}"
+		self.e.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		self.assertEqual(pe.text, settings.TEMPLATE_STRING_IF_INVALID % 'undefined')
 
 	def test_templates_and_variables(self):
 		"""
