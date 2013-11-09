@@ -145,6 +145,9 @@ class Command(BaseCommand):
 						self.graph.add_edge(k + '_' + label, dependency)
 
 		# Output results
+		if len(args) > 0:
+			self.graph.filter(args)
+		
 		out = str(self.graph)
 		self.stdout.write(out)
 
@@ -193,6 +196,35 @@ class Graph:
 
 	def add_edge(self, start, end):
 		self._edges.append(Edge(start, end))
+
+	def filter(self, kernel_nodes):
+		"""
+		Filter to only display datas around those nodes
+		"""
+		# Will hold new list of nodes and edges
+		nodes_slug = set(kernel_nodes)
+		edges = []
+
+		for node in kernel_nodes:
+			for edge in self._edges:
+				if edge.start == node:
+					edges.append(edge)
+					nodes_slug.add(edge.end)
+				elif edge.end == node:
+					edges.append(edge)
+					nodes_slug.add(edge.start)
+
+		nodes = []
+		for node_slug in nodes_slug:
+			# Find the same node in _node
+			for node in self._nodes:
+				if node.slug == node_slug:
+					nodes.append(node)
+					break
+			else:
+				nodes.append(node_slug)
+		self._nodes = nodes
+		self._edges = edges
 
 	def __str__(self):
 		return """
