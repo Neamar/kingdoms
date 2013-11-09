@@ -5,6 +5,7 @@ env:
   - DB=postgres
 install:
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database kingdoms;' -U postgres; fi"
+  -  sh -c "if [ '$DB' = 'sqlite' ]; then sed '/psycopg2/d' requirements.txt > requirements.txt"
   - pip install -r requirements.txt --use-mirrors
   - pip install coveralls --use-mirrors
 script: 
