@@ -247,7 +247,7 @@ class ScriptTest(TestCase):
 
 	def test_kingdom_value_store_fk_deletion(self):
 		"""
-		Store string values on the kingdom
+		Deleted values yields None
 		"""
 
 		self.k.set_value("foo", self.f)
@@ -265,7 +265,7 @@ class ScriptTest(TestCase):
 
 		self.assertEqual(self.k.get_value("foo"), datas)
 
-	def test_kingdom_value_store_list(self):
+	def test_kingdom_value_store_mixed_list(self):
 		"""
 		Store array values on the kingdom
 		"""
@@ -281,20 +281,6 @@ class ScriptTest(TestCase):
 		"""
 
 		datas = [[self.f, 1, 2], [self.k, 1, 2]]
-		self.k.set_value("foo", datas)
-
-		self.assertEqual(self.k.get_value("foo"), datas)
-
-	def test_kingdom_value_store_dict(self):
-		"""
-		Store dict values on the kingdom
-		"""
-
-		datas = {
-			'man': "himself",
-			'woman': "herself",
-		}
-
 		self.k.set_value("foo", datas)
 
 		self.assertEqual(self.k.get_value("foo"), datas)
