@@ -1,5 +1,5 @@
 [run]
-source = kingdom,mission,title,internal,event,bargain,reporting
+source = kingdom,mission,title,internal,event,bargain,reporting,config
 
 [report]
 omit = */migrations/*,*/admin.py
