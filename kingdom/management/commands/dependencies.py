@@ -219,6 +219,8 @@ class Graph:
 			# Find the same node in _node
 			for node in self._nodes:
 				if node.slug == node_slug:
+					if node_slug in kernel_nodes:
+						node.kwargs["style"] = "diagonals"
 					nodes.append(node)
 					break
 			else:
