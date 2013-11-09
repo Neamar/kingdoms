@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+
+from config.admin import force_delete
 from kingdom.models import Kingdom, Folk, Quality, QualityCategory, Message, Claim
 
 
@@ -7,6 +9,7 @@ class KingdomAdmin(admin.ModelAdmin):
 	list_display = ('user', 'prestige', 'population', 'money', 'soldiers')
 	search_fields = ('user__username', )
 	readonly_fields = ('values', )
+	actions=[force_delete]
 
 	def values(self, obj):
 		values = ['%s=%s' % (o[0], o[1]) for o in obj.get_values().items()]

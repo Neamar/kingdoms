@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
+from config.admin import force_delete
 from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation, AvailableMission
 
 
@@ -25,7 +26,7 @@ class PendingMissionAffectationInline(admin.StackedInline):
 
 class PendingMissionAdmin(admin.ModelAdmin):
 	list_display = ('mission', 'kingdom', 'target', 'started')
-	actions = ['resolve']
+	actions = ['resolve', force_delete]
 	inlines = [PendingMissionAffectationInline]
 
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):
