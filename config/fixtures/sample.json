@@ -64,6 +64,7 @@
       2
     ], 
     "name": "Avare", 
+    "slug": "avare",
     "description": "Comme celui de Moli\u00e8re."
   }
 },
@@ -75,7 +76,8 @@
     "incompatible_qualities": [
       1
     ], 
-    "name": "Riche", 
+    "name": "Riche",
+    "slug": "riche", 
     "description": "Pas comme moi."
   }
 },
@@ -85,7 +87,8 @@
   "fields": {
     "category": 1, 
     "incompatible_qualities": [], 
-    "name": "Duelliste", 
+    "name": "Duelliste",
+    "slug": "duelliste", 
     "description": "Bon avec une \u00e9p\u00e9e."
   }
 },
