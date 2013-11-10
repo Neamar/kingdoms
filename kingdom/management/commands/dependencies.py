@@ -154,7 +154,7 @@ class Command(BaseCommand):
 				# Apply dependencies (with unique values)
 				for dependency in set(dependencies):
 					label = model['node']['name'](o)
-					if '__' not in dependency and (label[0] != '_' or len(args) > 0):
+					if ('__' not in dependency and label[0] != '_') or len(args) > 0:
 						self.graph.add_edge(k + '_' + label, dependency)
 
 		# Output results
