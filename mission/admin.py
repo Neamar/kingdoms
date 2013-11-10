@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from config.admin import force_delete
+from config.admin import force_delete, ModelAdmin
 from mission.models import Mission, MissionGrid, PendingMission, PendingMissionAffectation, AvailableMission
 
 
@@ -24,7 +24,7 @@ class PendingMissionAffectationInline(admin.StackedInline):
 	extra = 0
 
 
-class PendingMissionAdmin(admin.ModelAdmin):
+class PendingMissionAdmin(ModelAdmin):
 	list_display = ('mission', 'kingdom', 'target', 'started')
 	actions = ['resolve', force_delete]
 	inlines = [PendingMissionAffectationInline]
@@ -51,7 +51,7 @@ class PendingMissionAdmin(admin.ModelAdmin):
 admin.site.register(PendingMission, PendingMissionAdmin)
 
 
-class AvailableMissionAdmin(admin.ModelAdmin):
+class AvailableMissionAdmin(ModelAdmin):
 	list_display = ('mission', 'kingdom')
 	list_filter = ('mission',)
 admin.site.register(AvailableMission, AvailableMissionAdmin)

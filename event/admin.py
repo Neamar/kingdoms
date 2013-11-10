@@ -3,8 +3,8 @@ from django.contrib import admin
 from django.forms import TextInput
 from django.db import models
 
-from config.admin import force_delete
-from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventAction
+from config.admin import force_delete, ModelAdmin
+from event.models import Event, EventCategory, EventAction, PendingEvent
 
 
 class EventActionAdminInline(admin.StackedInline):
@@ -42,9 +42,12 @@ class EventCategoryAdmin(admin.ModelAdmin):
 admin.site.register(EventCategory, EventCategoryAdmin)
 
 
-class PendingEventAdmin(admin.ModelAdmin):
+class PendingEventAdmin(ModelAdmin):
 	readonly_fields = ('text',)
 	list_display = ('event', 'kingdom', 'started', 'text')
 	search_fields = ('event__name', 'text')
 	actions = [force_delete]
+	formfield_overrides = {
+		models.CharField: {'widget': TextInput(attrs={'size': '100'})},
+	}
 admin.site.register(PendingEvent, PendingEventAdmin)
