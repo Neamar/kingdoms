@@ -4,19 +4,26 @@
 {% block title %}{{ title }} | Administration des royaumes{% endblock %}
  
 {% block branding %}
-<h1 id="site-name">Administration des royaumes</h1>
+<h1 id="site-name">Kingdoms</h1>
 
 <style type="text/css">
-.CodeMirror-wrapping iframe + div
-{
-	display: none;
+.controls textarea {
+	width:100%;
 }
 
-.CodeMirror-wrapping iframe:hover + div
-{
-	display: block;
+.controls input {
+	width:60%;
 }
 </style>
 {% endblock %}
  
 {% block nav-global %}{% endblock %}
+
+{% block footer_links %}
+ <a href="https://github.com/Neamar/kingdoms/docs#readme" class="icon"><i class="icon-question-sign"></i>Documentation</a>
+{% endblock %}
+
+{% block copyright %}{% endblock copyright %}
+
+{% block footer_branding %}
+{% endblock %}
