@@ -9,21 +9,20 @@ def folk_details(folk):
 	"""
 	Display details about a folk
 	"""
+	avatar = folk.avatar.image(folk.age())
 	template = Template("""
 <table>
 	<tr>
 		<td rowspan="2">
-		<p>
-		<img src="{{folk.avatar}}" alt="{{folk.name}}" alt="Avatar" />
-				<span>{{folk.first_name}} {{folk.last_name}}</span>
-				<small>( {{folk.age}}  ans)</small>
-			</p>
+			<img src="{{avatar}}" alt="{{folk.last_name}}" alt="Avatar" />
+			<span>{{folk.first_name}} {{folk.last_name}}</span>
+			<small>( {{folk.age}}  ans)</small>
 		</td>
-		<td>{{folk.fight}} fight</td>
-		<td>{{folk.plot}}  plot</td>
-		<td>{{folk.diplomacy}} diplomacy</td>
-		<td>{{folk.scholarship}} scholarship</td>
-		<td>{{folk.loyalty}} loyalty</td>
+		<td>{{folk.fight}} <strong>C</strong></td>
+		<td>{{folk.plot}} <strong>I</strong></td>
+		<td>{{folk.diplomacy}} <strong>D</strong></td>
+		<td>{{folk.scholarship}} <strong>É</strong></td>
+		<td>{{folk.loyalty}} <strong>L</strong></td>
 	</tr>
 	<tr>
 		<td colspan="5">
@@ -34,4 +33,4 @@ def folk_details(folk):
 	</tr>
 </table>
 	""")
-	return template.render(Context({"folk" : folk}))
+	return template.render(Context({"folk" : folk, 'avatar': avatar}))
