@@ -49,6 +49,23 @@ class ViewTest(TestCase):
 		r = self.c.get(reverse('kingdom.views.index.app'))
 		self.assertEqual(200, r.status_code)
 
+	def test_errors_require_enabling(self):
+		"""
+		Check app returns with status 200
+		"""
+
+		r = self.c.get(reverse('kingdom.views.index.errors'))
+		self.assertEqual(404, r.status_code)
+
+	@override_settings(ERROR_FILE=__file__)
+	def test_errors_is_up(self):
+		"""
+		Check app returns with status 200
+		"""
+
+		r = self.c.get(reverse('kingdom.views.index.errors'))
+		self.assertEqual(200, r.status_code)
+
 	def test_dependencies_is_up(self):
 		"""
 		Check app returns with status 200
