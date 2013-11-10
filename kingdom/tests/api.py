@@ -2,11 +2,13 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
 from kingdom.models import Kingdom
 
 
+@override_settings(PASSWORD_HASHERS = ('django.contrib.auth.hashers.SHA1PasswordHasher',))
 class ApiTest(TestCase):
 	"""
 	API tests for kingdom projects.
