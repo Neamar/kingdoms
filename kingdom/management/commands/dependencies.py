@@ -107,6 +107,8 @@ class Command(BaseCommand):
 	}
 
 	def handle(self, *args, **options):
+		subgraph_mode = len(args) > 0
+		
 		# Init graph
 		self.graph = Graph()
 
@@ -120,7 +122,7 @@ class Command(BaseCommand):
 				label = model['node']['name'](o)
 
 				# Do not include items starting with an "_", unless explicit filtering is enabled
-				if label[0] != '_' or len(args) > 0:
+				if label[0] != '_' or subgraph_mode:
 					self.graph.add_node(k + '_' + model['node']['name'](o), label=model['node']['name'](o), **model['node']['params'])
 
 		# Read dependencies
@@ -157,11 +159,11 @@ class Command(BaseCommand):
 				# Apply dependencies (with unique values)
 				for dependency in set(dependencies):
 					label = model['node']['name'](o)
-					if ('__' not in dependency and label[0] != '_') or len(args) > 0:
+					if ('__' not in dependency and label[0] != '_') or subgraph_mode:
 						self.graph.add_edge(k + '_' + label, dependency)
 
 		# Output results
-		if len(args) > 0:
+		if subgraph_mode:
 			self.graph.filter(args)
 		
 		out = str(self.graph)
