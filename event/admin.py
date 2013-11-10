@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.forms import TextInput
 from django.db import models
 
+from config.admin import force_delete
 from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventAction
 
 
@@ -45,4 +46,5 @@ class PendingEventAdmin(admin.ModelAdmin):
 	readonly_fields = ('text',)
 	list_display = ('event', 'kingdom', 'started', 'text')
 	search_fields = ('event__name', 'text')
+	actions = [force_delete]
 admin.site.register(PendingEvent, PendingEventAdmin)
