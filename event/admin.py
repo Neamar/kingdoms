@@ -27,7 +27,7 @@ class EventAdmin(admin.ModelAdmin):
 	thumb.short_description = 'Image'
 	thumb.allow_tags = True
 
-	search_fields = ('name', 'text', 'slug')
+	search_fields = ('name', 'text', 'slug', 'eventaction__message', 'eventaction__text')
 	list_filter = ('category__name',)
 	inlines = [
 		EventActionAdminInline,
