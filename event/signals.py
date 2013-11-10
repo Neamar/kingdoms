@@ -5,6 +5,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+from django.conf import settings
 from django.template import Template, Context
 from django.utils.functional import memoize
 
@@ -57,27 +58,33 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 
 		context = Context(raw_context, autoescape=False)
 
-		# Create text from templates
-		text_template = Template(instance.event.text)
-		instance.text = text_template.render(context)
+		try:
+			settings.TEMPLATE_STRING_IF_INVALID = "<tt style='color:red'>{{%s}}</tt>"
 
-		instance.is_started = True
-		instance.save()
+			# Create text from templates
+			text_template = Template(instance.event.text)
+			instance.text = text_template.render(context)
 
-		for event_action in instance.event.eventaction_set.all():
-			text_template = Template(event_action.text)
-			message_template = Template(event_action.message)
-			pea = PendingEventAction(
-				pending_event=instance,
-				event_action=event_action,
-				text=text_template.render(context),
-				message=message_template.render(context),
-			)
+			instance.is_started = True
+			instance.save()
 
-			status = pea.check_condition()
-			if status == 'ok':
-				pea.save()
+			for event_action in instance.event.eventaction_set.all():
+				text_template = Template(event_action.text)
+				message_template = Template(event_action.message)
+				pea = PendingEventAction(
+					pending_event=instance,
+					event_action=event_action,
+					text=text_template.render(context),
+					message=message_template.render(context),
+				)
 
+				status = pea.check_condition()
+				if status == 'ok':
+					pea.save()
+		except:
+			raise
+		finally:
+			settings.TEMPLATE_STRING_IF_INVALID = ''
 
 @receiver(pre_save, sender=PendingEventAction)
 def check_pending_event_action_sanity(sender, instance, **kwargs):
