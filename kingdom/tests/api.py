@@ -15,9 +15,12 @@ class ApiTest(TestCase):
 	The rationale here is the endpoints only do glue code, and all the logic is done at the signal level.
 	"""
 
-	def setUp(self):
+	def __init__(self, *args, **kwargs):
 		self.u = User(username="test")
 		self.u.set_password("pwd")
+		super(ApiTest, self).__init__(*args, **kwargs)
+
+	def setUp(self):
 		self.u.save()
 
 		self.k = Kingdom(user=self.u)
