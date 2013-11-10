@@ -51,7 +51,8 @@ class ApiTest(TestCase):
 
 		self.mg = MissionGrid(
 			mission=self.m,
-			slug='stub_grid'
+			slug='stub_grid',
+			allow_empty=True
 		)
 		self.mg.save()
 
@@ -72,6 +73,7 @@ class ApiTest(TestCase):
 
 		r = self.c.post(reverse('mission.views.pending_mission_grid_affect', args=(self.pm.pk, self.mg.pk)), {'folk': self.f.pk})
 		self.assertEqual(200, r.status_code)
+		self.assertEqual(PendingMissionAffectation.objects.all().count(), 1)
 
 	def test_grid_defect(self):
 		"""
@@ -86,6 +88,7 @@ class ApiTest(TestCase):
 
 		r = self.c.post(reverse('mission.views.pending_mission_grid_defect', args=(pma.pk,)))
 		self.assertEqual(200, r.status_code)
+		self.assertEqual(PendingMissionAffectation.objects.all().count(), 0)
 
 	def test_target(self):
 		"""
@@ -99,6 +102,8 @@ class ApiTest(TestCase):
 
 		r = self.c.post(reverse('mission.views.pending_mission_set_target', args=(self.pm.pk,)), {'target': k2.pk})
 		self.assertEqual(200, r.status_code)
+		self.assertEqual(PendingMission.objects.get(pk=self.pm.pk).target, k2)
+
 
 	def test_value(self):
 		"""
@@ -109,6 +114,7 @@ class ApiTest(TestCase):
 
 		r = self.c.post(reverse('mission.views.pending_mission_set_value', args=(self.pm.pk,)), {'value': 100})
 		self.assertEqual(200, r.status_code)
+		self.assertEqual(PendingMission.objects.get(pk=self.pm.pk).value, 100)
 
 	def test_start(self):
 		"""
@@ -116,6 +122,7 @@ class ApiTest(TestCase):
 		"""
 		r = self.c.post(reverse('mission.views.pending_mission_start', args=(self.pm.pk,)))
 		self.assertEqual(200, r.status_code)
+		self.assertIsNotNone(PendingMission.objects.get(pk=self.pm.pk).started)
 
 	def test_cancel(self):
 		"""
@@ -123,6 +130,7 @@ class ApiTest(TestCase):
 		"""
 		r = self.c.post(reverse('mission.views.pending_mission_cancel', args=(self.pm.pk,)))
 		self.assertEqual(200, r.status_code)
+		self.assertRaises(PendingMission.DoesNotExist, lambda: PendingMission.objects.get(pk=self.pm.pk))
 
 	def test_availablemission_start(self):
 		"""
@@ -136,3 +144,4 @@ class ApiTest(TestCase):
 
 		r = self.c.post(reverse('mission.views.available_mission_start', args=(am.pk,)))
 		self.assertEqual(200, r.status_code)
+		self.assertEqual(PendingMission.objects.all().count(), 2)

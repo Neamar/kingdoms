@@ -238,7 +238,10 @@ class AvailableMission(models.Model):
 		"""
 		Create a pending mission for the player.
 		"""
-		PendingMission(mission=self.mission, kingdom=self.kingdom).save()
+		pm = PendingMission(mission=self.mission, kingdom=self.kingdom)
+		pm.save()
+		
+		return pm
 
 	def __unicode__(self):
 		return '%s [%s]' % (self.mission.name, self.kingdom.user.username)
