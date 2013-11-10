@@ -251,7 +251,7 @@ class Graph:
 // Dependencies graph for kingdoms
 // Build an image using the `dot` command on Unix, or any visualization tool for dot graphs.
 digraph "Dépendances Kingdoms" {
-
+graph [bgcolor=transparent]
 node [color=red style="filled"];
 //NODE LIST
 %s
