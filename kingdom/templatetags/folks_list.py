@@ -7,7 +7,7 @@ def _folk_name(folk, first_name_only):
 	if first_name_only:
 		return folk.first_name
 	else:
-		return str(folk)
+		return unicode(folk)
 
 
 @register.filter(name='folks_list')
