@@ -120,7 +120,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     BASE_DIR + '/templates',
 )
-TEMPLATE_STRING_IF_INVALID = "<tt style='color:red'>{{%s}}</tt>"
 
 FIXTURE_DIRS = (
     BASE_DIR + '/config/fixtures/',

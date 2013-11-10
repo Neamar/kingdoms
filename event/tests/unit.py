@@ -553,7 +553,7 @@ class TemplateTest(TestCase):
 		)
 		pe.save()
 
-		self.assertEqual(pe.text, settings.TEMPLATE_STRING_IF_INVALID % 'undefined')
+		self.assertTrue(pe.text, "<tt style='color:red'>{{undefined}}</tt>")
 
 	def test_templates_and_variables(self):
 		"""
