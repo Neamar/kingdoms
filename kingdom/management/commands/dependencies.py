@@ -85,6 +85,7 @@ class Command(BaseCommand):
 				"params": {
 					"color": "purple",
 					"style": "filled",
+					"shape": "doubleoctagon",
 				}
 			},
 			'regexps': [],
@@ -96,7 +97,9 @@ class Command(BaseCommand):
 				"name": lambda r: r.slug,
 				"params": {
 					"color": "aquamarine2",
-					"style": "filled"
+					"style": "filled",
+					"shape": "doubleoctagon",
+
 				}
 			},
 			'regexps': [],
