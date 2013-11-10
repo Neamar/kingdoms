@@ -1,5 +1,9 @@
 {% extends "admin/change_form.html" %}
 {% load i18n admin_urls %}
+
+
+
+{% block title %}{{ original }} | {{ block.super }} {% endblock %}
 {% block content %}
     {{ block.super}}
     {% if original %}
