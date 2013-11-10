@@ -95,7 +95,7 @@ class Command(BaseCommand):
 			'node': {
 				"name": lambda r: r.slug,
 				"params": {
-					"color": "darkcyan",
+					"color": "aquamarine2",
 					"style": "filled"
 				}
 			},
@@ -116,7 +116,8 @@ class Command(BaseCommand):
 				# Node name is modelname_namevalue
 				label = model['node']['name'](o)
 
-				if label[0] != '_':
+				# Do not include items starting with an "_", unless explicit filtering is enabled
+				if label[0] != '_' or len(args) > 0:
 					self.graph.add_node(k + '_' + model['node']['name'](o), label=model['node']['name'](o), **model['node']['params'])
 
 		# Read dependencies
