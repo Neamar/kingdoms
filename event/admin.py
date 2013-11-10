@@ -4,7 +4,7 @@ from django.forms import TextInput
 from django.db import models
 
 from config.admin import force_delete
-from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventAction
+from event.models import Event, EventCategory, EventAction, PendingEvent
 
 
 class EventActionAdminInline(admin.StackedInline):
@@ -32,6 +32,14 @@ class EventAdmin(admin.ModelAdmin):
 	inlines = [
 		EventActionAdminInline,
 	]
+	fieldsets = (
+		(None, {
+			'fields': (('name', 'slug'), 'image', 'text', ('weight', 'category'))
+		}),
+		('Étapes', {
+			'fields': ('condition', 'on_fire')
+		})
+	)
 
 admin.site.register(Event, EventAdmin)
 
