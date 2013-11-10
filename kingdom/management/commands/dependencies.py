@@ -239,7 +239,7 @@ class Graph:
 				if node.slug == node_slug:
 					if node_slug in kernel_nodes:
 						node.kwargs["style"] = "diagonals"
-						node.kwargs["color"] = "dark"
+						node.kwargs["color"] = "black"
 					nodes.append(node)
 					break
 			else:
