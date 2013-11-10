@@ -5,11 +5,12 @@ Generate a dot file for dependencies between Event and Mission.
 import re
 
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 
 from event.models import Event
 from mission.models import Mission
 from title.models import Title
-from internal.models import Trigger
+from internal.models import Trigger, Recurring
 
 
 class Command(BaseCommand):
@@ -89,6 +90,18 @@ class Command(BaseCommand):
 			},
 			'regexps': [],
 		},
+		'recurring': {
+			'items': Recurring.objects,
+			'code': ['on_fire'],
+			'node': {
+				"name": lambda r: slugify(r.name).replace('-', '_'),
+				"params": {
+					"color": "darkcyan",
+					"style": "filled"
+				}
+			},
+			'regexps': [],
+		}
 	}
 
 	def handle(self, *args, **options):
