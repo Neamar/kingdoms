@@ -2,11 +2,13 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
 from kingdom.models import Kingdom
 
 
+@override_settings(PASSWORD_HASHERS = ('django.contrib.auth.hashers.SHA1PasswordHasher',))
 class ApiTest(TestCase):
 	"""
 	API tests for kingdom projects.
@@ -15,12 +17,9 @@ class ApiTest(TestCase):
 	The rationale here is the endpoints only do glue code, and all the logic is done at the signal level.
 	"""
 
-	def __init__(self, *args, **kwargs):
+	def setUp(self):
 		self.u = User(username="test")
 		self.u.set_password("pwd")
-		super(ApiTest, self).__init__(*args, **kwargs)
-
-	def setUp(self):
 		self.u.save()
 
 		self.k = Kingdom(user=self.u)
