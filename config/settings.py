@@ -133,18 +133,37 @@ SUIT_CONFIG = {
     'SEARCH_URL': '/admin/event/event',
     'LIST_PER_PAGE': 50,
     'MENU': (
-        {'label': 'Scripting', 'icon': 'icon-star-empty', 'models': ('event.event', 'mission.mission', 'title.title', 'kingdom.quality', 'internal.trigger', 'internal.recurring')},
+        {
+            'label': 'Scripting',
+            'icon': 'icon-star-empty',
+            'models': ('event.event', 'mission.mission', 'title.title', 'kingdom.quality', 'internal.trigger', 'internal.recurring')
+        },
         '-',
         'kingdom',
-        { 'app': 'event', 'models': ('event', 'eventcategory', 'pendingevent')},
-        { 'app': 'mission', 'models': ('mission', 'availablemission', 'pendingmission')},
+        {
+            'app': 'event',
+            'models': ('event', 'eventcategory', 'pendingevent')
+        },
+        {
+            'app': 'mission',
+            'models': ('mission', 'availablemission', 'pendingmission')
+        },
         'internal',
-        { 'app': 'title', 'models': ('title', 'availabletitle')},
+        {
+            'app': 'title',
+            'models': ('title', 'availabletitle')
+        },
         'bargain',
         'reporting',
         '-',
-        {'app': 'auth', 'icon':'icon-user'},
-        {'app': 'admin', 'icon':'icon-lock'},
+        {
+            'app': 'auth',
+            'icon':'icon-user'
+        },
+        {
+            'app': 'admin',
+            'icon':'icon-lock'
+        },
     )
 }
 

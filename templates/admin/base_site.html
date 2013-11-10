@@ -14,7 +14,20 @@
 .controls input {
 	min-width:60%;
 }
+
+.left-nav > ul > li.active.star > a:after {
+	content: '';
+}
 </style>
+
+<script>
+(function ($) {
+  $(function () {
+      $('#left-nav > ul > li:nth-child(2)').addClass('active').addClass('star');
+  });
+}(Suit.$));
+</script>
+
 {% endblock %}
  
 {% block nav-global %}{% endblock %}
