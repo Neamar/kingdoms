@@ -15,6 +15,22 @@ class MissionAdmin(admin.ModelAdmin):
 	search_fields = ('name', 'text', 'slug')
 	list_filter = ('title__name',)
 	inlines = [MissionGridInline]
+	fieldsets = (
+		(None, {
+			'fields': (('name', 'slug'), 'text', ('duration', 'timeout'), 'title', ('is_cancellable', 'is_team'))
+		}),
+		('Étapes', {
+			'fields': ('on_init', 'on_start', 'on_resolution', 'on_cancel')
+		}),
+		('Cible', {
+			'classes': ('collapse',),
+			'fields': (('has_target', 'target_description'), 'target_list', )
+		}),
+		('Valeur', {
+			'classes': ('collapse',),
+			'fields': (('has_value', 'value_description'),)
+		}),
+	)
 
 admin.site.register(Mission, MissionAdmin)
 

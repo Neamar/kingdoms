@@ -12,7 +12,7 @@
 }
 
 .controls input {
-	width:60%;
+	min-width:60%;
 }
 </style>
 {% endblock %}
@@ -21,6 +21,7 @@
 
 {% block footer_links %}
  <a href="https://github.com/Neamar/kingdoms/docs#readme" class="icon"><i class="icon-question-sign"></i>Documentation</a>
+ <a href="{% url "kingdom.views.index.app" %}" class="icon"><i class="icon-play-circle"></i>Application</a>
 {% endblock %}
 
 {% block copyright %}{% endblock copyright %}

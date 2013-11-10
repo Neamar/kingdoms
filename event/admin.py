@@ -32,6 +32,14 @@ class EventAdmin(admin.ModelAdmin):
 	inlines = [
 		EventActionAdminInline,
 	]
+	fieldsets = (
+		(None, {
+			'fields': (('name', 'slug'), 'image', 'text', ('weight', 'category'))
+		}),
+		('Étapes', {
+			'fields': ('condition', 'on_fire')
+		})
+	)
 
 admin.site.register(Event, EventAdmin)
 
