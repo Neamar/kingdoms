@@ -9,14 +9,20 @@ def folk_details(folk):
 	"""
 	Display details about a folk
 	"""
-	avatar = folk.avatar.image(folk.age())
+	raw_context = {
+		'folk': folk
+	}
+
+	if folk.avatar:
+	 raw_context['avatar'] = folk.avatar.image(folk.age())
+
 	template = Template("""
 <table>
 	<tr>
 		<td rowspan="2">
-			<img src="{{avatar}}" alt="{{folk.last_name}}" alt="Avatar" />
+			{% if avatar %}<img src="{{avatar}}" alt="{{folk.last_name}}" alt="Avatar" />{% endif %}
 			<span>{{folk.first_name}} {{folk.last_name}}</span>
-			<small>( {{folk.age}}  ans)</small>
+			<small>( {{folk.age}} ans)</small>
 		</td>
 		<td>{{folk.fight}} <strong>C</strong></td>
 		<td>{{folk.plot}} <strong>I</strong></td>
@@ -33,4 +39,4 @@ def folk_details(folk):
 	</tr>
 </table>
 	""")
-	return template.render(Context({"folk" : folk, 'avatar': avatar}))
+	return template.render(Context(raw_context))
