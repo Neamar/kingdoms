@@ -57,6 +57,8 @@ class Status(NamedModel):
 
 
 class Recurring(DescribedModel, ScriptedModel):
+	slug = models.SlugField(max_length=255, unique=True)
+	
 	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6*24)
 
 	kingdom_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of kingdoms in `param`. All this Kingdom will be applied the `on_fire` code. Defaults to all kingdoms.", default=None)
