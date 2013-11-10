@@ -138,6 +138,11 @@ SUIT_CONFIG = {
             'icon': 'icon-star-empty',
             'models': ('event.event', 'mission.mission', 'kingdom.quality', 'internal.recurring')
         },
+        {
+            'label': 'Pending',
+            'icon': 'icon-time',
+            'models': ('event.pendingevent', 'mission.pendingmission')
+        },
         '-',
         {
             'app': 'kingdom',
