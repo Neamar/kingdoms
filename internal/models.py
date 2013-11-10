@@ -18,7 +18,7 @@ class Trigger(DescribedModel, ScriptedModel):
 	population_threshold = models.PositiveIntegerField(default=0)
 	money_threshold = models.PositiveIntegerField(default=0)
 
-	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Return `status='some error'` to abort the trigger.", default=None)
+	condition = ScriptField(blank=True, null=True, help_text="Trigger condition, `param` is the current kingdom. Use `stop('some_error')` to abort the trigger.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Trigger code, `param` is the current Kingdom, `folks` is the list of folks on this kingdom.", default=None)
 
 	fired = models.ManyToManyField(Kingdom, null=True, blank=True)

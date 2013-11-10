@@ -35,7 +35,7 @@ class Event(models.Model):
 	weight = models.PositiveIntegerField(default=1)
 	category = models.ForeignKey(EventCategory, blank=True, null=True, default=None)
 
-	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to abort the event.", default=None)
+	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Use `stop('some_error')` to abort the event.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Event code, `param` is the current `PendingEvent`.", default=None)
 
 	def __unicode__(self):
@@ -48,7 +48,7 @@ class EventAction(models.Model):
 	"""
 
 	event = models.ForeignKey(Event)
-	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Return `status='some_error'` to hide this button.", default=None)
+	condition = ScriptField(blank=True, null=True, help_text="Event condition. `param` is the current `PendingEvent` object. Use `stop('some_error')` to hide this button.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Event resolution. `param` is the current `PendingEventAction`.", default=None)
 	text = models.CharField(max_length=255, help_text="Text to be displayed for this action. Can use templating.")
 	message = models.TextField(blank=True, null=True, default="", help_text="Text stored in the log if this action is selected. Can use templating.")
