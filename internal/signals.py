@@ -66,6 +66,8 @@ def freeze_kingdom(sender, instance, **kwargs):
 	objects += kingdom.message_set.all()
 	objects += kingdom.availablemission_set.all()
 	objects += kingdom.availabletitle_set.all()
+	objects += kingdom.offender_set.all()
+	objects += kingdom.offended_set.all()
 
 	for pending_event in kingdom.pendingevent_set.all():
 		objects.append(pending_event)
@@ -82,8 +84,6 @@ def freeze_kingdom(sender, instance, **kwargs):
 	m2m_datas = {
 		'eventcategory_set': [ec.pk for ec in kingdom.eventcategory_set.all()],
 		'trigger_set': [t.pk for t in kingdom.trigger_set.all()],
-		'offended_set': [k.offender for k in kingdom.offended_set.all()],
-		'offender_set': [k.offended for k in kingdom.offender_set.all()],
 	}
 	instance.m2m_datas = json.dumps(m2m_datas)
 

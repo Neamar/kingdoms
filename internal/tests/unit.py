@@ -4,7 +4,7 @@ from django.core.files import File
 from django.contrib.auth.models import User
 
 from kingdom.management.commands.cron import cron_ten_minutes
-from kingdom.models import Kingdom, Folk
+from kingdom.models import Kingdom, Folk, Claim
 from internal.models import Trigger, Function, Recurring, FirstName, LastName, Freeze, Avatar
 
 
@@ -591,7 +591,6 @@ bar:int
 		"""
 		Test freeze mechanism : m2m objects are restored
 		"""
-
 		freeze = Freeze(kingdom=self.k)
 		freeze.save()
 
