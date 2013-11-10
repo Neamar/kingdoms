@@ -5,10 +5,10 @@
 
 {% block title %}{{ original }} | {{ block.super }} {% endblock %}
 {% block content %}
-    {{ block.super}}
-    {% if original and original.slug %}
-    <div class="subgraph" style="text-align:center;">
-        <img src="/dependencies/png?{{app_label}}_{{original.slug}}" style="max-width:90%;" />
-    </div>
-    {% endif %}
+   {{ block.super}}
+   {% if original and original.slug %}
+   <div class="subgraph" style="text-align:center;">
+       <img src="/dependencies/png?{{opts.object_name|lower}}_{{original.slug}}" style="max-width:90%;" />
+   </div>
+   {% endif %}
 {% endblock %}
