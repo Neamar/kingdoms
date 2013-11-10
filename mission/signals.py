@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from kingdom.management.commands.cron import cron_minute
+from kingdom.models import Folk
 from mission.models import PendingMission, PendingMissionAffectation
 from title.models import AvailableTitle
 
@@ -87,6 +88,21 @@ def check_pending_mission_affectation_condition(sender, instance, **kwargs):
 
 	if status != "ok":
 		raise ValidationError(status)
+
+
+@receiver(post_save, sender=Folk)
+def unaffect_affectation_on_death(sender, instance, **kwargs):
+	"""
+	Remove the folk from any title when he dies.
+	"""
+
+	if instance.death:
+		try:
+			pma = instance.mission
+			if pma.id:
+				pma.delete()
+		except PendingMissionAffectation.DoesNotExist:
+			return
 
 
 @receiver(pre_save, sender=PendingMissionAffectation)

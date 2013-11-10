@@ -124,6 +124,14 @@ class UnitTest(TestCase):
 
 		self.assertRaises(ValidationError, pma.save)
 
+	def test_auto_remove_on_death(self):
+		"""
+		Dead peoples are removed from their affectations
+		"""
+
+		self.f.die()
+		self.assertRaises(PendingMissionAffectation.DoesNotExist, lambda: PendingMissionAffectation.objects.get(pk=self.pma.pk))
+
 	def test_cant_remove_after_mission_start(self):
 		"""
 		A folk can't be removed from a mission after it started.
