@@ -139,7 +139,10 @@ SUIT_CONFIG = {
             'models': ('event.event', 'mission.mission', 'kingdom.quality', 'internal.recurring')
         },
         '-',
-        'kingdom',
+        {
+            'app': 'kingdom',
+            'models': ('kingdom', 'folk', 'message', 'claim', 'quality','qualitycategory')
+        },
         {
             'app': 'event',
             'models': ('event', 'eventcategory', 'pendingevent')
