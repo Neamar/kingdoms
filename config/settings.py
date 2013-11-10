@@ -135,7 +135,7 @@ SUIT_CONFIG = {
         {
             'label': 'Scripting',
             'icon': 'icon-star-empty',
-            'models': ('event.event', 'mission.mission', 'title.title', 'kingdom.quality', 'internal.trigger', 'internal.recurring')
+            'models': ('event.event', 'mission.mission', 'kingdom.quality', 'internal.recurring')
         },
         '-',
         'kingdom',
