@@ -9,6 +9,14 @@ class ScriptLogAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries', 'direct_queries')
 	list_filter = ('object_type', 'object_attr')
 
+	def suit_row_attributes(self, obj, request):
+		if obj.time > 500:
+			return {'class': 'warning'}
+		elif obj.time > 1000:
+			return {'class': 'error'}
+
+		return
+
 	def has_add_permission(self, request, obj=None):
 		return False
 

@@ -122,6 +122,51 @@ TEMPLATE_DIRS = (
     BASE_DIR + '/templates',
 )
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)
+
+SUIT_CONFIG = {
+    'HEADER_DATE_FORMAT': 'j F Y',
+    'SEARCH_URL': '/admin/event/event',
+    'LIST_PER_PAGE': 50,
+    'MENU': (
+        {
+            'label': 'Scripting',
+            'icon': 'icon-star-empty',
+            'models': ('event.event', 'mission.mission', 'kingdom.quality', 'internal.recurring')
+        },
+        '-',
+        'kingdom',
+        {
+            'app': 'event',
+            'models': ('event', 'eventcategory', 'pendingevent')
+        },
+        {
+            'app': 'mission',
+            'models': ('mission', 'availablemission', 'pendingmission')
+        },
+        'internal',
+        {
+            'app': 'title',
+            'models': ('title', 'availabletitle')
+        },
+        'bargain',
+        'reporting',
+        '-',
+        {
+            'app': 'auth',
+            'icon':'icon-user'
+        },
+        {
+            'app': 'admin',
+            'icon':'icon-lock'
+        },
+    )
+}
+
 FIXTURE_DIRS = (
     BASE_DIR + '/config/fixtures/',
 )
@@ -130,6 +175,7 @@ FIXTURE_DIRS = (
 SOUTH_TESTS_MIGRATE = False
 
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
