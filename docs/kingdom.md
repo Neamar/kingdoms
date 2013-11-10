@@ -42,7 +42,9 @@ Que scripter ?
 * `kingdom.unlock_title("title")` : débloque le titre (s'il ne l'était pas avant) et retourne l'objet `AvailableTitle`.
 
 #### Savoir si un kingdom a une claim vers un autre kingdom
-* `kingdom.offended_set.filter(kingdom=kingdom_cible).exists()`
+* `kingdom.offended_set.filter(offender=kingdom_cible).exists()`
+La logique derrière : `offended_set` correspond à "tous les claims dont je suis l'offended".
+À l'inverse, `offended_set` correspond à "tous les claims dont je suis l'offender".
 
 #### Créer un pending_event
 * `pe = kingdom.create_pending_event("event_slug")` permet ensuite de réaliser des `set_value` sur l'objet `pe`.
