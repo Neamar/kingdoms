@@ -129,10 +129,10 @@ class ScriptedModel(models.Model):
 	Static variable.
 	This one holds the stack for the current execution, to count direct and nested queries.
 
-	Let's say we have a function f1 doing 2 direct queries and calling f2, doing 1 queries.
+	Let's say we have a function f1 doing 2 direct queries and calling f2, doing 1 query.
 	Let's say the current number of queries is X.
 	The final number of queries will be X + 2 + 1.
-	Since all script code run within a ScriptedModel (see below), we can easily track the nested number of queries : juste store in the current context the total number of queries before launching the script, run the script, then compute number of queries - initial number of queries.
+	Since all script code run within a ScriptedModel (see below), we can easily track the nested number of queries : juste store in the current context the total number of queries before launching the script, run the script, then compute number of queries minus initial number of queries.
 
 	It is not that easy to compute direct queries number, however this is the real metric we want to see.
 	For that, we're simulating a computer stack with the variable below.
@@ -184,6 +184,9 @@ class ScriptedModel(models.Model):
 
 			# Retrieve the traceback.
 			trace = traceback.format_exc().split("\n")
+
+			# Reset the stack trace, lose data from current calls
+			ScriptedModel._stack = [0]
 
 			raise
 
