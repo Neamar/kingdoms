@@ -54,6 +54,9 @@ class Folk(models.Model):
 	The folk are the people in your kingdom.
 	"""
 	
+	class Meta:
+		ordering = ['id']
+
 	MALE = 'm'
 	FEMALE = 'f'
 
