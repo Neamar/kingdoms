@@ -54,9 +54,6 @@ class Folk(models.Model):
 	The folk are the people in your kingdom.
 	"""
 	
-	objects = FolkManager()
-	objects_and_dead = models.Manager()
-
 	MALE = 'm'
 	FEMALE = 'f'
 

@@ -197,33 +197,6 @@ class UnitTest(TestCase):
 		self.f.save()
 		self.assertEqual(self.f.loyalty, 0)
 
-	def test_dead_people(self):
-		"""
-		Dead people are not returned by default.
-		"""
-
-		# Sanity check
-		self.assertEqual(1, Folk.objects.count())
-
-		self.f.death = datetime.now()
-		self.f.save()
-
-		self.assertEqual(0, Folk.objects.count())
-		self.assertEqual(1, Folk.objects_and_dead.count())
-
-	def test_dead_people_from_kingdom(self):
-		"""
-		Dead people are not returned by default.
-		"""
-
-		# Sanity check
-		self.assertEqual(1, self.k.folk_set.count())
-
-		self.f.death = datetime.now()
-		self.f.save()
-
-		self.assertEqual(0, self.k.folk_set.count())
-
 	def test_folk_deletion(self):
 		"""
 		Deleted people do not CASCADE on their family, only set to None.
