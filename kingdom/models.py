@@ -8,8 +8,6 @@ from config.lib.models import DescribedModel, ScriptedModel, ContextModel
 from config.fields.script_field import ScriptField
 from config.fields.stored_value import StoredValueField
 
-from kingdom.managers import FolkManager
-
 
 class Kingdom(models.Model, ContextModel):
 	"""
