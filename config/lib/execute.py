@@ -60,8 +60,8 @@ def execute(code, param=None, context=None, filename='<string>'):
 		try:
 			exec(compile(code, filename, 'exec'))
 		except StopScript, ss:
-			if str(ss) != "":
-				status = str(ss)
+			if unicode(ss) != "":
+				status = unicode(ss)
 			pass
 
 	return status, param
