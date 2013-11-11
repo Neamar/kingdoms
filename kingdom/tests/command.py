@@ -8,6 +8,7 @@ from mission.models import Mission
 from kingdom.models import Kingdom
 from internal.models import Trigger
 
+
 class ReplaceCommandTest(TestCase):
 	"""
 	Test replace command
@@ -46,9 +47,10 @@ class ReplaceCommandTest(TestCase):
 		self.assertTrue('1 object' in out)
 		self.assertTrue('Some REPLACED' in out)
 
+
 class DependenciesCommandTest(TestCase):
 	"""
-	Test commands
+	Test dependencies commands
 	"""
 
 	def setUp(self):
@@ -95,3 +97,44 @@ kingdom.create_pending_event("second_event")
 		# Check node list does not include "event" model.
 		self.assertFalse('event_first_event [' in out)
 		self.assertTrue('mission_mission [' in out)
+
+
+class Pep8CommandTest(TestCase):
+	"""
+	Test pep8 command
+	"""
+
+	ugly = """
+#some ugly code
+a=1
+f(z = 2)
+if a==True:
+    return a==None
+"""
+
+	better = """
+# some ugly code
+a = 1
+f(z=2)
+if a:
+  return a is None
+"""
+
+	def setUp(self):
+		self.t = Trigger(
+			slug="test",
+			condition="",
+			on_fire=self.ugly
+		)
+		self.t.save()
+
+	def test_pep8(self):
+		"""
+		Check pep8 replaces code
+		"""
+
+		content = StringIO()
+		management.call_command('pep8', stdout=content)
+
+		t = Trigger.objects.get(pk=self.t.pk)
+		self.assertEqual(t.on_fire, self.better)
