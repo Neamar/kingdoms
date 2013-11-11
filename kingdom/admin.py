@@ -28,6 +28,24 @@ class FolkAdmin(admin.ModelAdmin):
 	list_display = ('first_name', 'last_name', 'kingdom', 'sex', 'birth')
 	search_fields = ('first_name', 'last_name')
 	list_filter = ('sex', 'kingdom')
+	fieldsets = (
+		(None, {
+			'fields': ('kingdom', ('first_name', 'last_name'), ('sex', 'avatar'), 'disabled')
+		}),
+		('Généalogie', {
+			'fields': (('mother', 'father'), ('spouse', 'mentor'))
+		}),
+		(None, {
+			'classes': ('collapse',),
+			'fields': ('birth', 'death')
+		}),
+		('Attributs', {
+			'fields': (('fight', 'diplomacy'), ('plot', 'scholarship'), 'loyalty')
+		}),
+		('Traits', {
+			'fields': ('quality_set',)
+		})
+	)
 admin.site.register(Folk, FolkAdmin)
 
 
