@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
 		if is_dirty:
 			self.stdout.write('  Saving %s' % obj)
-			#obj.save()
+			obj.save()
 
 		return 1 if is_dirty else 0
 
