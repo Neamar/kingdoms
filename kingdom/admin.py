@@ -25,7 +25,7 @@ class EventActionAdminInline(admin.StackedInline):
 
 
 class FolkAdmin(admin.ModelAdmin):
-	list_display = ('first_name', 'last_name', 'kingdom', 'sex', 'birth')
+	list_display = ('first_name', 'last_name', 'kingdom', 'sex', 'birth', 'thumb')
 	search_fields = ('first_name', 'last_name')
 	list_filter = ('sex', 'kingdom')
 	fieldsets = (
@@ -46,6 +46,12 @@ class FolkAdmin(admin.ModelAdmin):
 			'fields': ('quality_set',)
 		})
 	)
+
+	def thumb(self, obj):
+		if obj.avatar and not obj.death:
+			return '<img src="%s" style="width:50px" />' % obj.avatar.image(obj.age())
+	thumb.short_description = 'Image'
+	thumb.allow_tags = True
 admin.site.register(Folk, FolkAdmin)
 
 
