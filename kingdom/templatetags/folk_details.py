@@ -24,11 +24,11 @@ def folk_details(folk):
 			<span>{{folk.first_name}} {{folk.last_name}}</span>
 			<small>( {{folk.age}} ans)</small>
 		</td>
-		<td>{{folk.fight}} <strong>C</strong></td>
-		<td>{{folk.plot}} <strong>I</strong></td>
-		<td>{{folk.diplomacy}} <strong>D</strong></td>
-		<td>{{folk.scholarship}} <strong>É</strong></td>
-		<td>{{folk.loyalty}} <strong>L</strong></td>
+		<td><strong>C</strong>{{folk.fight}} </td>
+		<td><strong>I</strong>{{folk.plot}} </td>
+		<td><strong>D</strong>{{folk.diplomacy}} </td>
+		<td><strong>E</strong>{{folk.scholarship}} </td>
+		<td><strong>L</strong>{{folk.loyalty}} </td>
 	</tr>
 	<tr>
 		<td colspan="5">
