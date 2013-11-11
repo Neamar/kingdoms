@@ -74,7 +74,7 @@ def pending_bargain_kingdom_state(request, pk):
 	pending_bargain_kingdom = get_object_or_404(PendingBargainKingdom, pk=pk, kingdom=request.user.kingdom)
 
 	# Set state
-	pending_bargain_kingdom.state = request.POST['state']
+	pending_bargain_kingdom.state = int(request.POST['state'])
 	pending_bargain_kingdom.save()
 
 
