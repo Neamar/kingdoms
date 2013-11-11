@@ -35,7 +35,7 @@ class FolkAdmin(admin.ModelAdmin):
 		('Généalogie', {
 			'fields': (('mother', 'father'), ('spouse', 'mentor'))
 		}),
-		(None, {
+		('Vie et mort', {
 			'classes': ('collapse',),
 			'fields': ('birth', 'death')
 		}),
