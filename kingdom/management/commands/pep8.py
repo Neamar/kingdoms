@@ -18,6 +18,7 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		count = 0
 		for model in models.get_models():
+			self.stdout.write('Parsing %s' % model)
 			for o in model.objects.all():
 				count += self.fix_model(o)
 
@@ -34,27 +35,32 @@ class Command(BaseCommand):
 					continue
 
 				new_value = self.fix_code(old_value)
-				if old_value != new_value:
-					print "@@@@@@@@@@@@@@@@@"
-					print old_value
-					print "-----"
-					print new_value
-					print "@@@@@@@@@@@@@@@@@"
-
+				if old_value.strip() != new_value.strip():
 					setattr(obj, field.name, new_value)
 					is_dirty = True
 
 		if is_dirty:
-			print "Saving %s" % obj
+			self.stdout.write('  Saving %s' % obj)
 			#obj.save()
 
 		return 1 if is_dirty else 0
 
 	def fix_code(self, code):
-		code = autopep8.fix_code(code, options)
+		code = autopep8.fix_code(code, Options)
 
 		# Indent with 2
 		code = code.replace('    ', '  ')
 		return code
 
-options = autopep8.parse_args(['-a', '-a', '--max-line-length=2000'])
+
+class Options:
+	"""
+	Options for autopep8
+	"""
+	aggressive = 2
+	max_line_length = 2000
+	line_range = None
+	select = ''
+	ignore = 'W391' # Trailing whitespace
+	verbose = 0
+	pep8_passes=-1
