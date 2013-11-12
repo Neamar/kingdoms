@@ -178,17 +178,16 @@ class ScriptedModel(models.Model):
 		try:
 			status, param = execute(code, param=self, context=context, filename=filename)
 		except Exception as e:
-			# Let's try to display something useful for the scripter team.
-			import traceback
-			import string
-
-			# Retrieve the traceback.
-			trace = traceback.format_exc().split("\n")
-
 			# Reset the stack trace, lose data from current calls
 			ScriptedModel._stack = [0]
+			ScriptedModel._scriptlogs = []
 
 			raise
+
+		if len(ScriptedModel._stack) == 0:
+			# We've thrown an error somewhere, intercepted it and cleaned the log. However the exception was later catched by some script above, and we're now in an unknown state since we've lost datas while cleaning.
+			# Conclusion : no metrics for this stack trace, let's skip this
+			return
 
 		# Retrieve metrics
 		delay = (datetime.now() - _started_at).total_seconds() * 1000
