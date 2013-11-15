@@ -27,7 +27,6 @@ def kingdom_unlock_mission(self, slug):
 		transaction.savepoint_commit(sid)
 	except IntegrityError:
 		transaction.savepoint_rollback(sid)
-		pass
 Kingdom.unlock_mission = kingdom_unlock_mission
 
 
