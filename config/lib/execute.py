@@ -27,7 +27,11 @@ class StopScript(Exception):
 	"""
 	Class to emulate a "return" in the eval'd code.
 	"""
-	pass
+	message = ""
+
+	def __init__(self, message):
+		self.message = message
+		super(StopScript, self).__init__()
 
 
 def stop(status=""):
@@ -60,8 +64,8 @@ def execute(code, param=None, context=None, filename='<string>'):
 		try:
 			exec(compile(code, filename, 'exec'))
 		except StopScript, ss:
-			if unicode(ss) != "":
-				status = unicode(ss)
+			if ss.message != "":
+				status = ss.message
 			pass
 
 	return status, param
