@@ -31,7 +31,7 @@ def pending_bargain_delete(request, pk):
 	"""
 
 	# Retrieve the objects
-	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom_id)
+	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom)
 
 	# Delete
 	pending_bargain.delete()
@@ -50,7 +50,7 @@ def pending_bargain_share_pending_mission(request, pk):
 
 	# Retrieve the objects
 	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom_id)
-	pending_mission = get_object_or_404(PendingMission, pk=request.POST['pending_mission'], kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=request.POST['pending_mission'], kingdom=request.user.kingdom)
 
 	# Share the mission
 	PendingBargainSharedMission(

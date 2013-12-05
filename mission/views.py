@@ -26,9 +26,9 @@ def pending_mission_grid_affect(request, pk, grid_pk):
 		raise Http404("Specify folk in POST")
 
 	# Retrieve the objects
-	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 	mission_grid = get_object_or_404(MissionGrid, pk=grid_pk, mission=pending_mission.mission_id)
-	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom_id)
+	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
 
 	# If the folk is currently in a team, unaffect him
 	try:
@@ -61,7 +61,7 @@ def pending_mission_grid_defect(request, pk):
 	Defect the folk from the mission
 	"""
 	# Retrieve the objects
-	pending_mission_affectation = get_object_or_404(PendingMissionAffectation, pk=pk, pending_mission__kingdom=request.user.kingdom_id)
+	pending_mission_affectation = get_object_or_404(PendingMissionAffectation, pk=pk, pending_mission__kingdom=request.user.kingdom)
 
 	# Defect
 	pending_mission_affectation.delete()
@@ -79,7 +79,7 @@ def pending_mission_set_target(request, pk):
 		raise Http404("Specify target in POST")
 
 	# Retrieve the objects
-	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 	target = get_object_or_404(Kingdom, pk=request.POST['target'])
 
 	# Update target
@@ -99,7 +99,7 @@ def pending_mission_set_value(request, pk):
 		raise Http404("Specify value in POST")
 
 	# Retrieve the objects
-	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 
 	# Update target
 	pending_mission.value = request.POST['value']
@@ -115,7 +115,7 @@ def pending_mission_start(request, pk):
 	"""
 
 	# Retrieve the object
-	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 
 	# Start
 	pending_mission.started = datetime.now()
@@ -131,7 +131,7 @@ def pending_mission_cancel(request, pk):
 	"""
 
 	# Retrieve the object
-	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=pk, kingdom=request.user.kingdom)
 
 	# Cancel
 	pending_mission.delete()
@@ -145,7 +145,7 @@ def available_mission_start(request, pk):
 	Start an available mission.
 	"""
 	# Retrieve the objects
-	available_mission = get_object_or_404(AvailableMission, pk=pk, kingdom=request.user.kingdom_id)
+	available_mission = get_object_or_404(AvailableMission, pk=pk, kingdom=request.user.kingdom)
 
 	# Start the mission
 	available_mission.start()
