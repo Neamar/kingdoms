@@ -223,7 +223,7 @@ class PendingEventToken(models.Model):
 				# The pending event asked not to be displayed and has been deleted.
 				pass
 
-		for event in self.category.event_set.all():
+		for event in self.category.event_set.all().order_by('?'):
 			pending_event = PendingEvent(
 				kingdom=self.kingdom,
 				event=event

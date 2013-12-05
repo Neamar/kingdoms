@@ -4,12 +4,11 @@ import time
 from datetime import datetime, timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from django.conf import settings
 from django.db import IntegrityError
 
 from kingdom.management.commands.cron import cron_minute
 from kingdom.models import Kingdom, Folk, QualityCategory, Quality
-from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
+from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction, PendingEventToken
 
 
 class UnitTest(TestCase):
@@ -510,6 +509,96 @@ status="stop"
 		pe2.start()
 
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(kingdom=self.k, event=e3)))
+
+	def test_token_to_pending_event_from_pending_event(self):
+		"""
+		Check token is made into specified pending_event
+		"""
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+
+		pet = PendingEventToken(
+			kingdom=self.k,
+			pending_event=pe,
+			category=self.c
+		)
+		pet.save()
+
+		self.assertEqual(pet.to_event(), pe)
+
+	def test_token_to_pending_event_from_invalid_pending_event(self):
+		"""
+		Check token validates condition for specified pending_event
+		"""
+
+		self.e.condition = "stop('nope')"
+		self.e.save()
+
+		e2 = Event(
+			name="Event 2",
+			slug="event_2",
+			category=self.c,
+			text="Event 2",
+			on_fire=""
+		)
+		e2.save()
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+
+		pet = PendingEventToken(
+			kingdom=self.k,
+			pending_event=pe,
+			category=self.c
+		)
+		pet.save()
+
+		# Should fallback to other events in the category
+		ret = pet.to_event()
+		self.assertEquals(ret.event, e2)
+
+		# Check pe has been deleted
+		self.assertIsNone(pe.pk)
+
+	def test_token_to_pending_event_from_category(self):
+		"""
+		Check token validates condition for specified pending_event
+		"""
+
+		pet = PendingEventToken(
+			kingdom=self.k,
+			category=self.c
+		)
+		pet.save()
+
+		# Should fallback to other events in the category
+		ret = pet.to_event()
+		self.assertEquals(ret.event, self.e)
+
+	def test_token_to_pending_event_from_invalid_category(self):
+		"""
+		Check token validates condition for specified pending_event
+		"""
+		self.e.condition = "stop('nope')"
+		self.e.save()
+
+		pet = PendingEventToken(
+			kingdom=self.k,
+			category=self.c
+		)
+		pet.save()
+
+		# Should fallback to other events in the category
+		self.assertRaises(ValidationError, pet.to_event)
 
 
 class TemplateTest(TestCase):
