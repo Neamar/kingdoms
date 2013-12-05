@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.db import IntegrityError
 
-from kingdom.management.commands.cron import cron_minute
+from kingdom.management.commands.cron import cron_minute, cron_ten_minutes
 from kingdom.models import Kingdom, Folk, QualityCategory, Quality
-from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction
+from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction, PendingEventToken
 
 
 class UnitTest(TestCase):
@@ -512,6 +512,30 @@ status="stop"
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(kingdom=self.k, event=e3)))
 
 
+	def test_create_pendingeventtoken(self):
+		"""
+		check token creation when it is needed
+		"""
+
+		self.c.available_kingdoms =  [self.k]
+		self.c.save()
+
+		cron_ten_minutes.send(self, counter=1000)
+
+
+		self.assertTrue(PendingEventToken.objects.count())
+
+	def test_no_create_pendingeventtoken(self):
+		"""
+		check token non_creation when it is not needed
+		"""
+
+		cron_ten_minutes.send(self, counter=1000)
+
+
+		self.assertFalse(PendingEventToken.objects.count())
+
+
 class TemplateTest(TestCase):
 	def setUp(self):
 		self.k = Kingdom()
@@ -761,3 +785,5 @@ param.set_value("kingdom", kingdom)
 		pe.save()
 
 		self.assertEqual(pe.text, "l'ambassadeur, le chatelain")
+
+
