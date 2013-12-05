@@ -24,7 +24,7 @@ def check_sanity_pending_mission_in_kingdoms(sender, instance, **kwargs):
 	The pending mission must be owned by one of the sides of the negotiation.
 	"""
 
-	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, kingdom=instance.pending_mission.kingdom).exists():
+	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_id, kingdom=instance.pending_mission.kingdom_id).exists():
 		raise IntegrityError("This pending mission is not owned by a side of the negotiation.")
 
 
@@ -34,7 +34,7 @@ def check_sanity_folk_in_kingdoms(sender, instance, **kwargs):
 	The folk affected must be owned by one of the sides of the negotiation.
 	"""
 
-	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_shared_mission.pending_bargain, kingdom=instance.folk.kingdom).exists():
+	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_shared_mission.pending_bargain_id, kingdom=instance.folk.kingdom_id).exists():
 		raise IntegrityError("This folk mission is not owned by a side of the negotiation.")
 
 
@@ -44,7 +44,7 @@ def check_only_two_kingdoms_per_bargain(sender, instance, **kwargs):
 	A bargain can only have two sides.
 	"""
 
-	if not instance.pk and PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain).count() == 2:
+	if not instance.pk and PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_id).count() == 2:
 		raise ValidationError("Only two kingdoms per negotiation.")
 
 
@@ -109,7 +109,7 @@ def commit_when_all_ok(sender, instance, **kwargs):
 	When everyone is in state OK, resolve the negotiation.
 	"""
 
-	if instance.state >= PendingBargainKingdom.OK and not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain, state=PendingBargainKingdom.PENDING).exists():
+	if instance.state >= PendingBargainKingdom.OK and not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_id, state=PendingBargainKingdom.PENDING).exists():
 		# Let's commit this!
 		instance.pending_bargain.fire()
 
@@ -120,7 +120,7 @@ def revert_on_affectation_delete(sender, instance, **kwargs):
 	Revert state from OK to PENDING after a delete.
 	"""
 
-	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain)
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain_id)
 
 	# This loop should only contains at most one item.
 	for kingdom_ok in kingdoms_oks:
@@ -134,7 +134,7 @@ def revert_on_affectation_change(sender, instance, created, **kwargs):
 	Revert state from OK to PENDING after a delete.
 	"""
 
-	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain)
+	kingdoms_oks = PendingBargainKingdom.objects.filter(state=PendingBargainKingdom.OK, pending_bargain=instance.pending_bargain_shared_mission.pending_bargain_id)
 
 	# This loop should only contains at most one item.
 	for kingdom_ok in kingdoms_oks:

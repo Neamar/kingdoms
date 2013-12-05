@@ -31,7 +31,7 @@ def pending_bargain_delete(request, pk):
 	"""
 
 	# Retrieve the objects
-	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom)
+	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom_id)
 
 	# Delete
 	pending_bargain.delete()
@@ -49,8 +49,8 @@ def pending_bargain_share_pending_mission(request, pk):
 		raise Http404("Specify pending_mission in POST")
 
 	# Retrieve the objects
-	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom)
-	pending_mission = get_object_or_404(PendingMission, pk=request.POST['pending_mission'], kingdom=request.user.kingdom)
+	pending_bargain = get_object_or_404(PendingBargain, pk=pk, pendingbargainkingdom__kingdom=request.user.kingdom_id)
+	pending_mission = get_object_or_404(PendingMission, pk=request.POST['pending_mission'], kingdom=request.user.kingdom_id)
 
 	# Share the mission
 	PendingBargainSharedMission(
@@ -71,7 +71,7 @@ def pending_bargain_kingdom_state(request, pk):
 		raise Http404("Specify state in POST")
 
 	# Retrieve the objects
-	pending_bargain_kingdom = get_object_or_404(PendingBargainKingdom, pk=pk, kingdom=request.user.kingdom)
+	pending_bargain_kingdom = get_object_or_404(PendingBargainKingdom, pk=pk, kingdom=request.user.kingdom_id)
 
 	# Set state
 	pending_bargain_kingdom.state = int(request.POST['state'])
@@ -87,7 +87,7 @@ def shared_pending_mission_delete(request, pk):
 	"""
 
 	# Retrieve the objects
-	pending_bargain_shared_mission = get_object_or_404(PendingBargainSharedMission, pk=pk, pending_bargain__pendingbargainkingdom__kingdom=request.user.kingdom)
+	pending_bargain_shared_mission = get_object_or_404(PendingBargainSharedMission, pk=pk, pending_bargain__pendingbargainkingdom__kingdom=request.user.kingdom_id)
 
 	# Delete
 	pending_bargain_shared_mission.delete()
@@ -105,9 +105,9 @@ def shared_mission_affect(request, pk, grid_pk):
 		raise Http404("Specify folk in POST")
 
 	# Retrieve the objects
-	pending_bargain_shared_mission = get_object_or_404(PendingBargainSharedMission, pk=pk, pending_bargain__pendingbargainkingdom__kingdom=request.user.kingdom)
+	pending_bargain_shared_mission = get_object_or_404(PendingBargainSharedMission, pk=pk, pending_bargain__pendingbargainkingdom__kingdom=request.user.kingdom_id)
 	mission_grid = get_object_or_404(MissionGrid, pk=grid_pk, mission_id=pending_bargain_shared_mission.pending_mission.mission_id)
-	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
+	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom_id)
 
 	# Affect
 	pbsma = PendingBargainSharedMissionAffectation(
@@ -128,7 +128,7 @@ def shared_mission_defect(request, pk):
 	"""
 
 	# Retrieve the objects
-	pending_bargain_shared_mission_affectation = get_object_or_404(PendingBargainSharedMissionAffectation, pk=pk, folk__kingdom=request.user.kingdom)
+	pending_bargain_shared_mission_affectation = get_object_or_404(PendingBargainSharedMissionAffectation, pk=pk, folk__kingdom=request.user.kingdom_id)
 
 	# Defect
 	pending_bargain_shared_mission_affectation.delete()

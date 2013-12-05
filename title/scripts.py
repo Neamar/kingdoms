@@ -42,7 +42,7 @@ def folk_add_title(self, title_slug):
 	"""
 	Add the title to the folk
 	"""
-	available_title = AvailableTitle.objects.get(title__slug=title_slug, kingdom=self.kingdom)
+	available_title = AvailableTitle.objects.get(title__slug=title_slug, kingdom=self.kingdom_id)
 	available_title.folk = self
 	available_title.save()
 Folk.add_title = folk_add_title
@@ -53,7 +53,7 @@ def folk_remove_title(self):
 	Remove the title from the folk
 	"""
 	try:
-		available_title = AvailableTitle.objects.get(kingdom=self.kingdom, folk=self)
+		available_title = AvailableTitle.objects.get(kingdom=self.kingdom_id, folk=self)
 	except:
 		pass
 	available_title.folk = None

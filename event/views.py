@@ -13,7 +13,7 @@ def pending_event_action_fire(request, pk):
 	"""
 
 	# Retrieve the object
-	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom)
+	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom_id)
 
 	# Execute code
 	pending_event_action.fire()

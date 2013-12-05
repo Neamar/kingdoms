@@ -93,7 +93,7 @@ def check_pending_mission_affectation_condition(sender, instance, **kwargs):
 @receiver(post_save, sender=Folk)
 def unaffect_affectation_on_death(sender, instance, **kwargs):
 	"""
-	Remove the folk from any title when he dies.
+	Remove the folk from any mission when he dies.
 	"""
 
 	if instance.death:
@@ -111,12 +111,13 @@ def check_pending_mission_affectation_length(sender, instance, **kwargs):
 	Check the length of the grid before affecting.
 	"""
 
+	# Only check the first time
 	if instance.pk:
 		return
 
 	count = PendingMissionAffectation.objects.filter(
-		pending_mission=instance.pending_mission,
-		mission_grid=instance.mission_grid
+		pending_mission=instance.pending_mission_id,
+		mission_grid=instance.mission_grid_id
 	).count()
 
 	if count + 1 > instance.mission_grid.length:
@@ -182,7 +183,7 @@ def check_pending_mission_cant_start_without_title(sender, instance, **kwargs):
 	if instance.started is not None and not instance.is_started and instance.mission.title_id is not None:
 		folk = None
 		try:
-			at = AvailableTitle.objects.get(kingdom=instance.kingdom, title=instance.mission.title_id)
+			at = AvailableTitle.objects.get(kingdom=instance.kingdom_id, title=instance.mission.title_id)
 			folk = at.folk
 		except AvailableTitle.DoesNotExist:
 			pass
