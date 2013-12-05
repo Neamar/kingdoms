@@ -197,4 +197,18 @@ class _PendingEventVariable(models.Model):
 		return "PendingEvent variable %s=%s" % (self.name, self.value)
 
 
+class PendingEventToken(models.Model):
+	"""
+	Tokens to create pending_event in the future
+	"""
+	kingdom = models.ForeignKey(Kingdom)
+
+	created = models.DateTimeField(auto_now_add=True)
+	started = models.DateTimeField(default=datetime.now, blank=True, null=True)
+
+	pending_event = models.ForeignKey(PendingEvent, blank=True, null=True)
+	category = models.ForeignKey(EventCategory)
+	fallback_category = models.ForeignKey(EventCategory)
+
+
 from event.signals import *
