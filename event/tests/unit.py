@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from kingdom.management.commands.cron import cron_minute
+from kingdom.management.commands.cron import cron_minute, cron_ten_minutes
 from kingdom.models import Kingdom, Folk
 from event.models import Event, EventAction, EventCategory, PendingEvent, PendingEventAction, PendingEventToken
 
@@ -509,6 +509,26 @@ status="stop"
 		pe2.start()
 
 		self.assertRaises(PendingEvent.DoesNotExist, (lambda: PendingEvent.objects.get(kingdom=self.k, event=e3)))
+
+	def test_dealer_create_pendingeventtoken(self):
+		"""
+		Check token creation by the dealer when it is needed
+		"""
+
+		self.c.available_kingdoms.add(self.k)
+
+		cron_ten_minutes.send(self, counter=1000)
+
+		self.assertEquals(PendingEventToken.objects.count(), 1)
+
+	def test_dealer_no_create_pendingeventtoken(self):
+		"""
+		Check token creation by the dealer when it is not needed
+		"""
+
+		cron_ten_minutes.send(self, counter=1000)
+
+		self.assertEquals(PendingEventToken.objects.count(), 0)
 
 	def test_token_to_pending_event_from_pending_event(self):
 		"""
