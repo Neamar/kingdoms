@@ -207,8 +207,7 @@ class PendingEventToken(models.Model):
 	started = models.DateTimeField(default=datetime.now, blank=True, null=True)
 
 	pending_event = models.ForeignKey(PendingEvent, blank=True, null=True)
-	category = models.ForeignKey(EventCategory, related_name="+")
-	fallback_category = models.ForeignKey(EventCategory, related_name="+")
+	category = models.ForeignKey(EventCategory)
 
 
 from event.signals import *
