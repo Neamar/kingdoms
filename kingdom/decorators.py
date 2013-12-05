@@ -14,7 +14,7 @@ def json_view(func):
 		response = func(request, *a, **kw)
 		if isinstance(response, dict):
 			json = to_json(response)
-			return HttpResponse(json, mimetype='application/json')
+			return HttpResponse(json, content_type='application/json')
 		else:
 			return response
 

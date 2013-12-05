@@ -55,7 +55,7 @@ def dependencies(request, output_type):
 
 	# Dot file: return everything right now
 	if output_type == 'dot':
-		return HttpResponse(dot_file, mimetype='text/plain')
+		return HttpResponse(dot_file, content_type='text/plain')
 
 	# Else, store in temp file
 	with open(dependencies_file_dot, 'wb+') as temp_file:
@@ -76,6 +76,6 @@ def dependencies(request, output_type):
 	if output_type == 'svg':
 		response = HttpResponse(datas)
 	else:
-		response = HttpResponse(datas, mimetype='image/png')
+		response = HttpResponse(datas, content_type='image/png')
 		response["Content-Length"] = len(datas)
 	return response
