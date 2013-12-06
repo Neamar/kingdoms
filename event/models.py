@@ -197,4 +197,45 @@ class _PendingEventVariable(models.Model):
 		return "PendingEvent variable %s=%s" % (self.name, self.value)
 
 
+class PendingEventToken(models.Model):
+	"""
+	Tokens to create pending_event in the future
+	"""
+	kingdom = models.ForeignKey(Kingdom)
+
+	created = models.DateTimeField(auto_now_add=True)
+	started = models.DateTimeField(default=datetime.now, blank=True, null=True)
+
+	pending_event = models.ForeignKey(PendingEvent, blank=True, null=True)
+	category = models.ForeignKey(EventCategory)
+
+	def to_event(self):
+		"""
+		Transform this PendingEventToken to some real PendingEvent
+		"""
+
+		if self.pending_event:
+			try:
+				self.pending_event.started = datetime.now()
+				self.pending_event.save()
+				return self.pending_event
+			except ValidationError:
+				# The pending event asked not to be displayed and has been deleted.
+				pass
+
+		for event in self.category.event_set.all().order_by('?'):
+			pending_event = PendingEvent(
+				kingdom=self.kingdom,
+				event=event
+			)
+
+			try:
+				pending_event.save()
+				return pending_event
+			except ValidationError:
+				pass
+
+		raise ValidationError("Unable to start an event in this category.")
+
+
 from event.signals import *

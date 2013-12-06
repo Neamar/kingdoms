@@ -9,9 +9,10 @@ from django.conf import settings
 from django.template import Template, Context
 from django.utils.functional import memoize
 
-from kingdom.management.commands.cron import cron_minute
-from event.models import PendingEvent, PendingEventAction
+from kingdom.management.commands.cron import cron_minute, cron_ten_minutes
+from event.models import PendingEvent, PendingEventAction, EventCategory, PendingEventToken
 
+from random import randint
 
 @receiver(post_save, sender=PendingEvent)
 def set_event_actions_and_fire(sender, instance, created, **kwargs):
@@ -111,3 +112,22 @@ def cron_start_future_pendingevent(sender, counter, **kwargs):
 		except ValidationError:
 			# The pending event asked not to be displayed and has been deleted.
 			pass
+
+@receiver(cron_ten_minutes)
+def cron_token_dealer(sender, counter, **kwargs):
+	"""
+	Create pending_event_token
+	"""
+	tokens = []
+	for cat in EventCategory.objects.all():
+		for kingdom in cat.available_kingdoms.all():
+			if randint(1, cat.frequency) == cat.frequency:
+				pending_event_token = PendingEventToken(
+					kingdom=kingdom,
+					category = cat
+				)
+				tokens.append(pending_event_token)
+
+	# Bulk create in a single query
+	PendingEventToken.objects.bulk_create(tokens)
+
