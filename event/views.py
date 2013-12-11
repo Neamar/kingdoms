@@ -17,3 +17,18 @@ def pending_event_action_fire(request, pk):
 
 	# Execute code
 	pending_event_action.fire()
+
+
+@force_post
+@json_view
+@status_view
+def token_consume(request, pk):
+	"""
+	Consume the first token into a PendingEvent
+	"""
+
+	# Retrieve the object
+	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom_id)
+
+	# Execute code
+	pending_event_action.fire()
