@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
 from kingdom.decorators import json_view, force_post, status_view
-from event.models import PendingEventAction, PendingEventToken
+from event.models import PendingEventAction
 
 
 @force_post
@@ -30,9 +31,9 @@ def token_consume(request):
 	"""
 
 	try:
-		pending_event_token = request.user.kingdom.pendingeventtoken_set.all()[0]
-	except PendingEventToken.DoesNotExist:
-		raise ValidationError("Aucun évènement en attente")
+		pending_event_token = request.user.kingdom.pendingeventtoken_set.filter(started__lte=datetime.now)[0]
+	except IndexError:
+		raise ValidationError("Aucun évènement en attente.")
 
 	pending_event_token.to_event()
 	pending_event_token.delete()
