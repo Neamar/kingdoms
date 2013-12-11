@@ -22,13 +22,9 @@ def pending_event_action_fire(request, pk):
 @force_post
 @json_view
 @status_view
-def token_consume(request, pk):
+def token_consume(request):
 	"""
 	Consume the first token into a PendingEvent
 	"""
 
-	# Retrieve the object
-	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom_id)
-
-	# Execute code
-	pending_event_action.fire()
+	pass

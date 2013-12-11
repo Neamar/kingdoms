@@ -1,5 +1,3 @@
-'use strict';
-
 //##################################
 // HTTP ACTIONS
 //##################################
@@ -15,7 +13,7 @@ var http_actions = {
 
 		jqxhr.fail(function(datas) {
 			viewModel.debug_info(datas.responseText);
-			document.location = "#debug";
+			document.location = '#debug';
 		});
 
 		// Always reload datas
@@ -25,8 +23,8 @@ var http_actions = {
 	/*
 	 * Fire the selected action to resolve the event.
 	 */
-	tokenToPendingEvent: function(action) {
-		http_actions._post(action.links.fire(), {});
+	tokenConsume: function(context) {
+		http_actions._post(context.pending_events_tokens.links.consume(), {});
 	},
 
 	/*
@@ -150,4 +148,4 @@ var http_actions = {
 	restoreFreeze: function(freezes) {
 		http_actions._post(freezes.links.restore(), {});
 	},
-}
+};

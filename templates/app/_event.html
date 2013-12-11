@@ -1,5 +1,5 @@
 <p data-bind="visible: pending_events_tokens.count() >= 1">
-	<a href="#" data-bind="click: http_actions.tokenToPendingEvent">
+	<a href="#" data-bind="click: http_actions.tokenConsume">
 		<span data-bind="text: pending_events_tokens.count"></span> évènement<span data-bind="if:pending_events_tokens.count() >= 2">s</span> en attente.
 	</a>
 </p>
