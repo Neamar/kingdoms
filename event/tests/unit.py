@@ -530,7 +530,7 @@ status="stop"
 
 		self.assertEquals(PendingEventToken.objects.count(), 0)
 
-	def test_token_sanity(self):
+	def test_token_pending_event_sanity(self):
 		"""
 		Check kingdoms in token and pending_event are similar
 		"""
@@ -547,6 +547,25 @@ status="stop"
 
 		pet = PendingEventToken(
 			kingdom=k2,
+			pending_event=pe,
+			category=self.c
+		)
+
+		self.assertRaises(IntegrityError, pet.save)
+
+	def test_token_pending_event_not_started(self):
+		"""
+		Check kingdoms in token and pending_event are similar
+		"""
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+		)
+		pe.save()
+
+		pet = PendingEventToken(
+			kingdom=self.k,
 			pending_event=pe,
 			category=self.c
 		)

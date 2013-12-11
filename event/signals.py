@@ -107,6 +107,15 @@ def check_pending_event_token_sanity(sender, instance, **kwargs):
 		raise IntegrityError("The kingdoms in token.pending_event.kingdom and token.kingdom are different.")
 
 
+@receiver(pre_save, sender=PendingEventToken)
+def check_pending_event_token_not_started(sender, instance, **kwargs):
+	"""
+	Check the pending_event is not started
+	"""
+
+	if instance.pending_event and instance.pending_event.started:
+		raise IntegrityError("The pending_event is already started and can't be affected to a token.")
+
 @receiver(cron_minute)
 def cron_start_future_pendingevent(sender, counter, **kwargs):
 	"""
