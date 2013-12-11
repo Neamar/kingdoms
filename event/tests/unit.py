@@ -530,6 +530,29 @@ status="stop"
 
 		self.assertEquals(PendingEventToken.objects.count(), 0)
 
+	def test_token_sanity(self):
+		"""
+		Check kingdoms in token and pending_event are similar
+		"""
+
+		pe = PendingEvent(
+			event=self.e,
+			kingdom=self.k,
+			started=None
+		)
+		pe.save()
+
+		k2 = Kingdom()
+		k2.save()
+
+		pet = PendingEventToken(
+			kingdom=k2,
+			pending_event=pe,
+			category=self.c
+		)
+
+		self.assertRaises(IntegrityError, pet.save)
+
 	def test_token_to_pending_event_from_pending_event(self):
 		"""
 		Check token is made into specified pending_event
