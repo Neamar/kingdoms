@@ -4,7 +4,7 @@ from django.forms import TextInput
 from django.db import models
 
 from config.admin import force_delete, ModelAdmin
-from event.models import Event, EventCategory, EventAction, PendingEvent
+from event.models import Event, EventCategory, EventAction, PendingEvent, PendingEventToken
 
 
 class EventActionAdminInline(admin.StackedInline):
@@ -59,3 +59,8 @@ class PendingEventAdmin(ModelAdmin):
 		models.CharField: {'widget': TextInput(attrs={'size': '100'})},
 	}
 admin.site.register(PendingEvent, PendingEventAdmin)
+
+
+class PendingEventTokenAdmin(ModelAdmin):
+	list_display = ('kingdom', 'created', 'pending_event', 'category')
+admin.site.register(PendingEventToken, PendingEventTokenAdmin)

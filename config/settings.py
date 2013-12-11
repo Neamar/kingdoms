@@ -150,7 +150,7 @@ SUIT_CONFIG = {
         },
         {
             'app': 'event',
-            'models': ('event', 'eventcategory', 'pendingevent')
+            'models': ('event', 'eventcategory', 'pendingevent', 'pendingeventtoken')
         },
         {
             'app': 'mission',
