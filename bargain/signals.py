@@ -34,7 +34,7 @@ def check_sanity_folk_in_kingdoms(sender, instance, **kwargs):
 	The folk affected must be owned by one of the sides of the negotiation.
 	"""
 
-	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_shared_mission.pending_bargain_id, kingdom=instance.folk.kingdom_id).exists():
+	if not PendingBargainKingdom.objects.filter(pending_bargain=instance.pending_bargain_shared_mission.pending_bargain_id, kingdom=instance.folk.kingdom).exists():
 		raise IntegrityError("This folk mission is not owned by a side of the negotiation.")
 
 

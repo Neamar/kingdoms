@@ -22,7 +22,7 @@ def available_title_affect(request, pk):
 
 	# Retrieve the objects
 	available_title = get_object_or_404(AvailableTitle, pk=pk, kingdom=request.user.kingdom)
-	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom_id)
+	folk = get_object_or_404(Folk, pk=request.POST['folk'], kingdom=request.user.kingdom)
 
 	# Save
 	available_title.folk = folk
@@ -44,7 +44,7 @@ def available_title_defect(request, pk):
 		raise Http404("Only call this URL by POST.")
 
 	# Retrieve the objects
-	available_title = get_object_or_404(AvailableTitle, pk=pk, kingdom=request.user.kingdom_id)
+	available_title = get_object_or_404(AvailableTitle, pk=pk, kingdom=request.user.kingdom)
 
 	# Save
 	available_title.folk = None

@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 
 from kingdom.decorators import json_view, force_post, status_view
-from event.models import PendingEventAction
+from event.models import PendingEventAction, PendingEventToken
 
 
 @force_post
@@ -13,7 +15,7 @@ def pending_event_action_fire(request, pk):
 	"""
 
 	# Retrieve the object
-	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom_id)
+	pending_event_action = get_object_or_404(PendingEventAction, pk=pk, pending_event__kingdom=request.user.kingdom)
 
 	# Execute code
 	pending_event_action.fire()
@@ -27,4 +29,10 @@ def token_consume(request):
 	Consume the first token into a PendingEvent
 	"""
 
-	pass
+	try:
+		pending_event_token = request.user.kingdom.pendingeventtoken_set.all()[0]
+	except PendingEventToken.DoesNotExist:
+		raise ValidationError("Aucun évènement en attente")
+
+	pending_event_token.to_event()
+	pending_event_token.delete()
