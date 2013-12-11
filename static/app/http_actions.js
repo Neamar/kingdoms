@@ -25,6 +25,13 @@ var http_actions = {
 	/*
 	 * Fire the selected action to resolve the event.
 	 */
+	tokenToPendingEvent: function(action) {
+		http_actions._post(action.links.fire(), {});
+	},
+
+	/*
+	 * Fire the selected action to resolve the event.
+	 */
 	pendingEventActionFire: function(action) {
 		http_actions._post(action.links.fire(), {});
 	},

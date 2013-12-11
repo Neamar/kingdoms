@@ -1,5 +1,7 @@
-<p data-bind="visible: pending_events().length > 1">
-	<span data-bind="text: pending_events().length - 1"></span> évènement<span data-bind="if:pending_events().length > 2">s</span> en attente
+<p data-bind="visible: pending_events_tokens.count() >= 1">
+	<a href="#" data-bind="click: http_actions.tokenToPendingEvent">
+		<span data-bind="text: pending_events_tokens.count"></span> évènement<span data-bind="if:pending_events_tokens.count() >= 2">s</span> en attente.
+	</a>
 </p>
 <p data-bind="visible: pending_events().length == 0">
 	Aucun évènement pour l'instant.<br />
