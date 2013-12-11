@@ -94,7 +94,17 @@ def check_pending_event_action_sanity(sender, instance, **kwargs):
 	"""
 
 	if instance.event_action.event != instance.pending_event.event:
-		raise IntegrityError("The events in EventAction and PendingEventAction are different ")
+		raise IntegrityError("The events in EventAction and PendingEventAction are different.")
+
+
+@receiver(pre_save, sender=PendingEventToken)
+def check_pending_event_token_sanity(sender, instance, **kwargs):
+	"""
+	Check the actions refers to this event.
+	"""
+
+	if instance.pending_event and instance.pending_event.kingdom != instance.kingdom:
+		raise IntegrityError("The kingdoms in token.pending_event.kingdom and token.kingdom are different.")
 
 
 @receiver(cron_minute)
@@ -124,7 +134,7 @@ def cron_token_dealer(sender, counter, **kwargs):
 			if randint(1, cat.frequency) == cat.frequency:
 				pending_event_token = PendingEventToken(
 					kingdom=kingdom,
-					category = cat
+					category=cat
 				)
 				tokens.append(pending_event_token)
 

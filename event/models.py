@@ -206,7 +206,7 @@ class PendingEventToken(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	started = models.DateTimeField(default=datetime.now, blank=True, null=True)
 
-	pending_event = models.ForeignKey(PendingEvent, blank=True, null=True)
+	pending_event = models.ForeignKey(PendingEvent, blank=True, null=True, unique=True)
 	category = models.ForeignKey(EventCategory)
 
 	def to_event(self):
