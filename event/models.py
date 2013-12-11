@@ -237,5 +237,10 @@ class PendingEventToken(models.Model):
 
 		raise ValidationError("Unable to start an event in this category.")
 
+	def __unicode__(self):
+		if self.pending_event:
+			return u"PendingEvent:%s (%s)" % (self.pending_event, self.kingdom)
+		else:
+			return u"Category:%s (%s)" % (self.category, self.kingdom)
 
 from event.signals import *
