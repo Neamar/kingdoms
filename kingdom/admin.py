@@ -9,7 +9,7 @@ class KingdomAdmin(admin.ModelAdmin):
 	list_display = ('user', 'prestige', 'population', 'money', 'soldiers')
 	search_fields = ('user__username', )
 	readonly_fields = ('values', )
-	actions=[force_delete]
+	actions = [force_delete]
 
 	def values(self, obj):
 		values = ['%s=%s' % (o[0], o[1]) for o in obj.get_values().items()]
@@ -65,7 +65,7 @@ class QualityAdmin(admin.ModelAdmin):
 	list_display = ('name', 'female_name', 'slug', 'category', 'description')
 	search_fields = ('name', 'description')
 	list_filter = ('category__name',)
-	ordering=('name',)
+	ordering = ('name',)
 admin.site.register(Quality, QualityAdmin)
 
 

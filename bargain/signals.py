@@ -102,7 +102,6 @@ def delete_pending_bargain_on_kingdom_deletion(sender, instance, **kwargs):
 		pass
 
 
-
 @receiver(post_save, sender=PendingBargainKingdom)
 def commit_when_all_ok(sender, instance, **kwargs):
 	"""

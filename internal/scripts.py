@@ -23,6 +23,7 @@ class _MagicWrapper(type):
 	def __getattr__(cls, name):
 		return cls.get(name)
 		
+
 class C:
 	"""
 	Quick access to constant values

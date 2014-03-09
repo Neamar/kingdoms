@@ -36,7 +36,7 @@ def serialize_pending_mission(pending_mission):
 	}
 
 	if pending_mission.mission.timeout is not None:
-		r['timeout'] = pending_mission.created+timedelta(minutes=pending_mission.mission.timeout)
+		r['timeout'] = pending_mission.created + timedelta(minutes=pending_mission.mission.timeout)
 
 	if pending_mission.mission.has_target:
 		r['targets'] = [serialize_target(o) for o in pending_mission.targets()]

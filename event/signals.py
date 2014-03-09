@@ -14,6 +14,7 @@ from event.models import PendingEvent, PendingEventAction, EventCategory, Pendin
 
 from random import randint
 
+
 @receiver(post_save, sender=PendingEvent)
 def set_event_actions_and_fire(sender, instance, created, **kwargs):
 	"""
@@ -87,6 +88,7 @@ def set_event_actions_and_fire(sender, instance, created, **kwargs):
 		finally:
 			settings.TEMPLATE_STRING_IF_INVALID = ''
 
+
 @receiver(pre_save, sender=PendingEventAction)
 def check_pending_event_action_sanity(sender, instance, **kwargs):
 	"""
@@ -116,6 +118,7 @@ def check_pending_event_token_not_started(sender, instance, **kwargs):
 	if instance.pending_event and instance.pending_event.started:
 		raise IntegrityError("The pending_event is already started and can't be affected to a token.")
 
+
 @receiver(cron_minute)
 def cron_start_future_pendingevent(sender, counter, **kwargs):
 	"""
@@ -131,6 +134,7 @@ def cron_start_future_pendingevent(sender, counter, **kwargs):
 		except ValidationError:
 			# The pending event asked not to be displayed and has been deleted.
 			pass
+
 
 @receiver(cron_ten_minutes)
 def cron_token_dealer(sender, counter, **kwargs):

@@ -14,7 +14,7 @@ def serialize_pending_event(pending_event):
 
 	r = {
 		'id': pending_event.pk,
-		'timeout': pending_event.started+timedelta(minutes=relative_timeout),
+		'timeout': pending_event.started + timedelta(minutes=relative_timeout),
 		'slug': pending_event.event.slug,
 		'name': pending_event.event.name,
 		'image': image,

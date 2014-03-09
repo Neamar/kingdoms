@@ -5,6 +5,7 @@ from django.db import transaction
 from kingdom.models import Kingdom, Folk
 from title.models import Title, AvailableTitle
 
+
 def kingdom_get_folk_in_title(self, title_slug):
 	"""
 	Return the folk who got the title, or return none if there is no folk with this title

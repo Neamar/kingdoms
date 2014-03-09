@@ -2,6 +2,7 @@ from datetime import datetime
 from event.serializers import serialize_pending_event
 from django.core.urlresolvers import reverse
 
+
 def api(request):
 	"""
 	JSON contribution to /api/kingdom from this app.

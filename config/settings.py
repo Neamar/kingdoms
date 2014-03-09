@@ -146,7 +146,7 @@ SUIT_CONFIG = {
         '-',
         {
             'app': 'kingdom',
-            'models': ('kingdom', 'folk', 'message', 'claim', 'quality','qualitycategory')
+            'models': ('kingdom', 'folk', 'message', 'claim', 'quality', 'qualitycategory')
         },
         {
             'app': 'event',
@@ -166,11 +166,11 @@ SUIT_CONFIG = {
         '-',
         {
             'app': 'auth',
-            'icon':'icon-user'
+            'icon': 'icon-user'
         },
         {
             'app': 'admin',
-            'icon':'icon-lock'
+            'icon': 'icon-lock'
         },
     )
 }

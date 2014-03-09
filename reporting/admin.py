@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from reporting.models import ScriptLog
 
+
 class ScriptLogAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'object_type', 'object_pk', 'object_attr', 'kingdom', 'time', 'queries', 'direct_queries')
 	list_filter = ('object_type', 'object_attr')
@@ -79,7 +80,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 		return False
 
 	def action(self, obj):
-		images =[
+		images = [
 			'/static/admin/img/icon_changelink.gif',
 			'/static/admin/img/icon_addlink.gif',
 			'/static/admin/img/icon_deletelink.gif'

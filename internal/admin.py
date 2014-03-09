@@ -15,7 +15,7 @@ class FreezeAdmin(admin.ModelAdmin):
 	list_filter = ('kingdom',)
 	readonly_fields = ('created', 'datas_html')
 	exclude = ('datas', 'm2m_datas')
-	actions = ['restore',]
+	actions = ['restore', ]
 
 	def datas_html(self, obj):
 		return '<br /><pre><h3>Datas</h3>\n%s<h3>M2M datas</h3>\n%s</pre>' % (obj.datas, obj.m2m_datas)
@@ -43,6 +43,7 @@ class StatusAdmin (admin.ModelAdmin):
 	search_fields = ('name', 'value')
 	ordering = ('name',)
 admin.site.register(Status, StatusAdmin)
+
 
 class FunctionAdmin(admin.ModelAdmin):
 	list_display = ('slug', 'description')

@@ -59,7 +59,7 @@ class Status(NamedModel):
 class Recurring(DescribedModel, ScriptedModel):
 	slug = models.SlugField(max_length=255, unique=True)
 	
-	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6*24)
+	delay = models.PositiveIntegerField(help_text="Delay (in 10-minutes step) between two executions of this recurring.", default=6 * 24)
 
 	kingdom_list = ScriptField(blank=True, null=True, help_text="Called to retrieve a list of kingdoms in `param`. All this Kingdom will be applied the `on_fire` code. Defaults to all kingdoms.", default=None)
 	on_fire = ScriptField(blank=True, null=True, help_text="Recurring code, `param` is the current Recurring, `kingdom` is the current kingdom and `folks` the list of folks on this kingdom.", default=None)
@@ -187,6 +187,7 @@ class Freeze(models.Model):
 
 	def __unicode__(self):
 		return "Freeze: %s" % self.kingdom
+
 
 class FirstName(NamedModel):
 	"""
