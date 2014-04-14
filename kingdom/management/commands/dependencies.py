@@ -108,7 +108,7 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 		subgraph_mode = len(args) > 0
-		
+
 		# Init graph
 		self.graph = Graph()
 
@@ -139,7 +139,7 @@ class Command(BaseCommand):
 					for k2, regexps in all_regexps.items():
 						for regexp in regexps:
 							dependencies += [k2 + "_" + m for m in regexp.findall(code)]
-				
+
 				if 'related' in model:
 					# This items has subobjects,
 					# e.g. eventaction_set
@@ -165,7 +165,7 @@ class Command(BaseCommand):
 		# Output results
 		if subgraph_mode:
 			self.graph.filter(args)
-		
+
 		out = str(self.graph)
 		self.stdout.write(out)
 
@@ -252,7 +252,10 @@ class Graph:
 // Dependencies graph for kingdoms
 // Build an image using the `dot` command on Unix, or any visualization tool for dot graphs.
 digraph "Dépendances Kingdoms" {
-graph [bgcolor=transparent]
+graph [
+	rankdir = "LR"
+	bgcolor=transparent
+];
 node [color=red style="filled"];
 //NODE LIST
 %s
